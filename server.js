@@ -15,17 +15,27 @@ DESIGN PRINCIPLES:
 INTERACTIVE PRICING CALCULATOR — build it like this:
 - Clickable CARDS for each option (not dropdowns) — each card shows name, description, price
 - Selected card gets a highlighted border in the primary color
-- A sticky or prominent "Your Total" display that updates live as they click
-- Add-ons as toggleable cards with a + icon
-- The total should be large and prominent — the hero of the calculator
+- A prominent "Your Total" display that updates live as they click
+- Add-ons as toggleable cards
+- The total should be large and prominent
 - Mobile-friendly grid layout
 
-PHOTO PLACEHOLDERS:
-- Style them beautifully — use gradient backgrounds from the palette
-- Center the camera emoji and text with good typography
-- Make them look intentional, not broken
+REQUIRED SECTIONS — include ALL of these:
+1. Navigation (sticky, logo left, links right, mobile hamburger)
+2. Hero (full-width, bold headline, subheading, 2 CTAs, photo placeholder)
+3. About / credentials section
+4. Services / pricing section with interactive calculator
+5. Testimonials (3 placeholder reviews)
+6. FAQ accordion (5 questions)
+7. Contact / intake form
+8. Footer with links
 
-OUTPUT: Single self-contained index.html with all CSS and JS inline. Complete — do not truncate. Start with <!DOCTYPE html>, end with </html>. Raw HTML only, no markdown.`;
+PHOTO PLACEHOLDERS:
+- Style them beautifully using gradient backgrounds from the palette
+- Center camera emoji and descriptive text
+- Make them look intentional
+
+OUTPUT: Single self-contained index.html with all CSS and JS inline. MUST BE COMPLETE — include all 8 sections. Do not truncate under any circumstances. Start with <!DOCTYPE html>, end with </html>. Raw HTML only.`;
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,7 +53,7 @@ const server = http.createServer(async (req, res) => {
       const result = await new Promise((resolve, reject) => {
         const payload = JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 8000,
+          max_tokens: 16000,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: prompt }]
         });
