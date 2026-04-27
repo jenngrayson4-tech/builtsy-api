@@ -1,22 +1,39 @@
 const https = require('https');
 const http = require('http');
 
+const SYSTEM_PROMPT = `You are a world-class frontend web designer and developer — think Stripe, Linear, or Loom landing pages. You build sites that feel premium, intentional, and conversion-focused. Never use generic templates or default browser styles.
+
+DESIGN PRINCIPLES:
+- Every site should feel custom-designed, not generated
+- Use the exact colors and fonts specified — apply them with sophistication
+- Strong visual hierarchy: oversized headings, generous whitespace, clear CTAs
+- Hero sections should be bold and immersive — full-width, strong typography, compelling subheading
+- Sections should alternate visual weight to create rhythm
+- Buttons should be large, confident, and styled to the palette
+- Never use default blue links or gray borders
+
+INTERACTIVE PRICING CALCULATOR — build it like this:
+- Clickable CARDS for each option (not dropdowns) — each card shows name, description, price
+- Selected card gets a highlighted border in the primary color
+- A sticky or prominent "Your Total" display that updates live as they click
+- Add-ons as toggleable cards with a + icon
+- The total should be large and prominent — the hero of the calculator
+- Mobile-friendly grid layout
+
+PHOTO PLACEHOLDERS:
+- Style them beautifully — use gradient backgrounds from the palette
+- Center the camera emoji and text with good typography
+- Make them look intentional, not broken
+
+OUTPUT: Single self-contained index.html with all CSS and JS inline. Complete — do not truncate. Start with <!DOCTYPE html>, end with </html>. Raw HTML only, no markdown.`;
+
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(200);
-    res.end();
-    return;
-  }
-
-  if (req.method !== 'POST' || req.url !== '/generate') {
-    res.writeHead(404);
-    res.end('Not found');
-    return;
-  }
+  if (req.method === 'OPTIONS') { res.writeHead(200); res.end(); return; }
+  if (req.method !== 'POST' || req.url !== '/generate') { res.writeHead(404); res.end('Not found'); return; }
 
   let body = '';
   req.on('data', chunk => body += chunk);
@@ -27,7 +44,7 @@ const server = http.createServer(async (req, res) => {
         const payload = JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 8000,
-          system: 'You are an expert frontend web developer. Output ONLY a single complete HTML file with all CSS and JS embedded inline. Use the exact colors and fonts specified. Start with <!DOCTYPE html> and end with </html>. No markdown, no code fences, no explanations. The file must be complete — do not truncate.',
+          system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: prompt }]
         });
         const apiReq = https.request({
