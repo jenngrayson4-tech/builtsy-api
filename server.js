@@ -35,7 +35,7 @@ PHOTO PLACEHOLDERS:
 - Center camera emoji and descriptive text
 - Make them look intentional
 
-OUTPUT: Single self-contained index.html with all CSS and JS inline. MUST BE COMPLETE — include all 8 sections. Do not truncate under any circumstances. Start with <!DOCTYPE html>, end with </html>. Raw HTML only.`;
+OUTPUT: Single self-contained index.html with all CSS and JS inline. MUST BE COMPLETE — include all 8 sections. Do not truncate under any circumstances. Start with <!DOCTYPE html>, end with </html>. Raw HTML only. IMPORTANT: All JavaScript must be fully compatible with Safari on iOS — no optional chaining (?.), no nullish coalescing (??), no modern ES6+ features that Safari does not support. Use var instead of const/let where possible.`;
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
