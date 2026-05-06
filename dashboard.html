@@ -1,1 +1,418 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Dashboard</title></head><body><script>var s=sessionStorage.getItem("builtsy-auth");if(!s||s!=="true"){location.href="login.html";}else{document.write("<h1 style=font-family:sans-serif;padding:2rem>Dashboard loading...</h1>");}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard | Builtsy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#12192B;--navy2:#1c2640;--lime:#C8E000;--lime-bg:#F4F9C6;--lime-br:#DDED00;--pink:#ee70bc;--pink-bg:#FDF0F8;--iris:#8ba2f0;--iris-bg:#EEF2FE;--cream:#FAF9F6;--white:#fff;--border:#E8E6E0;--border2:#D4D0C8;--text:#12192B;--muted:#7A7670;--dim:#A8A49E;--surface:#F4F2ED;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);display:flex;}
+.sidebar{width:220px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo{padding:1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem;}
+.sb-mark{width:30px;height:30px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-mark svg{width:14px;height:14px;}
+.sb-name{font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;color:var(--navy);letter-spacing:.08em;text-transform:uppercase;}
+.sb-dot{color:var(--lime);}
+.sb-nav{padding:.875rem .75rem;flex:1;}
+.sb-item{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;font-size:.82rem;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .12s;margin-bottom:2px;}
+.sb-item:hover{background:var(--surface);color:var(--text);}
+.sb-item.active{background:var(--lime-bg);color:var(--navy);font-weight:500;}
+.sb-icon{font-size:.9rem;width:18px;text-align:center;flex-shrink:0;}
+.sb-footer{padding:.875rem 1rem;border-top:1px solid var(--border);}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;flex-shrink:0;}
+.sb-uname{font-size:.78rem;font-weight:500;color:var(--text);}
+.sb-logout{font-size:.68rem;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;}
+.sb-logout:hover{color:var(--pink);}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:60px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 2rem;justify-content:space-between;flex-shrink:0;}
+.tb-hi{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:var(--navy);}
+.tb-sub{font-size:.73rem;color:var(--muted);margin-top:2px;}
+.tb-right{display:flex;align-items:center;gap:.75rem;}
+.beta-pill{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:var(--lime-bg);border:1px solid var(--lime-br);color:var(--navy);padding:3px 10px;border-radius:100px;}
+.btn-new{background:var(--navy);color:white;border:none;border-radius:100px;padding:.5rem 1.25rem;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-new:hover{background:var(--navy2);}
+.content{flex:1;overflow-y:auto;padding:1.75rem 2rem 3rem;}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+.card-hdr{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.875rem;display:flex;align-items:center;justify-content:space-between;}
+.card-hdr a{font-size:.72rem;text-transform:none;letter-spacing:0;color:var(--iris);text-decoration:none;font-weight:500;cursor:pointer;}
+.new-badge{background:var(--pink);color:white;font-size:.55rem;font-weight:700;padding:2px 7px;border-radius:100px;margin-left:6px;}
+.bi{display:flex;align-items:center;gap:.75rem;padding:.7rem .875rem;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:.4rem;}
+.bi:last-child{margin-bottom:0;}
+.bi:hover{border-color:var(--border2);background:var(--surface);}
+.bi-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ico-l{background:var(--lime-bg);}
+.ico-p{background:var(--pink-bg);}
+.ico-i{background:var(--iris-bg);}
+.bi-t{font-size:.8rem;font-weight:500;color:var(--text);margin-bottom:1px;}
+.bi-d{font-size:.68rem;color:var(--muted);}
+.imp{font-size:.6rem;font-weight:600;padding:3px 8px;border-radius:100px;white-space:nowrap;flex-shrink:0;}
+.imp-hi{background:#FFF0F0;color:#C83B3B;border:1px solid #FFCECE;}
+.imp-mid{background:#FFF8EC;color:#B07400;border:1px solid #FFE8AA;}
+.imp-ez{background:var(--lime-bg);color:#5A6A00;border:1px solid var(--lime-br);}
+.task{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.task:last-child{border-bottom:none;}
+.tcheck{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.tcheck.done{background:var(--lime);border-color:var(--lime-br);}
+.tcheck.done::after{content:'✓';font-size:.6rem;font-weight:700;color:var(--navy);}
+.t-title{font-size:.8rem;font-weight:500;}
+.t-title.s{color:var(--muted);text-decoration:line-through;font-weight:400;}
+.t-time{font-size:.67rem;color:var(--muted);margin-top:1px;}
+.t-arr{font-size:.75rem;color:var(--dim);}
+.qa{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;}
+.qa-btn{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.875rem .5rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;transition:all .15s;}
+.qa-btn:hover{border-color:var(--border2);background:var(--white);}
+.qa-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.qa-lbl{font-size:.67rem;font-weight:500;color:var(--text);text-align:center;line-height:1.3;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem;}
+.sec-t{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.sec-l{font-size:.75rem;color:var(--iris);font-weight:500;cursor:pointer;}
+.pt-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;}
+.pt-head{display:grid;grid-template-columns:2fr 1fr 1fr 120px;padding:.55rem 1.25rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.pt-head span{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.pt-row{display:grid;grid-template-columns:2fr 1fr 1fr 120px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background .12s;}
+.pt-row:last-child{border-bottom:none;}
+.pt-row:hover{background:var(--surface);}
+.pt-biz{display:flex;align-items:center;gap:.65rem;}
+.pt-icon{width:34px;height:34px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.pt-name{font-size:.82rem;font-weight:500;}
+.pt-sub{font-size:.65rem;color:var(--muted);}
+.pt-pill{font-family:'DM Mono',monospace;font-size:.52rem;padding:2px 8px;border-radius:100px;display:inline-block;}
+.pl{background:var(--lime-bg);color:#5A6A00;border:1px solid var(--lime-br);}
+.pp{background:var(--pink-bg);color:#AA2580;border:1px solid #F5BDE0;}
+.pi{background:var(--iris-bg);color:#3A4FAA;border:1px solid #C8D2F8;}
+.pa{background:#FFF8EC;color:#B07400;border:1px solid #FFE8AA;}
+.pt-date{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);}
+.pt-actions{display:flex;gap:.3rem;}
+.ta-go{font-size:.68rem;padding:.28rem .65rem;border-radius:6px;border:none;background:var(--navy);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ta-del{font-size:.68rem;padding:.28rem .65rem;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ta-del:hover{color:var(--pink);border-color:var(--pink);}
+.pt-empty{padding:2.5rem;text-align:center;color:var(--muted);font-size:.82rem;}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.ask-card{background:var(--navy);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+.ask-t{font-size:.88rem;font-weight:600;color:white;margin-bottom:2px;}
+.ask-s{font-size:.72rem;color:rgba(255,255,255,.45);}
+.ask-btn{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:.55rem 1.25rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;}
+.audit-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .15s;}
+.audit-card:hover{border-color:var(--border2);}
+.audit-ico{width:44px;height:44px;border-radius:10px;background:var(--iris-bg);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.audit-t{font-size:.88rem;font-weight:600;margin-bottom:2px;}
+.audit-s{font-size:.72rem;color:var(--muted);line-height:1.5;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(18,25,43,.4);z-index:100;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:520px;max-height:80vh;overflow-y:auto;position:relative;}
+.modal-x{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.1rem;color:var(--muted);cursor:pointer;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:var(--navy);margin-bottom:.25rem;}
+.modal-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.mbp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.875rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.75rem;}
+.mbp:hover{border-color:var(--border2);background:var(--white);}
+.mbp-n{font-size:.82rem;font-weight:600;}
+.mbp-d{font-size:.65rem;color:var(--muted);}
+.boost-bg{display:none;position:fixed;inset:0;background:rgba(18,25,43,.5);z-index:100;align-items:center;justify-content:center;}
+.boost-bg.open{display:flex;}
+.boost-modal{background:var(--white);border-radius:16px;width:860px;max-width:95vw;height:570px;display:flex;flex-direction:column;overflow:hidden;}
+.bm-hdr{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.bm-title{font-size:.9rem;font-weight:600;color:var(--navy);}
+.bm-x{background:none;border:none;font-size:1.1rem;color:var(--muted);cursor:pointer;}
+.bm-body{flex:1;display:grid;grid-template-columns:1fr 300px;overflow:hidden;}
+.b-chat{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;}
+.b-msgs{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:.875rem;}
+.bctx{background:var(--lime-bg);border:1px solid var(--lime-br);border-radius:9px;padding:.6rem .875rem;font-size:.72rem;color:#4A5A00;line-height:1.5;}
+.bctx strong{font-weight:600;}
+.bmsg{display:flex;gap:8px;align-items:flex-start;}
+.bmsg.u{flex-direction:row-reverse;}
+.bav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0;margin-top:2px;font-family:'DM Mono',monospace;}
+.bav.b{background:var(--navy);color:var(--lime);}
+.bav.u{background:var(--surface);border:1px solid var(--border2);color:var(--muted);}
+.bbub{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.6rem .85rem;font-size:.78rem;line-height:1.65;color:var(--text);max-width:88%;}
+.bmsg.u .bbub{background:var(--navy);color:rgba(255,255,255,.9);border-color:var(--navy);}
+.bbub strong{font-weight:600;}
+.bpcards{display:flex;flex-direction:column;gap:.35rem;margin:.4rem 0 0 34px;}
+.bpcard{background:var(--white);border:1px solid var(--border2);border-radius:9px;padding:.6rem .8rem;cursor:pointer;transition:all .15s;}
+.bpcard:hover{border-color:var(--pink);background:var(--pink-bg);}
+.bpcard.used{opacity:.35;pointer-events:none;}
+.bpc-lbl{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.bpc-t{font-size:.75rem;font-weight:600;color:var(--text);margin-bottom:1px;}
+.bpc-d{font-size:.65rem;color:var(--muted);}
+.b-typing{display:flex;gap:8px;align-items:flex-start;}
+.b-tbub{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.55rem .75rem;display:flex;gap:4px;align-items:center;}
+.btd{width:5px;height:5px;border-radius:50%;background:var(--navy);animation:bta 1.2s ease-in-out infinite;opacity:.3;}
+.btd:nth-child(2){animation-delay:.2s;}.btd:nth-child(3){animation-delay:.4s;}
+@keyframes bta{0%,60%,100%{opacity:.15;transform:scale(.8);}30%{opacity:.7;transform:scale(1);}}
+.b-ia{padding:.875rem;border-top:1px solid var(--border);flex-shrink:0;}
+.b-ir{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:.4rem .5rem .4rem .875rem;}
+.b-ir:focus-within{border-color:var(--navy);}
+.b-in{flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--text);}
+.b-in::placeholder{color:var(--muted);}
+.b-snd{width:30px;height:30px;background:var(--navy);border:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.b-snd svg{width:12px;height:12px;}
+.b-out{display:flex;flex-direction:column;overflow:hidden;background:var(--surface);}
+.bop-hdr{padding:.875rem 1rem .75rem;border-bottom:1px solid var(--border);background:var(--white);flex-shrink:0;}
+.bop-lbl{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.bop-tabs{display:flex;gap:.25rem;}
+.bop-tab{padding:.28rem .65rem;font-size:.72rem;border-radius:100px;cursor:pointer;border:1px solid transparent;color:var(--muted);transition:all .12s;}
+.bop-tab:hover{color:var(--text);background:var(--surface);}
+.bop-tab.on{background:var(--navy);color:white;font-weight:500;}
+.bop-body{flex:1;overflow-y:auto;padding:1rem;}
+.bop-mt{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.75rem;line-height:1.6;}
+.bop-gn{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--navy);margin-bottom:.75rem;}
+.bop-gd{width:5px;height:5px;border-radius:50%;background:var(--navy);animation:bta 1.2s ease-in-out infinite;}
+.bao{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:9px;padding:.55rem .75rem;cursor:pointer;margin-bottom:.35rem;transition:all .15s;}
+.bao.on{border-color:var(--lime-br);background:var(--lime-bg);}
+.bao-chk{width:16px;height:16px;border:1.5px solid var(--border2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.bao.on .bao-chk{background:var(--lime);border-color:var(--lime-br);}
+.bao-chk svg{opacity:0;}.bao.on .bao-chk svg{opacity:1;}
+.bao-name{flex:1;font-size:.75rem;font-weight:500;}
+.bao-desc{font-size:.62rem;color:var(--muted);margin-top:1px;}
+.bao-tag{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:3px;}
+.tw{background:var(--lime-bg);color:#5A6A00;border:1px solid var(--lime-br);}
+.tm{background:var(--iris-bg);color:#3A4FAA;border:1px solid #C8D2F8;}
+.tp{background:var(--pink-bg);color:#AA2580;border:1px solid #F5BDE0;}
+.tu{background:#FFF8EC;color:#B07400;border:1px solid #FFE8AA;}
+.tpa{background:#EDFAF3;color:#1E7A47;border:1px solid #B0EAC8;}
+.bao-price{font-size:.75rem;font-weight:600;color:var(--muted);}
+.bop-cta{width:100%;background:var(--navy);color:white;border:none;border-radius:8px;padding:.6rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.5rem;}
+.bop-text{font-size:.78rem;line-height:1.75;color:var(--text);white-space:pre-wrap;}
+.bop-copy{width:100%;background:var(--navy);color:white;border:none;border-radius:8px;padding:.6rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.75rem;}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 11L7 3L12 11H2Z" fill="#C8E000"/></svg></div>
+    <span class="sb-name">builtsy<span class="sb-dot">.</span></span>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-item active" onclick="showV('home')"><span class="sb-icon">⊞</span>Home</div>
+    <div class="sb-item" onclick="showV('projects')"><span class="sb-icon">◫</span>Projects</div>
+    <div class="sb-item" onclick="openBoost()"><span class="sb-icon">✦</span>Boost</div>
+    <div class="sb-item" onclick="openBP()"><span class="sb-icon">◎</span>All Blueprints</div>
+    <div class="sb-item" onclick="location.href='builtsy-audit.html'"><span class="sb-icon">⬡</span>Audit Tool</div>
+  </nav>
+  <div class="sb-footer">
+    <div style="display:flex;align-items:center;gap:.6rem;">
+      <div class="sb-avatar" id="ua">BU</div>
+      <div><div class="sb-uname" id="un">Beta User</div><button class="sb-logout" onclick="sessionStorage.clear();location.href='login.html'">Log out</button></div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="tb-hi" id="gr">Good morning! 👋</div><div class="tb-sub">Here's what's happening with your Builtsy today.</div></div>
+    <div class="tb-right"><span class="beta-pill">Beta</span><button class="btn-new" onclick="openBP()">+ New Blueprint</button></div>
+  </div>
+  <div class="content" id="v-home">
+    <div class="grid">
+      <div class="card">
+        <div class="card-hdr">Boost <span class="new-badge">New</span><a onclick="openBoost()">View all →</a></div>
+        <div class="bi" onclick="openBoostWith('addons')"><div class="bi-ico ico-l">✦</div><div style="flex:1;"><div class="bi-t">Suggest add-ons for your calculator</div><div class="bi-d">6 ideas with revenue signal tags</div></div><span class="imp imp-hi">High impact</span></div>
+        <div class="bi" onclick="openBoostWith('email')"><div class="bi-ico ico-p">✉</div><div style="flex:1;"><div class="bi-t">Write your welcome email sequence</div><div class="bi-d">3 emails written in your voice</div></div><span class="imp imp-hi">High impact</span></div>
+        <div class="bi" onclick="openBoostWith('digital')"><div class="bi-ico ico-i">◎</div><div style="flex:1;"><div class="bi-t">Create a digital product to sell</div><div class="bi-d">Guide, intake form, or checklist</div></div><span class="imp imp-mid">Medium</span></div>
+        <div class="bi" onclick="openBoostWith('social')"><div class="bi-ico ico-p">◈</div><div style="flex:1;"><div class="bi-t">Generate social captions this week</div><div class="bi-d">5 Instagram captions ready to post</div></div><span class="imp imp-ez">Easy win</span></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr">Your tasks</div>
+        <div class="task" style="cursor:default;"><div class="tcheck done"></div><div style="flex:1;"><div class="t-title s">Generate your first site</div><div class="t-time">Completed</div></div></div>
+        <div class="task" style="cursor:default;"><div class="tcheck done"></div><div style="flex:1;"><div class="t-title s">Set up services &amp; pricing</div><div class="t-time">Completed</div></div></div>
+        <div class="task" onclick="openBoostWith('addons')"><div class="tcheck"></div><div style="flex:1;"><div class="t-title">Add your first Boost add-on</div><div class="t-time">2 min</div></div><div class="t-arr">→</div></div>
+        <div class="task" onclick="openBoostWith('email')"><div class="tcheck"></div><div style="flex:1;"><div class="t-title">Set up your welcome email</div><div class="t-time">10 min</div></div><div class="t-arr">→</div></div>
+        <div class="task"><div class="tcheck"></div><div style="flex:1;"><div class="t-title">Connect your domain</div><div class="t-time">5 min</div></div><div class="t-arr">→</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr">Quick actions</div>
+        <div class="qa">
+          <div class="qa-btn" onclick="openBP()"><div class="qa-ico ico-l">✦</div><div class="qa-lbl">New blueprint</div></div>
+          <div class="qa-btn" onclick="openBoostWith('addons')"><div class="qa-ico ico-p" style="font-size:1.2rem;">+</div><div class="qa-lbl">Add add-ons</div></div>
+          <div class="qa-btn" onclick="openBoostWith('digital')"><div class="qa-ico ico-i">◎</div><div class="qa-lbl">Create asset</div></div>
+          <div class="qa-btn" onclick="openBoostWith('email')"><div class="qa-ico ico-l">✉</div><div class="qa-lbl">Write email</div></div>
+          <div class="qa-btn" onclick="openBoostWith('social')"><div class="qa-ico ico-p">◈</div><div class="qa-lbl">Social captions</div></div>
+          <div class="qa-btn" onclick="location.href='builtsy-audit.html'"><div class="qa-ico" style="background:rgba(18,25,43,.07);">⬡</div><div class="qa-lbl">Run audit</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-hdr"><span class="sec-t">My Projects</span><span class="sec-l" onclick="showV('projects')">View all →</span></div>
+    <div class="pt-wrap">
+      <div class="pt-head"><span>Business</span><span>Blueprint</span><span>Last edited</span><span></span></div>
+      <div id="ptl" style="padding:1.5rem;text-align:center;color:var(--muted);font-size:.8rem;font-family:'DM Mono',monospace;">Loading…</div>
+      <div id="ptr"></div>
+      <div id="pte" style="display:none;" class="pt-empty">No projects yet — start a blueprint to get going.</div>
+    </div>
+    <div class="bottom">
+      <div class="ask-card"><div style="font-size:1.5rem;flex-shrink:0;">✦</div><div style="flex:1;"><div class="ask-t">Ask Builtsy</div><div class="ask-s">Get help, ideas, and answers about your site.</div></div><button class="ask-btn" onclick="openBoost()">Chat with AI →</button></div>
+      <div class="audit-card" onclick="location.href='builtsy-audit.html'"><div class="audit-ico">⬡</div><div style="flex:1;"><div class="audit-t">Run an Audit</div><div class="audit-s">Check your site's SEO, performance, and best practices.</div></div><div style="font-size:1rem;color:var(--dim);">→</div></div>
+    </div>
+  </div>
+  <div class="content" id="v-projects" style="display:none;">
+    <div class="sec-hdr" style="margin-bottom:1.25rem;"><span class="sec-t">All Projects</span><button class="btn-new" onclick="openBP()">+ New Blueprint</button></div>
+    <div class="pt-wrap">
+      <div class="pt-head"><span>Business</span><span>Blueprint</span><span>Last edited</span><span></span></div>
+      <div id="ptl2" style="padding:1.5rem;text-align:center;color:var(--muted);font-size:.8rem;font-family:'DM Mono',monospace;">Loading…</div>
+      <div id="ptr2"></div>
+      <div id="pte2" style="display:none;" class="pt-empty">No projects yet.</div>
+    </div>
+  </div>
+</main>
+<div class="modal-bg" id="bp-modal" onclick="if(event.target===this)closeBP()">
+  <div class="modal">
+    <button class="modal-x" onclick="closeBP()">✕</button>
+    <div class="modal-title">Start a new blueprint</div>
+    <div class="modal-sub">Choose the type of site you're building.</div>
+    <div class="mgrid">
+      <div class="mbp" onclick="go('blueprint-site-refresh.html')"><span style="font-size:1.1rem;">✦</span><div><div class="mbp-n">Site Refresh</div><div class="mbp-d">Fix & upgrade existing</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=private-lessons')"><span style="font-size:1.1rem;">🎵</span><div><div class="mbp-n">Private Lessons</div><div class="mbp-d">Teachers & tutors</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=caretaker')"><span style="font-size:1.1rem;">🤝</span><div><div class="mbp-n">Caretaker</div><div class="mbp-d">Home & senior care</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=service-provider')"><span style="font-size:1.1rem;">🔧</span><div><div class="mbp-n">Service Provider</div><div class="mbp-d">Trades & contractors</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=health-wellness')"><span style="font-size:1.1rem;">🌿</span><div><div class="mbp-n">Health & Wellness</div><div class="mbp-d">Massage, therapy, yoga</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=beauty')"><span style="font-size:1.1rem;">💅</span><div><div class="mbp-n">Beauty</div><div class="mbp-d">Salons & personal care</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=fitness')"><span style="font-size:1.1rem;">🏋️</span><div><div class="mbp-n">Fitness</div><div class="mbp-d">Trainers & coaches</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=food-hospitality')"><span style="font-size:1.1rem;">🍽️</span><div><div class="mbp-n">Food & Hospitality</div><div class="mbp-d">Restaurants & catering</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=home-trades')"><span style="font-size:1.1rem;">🏠</span><div><div class="mbp-n">Home & Trades</div><div class="mbp-d">Landscaping & cleaning</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=professional-services')"><span style="font-size:1.1rem;">💼</span><div><div class="mbp-n">Professional</div><div class="mbp-d">Consultants & advisors</div></div></div>
+      <div class="mbp" onclick="go('blueprint-industry.html?type=creative')"><span style="font-size:1.1rem;">🎨</span><div><div class="mbp-n">Creative</div><div class="mbp-d">Photographers & designers</div></div></div>
+    </div>
+  </div>
+</div>
+<div class="boost-bg" id="boost-bg" onclick="if(event.target===this)closeBoost()">
+  <div class="boost-modal">
+    <div class="bm-hdr"><div class="bm-title">✦ Boost — Grow your business</div><button class="bm-x" onclick="closeBoost()">✕</button></div>
+    <div class="bm-body">
+      <div class="b-chat">
+        <div class="b-msgs" id="bm">
+          <div class="bctx" id="bctx">Loading your business context...</div>
+          <div class="bmsg"><div class="bav b">B</div><div><div class="bbub" id="bopen">Hi! I can suggest add-ons, create digital assets, write your welcome email, or generate social captions — all specific to your business.</div>
+          <div class="bpcards" id="bcards">
+            <div class="bpcard" id="bpc-addons" onclick="bRun('addons',this)"><div class="bpc-lbl">Add-ons</div><div class="bpc-t">Suggest add-ons for my calculator</div><div class="bpc-d">6 ideas with revenue signal tags</div></div>
+            <div class="bpcard" id="bpc-digital" onclick="bRun('digital',this)"><div class="bpc-lbl">Digital product</div><div class="bpc-t">Create a digital product I can sell</div><div class="bpc-d">Guide, intake form, or checklist</div></div>
+            <div class="bpcard" id="bpc-email" onclick="bRun('email',this)"><div class="bpc-lbl">Email</div><div class="bpc-t">Write my welcome email sequence</div><div class="bpc-d">3 emails in your voice</div></div>
+            <div class="bpcard" id="bpc-social" onclick="bRun('social',this)"><div class="bpc-lbl">Social</div><div class="bpc-t">Generate social captions this week</div><div class="bpc-d">5 Instagram captions ready to post</div></div>
+          </div></div></div>
+          <div class="b-typing" id="btyp" style="display:none;"><div class="bav b">B</div><div class="b-tbub"><div class="btd"></div><div class="btd"></div><div class="btd"></div></div></div>
+        </div>
+        <div class="b-ia"><div class="b-ir"><input class="b-in" id="bin" placeholder="Ask anything about your business..." onkeydown="if(event.key==='Enter')bSend()"><button class="b-snd" onclick="bSend()"><svg viewBox="0 0 12 12" fill="none"><path d="M10 6L2 2L4 6L2 10L10 6Z" fill="white"/></svg></button></div></div>
+      </div>
+      <div class="b-out">
+        <div class="bop-hdr"><div class="bop-lbl">Output</div><div class="bop-tabs"><div class="bop-tab on" id="bt-ao" onclick="bTab('ao')">Add-ons</div><div class="bop-tab" id="bt-dp" onclick="bTab('dp')">Digital</div><div class="bop-tab" id="bt-cp" onclick="bTab('cp')">Copy</div></div></div>
+        <div class="bop-body" id="bp-ao"><div class="bop-mt" id="ao-mt">Click "Suggest add-ons" to generate ideas.</div><div id="ao-gn" style="display:none;" class="bop-gn"><div class="bop-gd"></div> Generating...</div><div id="ao-ct" style="display:none;"><div id="ao-list"></div><button class="bop-cta" onclick="bAddBP()">Add selected to blueprint</button></div></div>
+        <div class="bop-body" id="bp-dp" style="display:none;"><div class="bop-mt">Click "Create a digital product" to generate.</div><div id="dp-gn" style="display:none;" class="bop-gn"><div class="bop-gd"></div> Generating...</div><div id="dp-ct" style="display:none;"><div id="dp-list"></div><button class="bop-cta" onclick="bAddDig()">Add selected to blueprint</button></div></div>
+        <div class="bop-body" id="bp-cp" style="display:none;"><div class="bop-mt">Click "Welcome email" or "Social captions" to generate.</div><div id="cp-gn" style="display:none;" class="bop-gn"><div class="bop-gd"></div> Generating...</div><div id="cp-ct" style="display:none;"><div class="bop-text" id="cp-text"></div><button class="bop-copy" id="cp-btn" onclick="bCopy()">Copy to clipboard</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var sa=sessionStorage.getItem('builtsy-auth');
+if(!sa||sa!=='true'){location.href='login.html';}
+var uN=sessionStorage.getItem('builtsy-user')||'Beta User';
+var ini=uN.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2)||'BU';
+document.getElementById('ua').textContent=ini;
+document.getElementById('un').textContent=uN;
+var hr=new Date().getHours();
+document.getElementById('gr').textContent=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+', '+uN.split(' ')[0]+'! 👋';
+var BPM={'site-refresh':{i:'✦',l:'Site Refresh',p:'pi'},'private-lessons':{i:'🎵',l:'Private Lessons',p:'pl'},'caretaker':{i:'🤝',l:'Caretaker',p:'pp'},'service-provider':{i:'🔧',l:'Service Provider',p:'pa'},'health-wellness':{i:'🌿',l:'Health & Wellness',p:'pl'},'beauty':{i:'💅',l:'Beauty',p:'pp'},'fitness':{i:'🏋️',l:'Fitness',p:'pa'},'food-hospitality':{i:'🍽️',l:'Food & Hospitality',p:'pa'},'home-trades':{i:'🏠',l:'Home & Trades',p:'pl'},'professional-services':{i:'💼',l:'Professional',p:'pi'},'creative':{i:'🎨',l:'Creative',p:'pi'}};
+var API='https://builtsy-api-production.up.railway.app';
+var AK='builtsy-auth';
+var aP=[];
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function go(u){location.href=u;}
+function openBP(){document.getElementById('bp-modal').classList.add('open');}
+function closeBP(){document.getElementById('bp-modal').classList.remove('open');}
+function showV(v){document.getElementById('v-home').style.display=v==='home'?'block':'none';document.getElementById('v-projects').style.display=v==='projects'?'block':'none';document.querySelectorAll('.sb-item').forEach(function(el,i){el.classList.toggle('active',i===(v==='home'?0:1));});}
+function loadP(){
+  fetch(API+'/projects/list',{method:'GET',headers:{'x-auth-key':AK,'Content-Type':'application/json'}})
+  .then(function(r){return r.json();}).then(function(d){aP=(d&&d.projects)?d.projects:[];renderP(aP);})
+  .catch(function(){var l=localP();aP=l;renderP(l);});
+}
+function localP(){
+  var keys=['builtsy-bp-lessons-v1','builtsy-bp-su-v3','builtsy-bp-caretaker-v1','builtsy-bp-service-v1','builtsy-bp-health-v1','builtsy-bp-beauty-v1','builtsy-bp-fitness-v1','builtsy-bp-food-v1','builtsy-bp-trades-v1','builtsy-bp-professional-v1','builtsy-bp-creative-v1'];
+  var tm={'builtsy-bp-lessons-v1':'private-lessons','builtsy-bp-su-v3':'site-refresh','builtsy-bp-caretaker-v1':'caretaker','builtsy-bp-service-v1':'service-provider','builtsy-bp-health-v1':'health-wellness','builtsy-bp-beauty-v1':'beauty','builtsy-bp-fitness-v1':'fitness','builtsy-bp-food-v1':'food-hospitality','builtsy-bp-trades-v1':'home-trades','builtsy-bp-professional-v1':'professional-services','builtsy-bp-creative-v1':'creative'};
+  var p=[];keys.forEach(function(k){try{var d=JSON.parse(localStorage.getItem(k));if(!d)return;var n=(d.fields&&(d.fields['f-name']||d.fields['su-name']))||'';if(!n)return;p.push({id:k,type:tm[k]||'unknown',name:n,savedAt:d._savedAt||null,palette:d.palette?d.palette.name||'':'',url:tm[k]==='site-refresh'?'blueprint-site-refresh.html':'blueprint-industry.html?type='+(tm[k]||'private-lessons')});}catch(e){}});return p;
+}
+function renderP(p){
+  document.getElementById('ptl').style.display='none';document.getElementById('ptl2').style.display='none';
+  if(!p||!p.length){document.getElementById('pte').style.display='block';document.getElementById('pte2').style.display='block';return;}
+  var h='';
+  p.slice(0,6).forEach(function(x){
+    var m=BPM[x.type]||{i:'◫',l:x.type,p:'pi'};
+    var dt=x.savedAt?new Date(x.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—';
+    var u=x.url||(x.type==='site-refresh'?'blueprint-site-refresh.html':'blueprint-industry.html?type='+x.type);
+    h+='<div class="pt-row" onclick="go(''+u+'')"><div class="pt-biz"><div class="pt-icon">'+m.i+'</div><div><div class="pt-name">'+esc(x.name)+'</div><div class="pt-sub">'+esc(x.palette||'')+'</div></div></div><div><span class="pt-pill '+m.p+'">'+m.l+'</span></div><div class="pt-date">'+dt+'</div><div class="pt-actions" onclick="event.stopPropagation()"><button class="ta-go" onclick="go(''+u+'')">Continue →</button> <button class="ta-del" onclick="delP(''+x.id+'',this)">Delete</button></div></div>';
+  });
+  document.getElementById('ptr').innerHTML=h;document.getElementById('ptr2').innerHTML=h;
+}
+function delP(id,btn){if(!confirm('Delete this project?'))return;localStorage.removeItem(id);fetch(API+'/projects/delete',{method:'POST',headers:{'x-auth-key':AK,'Content-Type':'application/json'},body:JSON.stringify({id:id})}).catch(function(){});aP=aP.filter(function(x){return x.id!==id;});renderP(aP);}
+var bCtx=null,bCpTxt='';
+var TAGS={'Easy win':'tw','High margin':'tm','Most popular':'tp','Easy upsell':'tu','Passive income':'tpa'};
+function openBoost(){document.getElementById('boost-bg').classList.add('open');bInit();}
+function openBoostWith(t){openBoost();setTimeout(function(){var c=document.getElementById('bpc-'+t);if(c&&!c.classList.contains('used'))bRun(t,c);},300);}
+function closeBoost(){document.getElementById('boost-bg').classList.remove('open');}
+function bInit(){
+  var ps=[];try{ps=JSON.parse(localStorage.getItem('builtsy-boost-projects')||'[]');}catch(e){}
+  var ctx=document.getElementById('bctx');
+  if(!ps.length){ctx.textContent='No saved projects yet. Fill out a blueprint and come back.';document.getElementById('bopen').textContent='Head to a blueprint, fill in your business details, and I'll be ready when you come back!';document.getElementById('bcards').style.display='none';return;}
+  if(ps.length===1){bSetCtx(ps[0]);return;}
+  ctx.innerHTML='You have multiple projects — which one are we working on?';
+  var w=document.createElement('div');w.className='bpcards';
+  ps.forEach(function(p){var c=document.createElement('div');c.className='bpcard';c.innerHTML='<div class="bpc-t">'+esc(p.name)+'</div><div class="bpc-d">'+esc(p.industry||'')+(p.location?' &middot; '+esc(p.location):'')+'</div>';c.onclick=function(){bSetCtx(p);w.remove();};w.appendChild(c);});
+  document.getElementById('bopen').parentNode.appendChild(w);
+}
+function bSetCtx(p){
+  bCtx=p;
+  var pts=['Building for <strong>'+esc(p.name)+'</strong>'];
+  if(p.industry)pts.push(esc(p.industry));if(p.location)pts.push(esc(p.location));if(p.sessions&&p.sessions.length)pts.push('$'+p.sessions[0].price+'/session');
+  document.getElementById('bctx').innerHTML=pts.join(' &middot; ');
+  document.getElementById('bopen').innerHTML='Hi! I'm looking at <strong>'+esc(p.name)+'</strong>'+(p.industry?' &mdash; '+esc(p.industry):'')+(p.location?' in '+esc(p.location):'')+'. Here's what I can build for you:';
+}
+function bBase(p){return 'Business: "'+esc(p.name)+'", '+(p.industry||'service')+(p.location?' in '+p.location:'')+'.'+(p.sessions&&p.sessions.length?' Services: '+p.sessions.map(function(s){return s.name+' $'+s.price;}).join(', ')+'.':'')+(p.addons&&p.addons.length?' Add-ons: '+p.addons.map(function(a){return a.name;}).join(', ')+'.':'');}
+function bRun(type,el){
+  el.classList.add('used');
+  var lbl={addons:'Suggest add-ons for my calculator',digital:'Create a digital product I can sell',email:'Write my welcome email sequence',social:'Generate social captions this week'};
+  bMsg('user',lbl[type]||type);bShowT();
+  if(!bCtx){bHideT();bMsg('assistant','Please select a project first.');return;}
+  var base=bBase(bCtx);
+  if(type==='addons'){
+    bTab('ao');document.getElementById('ao-mt').style.display='none';document.getElementById('ao-gn').style.display='flex';
+    bFetch(base+' Generate exactly 6 add-on ideas for their pricing calculator. Assign ONE tag from: "Easy win","High margin","Most popular","Easy upsell","Passive income". JSON only: [{"name":"...","desc":"one sentence","price":25,"tag":"Easy win"}] Prices $5-60.',1200,function(t){
+      bHideT();document.getElementById('ao-gn').style.display='none';
+      var ao=[];try{ao=JSON.parse(t.replace(/```json|```/g,'').trim());}catch(e){}
+      document.getElementById('ao-list').innerHTML=ao.map(function(a){var tc=TAGS[a.tag]||'tw';return '<div class="bao on" onclick="this.classList.toggle('on')"><div class="bao-chk"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1;"><div class="bao-name">'+esc(a.name)+'</div><div class="bao-desc">'+esc(a.desc||'')+'</div></div>'+(a.tag?'<span class="bao-tag '+tc+'">'+esc(a.tag)+'</span>':'')+'<span class="bao-price">+$'+Math.round(parseFloat(a.price)||0)+'</span></div>';}).join('');
+      document.getElementById('ao-ct').style.display='block';
+      bMsg('assistant','Here are 6 add-on ideas for <strong>'+esc(bCtx.name)+'</strong> — in the panel on the right.');
+    });
+  } else if(type==='digital'){
+    bTab('dp');document.getElementById('dp-gn').style.display='flex';
+    bFetch(base+' Generate 4 digital product ideas to sell. PDFs, guides, templates. JSON only: [{"name":"...","desc":"one sentence","price":15,"format":"PDF download"}]',1000,function(t){
+      bHideT();document.getElementById('dp-gn').style.display='none';
+      var dp=[];try{dp=JSON.parse(t.replace(/```json|```/g,'').trim());}catch(e){}
+      document.getElementById('dp-list').innerHTML=dp.map(function(a){return '<div class="bao on" onclick="this.classList.toggle('on')"><div class="bao-chk"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1;"><div class="bao-name">'+esc(a.name)+'</div><div class="bao-desc">'+esc((a.desc||'')+(a.format?' &middot; '+a.format:''))+'</div></div><span class="bao-price">$'+Math.round(parseFloat(a.price)||0)+'</span></div>';}).join('');
+      document.getElementById('dp-ct').style.display='block';bMsg('assistant','Here are 4 digital product ideas in the right panel.');
+    });
+  } else if(type==='email'){
+    bTab('cp');document.getElementById('cp-gn').style.display='flex';
+    bFetch(base+' Write a 3-email welcome sequence. Email 1: warm welcome. Email 2: tips. Email 3: rebook or refer. Subject line for each. Format with EMAIL 1:, EMAIL 2:, EMAIL 3: headers.',1200,function(t){
+      bHideT();document.getElementById('cp-gn').style.display='none';bCpTxt=t;document.getElementById('cp-text').textContent=t;document.getElementById('cp-ct').style.display='block';
+      bMsg('assistant','Your welcome email sequence is ready in the panel — copy and paste into your email tool.');
+    });
+  } else if(type==='social'){
+    bTab('cp');document.getElementById('cp-gn').style.display='flex';
+    bFetch(base+' Write 5 Instagram captions. One each: educational, behind-the-scenes, testimonial, promotional, community. 2-4 sentences + hashtags. Format with CAPTION 1:, CAPTION 2: etc.',1200,function(t){
+      bHideT();document.getElementById('cp-gn').style.display='none';bCpTxt=t;document.getElementById('cp-text').textContent=t;document.getElementById('cp-ct').style.display='block';
+      bMsg('assistant','Your 5 captions are ready — copy and schedule them this week.');
+    });
+  }
+}
+function bFetch(pr,mt,cb){fetch(API+'/grow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:pr,max_tokens:mt})}).then(function(r){return r.json();}).then(function(d){bHideT();if(d.error){bMsg('assistant','Something went wrong. Try again.');return;}cb(d.text);}).catch(function(){bHideT();bMsg('assistant','Could not reach the server.');});}
+function bSend(){var inp=document.getElementById('bin');var v=(inp.value||'').trim();if(!v)return;inp.value='';bMsg('user',esc(v));if(!bCtx){bMsg('assistant','Please select a project first.');return;}bShowT();bFetch(bBase(bCtx)+' The user asks: "'+v+'". Helpful specific response in 2-3 sentences.',500,function(t){bMsg('assistant',esc(t));});}
+function bMsg(role,html){var m=document.getElementById('bm');var r=document.createElement('div');r.className='bmsg'+(role==='user'?' u':'');r.innerHTML='<div class="bav '+(role==='user'?'u':'b')+'">'+(role==='user'?'U':'B')+'</div><div class="bbub">'+html+'</div>';m.insertBefore(r,document.getElementById('btyp'));m.scrollTop=m.scrollHeight;}
+function bShowT(){document.getElementById('btyp').style.display='flex';var m=document.getElementById('bm');m.scrollTop=m.scrollHeight;}
+function bHideT(){document.getElementById('btyp').style.display='none';}
+function bTab(t){['ao','dp','cp'].forEach(function(x){document.getElementById('bp-'+x).style.display=x===t?'block':'none';document.getElementById('bt-'+x).className='bop-tab'+(x===t?' on':'');});}
+function bAddBP(){var s=document.querySelectorAll('#ao-list .bao.on .bao-name');var n=[];s.forEach(function(x){n.push(x.textContent);});if(!n.length)return;bMsg('assistant','Add these to Step 2 of your blueprint: <strong>'+esc(n.join(', '))+'</strong>');}
+function bAddDig(){var s=document.querySelectorAll('#dp-list .bao.on .bao-name');var n=[];s.forEach(function(x){n.push(x.textContent);});if(!n.length)return;bMsg('assistant','Add these as add-ons in Step 2: <strong>'+esc(n.join(', '))+'</strong>');}
+function bCopy(){try{navigator.clipboard.writeText(bCpTxt);}catch(e){var ta=document.createElement('textarea');ta.value=bCpTxt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}var b=document.getElementById('cp-btn');b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy to clipboard';},2000);}
+loadP();
+</script>
+</body>
+</html>
