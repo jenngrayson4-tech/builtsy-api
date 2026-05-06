@@ -399,6 +399,7 @@ select.fi option{background:#161E30;}
 #sp-0,#sp-1,#sp-2,#sp-4{background:var(--navy-deep);}
 
 /* ── Remove duplicate generate button from panel-nav on review step ── */
+@keyframes boostDot{0%,60%,100%{opacity:0.2;transform:scale(0.8);}30%{opacity:1;transform:scale(1);}}
 .panel-nav .btn-next.hidden{display:none;}
 
 /* ── Prompt/blueprint renamed label ── */
@@ -599,7 +600,10 @@ select.fi option{background:#161E30;}
     <div class="step-item" onclick="goStep(5)" id="si-5">
       <div class="step-num">6</div><div class="step-label">Review</div>
     </div>
-    <div class="step-item" onclick="goToGenerate()" id="si-5">
+    <div class="step-item" onclick="goStep(6)" id="si-6">
+      <div class="step-num">✦</div><div class="step-label">Boost</div>
+    </div>
+    <div class="step-item" onclick="goToGenerate()" id="si-gen">
       <div class="step-num">⚡</div><div class="step-label">Generate</div>
     </div>
     <div class="leftnav-footer">
@@ -991,6 +995,82 @@ FORMS: Netlify Forms with honeypot spam protection</div>
           <div class="pc-gen-bar">
             <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Site</button>
           </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 7: BOOST ── -->
+      <div class="pview" id="pv-6">
+        <div style="padding:1.5rem;max-width:760px;">
+
+          <div id="boost-context-pill" style="background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);border-radius:10px;padding:0.65rem 1rem;font-size:0.75rem;color:rgba(255,255,255,0.6);margin-bottom:1.5rem;line-height:1.55;">
+            Loading your business context...
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+
+            <!-- CHAT COLUMN -->
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Your Boost assistant</div>
+              <div id="boost-messages" style="background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;min-height:280px;max-height:380px;overflow-y:auto;margin-bottom:0.75rem;">
+                <div style="display:flex;gap:8px;align-items:flex-start;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--lime);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;flex-shrink:0;margin-top:2px;font-family:'DM Mono',monospace;">B</div>
+                  <div id="boost-opening-msg" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:0.6rem 0.85rem;font-size:0.78rem;line-height:1.65;color:rgba(255,255,255,0.8);">Loading your blueprint...</div>
+                </div>
+              </div>
+
+              <!-- Prompt suggestion cards -->
+              <div id="boost-prompt-cards" style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.75rem;"></div>
+
+              <!-- Input -->
+              <div style="display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.4rem 0.5rem 0.4rem 0.85rem;">
+                <input id="boost-input" style="flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:white;" placeholder="Ask anything about your business..." onkeydown="if(event.key==='Enter')boostSend()">
+                <button onclick="boostSend()" style="width:28px;height:28px;background:var(--lime);border:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6L2 2L4 6L2 10L10 6Z" fill="#12192B"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- OUTPUT COLUMN -->
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Output</div>
+              <div id="boost-output-empty" style="background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;flex:1;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                <div style="font-size:1.25rem;opacity:0.25;margin-bottom:0.5rem;">✦</div>
+                <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);">Click a prompt to generate</div>
+              </div>
+              <div id="boost-output-generating" style="display:none;background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;min-height:280px;align-items:center;justify-content:center;flex-direction:column;">
+                <div style="display:flex;gap:5px;justify-content:center;margin-bottom:0.75rem;">
+                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out infinite;"></div>
+                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out 0.2s infinite;"></div>
+                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out 0.4s infinite;"></div>
+                </div>
+                <div id="boost-gen-label" style="font-size:0.7rem;color:var(--lime);font-family:'DM Mono',monospace;letter-spacing:0.06em;">Generating...</div>
+              </div>
+              <div id="boost-output-result" style="display:none;background:var(--navy);border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:280px;flex-direction:column;">
+                <div style="padding:0.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+                  <div id="boost-result-title" style="font-size:0.78rem;font-weight:500;color:white;"></div>
+                  <button id="boost-dl-btn" onclick="boostDownload()" style="background:var(--lime);color:var(--navy);border:none;border-radius:6px;padding:0.3rem 0.75rem;font-size:0.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Download</button>
+                </div>
+                <div id="boost-addon-out" style="display:none;padding:0.75rem 1rem;overflow-y:auto;max-height:240px;">
+                  <div id="boost-addon-list" style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.75rem;"></div>
+                  <button onclick="boostAddToBP()" style="width:100%;background:var(--lime);color:var(--navy);border:none;border-radius:7px;padding:0.55rem;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Add selected to blueprint</button>
+                </div>
+                <div id="boost-text-out" style="display:none;padding:0.75rem 1rem;overflow-y:auto;max-height:240px;">
+                  <div id="boost-text-body" style="font-size:0.75rem;line-height:1.75;color:rgba(255,255,255,0.75);white-space:pre-wrap;"></div>
+                </div>
+                <div style="padding:0.6rem 1rem;border-top:1px solid var(--border);">
+                  <div style="font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem;">Tweak it:</div>
+                  <div id="boost-tweaks" style="display:flex;gap:0.35rem;flex-wrap:wrap;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Generate CTA at bottom -->
+          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:0.78rem;color:var(--muted);">Ready to build your site?</div>
+            <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Site</button>
+          </div>
+
         </div>
       </div>
 
@@ -2273,7 +2353,7 @@ function getBlueprintConfig() {
 // STATE
 // ════════════════════════════════════════════
 var currentStep = 0;
-var totalSteps = 6;
+var totalSteps = 7;
 var bpFont = 'Playfair Display for headings and DM Sans for body';
 var bpPalette = {bg:'#F8F5F0',primary:'#2C2C2C',accent:'#8B7355',surface:'#EDE9E3',text:'#1A1A1A'};
 var currentTheme = 'light';
@@ -2283,12 +2363,13 @@ var generatedHTML = '';
 var showMoreOpen = false;
 
 var STEP_META = [
-  {eyebrow:'Step 1 of 6 · Business', title:'Tell us about your business', sub:'No jargon. Just what you do and who you do it for.'},
-  {eyebrow:'Step 2 of 6 · Offer & Pricing', title:'Design your offer', sub:'Turn your skill into a real, sellable service.'},
-  {eyebrow:'Step 3 of 6 · Features', title:'Site features', sub:'These get built into your site automatically.'},
-  {eyebrow:'Step 4 of 6 · Design', title:'Design your brand', sub:'See your site come to life as you choose your style.'},
-  {eyebrow:'Step 5 of 6 · Art Direction', title:'Set the vibe', sub:'Tell the AI how you want your site to feel.'},
-  {eyebrow:'Step 6 of 6 · Review', title:'Your site is ready to build', sub:'Review your blueprint, then generate.'},
+  {eyebrow:'Step 1 of 7 · Business', title:'Tell us about your business', sub:'No jargon. Just what you do and who you do it for.'},
+  {eyebrow:'Step 2 of 7 · Offer & Pricing', title:'Design your offer', sub:'Turn your skill into a real, sellable service.'},
+  {eyebrow:'Step 3 of 7 · Features', title:'Site features', sub:'These get built into your site automatically.'},
+  {eyebrow:'Step 4 of 7 · Design', title:'Design your brand', sub:'See your site come to life as you choose your style.'},
+  {eyebrow:'Step 5 of 7 · Art Direction', title:'Set the vibe', sub:'Tell the AI how you want your site to feel.'},
+  {eyebrow:'Step 6 of 7 · Review', title:'Your site is ready to build', sub:'Review your blueprint, then generate.'},
+  {eyebrow:'Step 7 of 7 · Boost', title:'Grow your business', sub:'Get add-ons, assets, and copy — specific to your site.'},
 ];
 
 // ════════════════════════════════════════════
@@ -2559,18 +2640,29 @@ function goStep(n) {
     document.getElementById('mainPanel').classList.remove('design-mode');
     document.querySelector('.panel-body').classList.remove('design-mode');
     updateStep5Panel();
+  } else if(n === 6) {
+    if(ghostWrap) ghostWrap.style.display = 'none';
+    if(liveWrap) liveWrap.style.display = 'none';
+    if(reviewWrap) reviewWrap.style.display = 'none';
+    if(toolbar) toolbar.style.display = 'none';
+    document.getElementById('mainPanel').style.display = 'none';
+    document.getElementById('previewPane').style.flex = '1';
+    document.getElementById('previewPane').style.display = '';
+    document.getElementById('mainPanel').classList.remove('design-mode');
+    document.querySelector('.panel-body').classList.remove('design-mode');
+    boostInitStep();
   }
 
   var m = STEP_META[n] || STEP_META[STEP_META.length-1];
   document.getElementById('ph-eyebrow').textContent = m.eyebrow;
   document.getElementById('ph-title').textContent = m.title;
   document.getElementById('ph-sub').textContent = m.sub;
-  document.getElementById('tn-stepcount').textContent = 'Step '+(n+1)+' of 6';
+  document.getElementById('tn-stepcount').textContent = 'Step '+(n+1)+' of 7';
   document.getElementById('btn-prev').style.visibility = n===0?'hidden':'visible';
   document.getElementById('btn-next').textContent = n===totalSteps-1 ? '⚡ Generate my site' : 'Continue →';
   var panelNav = document.querySelector('.panel-nav');
-  if(panelNav) panelNav.style.display = n===5 ? 'none' : '';
-  if(n !== 5) document.getElementById('mainPanel').style.display = '';
+  if(panelNav) panelNav.style.display = (n===5 || n===6) ? 'none' : '';
+  if(n !== 5 && n !== 6) document.getElementById('mainPanel').style.display = '';
   document.getElementById('genView').classList.remove('active');
 }
 
@@ -5309,6 +5401,302 @@ function applyIncomeGoal() {
   }
   // Scroll to pricing box
   if(box) box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function escapeHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── BOOST ──
+var boostCurrentType = null;
+var boostCurrentResult = null;
+
+var BOOST_TWEAKS_MAP = {
+  'addons':    ['Higher prices', 'More passive income ideas', 'Focus on digital products'],
+  'guide':     ['Make it shorter', 'More beginner-friendly', 'Add a FAQ section'],
+  'intake':    ['Make it shorter', 'Add payment terms', 'More specific questions'],
+  'checklist': ['Add time estimates', 'More encouraging tone', 'Add FAQ section'],
+  'email':     ['Warmer tone', 'Shorter emails', 'Add a discount offer'],
+  'social':    ['Funnier tone', 'More professional', 'Focus on local community'],
+  'bio':       ['More personal', 'Focus on credentials', 'Shorter and punchier']
+};
+
+var BOOST_LABELS_MAP = {
+  'addons':    ['Add-on suggestions', 'Select and add to your blueprint'],
+  'guide':     ['Starter guide', 'Download as HTML file'],
+  'intake':    ['Client intake form', 'Download as HTML file'],
+  'checklist': ['Getting started checklist', 'Download as HTML file'],
+  'email':     ['Welcome email sequence', 'Copy to clipboard'],
+  'social':    ['Social caption pack', 'Copy to clipboard'],
+  'bio':       ['Professional bio', 'Copy to clipboard']
+};
+
+function boostGetContext() {
+  var nameEl = document.getElementById('f-name');
+  var name = nameEl ? (nameEl.value || '').trim() : '';
+  var catEl = document.getElementById('f-category');
+  var industry = catEl ? (catEl.value || '').trim() : '';
+  var locEl = document.getElementById('f-location') || document.getElementById('f-city');
+  var location = locEl ? (locEl.value || '').trim() : '';
+  var sessions = [];
+  document.querySelectorAll('#svcRows .svc-row').forEach(function(row) {
+    var n = row.querySelector('.sr-name') || row.querySelector('input[type=text]');
+    var p = row.querySelector('.sr-price');
+    if (n && p) sessions.push((n.textContent || n.value || '').trim() + ' $' + (p.value || ''));
+  });
+  var addons = getAddons().map(function(a) { return a.name + ' +$' + a.price; });
+  return { name: name, industry: industry, location: location, sessions: sessions, addons: addons };
+}
+
+function boostInitStep() {
+  var ctx = boostGetContext();
+  var pill = document.getElementById('boost-context-pill');
+  if (ctx.name) {
+    pill.innerHTML = 'Building for <strong style="color:rgba(255,255,255,0.85);">' + escapeHtml(ctx.name) + '</strong>'
+      + (ctx.industry ? ' &middot; ' + escapeHtml(ctx.industry) : '')
+      + (ctx.location ? ' &middot; ' + escapeHtml(ctx.location) : '')
+      + (ctx.sessions.length ? ' &middot; ' + escapeHtml(ctx.sessions[0]) : '');
+  } else {
+    pill.innerHTML = 'Fill in Step 1 first to personalize your Boost suggestions.';
+  }
+
+  var openingMsg = document.getElementById('boost-opening-msg');
+  var businessName = ctx.name || 'your business';
+  openingMsg.innerHTML = 'Hi! I\'m looking at <strong>' + escapeHtml(businessName) + '</strong>'
+    + (ctx.industry ? ' &mdash; ' + escapeHtml(ctx.industry) + ' business' : '')
+    + (ctx.location ? ' in ' + escapeHtml(ctx.location) : '')
+    + '. Here\'s what I\'d make for you right now:';
+
+  var cards = document.getElementById('boost-prompt-cards');
+  var prompts = [
+    { type: 'addons',    label: 'Add-ons',      title: 'Suggest add-ons for my calculator',    desc: '6 ideas with revenue signal tags' },
+    { type: 'email',     label: 'Email',         title: 'Write my welcome email sequence',      desc: '3 emails written in your voice' },
+    { type: 'social',    label: 'Social',        title: 'Generate social captions this week',   desc: '5 Instagram captions ready to post' },
+    { type: 'guide',     label: 'Digital PDF',   title: 'Create a starter guide for students',  desc: 'Downloadable PDF for new customers' }
+  ];
+  cards.innerHTML = prompts.map(function(p) {
+    return '<div onclick="boostClickPrompt(\'' + p.type + '\', this)" style="background:var(--navy);border:1px solid var(--border-mid);border-radius:9px;padding:0.6rem 0.85rem;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'rgba(255,255,255,0.2)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.12)\'">'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">' + p.label + '</div>'
+      + '<div style="font-size:0.75rem;font-weight:600;color:white;margin-bottom:1px;">' + p.title + '</div>'
+      + '<div style="font-size:0.65rem;color:var(--dim);">' + p.desc + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function boostClickPrompt(type, el) {
+  var ctx = boostGetContext();
+  var title = el.querySelector('[style*="font-weight:600"]');
+  var userText = title ? title.textContent : 'Generate something for me';
+  boostAppendMsg('user', escapeHtml(userText));
+  boostRunType(type, ctx);
+}
+
+function boostRunType(type, ctx) {
+  boostCurrentType = type;
+  var labels = BOOST_LABELS_MAP[type] || ['Result', ''];
+  document.getElementById('boost-gen-label').textContent = 'Creating your ' + labels[0].toLowerCase() + '...';
+
+  document.getElementById('boost-output-empty').style.display = 'none';
+  document.getElementById('boost-output-result').style.display = 'none';
+  document.getElementById('boost-output-generating').style.display = 'flex';
+
+  var prompt = boostBuildPrompt(type, ctx);
+  var maxTok = (type === 'guide' || type === 'intake' || type === 'checklist') ? 4000 : 1200;
+
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt, max_tokens: maxTok })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('boost-output-generating').style.display = 'none';
+    if (data.error) { boostAppendMsg('assistant', 'Sorry, something went wrong. Try again.'); document.getElementById('boost-output-empty').style.display = 'flex'; return; }
+    boostCurrentResult = data.text;
+    boostShowResult(type, data.text, ctx);
+  })
+  .catch(function() {
+    document.getElementById('boost-output-generating').style.display = 'none';
+    boostAppendMsg('assistant', 'Could not reach the server. Check your connection and try again.');
+    document.getElementById('boost-output-empty').style.display = 'flex';
+  });
+}
+
+function boostBuildPrompt(type, ctx) {
+  var biz = '"' + (ctx.name || 'this business') + '"';
+  var ind = ctx.industry || 'service';
+  var loc = ctx.location ? ' in ' + ctx.location : '';
+  var svc = ctx.sessions.length ? ' Services: ' + ctx.sessions.join(', ') + '.' : '';
+  var base = 'Business: ' + biz + ', ' + ind + loc + '.' + svc;
+
+  if (type === 'addons') {
+    return base + ' Generate exactly 6 add-on ideas for their pricing calculator. Each should be something a customer genuinely pays extra for. Assign ONE tag per add-on from: "Easy win", "High margin", "Most popular", "Easy upsell", "Passive income". Respond ONLY with valid JSON array, no explanation: [{"name":"...","desc":"one sentence","price":25,"tag":"Easy win"}] Prices $5-60.';
+  } else if (type === 'guide') {
+    return base + ' Create a complete beginner guide for new customers. Include: welcome message, 5-7 practical sections, quick-start checklist. Format as clean printable HTML starting with <!DOCTYPE html>. Use their business name throughout. Make it genuinely useful.';
+  } else if (type === 'intake') {
+    return base + ' Create a complete client intake form for new customers. Include all fields they should fill before their first session. Professional and specific to this business type. Format as printable HTML starting with <!DOCTYPE html>.';
+  } else if (type === 'checklist') {
+    return base + ' Create a getting started checklist for new customers. Everything they should do/know/prepare before their first session. Encouraging and specific. Format as printable HTML checklist starting with <!DOCTYPE html>.';
+  } else if (type === 'email') {
+    return base + ' Write a 3-email welcome sequence. Email 1: warm welcome + what to expect. Email 2: tips to get the most value. Email 3: invite to rebook or refer a friend. Warm personal tone. Include subject line for each. Format with EMAIL 1:, EMAIL 2:, EMAIL 3: headers.';
+  } else if (type === 'social') {
+    return base + ' Write 5 Instagram captions. One each: educational, behind-the-scenes, testimonial-style, promotional, community. 2-4 sentences + 3-5 hashtags each. Format with CAPTION 1:, CAPTION 2: etc.';
+  } else if (type === 'bio') {
+    return base + ' Write a professional bio. SHORT version (2-3 sentences for social). LONG version (1 paragraph for website). First person, warm, credible. Format with SHORT BIO: and LONG BIO: headers.';
+  }
+  return base + ' ' + type;
+}
+
+function boostShowResult(type, text, ctx) {
+  var labels = BOOST_LABELS_MAP[type] || ['Result', ''];
+  document.getElementById('boost-result-title').textContent = labels[0];
+
+  var addonOut = document.getElementById('boost-addon-out');
+  var textOut = document.getElementById('boost-text-out');
+  var dlBtn = document.getElementById('boost-dl-btn');
+
+  addonOut.style.display = 'none';
+  textOut.style.display = 'none';
+
+  if (type === 'addons') {
+    addonOut.style.display = 'block';
+    dlBtn.style.display = 'none';
+    var addons = [];
+    try { addons = JSON.parse(text.replace(/```json|```/g, '').trim()); } catch(e) {}
+    var tagColors = {'Easy win':'rgba(200,224,0,0.12)','High margin':'rgba(139,162,240,0.12)','Most popular':'rgba(238,112,188,0.12)','Easy upsell':'rgba(255,190,80,0.12)','Passive income':'rgba(100,200,140,0.12)'};
+    var tagText = {'Easy win':'#C8E000','High margin':'#8ba2f0','Most popular':'#ee70bc','Easy upsell':'#ffbe50','Passive income':'#64c88c'};
+    var list = document.getElementById('boost-addon-list');
+    list.innerHTML = addons.map(function(a) {
+      var price = parseFloat(a.price) || 0;
+      var tc = (a.tag && tagColors[a.tag]) ? tagColors[a.tag] : 'rgba(200,224,0,0.12)';
+      var tt = (a.tag && tagText[a.tag]) ? tagText[a.tag] : '#C8E000';
+      return '<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.55rem 0.75rem;">'
+        + '<div style="width:14px;height:14px;border-radius:4px;background:var(--lime);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+        + '<div style="flex:1;"><div style="font-size:0.72rem;font-weight:500;color:white;">' + escapeHtml(a.name) + '</div>'
+        + '<div style="font-size:0.62rem;color:var(--muted);">' + escapeHtml(a.desc || '') + '</div></div>'
+        + (a.tag ? '<span style="font-size:0.55rem;padding:1px 6px;border-radius:4px;background:' + tc + ';color:' + tt + ';white-space:nowrap;">' + escapeHtml(a.tag) + '</span>' : '')
+        + '<span style="font-size:0.72rem;font-weight:500;color:var(--dim);">+$' + Math.round(price) + '</span>'
+        + '</div>';
+    }).join('');
+  } else if (type === 'guide' || type === 'intake' || type === 'checklist') {
+    textOut.style.display = 'block';
+    dlBtn.textContent = 'Download HTML';
+    dlBtn.style.display = '';
+    boostCurrentResult = text.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    document.getElementById('boost-text-body').textContent = '(HTML file ready — click Download)';
+  } else {
+    textOut.style.display = 'block';
+    dlBtn.textContent = 'Copy';
+    dlBtn.style.display = '';
+    document.getElementById('boost-text-body').textContent = text;
+  }
+
+  var tweaks = document.getElementById('boost-tweaks');
+  tweaks.innerHTML = (BOOST_TWEAKS_MAP[type] || []).map(function(t) {
+    return '<button onclick="boostTweak(\'' + type + '\',\'' + t.replace(/'/g, "\\'") + '\')" style="background:var(--surface);border:1px solid var(--border-mid);border-radius:6px;padding:0.25rem 0.6rem;font-size:0.65rem;color:var(--dim);cursor:pointer;font-family:\'DM Sans\',sans-serif;">' + t + '</button>';
+  }).join('');
+
+  document.getElementById('boost-output-result').style.display = 'flex';
+  document.getElementById('boost-output-result').style.flexDirection = 'column';
+
+  var responseMsg = type === 'addons'
+    ? 'Here are 6 add-on ideas for <strong>' + escapeHtml(ctx.name || 'your business') + '</strong> — select the ones you want and click "Add to blueprint."'
+    : 'Your ' + (BOOST_LABELS_MAP[type] ? BOOST_LABELS_MAP[type][0].toLowerCase() : 'asset') + ' is ready in the panel. ' + (labels[1] || '');
+  boostAppendMsg('assistant', responseMsg);
+}
+
+function boostTweak(type, instruction) {
+  var ctx = boostGetContext();
+  var prompt = boostBuildPrompt(type, ctx) + ' IMPORTANT adjustment: ' + instruction;
+  document.getElementById('boost-output-result').style.display = 'none';
+  document.getElementById('boost-gen-label').textContent = 'Applying: ' + instruction + '...';
+  document.getElementById('boost-output-generating').style.display = 'flex';
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt, max_tokens: 1500 })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('boost-output-generating').style.display = 'none';
+    if (data.error) return;
+    boostCurrentResult = data.text;
+    boostShowResult(type, data.text, ctx);
+  })
+  .catch(function() { document.getElementById('boost-output-generating').style.display = 'none'; });
+}
+
+function boostDownload() {
+  if (!boostCurrentResult) return;
+  var type = boostCurrentType;
+  if (type === 'guide' || type === 'intake' || type === 'checklist') {
+    var blob = new Blob([boostCurrentResult], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = type + '.html'; a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    try { navigator.clipboard.writeText(boostCurrentResult); } catch(e) {
+      var ta = document.createElement('textarea');
+      ta.value = boostCurrentResult; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    var btn = document.getElementById('boost-dl-btn');
+    btn.textContent = 'Copied ✓';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  }
+}
+
+function boostAddToBP() {
+  var items = document.querySelectorAll('#boost-addon-list > div');
+  var names = [];
+  items.forEach(function(item) {
+    var n = item.querySelector('[style*="font-weight:500"]');
+    if (n) names.push(n.textContent.trim());
+  });
+  boostAppendMsg('assistant', 'Added! Go back to Step 2 and add these to your add-ons: <strong>' + escapeHtml(names.join(', ')) + '</strong>. Then come back to generate.');
+}
+
+function boostAppendMsg(role, html) {
+  var msgs = document.getElementById('boost-messages');
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:8px;align-items:flex-start;' + (role === 'user' ? 'flex-direction:row-reverse;' : '');
+  var avColor = role === 'user' ? 'rgba(255,255,255,0.06)' : 'var(--lime)';
+  var avTextColor = role === 'user' ? 'var(--dim)' : 'var(--navy)';
+  var avText = role === 'user' ? 'U' : 'B';
+  row.innerHTML = '<div style="width:22px;height:22px;border-radius:50%;background:' + avColor + ';color:' + avTextColor + ';display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;flex-shrink:0;margin-top:2px;font-family:\'DM Mono\',monospace;">' + avText + '</div>'
+    + '<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:0.55rem 0.8rem;font-size:0.75rem;line-height:1.6;color:rgba(255,255,255,0.8);max-width:85%;">' + html + '</div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function boostSend() {
+  var input = document.getElementById('boost-input');
+  var val = (input.value || '').trim();
+  if (!val) return;
+  input.value = '';
+  boostAppendMsg('user', escapeHtml(val));
+  var ctx = boostGetContext();
+  var prompt = 'You are a helpful business growth assistant for "' + (ctx.name || 'this business') + '", a ' + (ctx.industry || 'service') + ' business' + (ctx.location ? ' in ' + ctx.location : '') + '. The user says: "' + val + '". Give a helpful, specific, practical response in 2-3 sentences.';
+  document.getElementById('boost-output-empty').style.display = 'none';
+  document.getElementById('boost-output-result').style.display = 'none';
+  document.getElementById('boost-gen-label').textContent = 'Thinking...';
+  document.getElementById('boost-output-generating').style.display = 'flex';
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('boost-output-generating').style.display = 'none';
+    document.getElementById('boost-output-empty').style.display = 'flex';
+    boostAppendMsg('assistant', escapeHtml(data.text || ''));
+  })
+  .catch(function() {
+    document.getElementById('boost-output-generating').style.display = 'none';
+    document.getElementById('boost-output-empty').style.display = 'flex';
+  });
 }
 
 // INIT
