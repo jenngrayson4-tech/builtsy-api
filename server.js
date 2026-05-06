@@ -43,13 +43,47 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') { res.writeHead(200); res.end(); return; }
-  if (req.method !== 'POST' || req.url !== '/generate') { res.writeHead(404); res.end('Not found'); return; }
+  if (req.method !== 'POST' || (req.url !== '/generate' && req.url !== '/grow')) { res.writeHead(404); res.end('Not found'); return; }
 
   let body = '';
   req.on('data', chunk => body += chunk);
   req.on('end', async () => {
     try {
       const { prompt } = JSON.parse(body);
+
+      if (req.url === '/grow') {
+        const result = await new Promise((resolve, reject) => {
+          const payload = JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            messages: [{ role: 'user', content: prompt }]
+          });
+          const apiReq = https.request({
+            hostname: 'api.anthropic.com',
+            path: '/v1/messages',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': process.env.ANTHROPIC_API_KEY,
+              'anthropic-version': '2023-06-01',
+              'Content-Length': Buffer.byteLength(payload)
+            }
+          }, (apiRes) => {
+            let data = '';
+            apiRes.on('data', chunk => data += chunk);
+            apiRes.on('end', () => resolve({ status: apiRes.statusCode, body: data }));
+          });
+          apiReq.on('error', reject);
+          apiReq.write(payload);
+          apiReq.end();
+        });
+        const data = JSON.parse(result.body);
+        const text = data.content && data.content.find(b => b.type === 'text') ? data.content.find(b => b.type === 'text').text : '';
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ text }));
+        return;
+      }
+
       const result = await new Promise((resolve, reject) => {
         const payload = JSON.stringify({
           model: 'claude-sonnet-4-20250514',
@@ -78,7 +112,7 @@ const server = http.createServer(async (req, res) => {
       });
 
       const data = JSON.parse(result.body);
-      let html = data.content?.find(b => b.type === 'text')?.text || '';
+      let html = data.content && data.content.find(b => b.type === 'text') ? data.content.find(b => b.type === 'text').text : '';
       html = html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ html }));
