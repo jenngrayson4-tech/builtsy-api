@@ -335,10 +335,17 @@ function renderP(p){
   if(!p||!p.length){document.getElementById('pte').style.display='block';document.getElementById('pte2').style.display='block';return;}
   var h='';
   p.slice(0,6).forEach(function(x){
-    var m=BPM[x.type]||{i:'◫',l:x.type,p:'pi'};
-    var dt=x.savedAt?new Date(x.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—';
+    var m=BPM[x.type]||{i:'&#9647;',l:x.type,p:'pi'};
+    var dt=x.savedAt?new Date(x.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'&mdash;';
     var u=x.url||(x.type==='site-refresh'?'blueprint-site-refresh.html':'blueprint-industry.html?type='+x.type);
-    h+='<div class="pt-row" onclick="go(''+u+'')"><div class="pt-biz"><div class="pt-icon">'+m.i+'</div><div><div class="pt-name">'+esc(x.name)+'</div><div class="pt-sub">'+esc(x.palette||'')+'</div></div></div><div><span class="pt-pill '+m.p+'">'+m.l+'</span></div><div class="pt-date">'+dt+'</div><div class="pt-actions" onclick="event.stopPropagation()"><button class="ta-go" onclick="go(''+u+'')">Continue &rarr;</button> <button class="ta-del" onclick="delP(''+x.id+'',this)">Delete</button></div></div>';
+    h+='<div class="pt-row" onclick="go(this.dataset.url)" data-url="'+u+'">';
+    h+='<div class="pt-biz"><div class="pt-icon">'+m.i+'</div><div><div class="pt-name">'+esc(x.name)+'</div><div class="pt-sub">'+esc(x.palette||'')+'</div></div></div>';
+    h+='<div><span class="pt-pill '+m.p+'">'+m.l+'</span></div>';
+    h+='<div class="pt-date">'+dt+'</div>';
+    h+='<div class="pt-actions" onclick="event.stopPropagation()">';
+    h+='<button class="ta-go" data-url="'+u+'" onclick="go(this.dataset.url)">Continue</button> ';
+    h+='<button class="ta-del" data-id="'+x.id+'" onclick="delP(this.dataset.id,this)">Delete</button>';
+    h+='</div></div>';
   });
   document.getElementById('ptr').innerHTML=h;document.getElementById('ptr2').innerHTML=h;
 }
