@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Audit — Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;
+  --navy2:#1a2438;
+  --navy3:#222f45;
+  --lime:#C8E000;
+  --lime2:#afc000;
+  --pink:#ee70bc;
+  --iris:#8ba2f0;
+  --cream:#e8f0ff;
+  --muted:rgba(232,240,255,0.45);
+  --border:rgba(232,240,255,0.08);
+  --border2:rgba(232,240,255,0.14);
+  --green:#4ade80;
+  --red:#f87171;
+  --amber:#fbbf24;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.header{padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;background:rgba(18,25,43,0.95);backdrop-filter:blur(12px);}
+.logo{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime);}
+.logo span{color:var(--muted);}
+.badge{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.2);color:var(--lime);padding:4px 12px;border-radius:100px;}
+
+/* ── HERO ── */
+.hero{max-width:900px;margin:0 auto;padding:4rem 2rem 2rem;text-align:center;}
+.hero-tag{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--iris);margin-bottom:1.25rem;display:block;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;line-height:1.1;margin-bottom:1rem;}
+.hero h1 em{font-style:italic;color:var(--lime);}
+.hero p{font-size:1rem;color:var(--muted);max-width:560px;margin:0 auto 2.5rem;line-height:1.75;}
+
+/* ── INPUT ── */
+.input-wrap{max-width:680px;margin:0 auto;position:relative;}
+.url-row{display:flex;gap:0.75rem;align-items:center;}
+.url-input{flex:1;background:var(--navy2);border:1px solid var(--border2);border-radius:0.75rem;padding:0.9rem 1.25rem;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--cream);outline:none;transition:border-color 0.2s;}
+.url-input:focus{border-color:var(--iris);}
+.url-input::placeholder{color:var(--muted);}
+.run-btn{background:var(--lime);color:var(--navy);border:none;border-radius:0.75rem;padding:0.9rem 1.75rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;white-space:nowrap;transition:background 0.2s,transform 0.15s;letter-spacing:0.02em;}
+.run-btn:hover{background:var(--lime2);transform:translateY(-1px);}
+.run-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.hint{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.75rem;letter-spacing:0.05em;}
+
+/* ── PROGRESS ── */
+.progress-wrap{max-width:680px;margin:1.5rem auto 0;display:none;}
+.progress-bar-outer{height:4px;background:var(--border2);border-radius:2px;overflow:hidden;}
+.progress-bar-inner{height:100%;background:var(--lime);border-radius:2px;width:0%;transition:width 0.4s ease;}
+.progress-label{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.5rem;letter-spacing:0.08em;}
+
+/* ── RESULTS ── */
+.results{max-width:1100px;margin:3rem auto;padding:0 2rem 4rem;display:none;}
+
+/* Score card */
+.score-card{background:var(--navy2);border:1px solid var(--border2);border-radius:1.25rem;padding:2.5rem;margin-bottom:2.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;align-items:center;}
+.score-main{text-align:center;}
+.score-num{font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;line-height:1;}
+.score-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem;}
+.score-grade{display:inline-block;font-family:'DM Mono',monospace;font-size:1.2rem;font-weight:700;padding:4px 18px;border-radius:100px;margin-top:0.75rem;}
+.grade-a{background:rgba(74,222,128,0.15);color:var(--green);border:1px solid rgba(74,222,128,0.3);}
+.grade-b{background:rgba(200,224,0,0.12);color:var(--lime);border:1px solid rgba(200,224,0,0.25);}
+.grade-c{background:rgba(251,191,36,0.12);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+.grade-d{background:rgba(238,112,188,0.12);color:var(--pink);border:1px solid rgba(238,112,188,0.25);}
+.grade-f{background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.25);}
+
+.score-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.cat-score{background:var(--navy3);border-radius:0.75rem;padding:0.875rem 1rem;}
+.cat-name{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+.cat-val{font-size:1.3rem;font-weight:700;font-family:'Playfair Display',serif;}
+
+.score-summary{font-size:0.9rem;color:var(--muted);line-height:1.75;}
+.score-summary strong{color:var(--cream);}
+.score-summary .site-url{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--iris);display:block;margin-bottom:0.75rem;word-break:break-all;}
+
+/* Phase grid */
+.phases-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;}
+.phases-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.phases{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border-radius:1rem;overflow:hidden;}
+.phase{background:var(--navy2);padding:1.5rem;transition:background 0.2s;cursor:pointer;}
+.phase:hover{background:var(--navy3);}
+.phase-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;}
+.phase-num{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);}
+.phase-name{font-weight:600;font-size:0.9rem;flex:1;}
+.phase-score-badge{font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:100px;}
+.pass{background:rgba(74,222,128,0.1);color:var(--green);}
+.warn{background:rgba(251,191,36,0.1);color:var(--amber);}
+.fail{background:rgba(248,113,113,0.1);color:var(--red);}
+.phase-findings{display:flex;flex-direction:column;gap:0.4rem;}
+.finding{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.8rem;color:var(--muted);line-height:1.5;}
+.finding-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:0.4rem;}
+.dot-pass{background:var(--green);}
+.dot-fail{background:var(--red);}
+.dot-warn{background:var(--amber);}
+
+/* Priority fixes */
+.fixes-section{margin-top:2.5rem;}
+.fixes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.25rem;}
+.fix-card{background:var(--navy2);border:1px solid var(--border2);border-radius:1rem;padding:1.25rem;}
+.fix-priority{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;}
+.fix-high{color:var(--red);}
+.fix-med{color:var(--amber);}
+.fix-low{color:var(--lime);}
+.fix-title{font-weight:600;font-size:0.875rem;margin-bottom:0.4rem;color:var(--cream);}
+.fix-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;}
+
+/* Export */
+.export-row{display:flex;gap:0.75rem;margin-top:2rem;justify-content:center;}
+.export-btn{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;background:var(--navy2);border:1px solid var(--border2);color:var(--cream);padding:0.65rem 1.5rem;border-radius:0.75rem;cursor:pointer;transition:all 0.2s;}
+.export-btn:hover{border-color:var(--iris);color:var(--iris);}
+.export-btn.primary{background:var(--lime);color:var(--navy);border-color:var(--lime);}
+.export-btn.primary:hover{background:var(--lime2);color:var(--navy);}
+
+/* Loader spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(18,25,43,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Responsive */
+@media(max-width:768px){
+  .score-card{grid-template-columns:1fr;}
+  .phases{grid-template-columns:1fr;}
+  .fixes-grid{grid-template-columns:1fr;}
+  .url-row{flex-direction:column;}
+  .run-btn{width:100%;}
+}
+</style>
+</head>
+<body>
+<script>if(!sessionStorage.getItem('builtsy-auth'))window.location.href='login.html';
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button></script>
+
+<header class="header">
+  <div class="logo">Builtsy <span>/ Site Audit</span></div>
+  <div class="badge">12-Phase Analysis</div>
+</header>
+
+<section class="hero">
+  <span class="hero-tag">Built-in Tool — Members Only</span>
+  <h1>Audit any site in<br><em>30 seconds flat.</em></h1>
+  <p>The same 12-phase analysis used to optimize every Builtsy build. Run it on your client's site before you pitch — or on your own after you ship.</p>
+  <div class="input-wrap">
+    <div class="url-row">
+      <input class="url-input" id="urlInput" type="url" placeholder="https://yourdomain.com" autocomplete="off">
+      <button class="run-btn" id="runBtn" onclick="runAudit()">Run Audit →</button>
+    </div>
+    <div class="hint">Enter any URL · Results in ~10 seconds · No login required</div>
+  </div>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">Initializing...</div>
+  </div>
+</section>
+
+<section class="results" id="results"></section>
+
+<script>
+const PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+  'https://api.codetabs.com/v1/proxy?quest='
+];
+let auditData = {};
+
+async function runAudit() {
+  const raw = document.getElementById('urlInput').value.trim();
+  if (!raw) return;
+  let url = raw;
+  if (!url.startsWith('http')) url = 'https://' + url;
+  try { new URL(url); } catch(e) { alert('Please enter a valid URL'); return; }
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Auditing...';
+  const pw = document.getElementById('progressWrap');
+  const pb = document.getElementById('progressBar');
+  const pl = document.getElementById('progressLabel');
+  pw.style.display = 'block';
+
+  const steps = [
+    [5,  'Fetching page HTML...'],
+    [20, 'Checking meta & SEO signals...'],
+    [35, 'Scanning structured data...'],
+    [48, 'Probing robots.txt...'],
+    [58, 'Checking sitemap.xml...'],
+    [68, 'Checking llms.txt...'],
+    [78, 'Analyzing content & trust signals...'],
+    [88, 'Scoring accessibility & contrast...'],
+    [95, 'Compiling results...'],
+  ];
+
+  let si = 0;
+  const ticker = setInterval(() => {
+    if (si < steps.length) {
+      pb.style.width = steps[si][0] + '%';
+      pl.textContent = steps[si][1];
+      si++;
+    }
+  }, 900);
+
+  try {
+    const d = await gatherData(url);
+    clearInterval(ticker);
+    pb.style.width = '100%';
+    pl.textContent = 'Done!';
+    setTimeout(() => {
+      pw.style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Run Audit →';
+      renderResults(url, d);
+    }, 400);
+  } catch(err) {
+    clearInterval(ticker);
+    btn.disabled = false;
+    btn.textContent = 'Run Audit →';
+    pw.style.display = 'none';
+    alert('Could not reach that URL. Make sure it\'s live and try again.');
+  }
+}
+
+async function fetchWithProxy(url) {
+  for (const proxy of PROXIES) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const r = await fetch(proxy + encodeURIComponent(url), {signal: controller.signal});
+      clearTimeout(timer);
+      if (r.ok) {
+        const text = await r.text();
+        if (text && text.length > 50) return text;
+      }
+    } catch(e) { continue; }
+  }
+  return '';
+}
+
+async function gatherData(url) {
+  const base = new URL(url).origin;
+  const d = {};
+
+  // Fetch main page
+  const html = await fetchWithProxy(url);
+  const low = html.toLowerCase();
+  d.html = html;
+
+  // Phase 1 — Performance proxies
+  d.hasPreconnect = low.includes('rel="preconnect"');
+  d.hasLazyLoad = low.includes('loading="lazy"');
+  d.hasWebP = low.includes('.webp');
+  d.inlineBase64 = (html.match(/data:image\//g)||[]).length;
+  d.renderBlock = (html.match(/rel="stylesheet"/g)||[]).length;
+  d.scriptCount = (html.match(/<script/g)||[]).length;
+
+  // Phase 2 — SEO
+  const titleM = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  d.title = titleM ? titleM[1].trim() : '';
+  d.titleLen = d.title.length;
+  const descM = html.match(/name="description"[^>]*content="([^"]+)"/i) || html.match(/content="([^"]+)"[^>]*name="description"/i);
+  d.metaDesc = descM ? descM[1] : '';
+  d.metaDescLen = d.metaDesc.length;
+  const h1M = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  d.h1 = h1M ? h1M[1].replace(/<[^>]+>/g,'').trim() : '';
+  d.h1Count = (html.match(/<h1/gi)||[]).length;
+  d.canonical = low.includes('rel="canonical"');
+  d.robotsMeta = low.includes('name="robots"');
+  d.ogTitle = low.includes('og:title');
+  d.twitterCard = low.includes('twitter:card');
+  d.langAttr = /html[^>]+lang=/i.test(html);
+  d.viewport = low.includes('name="viewport"');
+  d.charset = low.includes('charset');
+
+  // Phase 3 — Content
+  const text = html.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
+  d.wordCount = (text.match(/\b\w+\b/g)||[]).length;
+  d.h2Count = (html.match(/<h2/gi)||[]).length;
+  d.h3Count = (html.match(/<h3/gi)||[]).length;
+  d.listCount = (html.match(/<ul|<ol/gi)||[]).length;
+
+  // Phase 4 — Persuasion
+  d.hasCTA = low.includes('get') || low.includes('start') || low.includes('contact');
+  d.hasTestimonials = low.includes('testimonial') || low.includes('review') || low.includes('said') || low.includes('customer');
+  d.hasForm = low.includes('<form');
+  d.hasPricing = low.includes('price') || low.includes('$') || low.includes('cost') || low.includes('plan');
+  d.hasGuarantee = low.includes('guarantee') || low.includes('refund') || low.includes('money back');
+
+  // Phase 5 — Trust
+  const telM = html.match(/tel:([+\d\s\-().]+)/i);
+  d.hasPhone = !!telM || /\(\d{3}\)\s*\d{3}[-\s]\d{4}/.test(html);
+  const mailM = html.match(/mailto:([^\s"']+)/i);
+  d.hasEmail = !!mailM;
+  d.hasAddress = low.includes('address') || /\d+\s+\w+\s+(st|ave|blvd|rd|dr|lane|way|street|avenue)/i.test(html);
+  d.hasPrivacy = low.includes('privacy');
+  d.hasTerms = low.includes('terms');
+  d.hasSSL = url.startsWith('https');
+  d.socialLinks = (html.match(/facebook\.com|twitter\.com|linkedin\.com|instagram\.com|youtube\.com/gi)||[]).length;
+
+  // Phase 6 — Conversion
+  d.ctaCount = (html.match(/href/gi)||[]).length;
+  d.formCount = (html.match(/<form/gi)||[]).length;
+  d.hasCalendly = low.includes('calendly');
+  d.hasTelLink = /href="tel:/i.test(html);
+  d.hasMailtoLink = /href="mailto:/i.test(html);
+
+  // Phase 7 — AI Readiness
+  d.hasSchema = low.includes('application/ld+json');
+  d.hasMain = low.includes('<main');
+  d.hasArticle = low.includes('<article');
+  d.hasFAQ = low.includes('faq') || low.includes('frequently asked') || low.includes('"faqpage"');
+  d.altCoverage = checkAltText(html);
+  d.questionCount = (text.match(/\?/g)||[]).length;
+
+  // Fetch robots
+  const robots = await fetchWithProxy(base + '/robots.txt');
+  d.robotsExists = robots.length > 10 && !robots.includes('404') && !robots.includes('Not Found');
+  d.robotsAI = robots.toLowerCase().includes('gptbot') || robots.toLowerCase().includes('claudebot') || robots.toLowerCase().includes('perplexitybot');
+  d.sitemapInRobots = robots.toLowerCase().includes('sitemap');
+
+  // Fetch llms.txt
+  const llms = await fetchWithProxy(base + '/llms.txt');
+  d.llmsExists = llms.length > 20 && !llms.includes('404') && !llms.includes('Not Found') && !llms.includes('<!DOCTYPE');
+
+  // Fetch sitemap
+  const sitemap = await fetchWithProxy(base + '/sitemap.xml');
+  d.sitemapExists = sitemap.includes('<url') || sitemap.includes('<sitemap');
+  d.sitemapUrlCount = (sitemap.match(/<url>/gi)||[]).length;
+
+  // Phase 8 — Links & Images
+  const imgs = html.match(/<img[^>]+>/gi)||[];
+  d.imgCount = imgs.length;
+  d.imgWithAlt = imgs.filter(i => /alt="[^"]+"/i.test(i)).length;
+  d.imgMissingAlt = imgs.filter(i => !/ alt=/i.test(i) || /alt=""/i.test(i)).length;
+  d.hasWebPImages = html.match(/\.webp/i) ? true : false;
+  d.internalLinks = (html.match(/href="\/|href="#/gi)||[]).length;
+  d.externalLinks = (html.match(/href="https?:\/\//gi)||[]).length;
+
+  // Phase 9 — Schema
+  d.schemaTypes = extractSchemaTypes(html);
+  d.hasLocalBusiness = low.includes('"localbusiness"') || low.includes("'localbusiness'");
+  d.hasOrganization = low.includes('"organization"') || low.includes("'organization'");
+  d.hasFAQSchema = low.includes('"faqpage"') || low.includes("'faqpage'");
+  d.hasWebSite = low.includes('"website"') || low.includes("'website'");
+  d.hasBreadcrumb = low.includes('"breadcrumb"') || low.includes("'breadcrumb'");
+  d.hasServiceSchema = low.includes('"service"') || low.includes("'service'");
+
+  // Phase 10 — Local SEO
+  d.cityInTitle = /parker|denver|aurora|highlands ranch|castle rock|centennial|lone tree|englewood|littleton/i.test(d.title);
+  d.cityInH1 = /parker|denver|aurora|highlands ranch|castle rock|centennial|lone tree|englewood|littleton/i.test(d.h1);
+  d.cityInMeta = /parker|denver|aurora|highlands ranch|castle rock|centennial|lone tree|englewood|littleton/i.test(d.metaDesc);
+  d.hasGeoCoords = low.includes('"latitude"') || low.includes('geo.position');
+  d.hasAreaServed = low.includes('"areaserved"');
+  d.hasGBP = low.includes('google.com/maps') || low.includes('maps.google') || low.includes('place_id');
+
+  // Phase 11 — UX
+  d.hasMobileNav = low.includes('hamburger') || low.includes('mobile-menu') || low.includes('nav-toggle');
+  d.navLinks = (html.match(/<nav[\s\S]*?<\/nav>/i)||[''])[0].match(/<a /gi)||[];
+  d.navCount = d.navLinks.length;
+  d.hasSkipNav = low.includes('skip') && low.includes('main');
+  d.hasBreadcrumbs = low.includes('breadcrumb');
+  d.hasSearch = low.includes('type="search"') || low.includes('search');
+  d.headingStructure = checkHeadingStructure(html);
+
+  // Phase 12 — ADA
+  d.hasAriaLabels = (html.match(/aria-label/gi)||[]).length;
+  d.hasRoleMain = /role="main"/i.test(html) || /<main/i.test(html);
+  d.hasRoleBanner = /role="banner"/i.test(html) || /<header/i.test(html);
+  d.hasRoleContentinfo = /role="contentinfo"/i.test(html) || /<footer/i.test(html);
+  d.formLabels = checkFormLabels(html);
+  d.hasFocusStyles = low.includes(':focus') || low.includes('focus-visible');
+  d.hasA11yStatement = low.includes('accessibility') || low.includes('wcag');
+  d.contrastIssues = checkContrastIssues(html);
+
+  return d;
+}
+
+function checkAltText(html) {
+  const imgs = html.match(/<img[^>]+>/gi)||[];
+  if (!imgs.length) return 100;
+  const withAlt = imgs.filter(i => /alt="[^"]+"/i.test(i)).length;
+  return Math.round((withAlt/imgs.length)*100);
+}
+
+function checkFormLabels(html) {
+  const inputs = (html.match(/<input[^>]+>/gi)||[]).filter(i => !/type="hidden"|type="submit"|type="button"/i.test(i));
+  if (!inputs.length) return {total:0,labeled:0};
+  const labeled = inputs.filter(i => /id="[^"]+"/i.test(i)).length;
+  return {total:inputs.length, labeled};
+}
+
+function checkHeadingStructure(html) {
+  const h1 = (html.match(/<h1/gi)||[]).length;
+  const h2 = (html.match(/<h2/gi)||[]).length;
+  return {h1,h2,good: h1===1 && h2>0};
+}
+
+function extractSchemaTypes(html) {
+  const types = [];
+  const matches = html.match(/"@type"\s*:\s*"([^"]+)"/g)||[];
+  matches.forEach(m => {
+    const t = m.match(/"@type"\s*:\s*"([^"]+)"/);
+    if (t && !types.includes(t[1])) types.push(t[1]);
+  });
+  return types;
+}
+
+function checkContrastIssues(html) {
+  // Check for known contrast-failing patterns
+  const issues = [];
+  if (/#3ecfb2.*color:\s*#fff|color:\s*#fff.*#3ecfb2/i.test(html)) issues.push('Teal/white contrast failure');
+  if (/#3EFFD8.*color:\s*white|color:\s*white.*#3EFFD8/i.test(html)) issues.push('Teal/white contrast failure');
+  if (/background.*#[a-f0-9]{3,6}.*color:\s*#fff/i.test(html)) {
+    // Just flag as possible — can't fully evaluate without rendering
+  }
+  return issues;
+}
+
+// ── SCORING ──
+function scorePhases(d) {
+  const phases = [];
+
+  // P1 — Performance
+  let p1 = 70;
+  const p1f = [];
+  if (d.hasPreconnect) { p1+=5; p1f.push({t:'Preconnect hints present',s:'pass'}); } else { p1f.push({t:'No preconnect hints for fonts/CDN',s:'fail'}); }
+  if (d.hasLazyLoad) { p1+=8; p1f.push({t:'Lazy loading on images',s:'pass'}); } else { p1-=8; p1f.push({t:'Images not lazy loaded',s:'fail'}); }
+  if (d.hasWebP) { p1+=7; p1f.push({t:'WebP image format detected',s:'pass'}); } else { p1-=7; p1f.push({t:'No WebP images — use modern formats',s:'fail'}); }
+  if (d.inlineBase64 > 2) { p1-=15; p1f.push({t:`${d.inlineBase64} inline base64 images (slow)`,s:'fail'}); }
+  if (d.renderBlock > 3) { p1-=5; p1f.push({t:`${d.renderBlock} render-blocking stylesheets`,s:'warn'}); }
+  p1 = Math.max(0, Math.min(100, p1));
+  phases.push({n:'Performance', s:p1, f:p1f});
+
+  // P2 — SEO
+  let p2 = 50;
+  const p2f = [];
+  if (d.title) { p2+=10; if(d.titleLen>=50&&d.titleLen<=60){p2+=10;p2f.push({t:`Title: ${d.titleLen} chars ✓ (ideal)`,s:'pass'});}else if(d.titleLen>0){p2f.push({t:`Title: ${d.titleLen} chars (ideal 50-60)`,s:'warn'});p2+=5;} } else {p2f.push({t:'No title tag found',s:'fail'});}
+  if (d.metaDesc) { if(d.metaDescLen>=150&&d.metaDescLen<=165){p2+=15;p2f.push({t:`Meta description: ${d.metaDescLen} chars ✓`,s:'pass'});}else{p2+=8;p2f.push({t:`Meta description: ${d.metaDescLen} chars (ideal 150-165)`,s:'warn'});} } else {p2f.push({t:'No meta description',s:'fail'});}
+  if (d.h1Count===1){p2+=10;p2f.push({t:'Single H1 tag ✓',s:'pass'});}else if(d.h1Count===0){p2f.push({t:'No H1 tag found',s:'fail'});}else{p2f.push({t:`${d.h1Count} H1 tags (should be 1)`,s:'warn'});}
+  if (d.canonical){p2+=8;p2f.push({t:'Canonical URL present ✓',s:'pass'});}else{p2f.push({t:'No canonical URL',s:'warn'});}
+  if (d.ogTitle){p2+=5;p2f.push({t:'Open Graph tags ✓',s:'pass'});}else{p2f.push({t:'Missing Open Graph meta tags',s:'fail'});}
+  if (d.twitterCard){p2+=5;p2f.push({t:'Twitter Card meta ✓',s:'pass'});}
+  if (!d.sitemapExists){p2-=15;p2f.push({t:'sitemap.xml not found (crawl error)',s:'fail'});}else{p2+=7;p2f.push({t:'sitemap.xml present ✓',s:'pass'});}
+  p2 = Math.max(0, Math.min(100, p2));
+  phases.push({n:'SEO & Meta', s:p2, f:p2f});
+
+  // P3 — Content
+  let p3 = 50;
+  const p3f = [];
+  if(d.wordCount>800){p3+=20;p3f.push({t:`${d.wordCount} words — good content depth`,s:'pass'});}else if(d.wordCount>400){p3+=10;p3f.push({t:`${d.wordCount} words — consider adding more`,s:'warn'});}else{p3f.push({t:`Only ${d.wordCount} words — thin content`,s:'fail'});}
+  if(d.h2Count>2){p3+=10;p3f.push({t:`${d.h2Count} H2 subheadings ✓`,s:'pass'});}else{p3f.push({t:'Few H2 subheadings — improve structure',s:'warn'});}
+  if(d.listCount>0){p3+=10;p3f.push({t:'Lists present — good scannability',s:'pass'});}else{p3f.push({t:'No bullet/numbered lists',s:'warn'});}
+  p3 = Math.max(0, Math.min(100, p3));
+  phases.push({n:'Content Quality', s:p3, f:p3f});
+
+  // P4 — Persuasion
+  let p4 = 40;
+  const p4f = [];
+  if(d.hasForm){p4+=15;p4f.push({t:'Contact/lead form present ✓',s:'pass'});}else{p4f.push({t:'No form detected — add lead capture',s:'fail'});}
+  if(d.hasTestimonials){p4+=20;p4f.push({t:'Social proof/testimonials found ✓',s:'pass'});}else{p4-=15;p4f.push({t:'No testimonials or social proof',s:'fail'});}
+  if(d.hasPricing){p4+=15;p4f.push({t:'Pricing information present ✓',s:'pass'});}else{p4f.push({t:'No pricing visible — adds friction',s:'warn'});}
+  if(d.hasGuarantee){p4+=10;p4f.push({t:'Guarantee/risk-reducer present ✓',s:'pass'});}else{p4f.push({t:'No guarantee or risk-reducer',s:'warn'});}
+  p4 = Math.max(0, Math.min(100, p4));
+  phases.push({n:'Persuasion', s:p4, f:p4f});
+
+  // P5 — Trust
+  let p5 = 30;
+  const p5f = [];
+  if(d.hasSSL){p5+=15;p5f.push({t:'HTTPS / SSL active ✓',s:'pass'});}else{p5-=20;p5f.push({t:'No HTTPS — major trust failure',s:'fail'});}
+  if(d.hasEmail||d.hasMailtoLink){p5+=20;p5f.push({t:'Email contact present ✓',s:'pass'});}else{p5-=20;p5f.push({t:'No email address or mailto link',s:'fail'});}
+  if(d.hasPhone||d.hasTelLink){p5+=15;p5f.push({t:'Phone number present ✓',s:'pass'});}else{p5-=15;p5f.push({t:'No phone number found',s:'fail'});}
+  if(d.hasPrivacy){p5+=10;p5f.push({t:'Privacy policy linked ✓',s:'pass'});}else{p5f.push({t:'No privacy policy found',s:'warn'});}
+  if(d.socialLinks>0){p5+=10;p5f.push({t:`${d.socialLinks} social links found ✓`,s:'pass'});}else{p5f.push({t:'No social media profiles linked',s:'warn'});}
+  p5 = Math.max(0, Math.min(100, p5));
+  phases.push({n:'Trust & Credibility', s:p5, f:p5f});
+
+  // P6 — Conversion
+  let p6 = 50;
+  const p6f = [];
+  if(d.hasForm){p6+=15;p6f.push({t:'Lead capture form found ✓',s:'pass'});}else{p6f.push({t:'No conversion form',s:'fail'});}
+  if(d.hasTelLink){p6+=10;p6f.push({t:'Tap-to-call link ✓',s:'pass'});}else{p6f.push({t:'No tap-to-call phone link',s:'warn'});}
+  if(d.hasMailtoLink){p6+=10;p6f.push({t:'Clickable email link ✓',s:'pass'});}else{p6f.push({t:'No clickable mailto link',s:'warn'});}
+  if(d.hasCalendly){p6+=15;p6f.push({t:'Booking widget present ✓',s:'pass'});}
+  p6 = Math.max(0, Math.min(100, p6));
+  phases.push({n:'Conversion & Forms', s:p6, f:p6f});
+
+  // P7 — AI Readiness
+  let p7 = 40;
+  const p7f = [];
+  if(d.robotsAI){p7+=15;p7f.push({t:'AI bots allowed in robots.txt ✓',s:'pass'});}else if(d.robotsExists){p7f.push({t:'robots.txt present but no AI bot entries',s:'warn'});}else{p7f.push({t:'No robots.txt found',s:'fail'});}
+  if(d.llmsExists){p7+=20;p7f.push({t:'llms.txt found ✓ (GEO ready)',s:'pass'});}else{p7-=10;p7f.push({t:'No llms.txt — add for AI search',s:'fail'});}
+  if(d.hasMain){p7+=10;p7f.push({t:'<main> semantic tag ✓',s:'pass'});}else{p7-=10;p7f.push({t:'No <main> element — add semantic HTML',s:'fail'});}
+  if(d.hasFAQSchema||d.hasFAQ){p7+=15;p7f.push({t:'FAQ content detected ✓',s:'pass'});}else{p7f.push({t:'No FAQ section — missed AI snippet opp.',s:'warn'});}
+  if(d.altCoverage===100){p7+=10;p7f.push({t:'100% image alt text coverage ✓',s:'pass'});}else if(d.altCoverage>70){p7+=5;p7f.push({t:`${d.altCoverage}% alt text coverage`,s:'warn'});}else{p7f.push({t:`Only ${d.altCoverage}% images have alt text`,s:'fail'});}
+  p7 = Math.max(0, Math.min(100, p7));
+  phases.push({n:'AI Readiness (GEO)', s:p7, f:p7f});
+
+  // P8 — Links & Images
+  let p8 = 50;
+  const p8f = [];
+  if(d.imgMissingAlt===0&&d.imgCount>0){p8+=15;p8f.push({t:`All ${d.imgCount} images have alt text ✓`,s:'pass'});}else if(d.imgMissingAlt>0){p8-=d.imgMissingAlt*5;p8f.push({t:`${d.imgMissingAlt} images missing alt text`,s:'fail'});}
+  if(d.hasWebPImages){p8+=15;p8f.push({t:'WebP images in use ✓',s:'pass'});}else{p8-=10;p8f.push({t:'No WebP images — use modern formats',s:'fail'});}
+  if(d.externalLinks>2){p8+=10;p8f.push({t:`${d.externalLinks} external links — good authority signals`,s:'pass'});}else{p8f.push({t:'Few external links — add authoritative references',s:'warn'});}
+  if(d.hasTelLink&&d.hasMailtoLink){p8+=15;p8f.push({t:'Phone + email links clickable ✓',s:'pass'});}else if(!d.hasTelLink&&!d.hasMailtoLink){p8-=20;p8f.push({t:'No clickable tel: or mailto: links',s:'fail'});}
+  p8 = Math.max(0, Math.min(100, p8));
+  phases.push({n:'Links & Images', s:p8, f:p8f});
+
+  // P9 — Schema
+  let p9 = 10;
+  const p9f = [];
+  if(d.hasSchema){p9+=20;p9f.push({t:'JSON-LD structured data found ✓',s:'pass'});}else{p9f.push({t:'No structured data (JSON-LD) found',s:'fail'});}
+  if(d.hasLocalBusiness){p9+=25;p9f.push({t:'LocalBusiness schema ✓',s:'pass'});}else{p9-=5;p9f.push({t:'No LocalBusiness schema',s:'fail'});}
+  if(d.hasOrganization){p9+=15;p9f.push({t:'Organization schema ✓',s:'pass'});}else{p9f.push({t:'No Organization schema',s:'fail'});}
+  if(d.hasFAQSchema){p9+=15;p9f.push({t:'FAQPage schema ✓',s:'pass'});}else{p9f.push({t:'No FAQ schema — missed rich result',s:'warn'});}
+  if(d.hasWebSite){p9+=10;p9f.push({t:'WebSite schema ✓',s:'pass'});}
+  if(d.hasServiceSchema){p9+=10;p9f.push({t:'Service schema ✓',s:'pass'});}else{p9f.push({t:'No Service schema',s:'warn'});}
+  if(d.schemaTypes.length>0){p9f.push({t:`Schema types found: ${d.schemaTypes.join(', ')}`,s:'pass'});}
+  p9 = Math.max(0, Math.min(100, p9));
+  phases.push({n:'Schema Markup', s:p9, f:p9f});
+
+  // P10 — Local SEO
+  let p10 = 30;
+  const p10f = [];
+  if(d.cityInTitle){p10+=15;p10f.push({t:'City/region in title tag ✓',s:'pass'});}else{p10f.push({t:'No geo keyword in title',s:'fail'});}
+  if(d.cityInH1){p10+=15;p10f.push({t:'City/region in H1 ✓',s:'pass'});}else{p10f.push({t:'No geo keyword in H1',s:'warn'});}
+  if(d.cityInMeta){p10+=10;p10f.push({t:'City/region in meta description ✓',s:'pass'});}else{p10f.push({t:'No geo keyword in meta description',s:'warn'});}
+  if(d.hasLocalBusiness){p10+=20;p10f.push({t:'LocalBusiness schema with location ✓',s:'pass'});}else{p10f.push({t:'No local schema — invisible to maps',s:'fail'});}
+  if(d.hasGeoCoords){p10+=10;p10f.push({t:'Geo coordinates in schema ✓',s:'pass'});}
+  if(d.hasAreaServed){p10+=10;p10f.push({t:'areaServed in schema ✓',s:'pass'});}else{p10f.push({t:'No areaServed in schema',s:'warn'});}
+  p10 = Math.max(0, Math.min(100, p10));
+  phases.push({n:'Local SEO', s:p10, f:p10f});
+
+  // P11 — UX/UI
+  let p11 = 50;
+  const p11f = [];
+  if(d.viewport){p11+=10;p11f.push({t:'Viewport meta tag ✓',s:'pass'});}else{p11f.push({t:'No viewport meta — breaks mobile',s:'fail'});}
+  if(d.hasMobileNav){p11+=10;p11f.push({t:'Mobile navigation detected ✓',s:'pass'});}else{p11f.push({t:'No mobile nav detected',s:'warn'});}
+  if(d.headingStructure.good){p11+=15;p11f.push({t:'Proper heading hierarchy (1 H1) ✓',s:'pass'});}else{p11f.push({t:'Heading hierarchy issues',s:'warn'});}
+  if(d.hasSkipNav){p11+=10;p11f.push({t:'Skip navigation link ✓',s:'pass'});}else{p11f.push({t:'No skip nav link',s:'warn'});}
+  if(d.navCount<=8){p11+=10;p11f.push({t:`${d.navCount} nav items — clean ✓`,s:'pass'});}else if(d.navCount>12){p11-=10;p11f.push({t:`${d.navCount} nav links — consider consolidating`,s:'warn'});}
+  p11 = Math.max(0, Math.min(100, p11));
+  phases.push({n:'UX / UI Design', s:p11, f:p11f});
+
+  // P12 — ADA
+  let p12 = 40;
+  const p12f = [];
+  if(d.hasRoleMain){p12+=15;p12f.push({t:'role="main" or <main> ✓',s:'pass'});}else{p12f.push({t:'Missing main landmark',s:'fail'});}
+  if(d.hasRoleBanner){p12+=10;p12f.push({t:'role="banner" or <header> ✓',s:'pass'});}else{p12f.push({t:'Missing banner landmark',s:'warn'});}
+  if(d.hasRoleContentinfo){p12+=10;p12f.push({t:'role="contentinfo" or <footer> ✓',s:'pass'});}else{p12f.push({t:'Missing contentinfo landmark',s:'warn'});}
+  if(d.formLabels.total>0){
+    if(d.formLabels.labeled>=d.formLabels.total){p12+=15;p12f.push({t:`All ${d.formLabels.total} form fields labeled ✓`,s:'pass'});}
+    else{p12-=15;p12f.push({t:`${d.formLabels.total-d.formLabels.labeled}/${d.formLabels.total} form fields unlabeled`,s:'fail'});}
+  }
+  if(d.hasAriaLabels>0){p12+=10;p12f.push({t:`${d.hasAriaLabels} aria-label attributes ✓`,s:'pass'});}else{p12f.push({t:'No aria-label attributes found',s:'warn'});}
+  if(d.hasA11yStatement){p12+=10;p12f.push({t:'Accessibility statement detected ✓',s:'pass'});}else{p12f.push({t:'No accessibility statement',s:'warn'});}
+  if(d.contrastIssues.length>0){p12-=15;d.contrastIssues.forEach(i=>p12f.push({t:i,s:'fail'}));}
+  p12 = Math.max(0, Math.min(100, p12));
+  phases.push({n:'ADA Compliance', s:p12, f:p12f});
+
+  return phases;
+}
+
+function getGrade(score) {
+  if (score>=90) return {g:'A',cls:'grade-a'};
+  if (score>=80) return {g:'B',cls:'grade-b'};
+  if (score>=70) return {g:'C',cls:'grade-c'};
+  if (score>=60) return {g:'D',cls:'grade-d'};
+  return {g:'F',cls:'grade-f'};
+}
+
+function phaseColor(score) {
+  if (score>=80) return 'pass';
+  if (score>=60) return 'warn';
+  return 'fail';
+}
+
+function buildPriorityFixes(phases) {
+  const fixes = [];
+  // Schema always top priority if missing
+  const schema = phases[8];
+  if (schema.s < 50) fixes.push({priority:'HIGH',title:'Add JSON-LD Schema Markup',desc:'LocalBusiness, Organization, and FAQPage schema are missing. This is the #1 fix for local search visibility and AI engine citations.',level:'fix-high'});
+  // Contact
+  const trust = phases[4];
+  if (trust.s < 50) fixes.push({priority:'HIGH',title:'Add Clickable Contact Methods',desc:'No email or phone links detected. Every prospect who wants to reach out must work harder — directly killing conversions.',level:'fix-high'});
+  // Sitemap
+  const seo = phases[1];
+  if (!auditData.sitemapExists) fixes.push({priority:'HIGH',title:'Create & Submit sitemap.xml',desc:'Missing sitemap means crawlers work harder to find your pages. Generate one and submit to Google Search Console.',level:'fix-high'});
+  // Social proof
+  const persuasion = phases[3];
+  if (persuasion.s < 60) fixes.push({priority:'MED',title:'Add Testimonials & Social Proof',desc:'No customer reviews or testimonials detected. This is the fastest way to build trust with prospects who don\'t know you.',level:'fix-med'});
+  // AI readiness
+  const ai = phases[6];
+  if (!auditData.llmsExists) fixes.push({priority:'MED',title:'Add llms.txt for AI Search',desc:'AI assistants like ChatGPT and Perplexity prefer sites with llms.txt guidance. Add one to improve AI citation rates.',level:'fix-med'});
+  // Images
+  const imgs = phases[7];
+  if (!auditData.hasWebPImages) fixes.push({priority:'MED',title:'Convert Images to WebP',desc:'PNG/JPEG images are 25-35% larger than WebP. Converting speeds up load times and improves Core Web Vitals.',level:'fix-med'});
+  // Local SEO
+  const local = phases[9];
+  if (local.s < 50) fixes.push({priority:'MED',title:'Add City/Region Keywords',desc:'No geographic keywords found in title, H1, or meta description. Local search queries won\'t find this business.',level:'fix-med'});
+  // ADA
+  const ada = phases[11];
+  if (ada.s < 60) fixes.push({priority:'LOW',title:'Fix Accessibility Issues',desc:'Unlabeled forms and missing ARIA landmarks hurt screen reader users and expose the site to ADA compliance risk.',level:'fix-low'});
+  // Pad if short
+  if (fixes.length < 3) fixes.push({priority:'LOW',title:'Expand Content Depth',desc:'Add more original content, statistics, and FAQ sections to improve both SEO rankings and AI search citations.',level:'fix-low'});
+  return fixes.slice(0, 6);
+}
+
+function renderResults(url, d) {
+  auditData = d;
+  const phases = scorePhases(d);
+  const total = Math.round(phases.reduce((a,p)=>a+p.s,0)/phases.length);
+  const grade = getGrade(total);
+
+  // Category scores
+  const cats = [
+    {n:'Foundation', v: Math.round((phases[0].s+phases[1].s)/2)},
+    {n:'Content', v: Math.round((phases[2].s+phases[3].s)/2)},
+    {n:'Trust', v: Math.round((phases[4].s+phases[5].s)/2)},
+    {n:'Technical', v: Math.round((phases[6].s+phases[7].s+phases[8].s)/3)},
+    {n:'Local', v: Math.round((phases[9].s+phases[10].s)/2)},
+    {n:'Accessibility', v: phases[11].s},
+  ];
+
+  const catColor = v => v>=80?'var(--green)':v>=60?'var(--amber)':'var(--red)';
+  const fixes = buildPriorityFixes(phases);
+
+  const html = `
+    <div class="score-card">
+      <div class="score-main">
+        <div class="score-num" style="color:${total>=80?'var(--green)':total>=60?'var(--amber)':'var(--red)'}">${total}</div>
+        <div class="score-label">Overall Score</div>
+        <div class="score-grade ${grade.cls}">Grade ${grade.g}</div>
+      </div>
+      <div class="score-breakdown">
+        ${cats.map(c=>`<div class="cat-score"><div class="cat-name">${c.n}</div><div class="cat-val" style="color:${catColor(c.v)}">${c.v}</div></div>`).join('')}
+      </div>
+      <div class="score-summary">
+        <span class="site-url">${url}</span>
+        <strong>12-phase audit complete.</strong> ${total>=80?'Strong foundation with minor gaps to address.':total>=60?'Solid start — several high-impact fixes available.':'Significant gaps found. Prioritize schema, contact info, and sitemap first.'} Scroll down for detailed findings and priority fixes.
+      </div>
+    </div>
+
+    <div class="phases-label">Phase Analysis</div>
+    <div class="phases">
+      ${phases.map((p,i)=>`
+        <div class="phase">
+          <div class="phase-header">
+            <span class="phase-num">Phase ${i+1}</span>
+            <span class="phase-name">${p.n}</span>
+            <span class="phase-score-badge ${phaseColor(p.s)}">${p.s}</span>
+          </div>
+          <div class="phase-findings">
+            ${p.f.slice(0,4).map(f=>`<div class="finding"><span class="finding-dot dot-${f.s}"></span><span>${f.t}</span></div>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="fixes-section">
+      <div class="phases-label">Priority Fixes</div>
+      <div class="fixes-grid">
+        ${fixes.map(f=>`
+          <div class="fix-card">
+            <div class="fix-priority ${f.level}">● ${f.priority} PRIORITY</div>
+            <div class="fix-title">${f.title}</div>
+            <div class="fix-desc">${f.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button class="export-btn primary" onclick="copyReport()">Copy Report Summary</button>
+      <button class="export-btn" onclick="document.getElementById('urlInput').focus();document.getElementById('results').style.display='none';">Audit Another Site</button>
+    </div>
+  `;
+
+  const el = document.getElementById('results');
+  el.innerHTML = html;
+  el.style.display = 'block';
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function copyReport() {
+  const phases = scorePhases(auditData);
+  const total = Math.round(phases.reduce((a,p)=>a+p.s,0)/phases.length);
+  const grade = getGrade(total);
+  const url = document.getElementById('urlInput').value;
+  const text = `BUILTSY SITE AUDIT — ${url}\nOverall Score: ${total}/100 (Grade ${grade.g})\n\n${phases.map((p,i)=>`Phase ${i+1} — ${p.n}: ${p.s}/100\n${p.f.slice(0,3).map(f=>`  ${f.s==='pass'?'✓':'✗'} ${f.t}`).join('\n')}`).join('\n\n')}\n\nGenerated by Builtsy`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>btn.textContent='Copy Report Summary',2000);
+  });
+}
+
+// Enter key
+document.getElementById('urlInput').addEventListener('keydown',e=>{if(e.key==='Enter')runAudit();});
+</script>
+</body>
+</html>

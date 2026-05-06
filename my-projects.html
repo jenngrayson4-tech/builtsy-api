@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Projects | Builtsy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #1A2235; color: white; min-height: 100vh; }
+  .sidebar { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: #12192B; border-right: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; overflow-y: auto; z-index: 10; }
+  .sidebar-logo { padding: 1.5rem 1.25rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .logo-text { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #C8E000; display: block; margin-bottom: 0.25rem; }
+  .logo-sub { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+  .sidebar-nav { padding: 1.25rem 0.75rem; flex: 1; }
+  .nav-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0.5rem 0.75rem; display: block; margin-bottom: 0.25rem; }
+  .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: rgba(255,255,255,0.55); font-size: 0.875rem; transition: all 0.15s; margin-bottom: 0.15rem; }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+  .nav-item.active { background: rgba(238,112,188,0.12); border: 1px solid rgba(238,112,188,0.2); color: #ee70bc; }
+  .nav-icon { font-size: 1rem; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: #C8E000; color: #12192B; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+  .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.07); }
+  .sidebar-footer a { font-size: 0.78rem; color: rgba(255,255,255,0.3); text-decoration: none; display: block; margin-bottom: 0.4rem; }
+  .sidebar-footer a:hover { color: #ee70bc; }
+  .main { margin-left: 260px; min-height: 100vh; }
+  .topbar { background: #12192B; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 5; }
+  .breadcrumb { font-size: 0.8rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.5rem; }
+  .breadcrumb a { color: #ee70bc; text-decoration: none; }
+  .content { max-width: 900px; padding: 3rem 2.5rem 6rem; }
+
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 900; color: white; margin-bottom: 0.5rem; }
+  .page-intro { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; line-height: 1.7; }
+
+  /* NEW PROJECT BUTTON */
+  .new-project-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #ee70bc; color: white; border: none; border-radius: 2rem; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; text-decoration: none; }
+  .new-project-btn:hover { background: #C8E000; color: #12192B; }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-tab { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 2rem; padding: 0.4rem 1rem; font-size: 0.8rem; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.15s; }
+  .filter-tab:hover { border-color: rgba(255,255,255,0.2); color: white; }
+  .filter-tab.active { background: rgba(238,112,188,0.15); border-color: rgba(238,112,188,0.3); color: #ee70bc; }
+
+  /* PROJECT GRID */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+
+  /* PROJECT CARD */
+  .project-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.25rem; transition: all 0.15s; position: relative; }
+  .project-card:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
+  .project-type-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; margin-bottom: 0.75rem; }
+  .badge-lb { background: rgba(200,224,0,0.15); color: #C8E000; }
+  .badge-lib { background: rgba(238,112,188,0.15); color: #ee70bc; }
+  .badge-su { background: rgba(139,162,240,0.15); color: #8ba2f0; }
+  .project-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .project-meta { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-bottom: 1rem; }
+  .project-actions { display: flex; gap: 0.5rem; }
+  .project-btn { flex: 1; padding: 0.5rem; border-radius: 0.625rem; font-size: 0.775rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.3rem; }
+  .project-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+  .project-btn-open { background: rgba(200,224,0,0.1); border-color: rgba(200,224,0,0.3); color: #C8E000; }
+  .project-btn-open:hover { background: rgba(200,224,0,0.2); }
+  .project-btn-delete:hover { background: rgba(224,58,30,0.15); border-color: rgba(224,58,30,0.3); color: #E03A1E; }
+
+  /* EMPTY STATE */
+  .empty-state { text-align: center; padding: 4rem 2rem; }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.4; }
+  .empty-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: white; margin-bottom: 0.5rem; }
+  .empty-desc { font-size: 0.875rem; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; line-height: 1.7; }
+
+  /* NEW PROJECT MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #12192B; border: 1px solid rgba(255,255,255,0.1); border-radius: 1.25rem; padding: 2rem; width: 100%; max-width: 440px; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
+  .modal p { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; line-height: 1.6; }
+  .modal-field { margin-bottom: 1rem; }
+  .modal-field label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7); display: block; margin-bottom: 0.4rem; }
+  .fi { padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.875rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; width: 100%; }
+  .fi:focus { border-color: #ee70bc; }
+  .bp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.4rem; }
+  .bp-option { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.75rem; cursor: pointer; transition: all 0.15s; text-align: center; }
+  .bp-option:hover { border-color: rgba(255,255,255,0.2); }
+  .bp-option.selected { border-color: #ee70bc; background: rgba(238,112,188,0.08); }
+  .bp-option-icon { font-size: 1.25rem; display: block; margin-bottom: 0.25rem; }
+  .bp-option-name { font-size: 0.75rem; font-weight: 600; color: white; display: block; }
+  .bp-option-desc { font-size: 0.65rem; color: rgba(255,255,255,0.4); margin-top: 0.15rem; }
+  .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+  .modal-btn { flex: 1; padding: 0.75rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; border: none; }
+  .modal-btn-cancel { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
+  .modal-btn-cancel:hover { background: rgba(255,255,255,0.12); }
+  .modal-btn-create { background: #ee70bc; color: white; }
+  .modal-btn-create:hover { background: #C8E000; color: #12192B; }
+
+  /* RENAME INLINE */
+  .project-name-edit { background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); color: white; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; width: 100%; outline: none; padding: 2px 0; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .content { padding: 2rem 1.5rem 4rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .bp-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<script>if (!sessionStorage.getItem('builtsy-auth')) { window.location.href = 'login.html'; }</script>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-text">Builtsy</span><span class="logo-sub">Private Beta</span></div>
+  <nav class="sidebar-nav">
+    <span class="nav-label">Overview</span>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="my-projects.html" class="nav-item active"><span class="nav-icon">📁</span> My Projects</a>
+    <a href="dashboard.html#downloads" class="nav-item"><span class="nav-icon">📥</span> Downloads</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Builtsy Basics</span>
+    <a href="basics1.html" class="nav-item"><span class="nav-icon">🎯</span> 01 — The System</a>
+    <a href="basics2.html" class="nav-item"><span class="nav-icon">🔨</span> 02 — Your Build</a>
+    <a href="basics3.html" class="nav-item"><span class="nav-icon">🚀</span> 03 — Go Live</a>
+    <a href="basics4.html" class="nav-item"><span class="nav-icon">💰</span> 04 — Get Paid</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Blueprint Library</span>
+    <a href="blueprint-local-business.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">01</span> Local Business</a>
+    <a href="blueprint-link-in-bio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">02</span> Link in Bio</a>
+    <a href="blueprint-site-upgrade.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">↑</span> Site Upgrade</a>
+    <a href="blueprint-restaurant.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">03</span> Restaurant</a>
+    <a href="blueprint-health-wellness.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">04</span> Health &amp; Wellness</a>
+    <a href="blueprint-creative-portfolio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">05</span> Creative Portfolio</a>
+    <a href="blueprint-home-services.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">06</span> Home Services</a>
+    <a href="blueprint-consulting.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">07</span> Consulting</a>
+    <a href="blueprint-real-estate.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">08</span> Real Estate</a>
+    <a href="blueprint-trades.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">09</span> Trades &amp; Contractors</a>
+    <a href="blueprint-personal-brand.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">10</span> Personal Brand</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Community</span>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span> Facebook Group</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Bonus</span>
+    <a href="bonus-updates.html" class="nav-item"><span class="nav-icon">⚡</span> Editing &amp; Updating Builds <span class="nav-badge" style="background:#ee70bc;">New</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="onboarding.html?preview=1" style="color:rgba(200,224,0,0.6);">✦ Preview Onboarding</a>
+    <a href="https://builtsy.ai/affiliates" target="_blank">🔗 Share Builtsy — Earn 20%</a>
+    <a href="login.html" onclick="sessionStorage.clear()">Log out</a>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a><span>›</span>
+      <span>My Projects</span>
+    </div>
+    <button class="new-project-btn" onclick="openNewModal()">+ New Project</button>
+  </div>
+
+  <div class="content">
+    <h1>My Projects</h1>
+    <p class="page-intro">All your saved Blueprints in one place. Click any project to open it in the Blueprint form — everything pre-filled and ready to go.</p>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <div class="filter-tab active" onclick="filterProjects('all', this)">All projects</div>
+      <div class="filter-tab" onclick="filterProjects('lb', this)">🌐 Local Business</div>
+      <div class="filter-tab" onclick="filterProjects('lib', this)">🔗 Link in Bio</div>
+      <div class="filter-tab" onclick="filterProjects('su', this)">⚡ Site Upgrade</div>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <div class="projects-grid" id="projects-grid"></div>
+
+    <!-- EMPTY STATE -->
+    <div id="empty-state" style="display:none;">
+      <div class="empty-state">
+        <span class="empty-icon">📁</span>
+        <div class="empty-title">No projects yet</div>
+        <p class="empty-desc">Create your first project to save your Blueprint info.<br>Each project stores everything for one client or build.</p>
+        <button class="new-project-btn" onclick="openNewModal()">+ Create your first project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PROJECT MODAL -->
+<div class="modal-overlay" id="new-modal">
+  <div class="modal">
+    <h3>New Project</h3>
+    <p>Give it a name and pick a Blueprint type. You can always change the Blueprint type later.</p>
+    <div class="modal-field">
+      <label>Project name</label>
+      <input type="text" class="fi" id="new-project-name" placeholder="e.g. Parker Plumbing, Sarah's Link in Bio, My Family Chore App">
+    </div>
+    <div class="modal-field">
+      <label>Blueprint type</label>
+      <div class="bp-grid" id="bp-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="bp-option selected" onclick="selectBP(this,'lb')" data-type="lb"><span class="bp-option-icon">🌐</span><span class="bp-option-name">Local Business</span></div>
+        <div class="bp-option" onclick="selectBP(this,'lib')" data-type="lib"><span class="bp-option-icon">🔗</span><span class="bp-option-name">Link in Bio</span></div>
+        <div class="bp-option" onclick="selectBP(this,'su')" data-type="su"><span class="bp-option-icon">⚡</span><span class="bp-option-name">Site Upgrade</span></div>
+        <div class="bp-option" onclick="selectBP(this,'rst')" data-type="rst"><span class="bp-option-icon">🍽️</span><span class="bp-option-name">Restaurant</span></div>
+        <div class="bp-option" onclick="selectBP(this,'hlth')" data-type="hlth"><span class="bp-option-icon">💆</span><span class="bp-option-name">Health & Wellness</span></div>
+        <div class="bp-option" onclick="selectBP(this,'crt')" data-type="crt"><span class="bp-option-icon">📸</span><span class="bp-option-name">Creative Portfolio</span></div>
+        <div class="bp-option" onclick="selectBP(this,'hsv')" data-type="hsv"><span class="bp-option-icon">🔧</span><span class="bp-option-name">Home Services</span></div>
+        <div class="bp-option" onclick="selectBP(this,'con')" data-type="con"><span class="bp-option-icon">💼</span><span class="bp-option-name">Consulting</span></div>
+        <div class="bp-option" onclick="selectBP(this,'chr')" data-type="chr"><span class="bp-option-icon">🧹</span><span class="bp-option-name">Chore App</span></div>
+        <div class="bp-option" onclick="selectBP(this,'saf')" data-type="saf"><span class="bp-option-icon">🗺️</span><span class="bp-option-name">Safety Itinerary</span></div>
+        <div class="bp-option" onclick="selectBP(this,'bbs')" data-type="bbs"><span class="bp-option-icon">👶</span><span class="bp-option-name">Babysitter</span></div>
+        <div class="bp-option" onclick="selectBP(this,'hw')" data-type="hw"><span class="bp-option-icon">📚</span><span class="bp-option-name">Homework Tracker</span></div>
+        <div class="bp-option" onclick="selectBP(this,'hm')" data-type="hm"><span class="bp-option-icon">🏡</span><span class="bp-option-name">House Manager</span></div>
+        <div class="bp-option selected" onclick="selectBP(this,'lb')" data-type="lb">
+          <span class="bp-option-icon">🌐</span>
+          <span class="bp-option-name">Local Business</span>
+          <span class="bp-option-desc">Full website build</span>
+        </div>
+        <div class="bp-option" onclick="selectBP(this,'lib')" data-type="lib">
+          <span class="bp-option-icon">🔗</span>
+          <span class="bp-option-name">Link in Bio</span>
+          <span class="bp-option-desc">Replace Linktree</span>
+        </div>
+        <div class="bp-option" onclick="selectBP(this,'su')" data-type="su">
+          <span class="bp-option-icon">⚡</span>
+          <span class="bp-option-name">Site Upgrade</span>
+          <span class="bp-option-desc">Existing site</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeNewModal()">Cancel</button>
+      <button class="modal-btn modal-btn-create" onclick="createProject()">Create Project →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var STORAGE_KEY = 'ppp-projects';
+var currentFilter = 'all';
+var selectedBPType = 'lb';
+
+var BP_CONFIG = {
+  lb:  { label: 'Local Business', icon: '🌐', badgeClass: 'badge-lb', storageKey: 'ppp-blueprint-lb',  url: 'blueprint-local-business.html' },
+  lib: { label: 'Link in Bio',    icon: '🔗', badgeClass: 'badge-lib', storageKey: 'ppp-blueprint-lib', url: 'blueprint-link-in-bio.html'    },
+  su:  { label: 'Site Upgrade',   icon: '⚡', badgeClass: 'badge-su',  storageKey: 'builtsy-bp-su-v3', url: 'blueprint-site-upgrade.html'   },
+  rst: { label: 'Restaurant',     icon: '🍽️', badgeClass: 'badge-lb', storageKey: 'ppp-bp-rst',        url: 'blueprint-restaurant.html'     },
+  hlth:{ label: 'Health & Wellness','icon':'💆','badgeClass':'badge-lib','storageKey':'ppp-bp-hlth',    url: 'blueprint-health-wellness.html'},
+  crt: { label: 'Creative Portfolio','icon':'📸','badgeClass':'badge-su','storageKey':'ppp-bp-crt',     url: 'blueprint-creative-portfolio.html'},
+  hsv: { label: 'Home Services',  icon: '🔧', badgeClass: 'badge-lb', storageKey: 'ppp-bp-hsv',        url: 'blueprint-home-services.html'  },
+  con: { label: 'Consulting',     icon: '💼', badgeClass: 'badge-lib', storageKey: 'ppp-bp-con',        url: 'blueprint-consulting.html'     },
+  chr: { label: 'Chore App',      icon: '🧹', badgeClass: 'badge-su', storageKey: 'ppp-bp-chr',        url: 'blueprint-chore-app.html'      },
+  saf: { label: 'Safety Itinerary','icon':'🗺️','badgeClass':'badge-lb','storageKey':'ppp-bp-saf',      url: 'blueprint-safety-itinerary.html'},
+  bbs: { label: 'Babysitter',     icon: '👶', badgeClass: 'badge-lib', storageKey: 'ppp-bp-bbs',        url: 'blueprint-babysitter.html'     },
+  hw:  { label: 'Homework Tracker','icon':'📚','badgeClass':'badge-su','storageKey':'ppp-bp-hw',       url: 'blueprint-homework-tracker.html'},
+  hm:  { label: 'House Manager',  icon: '🏡', badgeClass: 'badge-lb', storageKey: 'ppp-bp-hm',         url: 'blueprint-house-manager.html'  },
+  re:  { label: 'Real Estate',    icon: '🏠', badgeClass: 'badge-lb', storageKey: 'builtsy-bp-re',       url: 'blueprint-real-estate.html'    },
+  tr:  { label: 'Trades & Contractors', icon: '🔧', badgeClass: 'badge-lb', storageKey: 'builtsy-bp-tr', url: 'blueprint-trades.html'         },
+};
+
+
+// ---- STORAGE HELPERS ----
+function getProjects() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; }
+}
+function saveProjects(projects) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+}
+function generateId() {
+  return 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+}
+
+// ---- RENDER ----
+function renderProjects() {
+  var projects = getProjects();
+  var filtered = currentFilter === 'all' ? projects : projects.filter(function(p) { return p.type === currentFilter; });
+  var grid = document.getElementById('projects-grid');
+  var empty = document.getElementById('empty-state');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Sort by last edited desc
+  filtered.sort(function(a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+
+  grid.innerHTML = filtered.map(function(p) {
+    var config = BP_CONFIG[p.type] || BP_CONFIG.lb;
+    var date = p.updatedAt ? new Date(p.updatedAt).toLocaleDateString('en-US', {month:'short', day:'numeric'}) : 'Just created';
+    return '<div class="project-card" id="card-' + p.id + '">' +
+      '<div class="project-type-badge ' + config.badgeClass + '">' + config.icon + ' ' + config.label + '</div>' +
+      '<div class="project-name" id="name-' + p.id + '">' + escHtml(p.name) + '</div>' +
+      '<div class="project-meta">Last edited ' + date + '</div>' +
+      '<div class="project-actions">' +
+        '<a href="' + config.url + '?project=' + p.id + '" class="project-btn project-btn-open">Open →</a>' +
+        '<button class="project-btn" onclick="renameProject(\'' + p.id + '\')">Rename</button>' +
+        '<button class="project-btn" onclick="duplicateProject(\'' + p.id + '\')">Duplicate</button>' +
+        '<button class="project-btn project-btn-delete" onclick="deleteProject(\'' + p.id + '\')">Delete</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ---- FILTER ----
+function filterProjects(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  renderProjects();
+}
+
+// ---- NEW PROJECT MODAL ----
+function openNewModal() {
+  document.getElementById('new-project-name').value = '';
+  selectBP(document.querySelector('.bp-option[data-type="lb"]'), 'lb');
+  document.getElementById('new-modal').classList.add('open');
+  setTimeout(function() { document.getElementById('new-project-name').focus(); }, 100);
+}
+
+function closeNewModal() {
+  document.getElementById('new-modal').classList.remove('open');
+}
+
+function selectBP(el, type) {
+  document.querySelectorAll('.bp-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedBPType = type;
+}
+
+function createProject() {
+  var name = document.getElementById('new-project-name').value.trim();
+  if (!name) { document.getElementById('new-project-name').focus(); return; }
+  var project = { id: generateId(), name: name, type: selectedBPType, createdAt: Date.now(), updatedAt: Date.now(), data: {} };
+  var projects = getProjects();
+  projects.unshift(project);
+  saveProjects(projects);
+  closeNewModal();
+
+  // Navigate to Blueprint with project ID
+  var config = BP_CONFIG[selectedBPType];
+  window.location.href = config.url + '?project=' + project.id;
+}
+
+// ---- PROJECT ACTIONS ----
+function renameProject(id) {
+  var projects = getProjects();
+  var project = projects.find(function(p) { return p.id === id; });
+  if (!project) return;
+  var newName = prompt('Rename project:', project.name);
+  if (!newName || !newName.trim()) return;
+  project.name = newName.trim();
+  project.updatedAt = Date.now();
+  saveProjects(projects);
+  renderProjects();
+}
+
+function duplicateProject(id) {
+  var projects = getProjects();
+  var project = projects.find(function(p) { return p.id === id; });
+  if (!project) return;
+  var copy = JSON.parse(JSON.stringify(project));
+  copy.id = generateId();
+  copy.name = project.name + ' (copy)';
+  copy.createdAt = Date.now();
+  copy.updatedAt = Date.now();
+  projects.unshift(copy);
+  saveProjects(projects);
+  renderProjects();
+}
+
+function deleteProject(id) {
+  if (!confirm('Delete this project? This cannot be undone.')) return;
+  var projects = getProjects().filter(function(p) { return p.id !== id; });
+  saveProjects(projects);
+  renderProjects();
+}
+
+// ---- KEYBOARD ----
+document.getElementById('new-project-name').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') createProject();
+  if (e.key === 'Escape') closeNewModal();
+});
+document.getElementById('new-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeNewModal();
+});
+
+// ---- INIT ----
+renderProjects();
+
+// Auto-open new modal if ?new=1
+var initParams = new URLSearchParams(window.location.search);
+if (initParams.get('new') === '1') {
+  setTimeout(openNewModal, 300);
+}
+</script>
+</body>
+</html>
+  pb: { label: 'Personal Brand',    icon: '✨', badgeClass: 'badge-lib', storageKey: 'builtsy-bp-pb',      url: 'blueprint-personal-brand.html' },

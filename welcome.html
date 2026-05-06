@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome | Builtsy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #1A2235;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(238,112,188,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(139,162,240,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LOGO */
+  .logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #C8E000;
+    text-align: center;
+    display: block;
+    margin-bottom: 2.5rem;
+  }
+
+  /* STEPS INDICATOR */
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: all 0.3s;
+  }
+
+  .step-dot.active { background: #ee70bc; width: 24px; border-radius: 4px; }
+  .step-dot.done { background: #C8E000; }
+
+  /* CARD */
+  .card {
+    background: #12192B;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #ee70bc;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+
+  .card h2 em { font-style: italic; color: #ee70bc; }
+
+  .card-sub {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.925rem;
+    line-height: 1.4;
+  }
+
+  .option:hover {
+    background: rgba(238,112,188,0.08);
+    border-color: rgba(238,112,188,0.3);
+    color: white;
+  }
+
+  .option.selected {
+    background: rgba(238,112,188,0.12);
+    border-color: #ee70bc;
+    color: white;
+  }
+
+  .option-emoji { font-size: 1.3rem; flex-shrink: 0; }
+
+  .option-text { flex: 1; }
+  .option-label { font-weight: 500; display: block; }
+  .option-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.15rem; display: block; }
+
+  /* NEXT BTN */
+  .next-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #ee70bc, #8ba2f0);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: none;
+    margin-top: 1rem;
+  }
+
+  .next-btn:hover { opacity: 0.9; }
+  .next-btn.visible { display: block; }
+
+  /* RESULT CARD */
+  .result-card {
+    background: linear-gradient(135deg, #ee70bc 0%, #8ba2f0 100%);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+
+  .result-card::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 60px;
+    width: 100px; height: 100px;
+    background: rgba(200,224,0,0.15);
+    border-radius: 50%;
+  }
+
+  .result-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    display: block;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-message {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.75;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-tip {
+    background: rgba(255,255,255,0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.85rem;
+    color: white;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+    margin-top: 1.25rem;
+  }
+
+  .result-tip strong { display: block; margin-bottom: 0.25rem; color: #C8E000; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .enter-btn {
+    width: 100%;
+    padding: 1rem;
+    background: white;
+    color: #ee70bc;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .enter-btn:hover { background: #C8E000; color: #12192B; }
+
+  /* SKIP */
+  .skip-link {
+    display: block;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    margin-top: 0.75rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .skip-link:hover { color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+
+<script>
+  // Auth check
+  if (!sessionStorage.getItem('builtsy-auth')) {
+    window.location.href = 'login.html';
+  }
+  // If already onboarded, go straight to dashboard
+  if (localStorage.getItem('ppp-onboarded') === 'true') {
+    window.location.href = 'dashboard.html';
+  }
+  // Reset any partial quiz state
+  var allSteps = document.querySelectorAll('.card');
+  // Steps are controlled by JS — ensure clean start
+
+</script>
+
+<div class="wrap">
+  <span class="logo">Builtsy</span>
+
+  <!-- STEP DOTS -->
+  <div class="steps" id="steps">
+    <div class="step-dot active" id="dot-0"></div>
+    <div class="step-dot" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+    <div class="step-dot" id="dot-4"></div>
+  </div>
+
+  <!-- STEP 0 — Who are you -->
+  <div class="card" id="step-0">
+    <span class="card-tag">Welcome — Quick intro</span>
+    <h2>First things first — <em>who are you?</em></h2>
+    <p class="card-sub">No wrong answers. This helps us point you to what matters most.</p>
+    <div class="options">
+      <button class="option" onclick="select(0, 'mom', this)">
+        <span class="option-emoji">👩‍👧‍👦</span>
+        <span class="option-text">
+          <span class="option-label">Stay at home mom looking for income</span>
+          <span class="option-sub">I want to build something flexible around my family</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(0, 'working', this)">
+        <span class="option-emoji">💼</span>
+        <span class="option-text">
+          <span class="option-label">I work full time and want a side hustle</span>
+          <span class="option-sub">Evenings and weekends are my building time</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(0, 'teen', this)">
+        <span class="option-emoji">🎒</span>
+        <span class="option-text">
+          <span class="option-label">I'm a teen or student wanting to make money</span>
+          <span class="option-sub">I want real income, not just chores and allowance</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(0, 'freelancer', this)">
+        <span class="option-emoji">🚀</span>
+        <span class="option-text">
+          <span class="option-label">I'm already freelancing and want to add this</span>
+          <span class="option-sub">I have clients — I want to offer better websites</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(0, 'other', this)">
+        <span class="option-emoji">✨</span>
+        <span class="option-text">
+          <span class="option-label">Something else entirely</span>
+          <span class="option-sub">I just want to learn and see where it goes</span>
+        </span>
+      </button>
+    </div>
+    <button class="next-btn" id="next-0" onclick="nextStep(0)">Next →</button>
+  </div>
+
+  <!-- STEP 1 — Tech comfort -->
+  <div class="card" id="step-1" style="display:none;">
+    <span class="card-tag">Step 2 of 4</span>
+    <h2>How comfortable are you with <em>technology?</em></h2>
+    <p class="card-sub">Be honest — this course is designed for real beginners and we want to meet you where you are.</p>
+    <div class="options">
+      <button class="option" onclick="select(1, 'beginner', this)">
+        <span class="option-emoji">😅</span>
+        <span class="option-text">
+          <span class="option-label">I can barely figure out my phone</span>
+          <span class="option-sub">Technology and I have a complicated relationship</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(1, 'okay', this)">
+        <span class="option-emoji">🙂</span>
+        <span class="option-text">
+          <span class="option-label">I'm okay — I use apps and Google stuff</span>
+          <span class="option-sub">I can figure things out if someone shows me</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(1, 'comfortable', this)">
+        <span class="option-emoji">💪</span>
+        <span class="option-text">
+          <span class="option-label">Pretty comfortable — I've built things before</span>
+          <span class="option-sub">I've used tools like Canva, WordPress, or similar</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(1, 'techy', this)">
+        <span class="option-emoji">⚡</span>
+        <span class="option-text">
+          <span class="option-label">I work in tech or have a technical background</span>
+          <span class="option-sub">Just show me the system, I'll figure out the rest</span>
+        </span>
+      </button>
+    </div>
+    <button class="next-btn" id="next-1" onclick="nextStep(1)">Next →</button>
+  </div>
+
+  <!-- STEP 2 — Client situation -->
+  <div class="card" id="step-2" style="display:none;">
+    <span class="card-tag">Step 3 of 4</span>
+    <h2>Do you have a <em>first client</em> in mind?</h2>
+    <p class="card-sub">You don't need one to start — but if you have someone in mind, you're already ahead.</p>
+    <div class="options">
+      <button class="option" onclick="select(2, 'yes', this)">
+        <span class="option-emoji">🎯</span>
+        <span class="option-text">
+          <span class="option-label">Yes — I already know who I want to build for</span>
+          <span class="option-sub">I have a specific person or business in mind</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(2, 'maybe', this)">
+        <span class="option-emoji">🤔</span>
+        <span class="option-text">
+          <span class="option-label">Kind of — I have some ideas</span>
+          <span class="option-sub">A few businesses come to mind but nothing confirmed</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(2, 'no', this)">
+        <span class="option-emoji">🌱</span>
+        <span class="option-text">
+          <span class="option-label">No — I need help figuring that out</span>
+          <span class="option-sub">Module 6 covers exactly this — don't worry</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(2, 'me', this)">
+        <span class="option-emoji">🏠</span>
+        <span class="option-text">
+          <span class="option-label">I'm building for my own business first</span>
+          <span class="option-sub">I'll use myself as the test case</span>
+        </span>
+      </button>
+    </div>
+    <button class="next-btn" id="next-2" onclick="nextStep(2)">Next →</button>
+  </div>
+
+  <!-- STEP 3 — Biggest fear -->
+  <div class="card" id="step-3" style="display:none;">
+    <span class="card-tag">Step 4 of 4</span>
+    <h2>What's your <em>biggest concern</em> right now?</h2>
+    <p class="card-sub">Whatever it is, you're not alone. Pick the one that feels most true.</p>
+    <div class="options">
+      <button class="option" onclick="select(3, 'technical', this)">
+        <span class="option-emoji">🤯</span>
+        <span class="option-text">
+          <span class="option-label">That I won't understand the technical stuff</span>
+          <span class="option-sub">Code and tech words make my brain go fuzzy</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(3, 'clients', this)">
+        <span class="option-emoji">😬</span>
+        <span class="option-text">
+          <span class="option-label">That I won't be able to find clients</span>
+          <span class="option-sub">Building the site sounds fine — selling it is scary</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(3, 'finish', this)">
+        <span class="option-emoji">😔</span>
+        <span class="option-text">
+          <span class="option-label">That I'll start and not finish</span>
+          <span class="option-sub">I've started things before and lost momentum</span>
+        </span>
+      </button>
+      <button class="option" onclick="select(3, 'work', this)">
+        <span class="option-emoji">🙏</span>
+        <span class="option-text">
+          <span class="option-label">That it won't work for me specifically</span>
+          <span class="option-sub">Maybe it works for others but not my situation</span>
+        </span>
+      </button>
+    </div>
+    <button class="next-btn" id="next-3" onclick="showResult()">See my personalized start →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="result-card">
+    <span class="result-tag" id="result-tag">Your personalized start</span>
+    <h2 id="result-headline">You're in exactly the right place.</h2>
+    <p class="result-message" id="result-message"></p>
+    <div class="result-tip" id="result-tip">
+      <strong>Your first move</strong>
+      <span id="result-tip-text"></span>
+    </div>
+    <button class="enter-btn" onclick="enterCourse()">Enter the course →</button>
+  </div>
+
+  <span class="skip-link" onclick="skipOnboarding()">Skip intro — take me straight to the dashboard</span>
+</div>
+
+<script>
+var answers = { who: null, tech: null, client: null, fear: null };
+var currentStep = 0;
+
+function select(step, value, btn) {
+  // Update answer
+  var keys = ['who', 'tech', 'client', 'fear'];
+  answers[keys[step]] = value;
+
+  // Deselect siblings
+  var opts = btn.parentElement.querySelectorAll('.option');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  btn.classList.add('selected');
+
+  // Show next button
+  var nextBtn = document.getElementById('next-' + step);
+  if (nextBtn) {
+    nextBtn.classList.add('visible');
+    // For last step, button is shown differently
+    if (step === 3) nextBtn.classList.add('visible');
+  }
+}
+
+function nextStep(step) {
+  // Hide current step
+  document.getElementById('step-' + step).style.display = 'none';
+
+  // Update dots
+  document.getElementById('dot-' + step).classList.remove('active');
+  document.getElementById('dot-' + step).classList.add('done');
+
+  var nextStep = step + 1;
+  document.getElementById('dot-' + nextStep).classList.add('active');
+  document.getElementById('step-' + nextStep).style.display = 'block';
+
+  currentStep = nextStep;
+  window.scrollTo(0, 0);
+}
+
+function showResult() {
+  // Hide last step
+  document.getElementById('step-3').style.display = 'none';
+  document.getElementById('dot-3').classList.remove('active');
+  document.getElementById('dot-3').classList.add('done');
+  document.getElementById('dot-4').classList.add('active');
+
+  // Generate personalized message
+  var headline = '';
+  var message = '';
+  var tip = '';
+
+  // Persona-based messages
+  var who = answers.who;
+  var tech = answers.tech;
+  var client = answers.client;
+  var fear = answers.fear;
+
+  // TEEN
+  if (who === 'teen') {
+    headline = "You're already ahead of 99% of people your age.";
+    message = "Most adults don't know how to do what you're about to learn. This is a real skill that pays real money — Grayson started at 14 and built his first client site in a weekend. You've got the same system he used.";
+    tip = "Start Module 1 today. Then build a mockup of a local business you know — a restaurant, a salon, a family friend's business. Show it to someone. That's how it starts.";
+  }
+  // FREELANCER
+  else if (who === 'freelancer') {
+    headline = "You're going to move fast.";
+    message = "You already understand clients and delivery — you just need the system. The Blueprint prompt and the audit tools will immediately upgrade what you can offer. AI search optimization is something most freelancers aren't doing yet. This is your edge.";
+    tip = "Skim Module 1 to understand the why, then go straight to the Blueprint in Module 3. You'll probably build your first site this weekend.";
+  }
+  // MOM + BEGINNER TECH
+  else if (who === 'mom' && (tech === 'beginner' || tech === 'okay')) {
+    headline = "You are exactly who this was built for.";
+    message = "Jennifer built this for moms who aren't techie — just like she was when she started. The Blueprint does the hard part. Claude does the building. You just fill in the blanks. If a 14-year-old can do this, so can you.";
+    tip = "Don't skip Module 2. Collecting the right info before you open Claude is what makes everything else go smoothly. Give yourself an hour and work through it step by step.";
+  }
+  // WORKING + COMFORTABLE/TECHY
+  else if ((who === 'working' || who === 'other') && (tech === 'comfortable' || tech === 'techy')) {
+    headline = "You have everything you need to move fast.";
+    message = "You've got the technical foundation and the motivation. The system is straightforward — fill in the Blueprint, let Claude build, deploy on Netlify, run the audit. Your first site can be live this weekend.";
+    tip = "Start with Module 1 to understand what makes these sites different, then go straight to the build. Pick a real business to practice with — even a fictional one works.";
+  }
+  // DEFAULT / WORKING MOM
+  else {
+    headline = "You're in the right place at the right time.";
+    message = "AI search optimization is new enough that most web designers aren't doing it yet — but established enough that clients care about it when you explain it. You're learning something genuinely valuable right now.";
+    tip = "Work through the modules in order. Module 1 is short and sets up everything. Most people finish their first complete site within their first weekend.";
+  }
+
+  // Fear-based additions
+  if (fear === 'technical') {
+    tip += " Pro tip: you don't need to understand the code — just follow the Blueprint and trust the process. The audit tools will tell you if something's wrong.";
+  } else if (fear === 'clients') {
+    tip += " Module 6 covers the exact outreach script. Most students get their first response within 48 hours of reaching out.";
+  } else if (fear === 'finish') {
+    tip += " Set one specific goal: finish Module 1 today. Just one module. That's it. Momentum builds from there.";
+  } else if (fear === 'work') {
+    tip += " Here's the thing — you have the exact same Blueprint and tools that Grayson used to get real paying clients. The system doesn't care about your situation. It just works.";
+  }
+
+  // Client situation addition
+  if (client === 'yes') {
+    message += " You already have a client in mind — that's a huge head start. Keep them in mind as you go through the modules. By Module 3 you'll be ready to build their site.";
+  } else if (client === 'no') {
+    message += " Don't worry about not having a client yet — Module 6 covers exactly how to find your first one using the mockup-first strategy. It works even with zero experience.";
+  }
+
+  document.getElementById('result-headline').textContent = headline;
+  document.getElementById('result-message').textContent = message;
+  document.getElementById('result-tip-text').textContent = tip;
+
+  // Save persona to localStorage
+  localStorage.setItem('ppp-persona', JSON.stringify(answers));
+
+  // Show result
+  document.getElementById('result-card').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function enterCourse() {
+  localStorage.setItem('ppp-onboarded', 'true');
+  window.location.href = 'dashboard.html';
+}
+
+function skipOnboarding() {
+  localStorage.setItem('ppp-onboarded', 'true');
+  window.location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>

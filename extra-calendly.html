@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Branded Booking Section | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"DM Sans",sans-serif;background:#1A2235;color:white;min-height:100vh;}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#12192B;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;overflow-y:auto;z-index:10;}
+.sidebar-logo{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.logo-text{font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#C8E000;display:block;margin-bottom:0.25rem;}
+.logo-sub{font-size:0.75rem;color:rgba(255,255,255,0.35);}
+.sidebar-nav{padding:1.25rem 0.75rem;flex:1;}
+.nav-label{font-family:"DM Mono",monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0.5rem 0.75rem;display:block;margin-bottom:0.25rem;}
+.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:8px;text-decoration:none;color:rgba(255,255,255,0.55);font-size:0.875rem;transition:all 0.15s;margin-bottom:0.15rem;}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:white;}
+.nav-item.active{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);color:#C8E000;}
+.nav-icon{font-size:1rem;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:#C8E000;color:#12192B;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:10px;}
+.sidebar-footer{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);}
+.sidebar-footer a{font-size:0.78rem;color:rgba(255,255,255,0.3);text-decoration:none;display:block;margin-bottom:0.4rem;}
+.sidebar-footer a:hover{color:#ee70bc;}
+.main{margin-left:260px;min-height:100vh;}
+.topbar{background:#12192B;border-bottom:1px solid rgba(255,255,255,0.07);padding:1rem 2.5rem;display:flex;align-items:center;position:sticky;top:0;z-index:5;}
+.breadcrumb{font-size:0.8rem;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:0.5rem;}
+.breadcrumb a{color:#ee70bc;text-decoration:none;}
+.content{max-width:820px;padding:3rem 2.5rem 6rem;}
+.extra-tag{font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#C8E000;display:block;margin-bottom:0.75rem;}
+h1{font-family:"Playfair Display",serif;font-size:clamp(1.75rem,3vw,2.5rem);font-weight:900;line-height:1.15;margin-bottom:0.5rem;color:white;}
+.intro{font-size:0.95rem;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sw{margin-bottom:2.5rem;}
+.sh{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
+.sn{width:32px;height:32px;background:#C8E000;color:#12192B;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;flex-shrink:0;font-family:"DM Mono",monospace;}
+.st{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:white;}
+.ss{font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:0.15rem;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.ff{display:flex;flex-direction:column;gap:0.4rem;}
+.ff.full{grid-column:1/-1;}
+.ff label{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.7);}
+.ff .hint{font-size:0.72rem;color:rgba(255,255,255,0.3);line-height:1.5;}
+.fi{padding:0.75rem 1rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;font-size:0.875rem;font-family:"DM Sans",sans-serif;outline:none;transition:border-color 0.2s;width:100%;}
+.fi:focus{border-color:#C8E000;}
+.fi::placeholder{color:rgba(255,255,255,0.25);}
+textarea.fi{resize:vertical;min-height:90px;}
+.pc-box{background:#0D1420;border:1px solid rgba(255,255,255,0.1);border-radius:1rem;overflow:hidden;margin-bottom:1.5rem;}
+.pc-hdr{background:rgba(255,255,255,0.05);padding:0.875rem 1.25rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.08);}
+.pc-title{font-family:"DM Mono",monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#C8E000;}
+.cbtn{background:#C8E000;color:#12192B;border:none;border-radius:1.5rem;padding:0.4rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;}
+.cbtn:hover{opacity:0.85;}
+.cbtn.copied{background:#8ba2f0;color:white;}
+.pc-txt{padding:1.25rem;font-family:"DM Mono",monospace;font-size:0.775rem;color:rgba(255,255,255,0.7);line-height:1.75;white-space:pre-wrap;max-height:420px;overflow-y:auto;}
+.div{height:1px;background:rgba(255,255,255,0.08);margin:2rem 0;}
+.tb{border-radius:1rem;padding:1.25rem 1.5rem;}
+.tb-lime{background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);}
+.tb-blue{background:rgba(139,162,240,0.06);border:1px solid rgba(139,162,240,0.2);}
+.tbt{font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:0.5rem;}
+.tb-lime .tbt{color:#C8E000;}
+.tb-blue .tbt{color:#8ba2f0;}
+.tb p{font-size:0.875rem;color:rgba(255,255,255,0.6);line-height:1.7;margin:0 0 0.5rem;}
+.tb p:last-child{margin:0;}
+.tb p strong{color:white;}
+.tb a{color:#8ba2f0;}
+.nss{display:flex;flex-direction:column;gap:0.75rem;}
+.ns{display:flex;align-items:flex-start;gap:1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:0.875rem;padding:1rem 1.25rem;}
+.nsn{width:26px;height:26px;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#C8E000;flex-shrink:0;}
+.ns p{font-size:0.875rem;color:rgba(255,255,255,0.6);line-height:1.6;margin:0;}
+.ns p strong{color:white;}
+.ns a{color:#8ba2f0;text-decoration:none;}
+.upsell{background:linear-gradient(135deg,rgba(200,224,0,0.08),rgba(139,162,240,0.06));border:1px solid rgba(200,224,0,0.2);border-radius:1rem;padding:1.5rem;margin-bottom:2rem;}
+.upsell-title{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;}
+.upsell p{font-size:0.875rem;color:rgba(255,255,255,0.6);line-height:1.7;margin:0;}
+.upsell p strong{color:#C8E000;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;}.content{padding:2rem 1.5rem 4rem;}.fg{grid-template-columns:1fr;}.ff.full{grid-column:1;}}
+</style>
+</head>
+<body>
+<script>if(!sessionStorage.getItem('builtsy-auth'))window.location.href='login.html';</script>
+<aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-text">Builtsy</span><span class="logo-sub">Private Beta</span></div>
+  <nav class="sidebar-nav">
+    <span class="nav-label">Overview</span>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="my-projects.html" class="nav-item"><span class="nav-icon">📁</span> My Projects</a>
+    <a href="dashboard.html#downloads" class="nav-item"><span class="nav-icon">📥</span> Downloads</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Builtsy Basics</span>
+    <a href="module1.html" class="nav-item"><span class="nav-icon">🎯</span> BB01 — The System <span class="nav-badge">Start</span></a>
+    <a href="module2.html" class="nav-item"><span class="nav-icon">📋</span> BB02 — Before You Build</a>
+    <a href="module3.html" class="nav-item"><span class="nav-icon">🔨</span> BB03 — The Build</a>
+    <a href="module4.html" class="nav-item"><span class="nav-icon">🚀</span> BB04 — Going Live</a>
+    <a href="module5.html" class="nav-item"><span class="nav-icon">🔍</span> BB05 — The Audit</a>
+    <a href="module6.html" class="nav-item"><span class="nav-icon">💰</span> BB06 — Getting Clients</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Blueprint Library</span>
+    <a href="blueprint-local-business.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">01</span> Blueprint 1 — Local Business</a>
+    <a href="blueprint-link-in-bio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">02</span> Blueprint 2 — Link in Bio</a>
+    <a href="blueprint-site-upgrade.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">↑</span> Blueprint — Site Upgrade</a>
+    <a href="blueprint-restaurant.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">03</span> Blueprint 3 — Restaurant</a>
+    <a href="blueprint-health-wellness.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">04</span> Blueprint 4 — Health & Wellness</a>
+    <a href="blueprint-creative-portfolio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">05</span> Blueprint 5 — Creative Portfolio</a>
+    <a href="blueprint-home-services.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">06</span> Blueprint 6 — Home Services</a>
+    <a href="blueprint-consulting.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">07</span> Blueprint 7 — Consulting</a>
+    <a href="blueprint-chore-app.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">08</span> Blueprint 8 — Chore App</a>
+    <a href="blueprint-safety-itinerary.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">09</span> Blueprint 9 — Safety Itinerary</a>
+    <a href="blueprint-babysitter.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">10</span> Blueprint 10 — Babysitter</a>
+    <a href="blueprint-homework-tracker.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">11</span> Blueprint 11 — Homework Tracker</a>
+    <a href="blueprint-house-manager.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">12</span> Blueprint 12 — House Manager</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Extras — Add to Any Site</span>
+    <a href="extra-calendly.html" class="nav-item active"><span class="nav-icon">📅</span> Branded Booking Section</a>
+    <a href="extra-contact-form.html" class="nav-item "><span class="nav-icon">📝</span> Contact Form</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Community</span>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span> Facebook Group</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Bonus</span>
+    <a href="bonus-updates.html" class="nav-item"><span class="nav-icon">⚡</span> Editing &amp; Updating Your Builds <span class="nav-badge" style="background:#ee70bc;">New</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="https://builtsy.ai/affiliates" target="_blank">🔗 Share Builtsy — Earn 20%</a>
+    <a href="login.html" onclick="sessionStorage.clear()">Log out</a>
+  </div>
+</aside>
+<div class="main">
+<div class="topbar"><div class="breadcrumb"><a href="dashboard.html">Dashboard</a><span>&#8250;</span><span>Extras</span><span>&#8250;</span><span>Branded Booking Section</span></div></div>
+<div class="content">
+
+<span class="extra-tag">Extra &#8212; Add to Any Site</span>
+<h1>Add a branded booking section</h1>
+<p class="intro">Turn Calendly into a fully branded experience. Your client's colors, fonts, and copy. Visitors never know it's Calendly. The booking popup opens right on the page without any redirects. Takes 10 minutes to add to any existing site.</p>
+<div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.15);border-radius:100px;padding:0.3rem 0.875rem;margin-bottom:1.25rem;"><span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#C8E000;">2 steps</span><span style="width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.2);"></span><span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">~5 min</span><span style="width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.2);"></span><span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">no coding required</span></div>
+
+<div class="upsell">
+  <div class="upsell-title">&#128176; Charge for this</div>
+  <p>This is a <strong>$75-150 upsell</strong> for every service business you build for. "Want people to book appointments directly from your site? I can add a fully branded booking section &#8212; $99." Takes you 10 minutes. They say yes every time.</p>
+</div>
+
+<div class="tb tb-lime" style="margin-bottom:2rem;">
+  <span class="tbt">Before you start</span>
+  <p>Your client needs a <strong>free Calendly account</strong> at <a href="https://calendly.com" target="_blank">calendly.com</a>. They set up their availability there. You just need their Calendly link &#8212; it looks like <strong>calendly.com/theirname/30min</strong>.</p>
+  <p style="margin-top:0.5rem;">You also need their <strong>existing site HTML file</strong> ready to attach in Claude.</p>
+</div>
+
+<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:0.875rem;padding:1rem 1.25rem;margin-bottom:2rem;display:flex;align-items:flex-start;gap:1rem;">
+  <div style="font-size:1.25rem;">&#8594;</div>
+  <div style="font-size:0.875rem;color:rgba(255,255,255,0.6);line-height:1.6;"><strong style="color:white;">How this works:</strong> Fill in the details below, copy the prompt, open Claude, paste the prompt AND attach your client's existing HTML file. Claude adds a fully branded booking section and returns the complete updated file.</div>
+</div>
+
+<div class="sw">
+<div class="sh"><div class="sn">1</div><div><div class="st">Fill in the booking details</div><div class="ss">Prompt builds automatically as you type</div></div></div>
+<div class="fg">
+  <div class="ff"><label>Business name</label><input type="text" class="fi" id="cal-biz" placeholder="e.g. Bloom Beauty Studio" oninput="buildPrompt()"></div>
+  <div class="ff"><label>Calendly link</label><input type="text" class="fi" id="cal-url" placeholder="e.g. calendly.com/bloombeauty/consult" oninput="buildPrompt()"></div>
+  <div class="ff full"><label>What is the booking for?</label><input type="text" class="fi" id="cal-type" placeholder="e.g. Free 30-min hair consultation, Strategy session, Massage appointment" oninput="buildPrompt()"></div>
+  <div class="ff full"><label>Section headline</label><input type="text" class="fi" id="cal-headline" placeholder="e.g. Book Your Free Consultation, Ready to Book?, Schedule Your Appointment" oninput="buildPrompt()"></div>
+  <div class="ff full"><label>What to expect &#8212; 3 bullet points</label><textarea class="fi" id="cal-expect" placeholder="- 30-minute call to discuss your hair goals&#10;- We will review your current style and what you want to achieve&#10;- Walk away with a personalized plan and pricing" oninput="buildPrompt()" style="min-height:100px;"></textarea></div>
+  <div class="ff"><label>Button text</label><input type="text" class="fi" id="cal-btn" placeholder="e.g. Book My Free Consult, Schedule Now" oninput="buildPrompt()"></div>
+  <div class="ff"><label>Brand colors</label><input type="text" class="fi" id="cal-colors" placeholder="e.g. navy and pink &#8212; or: match the existing site" oninput="buildPrompt()"></div>
+</div>
+<div class="tb tb-blue" style="margin-top:1rem;">
+  <span class="tbt">Pro tip</span>
+  <p>Leave brand colors as <strong>"match the existing site"</strong> and Claude will automatically use the colors from the HTML file you attach. Only fill this in if you want something different.</p>
+</div>
+</div>
+
+<div class="div"></div>
+
+<div class="sw">
+<div class="sh"><div class="sn">2</div><div><div class="st">Copy your prompt</div><div class="ss">Updates automatically as you type</div></div></div>
+<div class="pc-box">
+  <div class="pc-hdr"><span class="pc-title">Your Claude prompt &#8212; ready to paste</span><button class="cbtn" id="cal-cbtn" onclick="copyPrompt()">Copy prompt &#8594;</button></div>
+  <div class="pc-txt" id="cal-out">Fill in the booking details above and your prompt will appear here.</div>
+</div>
+</div>
+
+<div class="div"></div>
+
+<div class="sw">
+<div class="sh"><div class="sn">3</div><div><div class="st">Add it to the site</div><div class="ss">Open Claude, paste, attach the HTML file</div></div></div>
+<div class="nss">
+  <div class="ns"><div class="nsn">1</div><p>Open <strong><a href="https://claude.ai" target="_blank">claude.ai</a></strong> and start a new conversation</p></div>
+  <div class="ns"><div class="nsn">2</div><p>Paste your prompt. Then <strong>attach the client's existing HTML file</strong> in the same message before hitting send.</p></div>
+  <div class="ns"><div class="nsn">3</div><p>Claude adds the booking section and returns the <strong>complete updated HTML file.</strong> Save it, replace the old file in your Netlify folder, redeploy.</p></div>
+  <div class="ns"><div class="nsn">4</div><p>Test it &#8212; click the booking button and confirm the <strong>Calendly popup appears without leaving the page.</strong></p></div>
+</div>
+</div>
+
+<div class="div"></div>
+<div class="tb tb-lime"><span class="tbt">Updating later</span><p>Client changes their Calendly link or wants different copy? Come back, update the fields, copy the new prompt, and run it again with their current HTML file attached.</p></div>
+
+</div>
+</div>
+<script>
+function buildPrompt(){
+  var biz=document.getElementById('cal-biz').value.trim()||'[Business name]';
+  var calurl=document.getElementById('cal-url').value.trim()||'[calendly.com/username/meeting]';
+  var type=document.getElementById('cal-type').value.trim()||'[type of booking]';
+  var headline=document.getElementById('cal-headline').value.trim()||'Book Your Appointment';
+  var expect=document.getElementById('cal-expect').value.trim()||'[what to expect]';
+  var btn=document.getElementById('cal-btn').value.trim()||'Book Now';
+  var colors=document.getElementById('cal-colors').value.trim()||'match the existing site';
+  var fullurl='https://'+calurl.replace(/^https?:\/\//,'');
+  var lines=[
+    'Hi Claude! Please add a fully branded booking section to this website.',
+    'I am attaching the existing HTML file. Add the booking section and return the complete updated file.',
+    '',
+    'BUSINESS: '+biz,
+    'CALENDLY LINK: '+fullurl,
+    'BOOKING TYPE: '+type,
+    'SECTION HEADLINE: '+headline,
+    'BUTTON TEXT: '+btn,
+    'BRAND COLORS: '+colors,
+    '',
+    'WHAT TO EXPECT (show as bullet points in the section):',
+    expect,
+    '',
+    'DESIGN REQUIREMENTS:',
+    '  Build a complete, beautiful booking section -- not just a button.',
+    '  The section must include:',
+    '    - A compelling headline: '+headline,
+    '    - A short description of what the booking is for',
+    '    - The what-to-expect bullet points listed above',
+    '    - A prominent CTA button: '+btn,
+    '    - Optional: a simple trust line (e.g. "Free. No obligation. Cancel anytime.")',
+    '',
+    '  The section should feel like a CUSTOM booking system, not a third-party widget.',
+    '  Style everything to match: '+colors,
+    '  Match the typography, spacing, and design language of the existing site.',
+    '  Must be fully responsive and look great on mobile.',
+    '',
+    'CALENDLY POPUP IMPLEMENTATION (critical):',
+    '  - When the button is clicked: open Calendly as a POPUP OVERLAY',
+    '  - Do NOT embed an iframe in the page',
+    '  - Do NOT redirect to Calendly',
+    '  - Use the official Calendly popup widget:',
+    '    1. Add to <head>:',
+    '       <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">',
+    '       <script src="https://assets.calendly.com/assets/external/widget.js"></script>',
+    '    2. Button onclick:',
+    '       Calendly.initPopupWidget({url: "'+fullurl+'"});return false;',
+    '  - The page stays visible behind the popup overlay',
+    '  - Visitor never leaves the site',
+    '',
+    'PLACEMENT:',
+    '  - Add the booking section before the footer',
+    '  - If there is a natural place earlier (after services, after about), place it there',
+    '  - Flow it naturally with the existing content -- do not disrupt the page',
+    '',
+    'Return the COMPLETE updated HTML file with the new section added.',
+    'Do not remove or change any existing content. Only add the booking section.'
+  ];
+  document.getElementById('cal-out').textContent=lines.join('
+');
+}
+function copyPrompt(){
+  var text=document.getElementById('cal-out').textContent;
+  if(text.includes('Fill in'))return;
+  navigator.clipboard.writeText(text).then(function(){
+    var b=document.getElementById('cal-cbtn');
+    b.textContent='Copied!';b.classList.add('copied');
+    setTimeout(function(){b.textContent='Copy prompt →';b.classList.remove('copied');},2000);
+  });
+}
+document.querySelectorAll('.fi').forEach(function(e){e.addEventListener('input',buildPrompt);});
+buildPrompt();
+</script>
+</body>
+</html>

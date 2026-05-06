@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Join the Builtsy Beta</title>
+<meta name="description" content="Builtsy is opening beta access to a small group first. Join now and get free access to the full Blueprint library.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#12192B;color:white;min-height:100vh;display:flex;flex-direction:column;}
+.nav{padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.07);}
+.nav-logo{font-family:'DM Mono',monospace;font-size:1rem;color:white;text-decoration:none;}
+.nav-logo span{color:#ee70bc;}
+.nav-back{font-size:0.8rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+.nav-back:hover{color:white;}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem;}
+.container{width:100%;max-width:520px;}
+.eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#C8E000;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.2);padding:0.35rem 0.875rem;border-radius:100px;margin-bottom:1.5rem;}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#C8E000;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,2.75rem);font-weight:900;line-height:1.1;color:white;margin-bottom:0.75rem;}
+h1 em{font-style:italic;color:#ee70bc;}
+.sub{font-size:0.95rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:2rem;}
+.sub strong{color:white;}
+.perks{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:2rem;padding:1.25rem;background:rgba(200,224,0,0.06);border:1px solid rgba(200,224,0,0.15);border-radius:1rem;}
+.perk{display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:rgba(255,255,255,0.7);}
+.perk::before{content:'✓';color:#C8E000;font-weight:700;font-size:0.875rem;flex-shrink:0;}
+.form-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:1.25rem;padding:2rem;}
+.ff{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.25rem;}
+.ff label{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.7);}
+.fi{padding:0.75rem 1rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;width:100%;-webkit-appearance:none;appearance:none;}
+.fi:focus{border-color:#ee70bc;}
+.fi::placeholder{color:rgba(255,255,255,0.25);}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;}
+select.fi option{background:#1E2840;color:white;}
+.radio-group{display:flex;gap:0.75rem;flex-wrap:wrap;}
+.radio-opt{display:flex;align-items:center;gap:0.5rem;cursor:pointer;}
+.radio-opt input{accent-color:#ee70bc;width:16px;height:16px;cursor:pointer;}
+.radio-opt span{font-size:0.875rem;color:rgba(255,255,255,0.7);}
+.submit-btn{width:100%;padding:0.875rem;border-radius:0.875rem;background:#ee70bc;border:none;color:white;font-size:1rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:0.5rem;}
+.submit-btn:hover{opacity:0.88;transform:translateY(-1px);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.success{display:none;text-align:center;padding:2rem;}
+.success-icon{font-size:3rem;margin-bottom:1rem;display:block;}
+.success h2{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;color:white;margin-bottom:0.75rem;}
+.success h2 em{font-style:italic;color:#ee70bc;}
+.success p{font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:1.5rem;}
+.success a{display:inline-flex;align-items:center;gap:0.5rem;background:#C8E000;color:#12192B;padding:0.75rem 1.5rem;border-radius:0.75rem;font-size:0.875rem;font-weight:700;text-decoration:none;}
+.privacy{font-size:0.72rem;color:rgba(255,255,255,0.25);text-align:center;margin-top:1rem;line-height:1.6;}
+.spots{display:flex;align-items:center;gap:0.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.08em;color:rgba(255,255,255,0.4);margin-bottom:1.5rem;}
+.spots-dot{width:8px;height:8px;border-radius:50%;background:#C8E000;animation:pulse 2s infinite;}
+footer{padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.06);text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">built<span>sy</span></a>
+  <a href="index.html" class="nav-back">← Back to Builtsy</a>
+</nav>
+
+<div class="main">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div>Private Beta</div>
+    <h1>Build something real.<br><em>Free.</em></h1>
+    <p class="sub">Builtsy is opening beta access to a small group first. Beta members get <strong>full access to the entire Builtsy Blueprint library</strong> — free, forever.</p>
+
+    <div class="perks">
+      <div class="perk">Full access to all 12 Builtsy Blueprints</div>
+      <div class="perk">Every new Blueprint added during beta — free</div>
+      <div class="perk">Direct line to shape the product</div>
+      <div class="perk">Founding member pricing when we launch publicly</div>
+    </div>
+
+    <div class="spots"><div class="spots-dot"></div>Beta spots are limited</div>
+
+    <div class="form-card">
+      <div id="form-wrap">
+        <div class="ff">
+          <label>Your name</label>
+          <input type="text" class="fi" id="f-name" placeholder="e.g. Jennifer Lane">
+        </div>
+        <div class="ff">
+          <label>Email address</label>
+          <input type="email" class="fi" id="f-email" placeholder="e.g. jennifer@email.com">
+        </div>
+        <div class="ff">
+          <label>What do you want to build?</label>
+          <select class="fi" id="f-build">
+            <option value="" disabled selected>Select one</option>
+            <option value="A Website For My Business">A website for my business</option>
+            <option value="Websites For Clients">Websites for clients</option>
+            <option value="Family Apps and Tools">Family apps and tools</option>
+            <option value="Just Exploring">Just exploring</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label>How did you hear about Builtsy?</label>
+          <select class="fi" id="f-heard">
+            <option value="" disabled selected>Select one</option>
+            <option value="facebook">Facebook</option>
+            <option value="instagram">Instagram</option>
+            <option value="friend">A friend or family member</option>
+            <option value="google">Google search</option>
+            <option value="tiktok">TikTok</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label>Would you like to join our private beta community on Facebook?</label>
+          <div class="radio-group">
+            <label class="radio-opt"><input type="radio" name="fb" value="Yes"><span>Yes</span></label>
+            <label class="radio-opt"><input type="radio" name="fb" value="No"><span>No</span></label>
+            <label class="radio-opt"><input type="radio" name="fb" value="Maybe"><span>Maybe</span></label>
+          </div>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="submitForm()">Request Beta Access →</button>
+        <p class="privacy">By submitting you agree to our <a href="privacy.html" style="color:rgba(255,255,255,0.4);">Privacy Policy</a>. We will never share your info.</p>
+      </div>
+
+      <div class="success" id="success">
+        <span class="success-icon">🎉</span>
+        <h2>You're <em>in.</em></h2>
+        <p>Thanks for joining the Builtsy beta. We'll send your access details to <strong id="confirm-email"></strong> within 48 hours.<br><br>In the meantime — explore what Builtsy can build.</p>
+        <a href="login.html">Start Building →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Builtsy · Jayne of All LLC · Parker, CO</footer>
+
+<script>
+function submitForm() {
+  var name = document.getElementById('f-name').value.trim();
+  var email = document.getElementById('f-email').value.trim();
+  var build = document.getElementById('f-build').value;
+  var heard = document.getElementById('f-heard').value;
+  var fb = document.querySelector('input[name="fb"]:checked');
+
+  if(!name || !email || !build || !heard || !fb) {
+    alert('Please fill in all fields before submitting.');
+    return;
+  }
+
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  var formData = new FormData();
+  formData.append('entry.1280827025', name);
+  formData.append('entry.505969464', email);
+  formData.append('entry.247520979', build);
+  formData.append('entry.1009753890', heard);
+  formData.append('entry.305115842', fb.value);
+
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLSfzXy0HPTpWNpP_Ts2Kw2qD6ClQGp59YBd6pjO3f-lMYmhX4g/formResponse', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  }).then(function() {
+    document.getElementById('confirm-email').textContent = email;
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }).catch(function() {
+    document.getElementById('confirm-email').textContent = email;
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  });
+}
+
+document.querySelectorAll('.fi').forEach(function(el) {
+  el.addEventListener('keydown', function(e) {
+    if(e.key === 'Enter') submitForm();
+  });
+});
+</script>
+</body>
+</html>

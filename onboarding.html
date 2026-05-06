@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Builtsy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #12192B;
+    --navy-mid: #1a2540;
+    --navy-light: #243055;
+    --lime: #C8E000;
+    --pink: #ee70bc;
+    --iris: #8ba2f0;
+    --text: #f4f6ff;
+    --text-muted: rgba(244,246,255,0.5);
+    --border: rgba(244,246,255,0.08);
+    --radius: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Ambient background glows */
+  .bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+  .bg-glow-1 { width: 500px; height: 500px; background: var(--iris); top: -150px; right: -150px; }
+  .bg-glow-2 { width: 400px; height: 400px; background: var(--pink); bottom: -100px; left: -100px; }
+  .bg-glow-3 { width: 300px; height: 300px; background: var(--lime); top: 40%; left: 50%; transform: translate(-50%,-50%); opacity: 0.07; }
+
+  /* Dot grid texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: radial-gradient(rgba(244,246,255,0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── SCREEN MANAGEMENT ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── HEADER ── */
+  .wordmark {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--lime);
+    text-align: center;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeDown 0.5s 0.1s ease forwards;
+  }
+  .wordmark span { color: var(--text); }
+
+  /* ── PICK SCREEN ── */
+  .pick-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 40px);
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeDown 0.5s 0.2s ease forwards;
+  }
+  .pick-heading em {
+    font-style: normal;
+    color: var(--lime);
+  }
+
+  .pick-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeDown 0.5s 0.3s ease forwards;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .cards-grid .rec-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 320px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .rec-card {
+    background: var(--navy-mid);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 20px 22px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s, transform 0.18s, box-shadow 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.45s ease forwards;
+  }
+  .rec-card:nth-child(1) { animation-delay: 0.35s; }
+  .rec-card:nth-child(2) { animation-delay: 0.42s; }
+  .rec-card:nth-child(3) { animation-delay: 0.49s; }
+  .rec-card:nth-child(4) { animation-delay: 0.56s; }
+  .rec-card:nth-child(5) { animation-delay: 0.63s; }
+
+  .rec-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.22s;
+  }
+  .rec-card[data-lane="self"]::before    { background: linear-gradient(135deg, rgba(200,224,0,0.12), transparent 60%); }
+  .rec-card[data-lane="biz"]::before     { background: linear-gradient(135deg, rgba(238,112,188,0.12), transparent 60%); }
+  .rec-card[data-lane="client"]::before  { background: linear-gradient(135deg, rgba(139,162,240,0.12), transparent 60%); }
+  .rec-card[data-lane="explore"]::before { background: linear-gradient(135deg, rgba(238,112,188,0.1), rgba(139,162,240,0.1), transparent 60%); }
+  .rec-card[data-lane="refresh"]::before { background: linear-gradient(135deg, rgba(139,162,240,0.12), rgba(200,224,0,0.08), transparent 60%); }
+
+  .rec-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+  }
+  .rec-card:hover::before { opacity: 1; }
+  .rec-card[data-lane="self"]:hover     { border-color: var(--lime); }
+  .rec-card[data-lane="biz"]:hover      { border-color: var(--pink); }
+  .rec-card[data-lane="client"]:hover   { border-color: var(--iris); }
+  .rec-card[data-lane="explore"]:hover  { border-color: var(--pink); }
+  .rec-card[data-lane="refresh"]:hover  { border-color: var(--iris); }
+
+  .rec-card.selected {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  }
+  .rec-card[data-lane="self"].selected    { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(200,224,0,0.2), 0 12px 40px rgba(0,0,0,0.3); }
+  .rec-card[data-lane="biz"].selected     { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(238,112,188,0.2), 0 12px 40px rgba(0,0,0,0.3); }
+  .rec-card[data-lane="client"].selected  { border-color: var(--iris); box-shadow: 0 0 0 3px rgba(139,162,240,0.2), 0 12px 40px rgba(0,0,0,0.3); }
+  .rec-card[data-lane="explore"].selected { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(238,112,188,0.15), 0 12px 40px rgba(0,0,0,0.3); }
+  .rec-card[data-lane="refresh"].selected { border-color: var(--iris); box-shadow: 0 0 0 3px rgba(139,162,240,0.2), 0 12px 40px rgba(0,0,0,0.3); }
+  .rec-card.selected::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .cta-row {
+    opacity: 0;
+    animation: fadeUp 0.4s 0.65s ease forwards;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px 28px;
+    background: var(--lime);
+    color: var(--navy);
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-primary:hover {
+    background: #d4ee00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(200,224,0,0.3);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-arrow { font-size: 18px; transition: transform 0.18s; }
+  .btn-primary:not(:disabled):hover .btn-arrow { transform: translateX(4px); }
+
+  /* ── RESULT SCREEN ── */
+  #screen-result {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  #screen-result.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-bottom: 28px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--text); }
+
+  .result-lane-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+    border: 1px solid;
+  }
+  .badge-self    { color: var(--lime); border-color: rgba(200,224,0,0.35); background: rgba(200,224,0,0.08); }
+  .badge-biz     { color: var(--pink); border-color: rgba(238,112,188,0.35); background: rgba(238,112,188,0.08); }
+  .badge-client  { color: var(--iris); border-color: rgba(139,162,240,0.35); background: rgba(139,162,240,0.08); }
+  .badge-explore { color: var(--pink); border-color: rgba(238,112,188,0.35); background: rgba(238,112,188,0.08); }
+  .badge-refresh { color: var(--iris); border-color: rgba(139,162,240,0.35); background: rgba(139,162,240,0.08); }
+
+  .result-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 6vw, 36px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .result-heading em { font-style: normal; color: var(--lime); }
+
+  .result-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 440px;
+  }
+
+  /* Blueprint recommendation card */
+  .bp-card {
+    background: var(--navy-mid);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    transition: border-color 0.2s, transform 0.18s;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+  }
+  .bp-card.primary {
+    border-color: var(--lime);
+    background: linear-gradient(135deg, rgba(200,224,0,0.07), var(--navy-mid));
+    position: relative;
+    overflow: hidden;
+  }
+  .bp-card.primary::after {
+    content: 'Best Match';
+    position: absolute;
+    top: 14px; right: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--lime);
+    padding: 4px 10px;
+    border-radius: 99px;
+  }
+  .bp-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .bp-info {}
+  .bp-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .bp-card.primary .bp-name { color: var(--lime); }
+  .bp-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .bp-also {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+    margin-top: 8px;
+  }
+  .btn-secondary:hover {
+    color: var(--text);
+    border-color: rgba(244,246,255,0.25);
+    background: rgba(244,246,255,0.04);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 400px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="bg-glow bg-glow-3"></div>
+
+<div class="container">
+
+  <div class="wordmark">Builtsy<span>.</span></div>
+
+  <!-- ── SCREEN 1: PICK YOUR PATH ── -->
+  <div id="screen-pick" class="screen active">
+
+    <h1 class="pick-heading">What do you want<br>to <em>build</em>?</h1>
+    <p class="pick-sub" style="margin-bottom:1.75rem;">Start with one &#8212; we&#8217;ll guide you the rest of the way.</p>
+
+    <!-- PRIMARY START CARD -->
+    <a href="blueprint-local-business.html" style="display:block;background:#0D1828;border:2px solid rgba(200,224,0,0.5);border-radius:18px;padding:2.25rem 1.75rem;margin-bottom:2rem;text-decoration:none;transition:all 0.18s;position:relative;" onmouseover="this.style.borderColor='rgba(200,224,0,0.85)';this.style.background='#0f1e30'" onmouseout="this.style.borderColor='rgba(200,224,0,0.5)';this.style.background='#0D1828'">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#C8E000;font-family:'DM Mono',monospace;margin-bottom:0.6rem;">Fastest way to get live</div>
+      <div style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:0.4rem;font-family:'Playfair Display',serif;line-height:1.2;">Start with a business site <span style="font-size:0.95rem;font-weight:400;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;">(done in ~30 minutes)</span></div>
+      <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:1.75rem;line-height:1.5;">The Local Business Blueprint. Works for any service business &#8212; restaurant, salon, plumber, contractor, and more.</div>
+      <div style="background:#C8E000;color:#12192B;border-radius:10px;padding:14px 0;font-size:1rem;font-weight:700;font-family:'DM Sans',sans-serif;text-align:center;box-shadow:0 0 24px rgba(200,224,0,0.2);">Start build &#8594;</div>
+    </a>
+
+
+    <!-- OR CHOOSE YOUR PATH -->
+    <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:0.875rem;">Or start somewhere else</div>
+
+    <div class="path-cards">
+
+      <a href="#" onclick="pickLane('refresh');return false;" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:14px;padding:0.875rem 1.1rem;text-decoration:none;transition:all 0.18s;margin-bottom:0.5rem;background:#111926;" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:0.875rem;">
+          <span style="font-size:1.25rem;flex-shrink:0;">&#128260;</span>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">Fix an existing site</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Outdated, broken, or missing from AI search</div>
+          </div>
+        </div>
+        <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Improve my site &#8594;</div>
+      </a>
+
+      <a href="#" onclick="pickLane('client');return false;" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:14px;padding:0.875rem 1.1rem;text-decoration:none;transition:all 0.18s;margin-bottom:0.5rem;background:#111926;" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:0.875rem;">
+          <span style="font-size:1.25rem;flex-shrink:0;">&#128188;</span>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">Build for a client</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Freelance or first paid project</div>
+          </div>
+        </div>
+        <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Build for a client &#8594;</div>
+      </a>
+
+      <a href="#" onclick="pickLane('self');return false;" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:14px;padding:0.875rem 1.1rem;text-decoration:none;transition:all 0.18s;margin-bottom:0.5rem;background:#111926;" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:0.875rem;">
+          <span style="font-size:1.25rem;flex-shrink:0;">&#127807;</span>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">A site for myself</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Personal brand, portfolio, or link-in-bio</div>
+          </div>
+        </div>
+        <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Start my site &#8594;</div>
+      </a>
+
+      <a href="#" onclick="pickLane('explore');return false;" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:14px;padding:0.875rem 1.1rem;text-decoration:none;transition:all 0.18s;margin-bottom:0.5rem;background:#111926;" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:0.875rem;">
+          <span style="font-size:1.25rem;flex-shrink:0;">&#128161;</span>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">I have an idea or I&#8217;m exploring</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Tool, app, or creator brand</div>
+          </div>
+        </div>
+        <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Explore ideas &#8594;</div>
+      </a>
+
+    </div>
+
+    <!-- BASICS DE-EMPHASIZED -->
+    <p style="text-align:center;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-top:1.5rem;line-height:1.6;">&#9889; New? <a href="basics1.html" style="color:#8ba2f0;text-decoration:none;font-weight:600;" onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">Learn the system first &#8594;</a> &#8212; takes about 20 minutes.</p>
+
+  </div>
+
+
+  <!-- ── SCREEN 2: RESULT ── -->
+  <div id="screen-result" class="screen">
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:1.5rem;">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(200,224,0,0.2);color:var(--lime);border:1.5px solid rgba(200,224,0,0.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">&#10003;</div>
+      <div style="height:2px;width:40px;background:rgba(200,224,0,0.3);border-radius:99px;"></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</div>
+    </div>
+    <button class="back-link" id="back-btn" aria-label="Go back">&#8592; Back</button>
+
+    <div id="result-badge" class="result-lane-badge"></div>
+    <h2 class="result-heading" id="result-heading"></h2>
+    <p class="result-sub" id="result-sub"></p>
+
+    <div id="result-blueprints"></div>
+
+    <p class="bp-also" id="bp-also-label"></p>
+
+    <div id="result-also"></div>
+
+    <button class="btn-primary" id="go-btn" style="margin-top: 24px;">
+      <span id="go-label">Open my Blueprint</span>
+      <span class="btn-arrow">→</span>
+    </button>
+
+    <button class="btn-secondary" id="dashboard-btn">
+      Skip — take me to the dashboard
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+// ── RETURNING USER: skip onboarding if they have basics progress or blueprint saves ──
+(function(){
+  var hasProgress = localStorage.getItem('builtsy-basics-1') || 
+                    localStorage.getItem('builtsy-bp-lb-v3') ||
+                    localStorage.getItem('builtsy-bp-su-v3');
+  var isPreview = window.location.search.indexOf('preview=1') > -1;
+  if(hasProgress && !isPreview) window.location.href = 'dashboard.html';
+})();
+
+// ── DATA ──
+var LANES = {
+  refresh: {
+    badge: { text: 'Refreshing an existing site', cls: 'badge-refresh', icon: '🔄' },
+    heading: 'The <em>Website Refresh</em> Blueprint was made for this.',
+    sub: 'Take what you have, audit what\'s broken, and rebuild it fast. The Website Refresh Blueprint walks you through the whole thing — even if you\'re starting from scratch.',
+    primary: {
+      icon: '⬆️',
+      name: 'Website Refresh Blueprint',
+      desc: 'Audit an existing site, identify what\'s missing, and build a better version using AI. The most popular Blueprint for getting quick results.',
+      url: 'blueprint-site-upgrade.html'
+    },
+    also: [
+      { icon: '🌐', name: 'Local Business Website Blueprint', desc: 'Great if you want a clean build from scratch instead.', url: 'blueprint-local-business.html' },
+    ]
+  },
+  biz: {
+    badge: { text: 'Building for your business', cls: 'badge-biz', icon: '🏪' },
+    heading: 'The <em>Local Business</em> Blueprint was made for this.',
+    sub: 'Built specifically for real businesses — service pages, contact forms, maps, Google-ready SEO, and AI search optimization built in from the start.',
+    primary: {
+      icon: '🌐',
+      name: 'Local Business Website Blueprint',
+      desc: 'Everything a local business needs to get found and get calls — built in one session, deployed in minutes.',
+      url: 'blueprint-local-business.html'
+    },
+    also: [
+      { icon: '🔗', name: 'Link in Bio Blueprint', desc: 'Fast and easy if you just need a starting point.', url: 'blueprint-link-in-bio.html' },
+    ]
+  },
+  client: {
+    badge: { text: 'Building for a client', cls: 'badge-client', icon: '💼' },
+    heading: 'Start with the <em>Website Refresh</em> Blueprint.',
+    sub: 'The fastest way to deliver real value to a first client. Audit their existing site, build a better version, and have something to show them — all in one session.',
+    primary: {
+      icon: '⬆️',
+      name: 'Website Refresh Blueprint',
+      desc: 'Take a client\'s outdated site and rebuild it from scratch using AI. The go-to Blueprint for freelancers landing their first paid project.',
+      url: 'blueprint-site-upgrade.html'
+    },
+    also: [
+      { icon: '🌐', name: 'Local Business Website Blueprint', desc: 'Great for new client builds from scratch.', url: 'blueprint-local-business.html' },
+    ]
+  },
+  self: {
+    badge: { text: 'Building for yourself', cls: 'badge-self', icon: '🌱' },
+    heading: 'Start with the <em>Personal Brand</em> Blueprint.',
+    sub: 'Tell us about yourself, pick your vibe, and we\'ll build your site. Whether you\'re a creator, coach, or just need a place to send people — this is your Blueprint.',
+    primary: {
+      icon: '✨',
+      name: 'Personal Brand Blueprint',
+      desc: 'A full personal brand site built around you — bio, offers, social links, your style. Done in under 30 minutes.',
+      url: 'blueprint-personal-brand.html'
+    },
+    also: [
+      { icon: '🔗', name: 'Link in Bio Blueprint', desc: 'Just need a simple links page? Start here instead.', url: 'blueprint-link-in-bio.html' },
+    ]
+  },
+  explore: {
+    badge: { text: 'Exploring & building ideas', cls: 'badge-explore', icon: '💡' },
+    heading: 'The <em>Personal Brand</em> Blueprint is a great first build.',
+    sub: 'Whether you\'re a creator, influencer, or just figuring out what you want to make — this Blueprint gets something live fast and teaches you the whole Builtsy system.',
+    primary: {
+      icon: '✨',
+      name: 'Personal Brand Blueprint',
+      desc: 'Your name, your story, your links — all in one site. Built in under 30 minutes. The best way to see what Builtsy can do.',
+      url: 'blueprint-personal-brand.html'
+    },
+    also: [
+      { icon: '🌐', name: 'Local Business Website Blueprint', desc: 'Bigger build, bigger result — when you\'re ready.', url: 'blueprint-local-business.html' },
+    ]
+  }
+};
+
+// ── STATE ──
+var selectedLane = null;
+
+// pickLane — called by path card clicks, skips to screen 2
+function pickLane(lane) {
+  selectedLane = lane;
+  showResult(lane);
+}
+
+// ── ELEMENTS ──
+var cards = document.querySelectorAll('.rec-card');
+var findBtn = document.getElementById('find-btn');
+var screenPick = document.getElementById('screen-pick');
+var screenResult = document.getElementById('screen-result');
+var backBtn = document.getElementById('back-btn');
+var goBtn = document.getElementById('go-btn');
+var dashBtn = document.getElementById('dashboard-btn');
+
+// ── CARD SELECTION ──
+cards.forEach(function(card) {
+  function select() {
+    cards.forEach(function(c) { c.classList.remove('selected'); });
+    card.classList.add('selected');
+    selectedLane = card.getAttribute('data-lane');
+    findBtn.disabled = false;
+  }
+  card.addEventListener('click', select);
+  card.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
+  });
+});
+
+// ── FIND BLUEPRINT ──
+findBtn.addEventListener('click', function() {
+  if (!selectedLane) return;
+  showResult(selectedLane);
+});
+
+function showResult(lane) {
+  var data = LANES[lane];
+
+  // Badge
+  var badge = document.getElementById('result-badge');
+  badge.className = 'result-lane-badge ' + data.badge.cls;
+  badge.innerHTML = data.badge.icon + ' ' + data.badge.text;
+
+  // Heading
+  document.getElementById('result-heading').innerHTML = data.heading;
+
+  // Sub
+  document.getElementById('result-sub').textContent = data.sub;
+
+  // Primary blueprint card
+  var bpHtml = '<div class="bp-card primary">' +
+    '<div class="bp-icon">' + data.primary.icon + '</div>' +
+    '<div class="bp-info">' +
+      '<div class="bp-name">' + data.primary.name + '</div>' +
+      '<div class="bp-desc">' + data.primary.desc + '</div>' +
+    '</div>' +
+  '</div>';
+  document.getElementById('result-blueprints').innerHTML = bpHtml;
+
+  // Also label
+  document.getElementById('bp-also-label').textContent = data.also.length ? 'Also in the library:' : '';
+
+  // Also blueprints
+  var alsoHtml = '';
+  data.also.forEach(function(bp) {
+    alsoHtml += '<div class="bp-card">' +
+      '<div class="bp-icon">' + bp.icon + '</div>' +
+      '<div class="bp-info">' +
+        '<div class="bp-name">' + bp.name + '</div>' +
+        '<div class="bp-desc">' + bp.desc + '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('result-also').innerHTML = alsoHtml;
+
+  // Go button
+  document.getElementById('go-label').textContent = 'Open my Blueprint';
+  goBtn.onclick = function() {
+    sessionStorage.setItem('builtsy-onboarded', 'true');
+    sessionStorage.setItem('builtsy-lane', lane);
+    window.location.href = data.primary.url;
+  };
+
+  // Switch screens
+  screenPick.classList.remove('active');
+  screenResult.classList.add('active');
+
+  // Animate in
+  setTimeout(function() {
+    screenResult.style.opacity = '1';
+    screenResult.style.transform = 'translateY(0)';
+  }, 20);
+
+  // Mark onboarded
+  sessionStorage.setItem('builtsy-onboarded', 'true');
+  sessionStorage.setItem('builtsy-lane', lane);
+}
+
+// ── BACK ──
+backBtn.addEventListener('click', function() {
+  screenResult.classList.remove('active');
+  screenPick.classList.add('active');
+  sessionStorage.removeItem('builtsy-onboarded');
+});
+
+// ── DASHBOARD ──
+dashBtn.addEventListener('click', function() {
+  sessionStorage.setItem('builtsy-onboarded', 'true');
+  window.location.href = 'dashboard.html';
+});
+
+// ── AUTH CHECK ──
+// Only redirect to login if accessed without auth AND without the preview param
+var authKey = sessionStorage.getItem('builtsy-auth');
+var isPreview = window.location.search.indexOf('preview=1') !== -1;
+if (!authKey && !isPreview) {
+  sessionStorage.setItem('builtsy-redirect', 'onboarding.html');
+  window.location.href = 'login.html';
+}
+</script>
+
+</body>
+</html>

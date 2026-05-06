@@ -1,0 +1,177 @@
+================================================================
+THE WEBSITE BLUEPRINT — AUDIT TOOLS REFERENCE
+================================================================
+
+These are the free tools you use to verify every website you
+build is performing correctly — for Google, for AI search, for
+speed, and for accessibility. Run all of these before you
+deliver any site to a client, or after launching your own.
+
+================================================================
+1. SCHEMA & STRUCTURED DATA
+================================================================
+
+GOOGLE RICH RESULTS TEST
+URL: search.google.com/test/rich-results
+Cost: Free
+What it does: Checks your JSON-LD schema markup. Shows every
+structured data type Google detects on your page, flags any
+errors or warnings, and confirms eligibility for rich results
+in Google Search.
+When to use: After every site build, before delivery.
+What you want to see: Green checkmarks, zero errors. Non-critical
+warnings (orange dots) are acceptable — they usually mean a field
+like phone number or address was intentionally left blank.
+
+----------------------------------------------------------------
+
+================================================================
+2. AI CRAWLABILITY & ACCESS
+================================================================
+
+OTTERLY.AI — CRAWLABILITY AUDIT
+URL: otterly.ai
+Cost: Free tier available
+What it does: Checks whether AI search engines can actually
+access and crawl your site. Verifies both server-level firewall
+permissions AND your robots.txt settings for every major AI
+crawler including:
+  - GPTBot (ChatGPT)
+  - OAI-SearchBot (ChatGPT Search)
+  - ClaudeBot (Anthropic/Claude)
+  - PerplexityBot
+  - GoogleOther / Google-Extended
+  - anthropic-ai
+  - GrokBot (X/Twitter)
+  - Meta-ExternalAgent / Meta-ExternalFetcher
+  - Cohere-ai
+  - Diffbot
+  - Bytespider
+  - CCBot
+  - Applebot-Extended
+  - ImagesiftBot
+  - FacebookBot
+  - Omgilibot
+When to use: After every site build, before delivery.
+What you want to see: "Allow" in green for every single crawler
+on both the Server Access Check AND the robots.txt Check.
+If anything shows "Block" — fix your robots.txt immediately.
+
+----------------------------------------------------------------
+
+================================================================
+3. PAGE SPEED & PERFORMANCE
+================================================================
+
+GOOGLE PAGESPEED INSIGHTS
+URL: pagespeed.web.dev
+Cost: Free
+What it does: Scores your site on speed, performance, and
+Core Web Vitals for both mobile and desktop. Identifies exactly
+what is slowing the site down and how to fix it.
+When to use: After every site build, before delivery.
+What you want to see: 90+ score on both mobile and desktop.
+Images are almost always the cause of low scores — compress
+them at squoosh.app and retest.
+
+----------------------------------------------------------------
+
+================================================================
+4. ACCESSIBILITY
+================================================================
+
+WAVE ACCESSIBILITY CHECKER
+URL: wave.webaim.org
+Cost: Free
+What it does: Audits your site for WCAG 2.1 accessibility
+compliance. Flags missing alt text, low color contrast, missing
+form labels, keyboard navigation issues, and more.
+When to use: After every site build, before delivery.
+What you want to see: Zero errors. Alerts and warnings can be
+reviewed case by case — errors must be fixed.
+
+----------------------------------------------------------------
+
+================================================================
+5. SEO & OVERALL SITE HEALTH
+================================================================
+
+GOOGLE SEARCH CONSOLE
+URL: search.google.com/search-console
+Cost: Free
+What it does: Shows how Google sees and indexes your site.
+Submit your sitemap here, monitor for crawl errors, see which
+keywords your site appears for, and track indexing status.
+When to use: Set up for every site at launch. Check back after
+a few weeks to confirm Google has indexed all pages.
+What you want to see: All pages indexed, no coverage errors,
+sitemap submitted and accepted.
+
+AHREFS FREE WEBMASTER TOOLS
+URL: ahrefs.com/webmaster-tools
+Cost: Free with site verification
+What it does: Full site audit — broken links, missing meta
+tags, duplicate content, page speed issues, and more. One of
+the most comprehensive free SEO audit tools available.
+When to use: After launch, or when troubleshooting SEO issues.
+What you want to see: Low health score issues, no broken links,
+all pages crawlable.
+
+----------------------------------------------------------------
+
+================================================================
+6. AI SEARCH VISIBILITY
+================================================================
+
+PERPLEXITY.AI — MANUAL CHECK
+URL: perplexity.ai
+Cost: Free
+What it does: Directly tests whether AI search knows the
+business exists. Search for the business name, the business
+type + city, and questions customers would actually ask.
+When to use: 2–4 weeks after launch (AI tools need time to
+index new sites). Also great as a sales tool — show a prospect
+they're invisible on AI search before you pitch them.
+What you want to see: The business appears in results with
+accurate information pulled from the website.
+Example searches to run:
+  - "[business name] [city]"
+  - "[service type] in [city]"
+  - "best [service] near [city]"
+
+CHATGPT — MANUAL CHECK
+URL: chatgpt.com
+Cost: Free
+What it does: Same as above — directly tests AI search
+visibility in the world's most-used AI tool.
+When to use: Same as Perplexity — 2–4 weeks after launch.
+Example prompt: "What do you know about [business name]
+in [city], [state]?"
+
+----------------------------------------------------------------
+
+================================================================
+THE DELIVERY CHECKLIST — RUN ALL OF THESE BEFORE HANDOFF
+================================================================
+
+[ ] Google Rich Results Test — zero errors
+    search.google.com/test/rich-results
+
+[ ] Otterly.ai Crawlability Audit — all crawlers show Allow
+    otterly.ai
+
+[ ] PageSpeed Insights — 90+ on mobile and desktop
+    pagespeed.web.dev
+
+[ ] WAVE Accessibility — zero errors
+    wave.webaim.org
+
+[ ] Google Search Console — sitemap submitted, no errors
+    search.google.com/search-console
+
+[ ] Manual AI check — search for the business on Perplexity
+    and ChatGPT (check again 2–4 weeks after launch)
+
+================================================================
+END OF AUDIT TOOLS REFERENCE
+================================================================

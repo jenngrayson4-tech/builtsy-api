@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — Builtsy</title>
+<meta name="description" content="Builtsy started as a mom trying to teach her 14-year-old son how to build real websites with AI. This is that story.">
+<link rel="canonical" href="https://aiomasterclass.netlify.app/about.html">
+<meta property="og:title" content="Our Story — Builtsy">
+<meta property="og:description" content="A mom, her kid, and the gap between what AI can do and what a teenager can ask for.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12192B;--paper:#F0F2FF;--charcoal:#12192B;--coral:#ee70bc;--lime:#C8E000;--cyan:#8ba2f0;--muted:rgba(240,242,255,0.45);--border:rgba(240,242,255,0.08);--mono:'DM Mono',monospace;--serif:'Playfair Display',serif;--sans:'DM Sans',sans-serif;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--charcoal);color:var(--paper);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(18,25,43,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--paper);text-decoration:none;letter-spacing:-0.02em;}
+.nav-logo span{color:var(--coral);}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{font-size:0.825rem;color:var(--muted);text-decoration:none;letter-spacing:0.02em;transition:color 0.2s;}
+.nav-links a:hover{color:var(--paper);}
+.nav-links a.active{color:var(--paper);}
+.nav-cta{background:#C8E000;color:#12192B !important;padding:0.5rem 1.25rem;border-radius:6px;font-weight:700;font-size:0.825rem !important;transition:opacity 0.2s !important;}
+.nav-cta:hover{opacity:0.85;}
+.page{max-width:760px;margin:0 auto;padding:8rem 2rem 6rem;}
+.about-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--coral);display:block;margin-bottom:0.875rem;}
+.about-hero h1{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:900;line-height:1.1;margin-bottom:1.25rem;color:var(--paper);}
+.about-hero h1 em{font-style:italic;color:var(--lime);}
+.lede{font-size:1.05rem;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+.story-section{margin-bottom:3rem;}
+.story-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,242,255,0.25);display:block;margin-bottom:1rem;}
+.story-section h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;line-height:1.2;color:var(--paper);margin-bottom:1rem;}
+.story-section h2 em{font-style:italic;color:var(--coral);}
+.story-section p{font-size:0.975rem;color:var(--muted);line-height:1.85;margin-bottom:1.1rem;font-weight:300;}
+.story-section p strong{color:var(--paper);font-weight:600;}
+.pull-quote{border-left:3px solid var(--lime);padding:1.25rem 1.75rem;margin:2rem 0;background:rgba(200,224,0,0.05);border-radius:0 1rem 1rem 0;}
+.pull-quote p{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:rgba(240,242,255,0.85);line-height:1.65;margin:0;}
+.story-div{height:1px;background:var(--border);margin:2.5rem 0;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0;}
+.stat-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:1rem;padding:1.25rem;}
+.stat-num{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--lime);line-height:1;display:block;margin-bottom:0.3rem;}
+.stat-label{font-size:0.78rem;color:var(--muted);line-height:1.4;}
+.person-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0;}
+.person-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:1.25rem;padding:1.75rem;}
+.person-card.jennifer{border-color:rgba(238,112,188,0.2);background:rgba(238,112,188,0.05);}
+.person-card.grayson{border-color:rgba(200,224,0,0.2);background:rgba(200,224,0,0.05);}
+.person-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.1rem;font-weight:700;margin-bottom:1rem;}
+.avatar-j{background:rgba(238,112,188,0.2);color:var(--coral);border:1px solid rgba(238,112,188,0.3);}
+.avatar-g{background:rgba(200,224,0,0.15);color:var(--lime);border:1px solid rgba(200,224,0,0.3);}
+.person-name{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--paper);margin-bottom:0.2rem;}
+.person-title{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,242,255,0.35);margin-bottom:1rem;display:block;}
+.person-bio{font-size:0.825rem;color:var(--muted);line-height:1.7;}
+.cta-block{background:linear-gradient(135deg,rgba(238,112,188,0.08),rgba(139,162,240,0.08));border:1px solid rgba(238,112,188,0.2);border-radius:1.25rem;padding:2rem;margin:2.5rem 0;text-align:center;}
+.cta-block h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--paper);margin-bottom:0.75rem;}
+.cta-block p{font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:1.25rem;}
+.btn-primary{display:inline-flex;align-items:center;background:var(--lime);color:#12192B;padding:0.875rem 1.75rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:0.875rem;transition:opacity 0.2s;}
+.btn-primary:hover{opacity:0.85;}
+footer{border-top:1px solid var(--border);padding:2.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;max-width:1100px;margin:0 auto;}
+.footer-logo{font-family:var(--mono);font-size:0.875rem;color:var(--muted);text-decoration:none;}
+.footer-logo span{color:var(--coral);}
+.footer-links{display:flex;gap:2rem;list-style:none;}
+.footer-links a{font-size:0.775rem;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--paper);}
+.footer-copy{font-size:0.725rem;color:rgba(249,249,247,0.25);font-family:var(--mono);}
+@media(max-width:768px){.nav-links{display:none;}.stat-row,.person-row{grid-template-columns:1fr;}.page{padding:6rem 1.5rem 4rem;}footer{flex-direction:column;text-align:center;}.footer-links{flex-wrap:wrap;justify-content:center;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">built<span>sy</span></a>
+  <ul class="nav-links">
+    <li><a href="/#how-it-works">How it works</a></li>
+    <li><a href="/#blueprints">Blueprints</a></li>
+    <li><a href="about.html" class="active">Our Story</a></li>
+    <li><a href="login.html" style="font-size:0.825rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Sign in</a></li>
+    <li><a href="beta.html" class="nav-cta">Join Beta →</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <div class="about-hero">
+    <span class="about-tag">The origin story</span>
+    <h1>This started as a mom trying to teach her kid<br><em>something real.</em></h1>
+    <p class="lede">Builtsy didn't begin as a product idea. It began as a problem I couldn't solve any other way — how do you hand a teenager the tools to build something genuinely good, when even AI doesn't know the difference between a site that looks finished and one that actually works?</p>
+  </div>
+
+  <div class="story-section">
+    <span class="story-label">Where it started</span>
+    <h2>AI is new. <em>Really</em> new.</h2>
+    <p>My son Grayson wanted to learn how to build websites. He's sharp, motivated, and genuinely curious about technology. So I sat down to show him how to use AI to build something real — and I immediately hit a wall I didn't expect.</p>
+    <p>The gap between what AI can do and what a fifteen-year-old can ask for is enormous. Not because he wasn't capable — because <strong>the language of prompting is its own skill</strong>, and nobody's taught it yet. You can't just say "build me a website" and get something that works. You have to know what to ask for. And that knowledge doesn't exist anywhere in a form a teenager — or most adults — can actually use.</p>
+    <p>So I started building that form myself.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>"AI-built sites were coming out without the foundation that makes them actually work. No schema. No robots.txt. No llms.txt. Beautiful on the surface — invisible everywhere it counts."</p>
+  </div>
+
+  <div class="story-section">
+    <h2>The hidden problem nobody was talking about.</h2>
+    <p>The more I dug in, the more I found a second problem underneath the first. Even when Grayson got Claude to build something that looked great, the sites were missing the technical foundation that makes a website discoverable — by Google, by AI search engines, by anyone who matters.</p>
+    <p>No JSON-LD schema. No robots.txt that invited AI crawlers in. No llms.txt. No sitemap. The sites <strong>looked done but weren't done</strong> — and there was no standard, no checklist, no system that taught you what "actually done" meant.</p>
+    <p>I wanted Grayson learning to build things the right way from day one. Not shortcuts. Not "good enough." Real, professional, technically sound websites — because if he was going to charge clients real money, he needed to deliver real quality.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><span class="stat-num">$20</span><span class="stat-label">Grayson's only tool cost — Claude Pro. The entire overhead of his web design business.</span></div>
+    <div class="stat-card"><span class="stat-num">100%</span><span class="stat-label">AI audit pass rate on every site built with the Builtsy system. Zero schema errors.</span></div>
+    <div class="stat-card"><span class="stat-num">15</span><span class="stat-label">Years old. Running Rise Web Studio in Parker, CO. Real clients. Real income.</span></div>
+  </div>
+
+  <div class="story-div"></div>
+
+  <div class="story-section">
+    <span class="story-label">What we built</span>
+    <h2>A system, not a shortcut.</h2>
+    <p>What became Builtsy started as a prompt. A very long, very specific prompt built over months — tested, broken, fixed, tested again. A prompt that encoded everything I knew about what makes a website technically excellent, and translated it into something Claude could execute reliably every single time.</p>
+    <p>Then I turned it into Blueprints — structured forms that generate the prompt for you, so you don't have to know the language of prompting to get a professional result. You fill in what you know, and the system handles the rest.</p>
+    <p>Grayson used it. It worked. His first client site passed every audit on the first try. <strong>And it became something bigger than I planned.</strong></p>
+  </div>
+
+  <div class="story-div"></div>
+
+  <div class="story-section">
+    <span class="story-label">Who we are</span>
+    <h2>Two people. One system.</h2>
+    <div class="person-row">
+      <div class="person-card jennifer">
+        <div class="person-avatar avatar-j">JL</div>
+        <div class="person-name">Jennifer Lane</div>
+        <span class="person-title">Founder · Builder · Snowboarder</span>
+        <p class="person-bio">Jennifer spent over a decade at the intersection of complex systems and real-world outcomes — co-founding an acquired subscription company, leading marketing and product strategy across tech startups, and building a rare fluency that crosses creative vision, operational execution, and technical depth.<br><br>She has always been drawn to the gap between what's technically possible and what actually gets adopted. Builtsy is the most personal version of that obsession yet — built not for a client, but for her kid.</p>
+      </div>
+      <div class="person-card grayson">
+        <div class="person-avatar avatar-g">G</div>
+        <div class="person-name">Grayson</div>
+        <span class="person-title">Rise Web Studio · Parker, CO · Age 15</span>
+        <p class="person-bio">Grayson runs Rise Web Studio out of Parker, Colorado — building real websites for local small businesses using the Builtsy Blueprint system. At fifteen years old, he is the proof that this works.<br><br>His business overhead is $20/month. His sites pass every technical audit. His clients are real. His income is real.<br><br>He didn't just learn to build websites. He learned to build them the right way.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-div"></div>
+
+  <div class="story-section">
+    <span class="story-label">Who Builtsy is for</span>
+    <h2>If Grayson can do it, <em>you can do it.</em></h2>
+    <p>Builtsy isn't for developers. It's for people who have something to build and want to build it properly — without spending years learning to code or thousands of dollars hiring someone else.</p>
+    <p>It's for the mom launching her business without agency prices. The dad teaching his kid a real skill. The side hustler who wants to build for clients and actually deliver something worth charging for. The person who built something with Lovable or Squarespace and knows it's missing the layer that makes it findable.</p>
+    <p><strong>The system is the same whether you're building for yourself, your family, your business, or a paying client. That was the whole point from the beginning.</strong></p>
+  </div>
+
+  <div class="cta-block">
+    <h3>Ready to build something real?</h3>
+    <p>Get free beta access and start with your first Blueprint today.</p>
+    <a href="beta.html" class="btn-primary">Get Free Beta Access →</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/" class="footer-logo">built<span>sy</span></a>
+  <ul class="footer-links">
+    <li><a href="/#blueprints">Blueprints</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="login.html">Sign in</a></li>
+    <li><a href="privacy.html">Privacy</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Builtsy · Jayne of All LLC</span>
+</footer>
+
+</body>
+</html>

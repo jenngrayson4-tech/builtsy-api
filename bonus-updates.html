@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus — Updating Your Site with Claude | Builtsy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #1A2235; color: white; min-height: 100vh; }
+  .sidebar { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: #12192B; border-right: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; overflow-y: auto; z-index: 10; }
+  .sidebar-logo { padding: 1.5rem 1.25rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .logo-text { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #C8E000; display: block; margin-bottom: 0.25rem; }
+  .logo-sub { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+  .sidebar-nav { padding: 1.25rem 0.75rem; flex: 1; }
+  .nav-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0.5rem 0.75rem; display: block; margin-bottom: 0.25rem; }
+  .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: rgba(255,255,255,0.55); font-size: 0.875rem; transition: all 0.15s; margin-bottom: 0.15rem; }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+  .nav-item.active { background: rgba(200,224,0,0.12); border: 1px solid rgba(200,224,0,0.2); color: #C8E000; }
+  .nav-icon { font-size: 1rem; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: #ee70bc; color: white; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+  .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.07); }
+  .sidebar-footer a { font-size: 0.78rem; color: rgba(255,255,255,0.3); text-decoration: none; display: block; margin-bottom: 0.4rem; }
+  .sidebar-footer a:hover { color: #ee70bc; }
+  .main { margin-left: 260px; min-height: 100vh; }
+  .topbar { background: #12192B; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 1rem 2.5rem; display: flex; align-items: center; position: sticky; top: 0; z-index: 5; }
+  .breadcrumb { font-size: 0.8rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.5rem; }
+  .breadcrumb a { color: #ee70bc; text-decoration: none; }
+  .content { max-width: 760px; padding: 3rem 2.5rem 6rem; }
+  .module-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #ee70bc; display: block; margin-bottom: 0.75rem; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 900; line-height: 1.15; margin-bottom: 1rem; color: white; }
+  .module-intro { font-size: 1.05rem; color: rgba(255,255,255,0.6); line-height: 1.75; margin-bottom: 2.5rem; font-weight: 300; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin: 2.5rem 0 0.875rem; color: white; }
+  p { font-size: 0.975rem; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 1.1rem; font-weight: 300; }
+  p strong { color: white; font-weight: 600; }
+  a { color: #8ba2f0; }
+  .callout { background: rgba(255,255,255,0.05); border-left: 3px solid #ee70bc; border-radius: 0 1rem 1rem 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.7); }
+  .callout-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #ee70bc; display: block; margin-bottom: 0.4rem; }
+  .callout-lime { border-left-color: #C8E000; }
+  .callout-lime .callout-label { color: #C8E000; }
+  .callout-blue { border-left-color: #8ba2f0; }
+  .callout-blue .callout-label { color: #8ba2f0; }
+  .step-list { list-style: none; margin: 1rem 0 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .step-list li { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { width: 28px; height: 28px; background: #ee70bc; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+  .step-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .step-text strong { color: white; font-weight: 600; }
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .example-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.25rem; }
+  .example-card h4 { font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .example-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .example-card ul li { font-size: 0.8rem; color: rgba(255,255,255,0.55); line-height: 1.5; padding-left: 1rem; position: relative; }
+  .example-card ul li::before { content: '→'; position: absolute; left: 0; color: #C8E000; font-size: 0.75rem; }
+  .script-box { background: #0D1420; border-radius: 1rem; padding: 2rem; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.08); }
+  .script-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #C8E000; display: block; margin-bottom: 1rem; }
+  .script-box p { color: rgba(255,255,255,0.75); font-size: 0.9rem; line-height: 1.8; margin-bottom: 0.5rem; font-style: italic; }
+  .script-box p:last-child { margin-bottom: 0; }
+  .script-box .note { font-style: normal; font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 0.75rem; }
+  .highlight-box { background: linear-gradient(135deg, rgba(238,112,188,0.1), rgba(139,162,240,0.1)); border: 1px solid rgba(238,112,188,0.2); border-radius: 1rem; padding: 1.75rem; margin: 2rem 0; }
+  .highlight-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.75rem; }
+  .highlight-box p { margin-bottom: 0; color: rgba(255,255,255,0.7); }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .col-card { background: rgba(255,255,255,0.05); border-radius: 1rem; padding: 1.25rem; text-align: center; border: 1px solid rgba(255,255,255,0.08); }
+  .col-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  .col-label { font-size: 0.8rem; font-weight: 600; color: white; margin-bottom: 0.25rem; }
+  .col-sub { font-size: 0.72rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .nav-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.5rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .nav-btn-next { background: #ee70bc; color: white; }
+  .nav-btn-next:hover { background: #8ba2f0; }
+  .nav-btn-prev { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.15); }
+  .nav-btn-prev:hover { border-color: #ee70bc; color: #ee70bc; }
+  @media (max-width: 900px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 2rem 1.5rem 4rem; } .example-grid, .three-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<script>if (!sessionStorage.getItem('builtsy-auth')) { window.location.href = 'login.html'; }</script>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-text">Builtsy</span><span class="logo-sub">Private Beta</span></div>
+  <nav class="sidebar-nav">
+    <span class="nav-label">Overview</span>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="my-projects.html" class="nav-item"><span class="nav-icon">📁</span> My Projects</a>
+    <a href="dashboard.html#downloads" class="nav-item"><span class="nav-icon">📥</span> Downloads</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Builtsy Basics</span>
+    <a href="module1.html" class="nav-item"><span class="nav-icon">🎯</span> BB01 — The System <span class="nav-badge">Start</span></a>
+    <a href="module2.html" class="nav-item"><span class="nav-icon">📋</span> BB02 — Before You Build</a>
+    <a href="module3.html" class="nav-item"><span class="nav-icon">🔨</span> BB03 — The Build</a>
+    <a href="module4.html" class="nav-item"><span class="nav-icon">🚀</span> BB04 — Going Live</a>
+    <a href="module5.html" class="nav-item"><span class="nav-icon">🔍</span> BB05 — The Audit</a>
+    <a href="module6.html" class="nav-item"><span class="nav-icon">💰</span> BB06 — Getting Clients</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Blueprint Library</span>
+    <a href="blueprint-local-business.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">01</span> Blueprint 1 — Local Business</a>
+    <a href="blueprint-link-in-bio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">02</span> Blueprint 2 — Link in Bio</a>
+    <a href="blueprint-site-upgrade.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">↑</span> Blueprint — Site Upgrade</a>
+    <a href="blueprint-restaurant.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">03</span> Blueprint 3 — Restaurant</a>
+    <a href="blueprint-health-wellness.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">04</span> Blueprint 4 — Health & Wellness</a>
+    <a href="blueprint-creative-portfolio.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">05</span> Blueprint 5 — Creative Portfolio</a>
+    <a href="blueprint-home-services.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">06</span> Blueprint 6 — Home Services</a>
+    <a href="blueprint-consulting.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">07</span> Blueprint 7 — Consulting</a>
+    <a href="blueprint-chore-app.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">08</span> Blueprint 8 — Chore App</a>
+    <a href="blueprint-safety-itinerary.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">09</span> Blueprint 9 — Safety Itinerary</a>
+    <a href="blueprint-babysitter.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#ee70bc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">10</span> Blueprint 10 — Babysitter</a>
+    <a href="blueprint-homework-tracker.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#8ba2f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;font-family:'DM Mono',monospace;flex-shrink:0;">11</span> Blueprint 11 — Homework Tracker</a>
+    <a href="blueprint-house-manager.html" class="nav-item"><span class="nav-icon" style="width:20px;height:20px;background:#C8E000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#12192B;font-family:'DM Mono',monospace;flex-shrink:0;">12</span> Blueprint 12 — House Manager</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Extras &#8212; Add to Any Site</span>
+    <a href="extra-calendly.html" class="nav-item"><span class="nav-icon">&#128197;</span> Branded Booking Section</a>
+    <a href="extra-contact-form.html" class="nav-item"><span class="nav-icon">&#128221;</span> Contact Form</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Community</span>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span> Facebook Group</a>
+    <span class="nav-label" style="margin-top:0.75rem;">Bonus</span>
+    <a href="bonus-updates.html" class="nav-item"><span class="nav-icon">⚡</span> Editing &amp; Updating Your Builds <span class="nav-badge" style="background:#ee70bc;">New</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="https://builtsy.ai/affiliates" target="_blank">🔗 Share Builtsy — Earn 20%</a>
+    <a href="login.html" onclick="sessionStorage.clear()">Log out</a>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span>›</span>
+      <span>Bonus — Editing &amp; Updating Your Builds</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <span class="module-tag">Bonus Module ⚡</span>
+    <h1>Updating Any Site with Claude — Forever</h1>
+    <p class="module-intro">This is the secret that makes your $30/month hosting retainer feel effortless. Every update a client ever needs — new photo, changed hours, added service, updated menu — takes 5 minutes. Here's exactly how.</p>
+
+    <h2>The core idea</h2>
+    <p>Your website is just a folder of files. Claude can read any file you upload and make any change you describe. That means <strong>Claude is your CMS, your developer, and your maintenance team — all in one.</strong></p>
+    <p>No logging into WordPress. No broken plugins. No paying a developer $75/hour for a text change. Just upload the file, describe what you want, download the updated version, and redeploy.</p>
+
+    <div class="three-col">
+      <div class="col-card">
+        <span class="col-icon">📁</span>
+        <div class="col-label">The File</div>
+        <div class="col-sub">Your HTML file is the database. Everything lives in it.</div>
+      </div>
+      <div class="col-card">
+        <span class="col-icon">🤖</span>
+        <div class="col-label">Claude</div>
+        <div class="col-sub">Your editor. Upload, describe the change, download.</div>
+      </div>
+      <div class="col-card">
+        <span class="col-icon">🚀</span>
+        <div class="col-label">Netlify</div>
+        <div class="col-sub">Your host. Drag the updated file, done in 30 seconds.</div>
+      </div>
+    </div>
+
+    <h2>The exact workflow — every single time</h2>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span class="step-text"><strong>Open a new Claude conversation.</strong> Don't use an old one — start fresh every time so Claude has clean context.</span></li>
+      <li><span class="step-num">2</span><span class="step-text"><strong>Upload the file that needs changing.</strong> Just the one file — not the whole folder. If the menu needs updating, upload menu.html. If the homepage needs a new photo, upload index.html.</span></li>
+      <li><span class="step-num">3</span><span class="step-text"><strong>Describe exactly what you want changed.</strong> Be specific. The more detail you give, the cleaner the result.</span></li>
+      <li><span class="step-num">4</span><span class="step-text"><strong>Claude returns the updated file.</strong> Copy the code into your file and save it. Or ask Claude to produce the full updated file as a download.</span></li>
+      <li><span class="step-num">5</span><span class="step-text"><strong>Drag the updated file to Netlify.</strong> Go to your site's Deploys tab, drag the updated folder. Live in 30 seconds.</span></li>
+    </ul>
+
+    <div class="callout callout-lime">
+      <span class="callout-label">That's literally it</span>
+      <p>Upload → describe → download → redeploy. Five minutes. Every update. Forever. This is why you can confidently charge $30/month for hosting — because each update costs you almost nothing in time.</p>
+    </div>
+
+    <h2>What you can change — examples by industry</h2>
+
+    <div class="example-grid">
+      <div class="example-card">
+        <h4>🍕 Restaurant</h4>
+        <ul>
+          <li>Add new menu items</li>
+          <li>Remove seasonal dishes</li>
+          <li>Update prices</li>
+          <li>Change hours for holidays</li>
+          <li>Add a specials section</li>
+          <li>Update photos</li>
+        </ul>
+      </div>
+      <div class="example-card">
+        <h4>🔧 Service Business</h4>
+        <ul>
+          <li>Add a new service</li>
+          <li>Update pricing</li>
+          <li>Add team members</li>
+          <li>Update service area</li>
+          <li>Add new testimonials</li>
+          <li>Change phone number</li>
+        </ul>
+      </div>
+      <div class="example-card">
+        <h4>🔗 Link in Bio</h4>
+        <ul>
+          <li>Add a new link</li>
+          <li>Remove old links</li>
+          <li>Change link order</li>
+          <li>Update profile photo</li>
+          <li>Change bio text</li>
+          <li>Add a new social platform</li>
+        </ul>
+      </div>
+      <div class="example-card">
+        <h4>🏠 Any Site</h4>
+        <ul>
+          <li>Update contact info</li>
+          <li>Fix a typo</li>
+          <li>Add a banner or announcement</li>
+          <li>Change colors or fonts</li>
+          <li>Add a new page</li>
+          <li>Update the footer</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>How to ask Claude for changes</h2>
+    <p>The way you describe the change matters. Here are the exact prompts that work best:</p>
+
+    <div class="script-box">
+      <span class="script-label">Simple text change</span>
+      <p>"Here's my restaurant website. Please update the hours to: Monday-Thursday 11am-9pm, Friday-Saturday 11am-11pm, Sunday 12pm-8pm. Keep everything else exactly the same."</p>
+    </div>
+
+    <div class="script-box">
+      <span class="script-label">Adding new content</span>
+      <p>"Here's my services page. Please add a new service called 'Deep Clean' with this description: [description]. Price is $250. Add it after the Regular Clean service. Match the exact styling of the existing service cards."</p>
+    </div>
+
+    <div class="script-box">
+      <span class="script-label">Updating a menu</span>
+      <p>"Here's my menu page. Please make these changes: Remove 'Tomato Soup' from the starters. Add 'Truffle Fries - $12' to the sides. Change the price of the Margherita Pizza from $14 to $16. Keep all formatting exactly the same."</p>
+    </div>
+
+    <div class="script-box">
+      <span class="script-label">Link in bio update</span>
+      <p>"Here's my link in bio page. Please add a new button for my TikTok — the URL is [url] and the label should be 'Follow on TikTok'. Add it as the second button, below Instagram. Match the style of the existing buttons exactly."</p>
+    </div>
+
+    <div class="script-box">
+      <span class="script-label">The magic phrase</span>
+      <p>"Keep everything else exactly the same."</p>
+      <p class="note">Always end your request with this. It tells Claude not to redesign anything, just make the specific change you asked for.</p>
+    </div>
+
+    <h2>Using this for your hosting clients</h2>
+    <p>When you sell the $30/month hosting retainer, this is what you're actually selling — your time to manage updates using this system. Here's how to handle it professionally:</p>
+
+    <div class="script-box">
+      <span class="script-label">What to tell your hosting clients</span>
+      <p>"Any time you need a change — new photo, updated hours, new service added, price change, anything at all — just text or email me what you want. I'll have it live within 24 hours. That's included in your hosting."</p>
+      <p class="note">Set a reasonable limit — "up to 5 small changes per month included, larger redesigns quoted separately." Most clients will use 1-2 updates per month maximum.</p>
+    </div>
+
+    <h2>When a change is too big for one file</h2>
+    <p>Sometimes a client wants a bigger change — a whole new page, a redesign of a section, a new feature added. For those:</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span class="step-text"><strong>Upload all relevant files</strong> — if it affects multiple pages, upload all of them at once</span></li>
+      <li><span class="step-num">2</span><span class="step-text"><strong>Describe the full scope</strong> — "I need to add a new Gallery page and link it from the navigation on every page"</span></li>
+      <li><span class="step-num">3</span><span class="step-text"><strong>Let Claude work through it file by file</strong> — same as the original build process</span></li>
+      <li><span class="step-num">4</span><span class="step-text"><strong>Quote appropriately</strong> — a new page is a bigger job, charge $50-100 on top of the retainer</span></li>
+    </ul>
+
+    <div class="callout">
+      <span class="callout-label">The client doesn't need to know any of this</span>
+      <p>From your client's perspective you're a professional who handles all their website updates quickly and reliably. The fact that you use Claude to do it in 5 minutes is your business — not theirs. This is your system. Own it.</p>
+    </div>
+
+    <h2>The bigger picture</h2>
+
+    <div class="highlight-box">
+      <h3>Your file is your database. Claude is your editor. Netlify is your host.</h3>
+      <p>Three tools. Zero subscriptions beyond Claude. Own everything forever. Update anything in minutes. This is the unfair advantage you have over every web designer who's still manually editing code or charging $100/hour for text changes.</p>
+    </div>
+
+    <p>Every Blueprint in this platform works this way. Restaurant menu, link in bio, chore app, realtor page — all of them. One system. Every update. Forever.</p>
+
+    <div class="nav-buttons">
+      <a href="module6.html" class="nav-btn nav-btn-prev">← Module 6</a>
+      <a href="dashboard.html" class="nav-btn nav-btn-next">Back to Dashboard →</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

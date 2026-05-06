@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Login | Builtsy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+    --papaya: #ee70bc;
+    --lime: #C8E000;
+    --iris: #8ba2f0;
+    --bubblegum: #ee70bc;
+    --sea: #8ba2f0;
+    --tide: #8ba2f0;
+    --cream: #1A2235;
+    --dark: #12192B;
+    --mid: rgba(255,255,255,0.55);
+    --light: #1E2840;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: var(--papaya);
+    border-radius: 50%;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: var(--tide);
+    border-radius: 50%;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .login-wrap {
+    width: 100%;
+    max-width: 440px;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--papaya);
+    text-align: center;
+    display: block;
+    margin-bottom: 2.5rem;
+    text-decoration: none;
+  }
+
+  .login-card {
+    background: #1A2235;
+    border-radius: 2rem;
+    padding: 3rem;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+  }
+
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--papaya);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  h1 em { font-style: italic; color: var(--papaya); }
+
+  .sub {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .field { margin-bottom: 1rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.03em;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+    background: #1E2840;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus { border-color: var(--papaya); }
+  input::placeholder { color: rgba(74,63,53,0.4); }
+
+  .login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--papaya);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+  }
+
+  .login-btn:hover { background: var(--tide); transform: translateY(-1px); }
+  .login-btn:active { transform: translateY(0); }
+
+  .error-msg {
+    display: none;
+    background: rgba(224,105,39,0.1);
+    border: 1px solid rgba(224,105,39,0.2);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--papaya);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--papaya); }
+
+  .beta-note {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .beta-note a { color: var(--papaya); text-decoration: none; }
+  .beta-note a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <a href="index.html" class="logo">Builtsy</a>
+
+  <div class="login-card">
+    <span class="card-tag">Members Only</span>
+    <h1>Welcome <em>back.</em></h1>
+    <p class="sub">Enter your beta access password to start building.</p>
+
+    <div class="error-msg" id="error-msg">
+      Wrong password. Check your email for your access details.
+    </div>
+
+    <form onsubmit="checkLogin(event)">
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="password">Access password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn">Start Building →</button>
+    </form>
+
+    <div class="beta-note">
+      Beta member? You should have received your password by email.<br>
+      Not in the beta yet? <a href="index.html#beta">Apply for a spot →</a>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">← Back to main site</a>
+</div>
+
+<script>
+// Simple shared password for beta
+// Change BETA_PASSWORD to whatever you want to send to beta users
+const BETA_PASSWORD = 'builtsy-beta-2026';
+
+function checkLogin(e) {
+  e.preventDefault();
+  const pw = document.getElementById('password').value;
+  const errorEl = document.getElementById('error-msg');
+
+  if (pw === BETA_PASSWORD) {
+    // Store session
+    sessionStorage.setItem('builtsy-auth', 'true');
+    window.location.href = 'welcome.html';
+  } else {
+    errorEl.style.display = 'block';
+    document.getElementById('password').value = '';
+    document.getElementById('password').focus();
+  }
+}
+</script>
+</body>
+</html>

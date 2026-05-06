@@ -1,0 +1,44 @@
+# Prompt. Publish. Get Paid.
+
+## What We Do
+Prompt. Publish. Get Paid. is an online course that teaches beginners how to build beautiful, AI-search-optimized websites for small businesses using Claude AI — with no coding experience required. Students learn to charge $199 per website and build a side income from home.
+
+## Location
+Parker, CO — serving students nationwide online.
+
+## Course Overview
+The course teaches a complete system for building and delivering professional websites that are optimized for both Google and AI search engines like ChatGPT, Perplexity, and Google AI Overviews. Every website built with the system includes JSON-LD schema markup, llms.txt, robots.txt, sitemap.xml, and full AI crawler access.
+
+## What Students Learn
+- How to use Claude AI to build complete websites from a single prompt
+- AI search optimization (GEO/AEO) — getting found on ChatGPT, Perplexity, and Google AI Overviews
+- JSON-LD schema markup for local businesses
+- Netlify deployment — going live in minutes
+- The 5-tool audit checklist to verify every site before delivery
+- The mockup-first client acquisition strategy
+
+## Course Modules
+- Module 1 — The System: What We're Building and Why
+- Module 2 — Before You Build: Setup and Client Info
+- Module 3 — The Build: Using the Blueprint Prompt with Claude
+- Module 4 — Going Live: Netlify Deployment
+- Module 5 — The Audit: Verifying Your Work
+- Module 6 — Getting Clients: The Mockup-First Strategy
+
+## About the Instructor
+Jennifer Lane is an AI strategist, co-founder of LANERA (an AI consulting firm), and mom based in Parker, CO. She and her teenage son developed this website-building system and have used it to build real websites for real clients at $199 each.
+
+## Pages
+- / — Homepage: Course overview, free AI website audit tool, beta application
+- /privacy.html — Privacy Policy
+- /terms.html — Terms of Service
+
+## Contact
+Email: hello@promptpublishgetpaid.com
+Location: Parker, CO
+
+## Trust Signals
+- Real proof: websites built with this system score 11/11 valid items on Google Rich Results Test
+- 100% of AI crawlers allowed on all sites built with the system
+- Instructor has co-founded an AI consulting firm (LANERA)
+- Course includes a free AI website audit tool at promptpublishgetpaid.com/#audit
