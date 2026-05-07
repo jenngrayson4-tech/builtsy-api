@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Link in Bio Blueprint | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--navy-mid:#161E30;--navy-deep:#0D1220;
+  --lime:#C8E000;--lime-dim:rgba(200,224,0,0.1);--lime-border:rgba(200,224,0,0.22);
+  --pink:#ee70bc;--pink-dim:rgba(238,112,188,0.1);
+  --iris:#8ba2f0;--iris-dim:rgba(139,162,240,0.1);
+  --text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.3);
+  --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.1);--border-hi:rgba(255,255,255,0.18);
+  --surface:rgba(255,255,255,0.03);--surface-hi:rgba(255,255,255,0.055);
+  --r:0.6rem;--rl:0.875rem;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:var(--text);display:flex;flex-direction:column;}
+.topnav{height:52px;background:var(--navy-deep);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;flex-shrink:0;z-index:20;}
+.tn-left{display:flex;align-items:center;gap:1rem;}
+.logo-wrap{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+.logo-mark{width:26px;height:26px;background:var(--lime);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:14px;height:14px;}
+.logo-text{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:white;font-weight:500;}
+.tn-divider{width:1px;height:20px;background:var(--border-mid);}
+.tn-stepcount{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.tn-saved{font-size:0.75rem;color:rgba(200,224,0,0.65);display:none;align-items:center;gap:0.35rem;}
+.btn-generate-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.5rem 1.25rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;}
+.btn-generate-top:hover{opacity:0.9;}
+.workspace{display:flex;flex:1;overflow:hidden;}
+.leftnav{width:160px;background:var(--navy-deep);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1rem 0;flex-shrink:0;overflow-y:auto;}
+.step-item{display:flex;align-items:center;gap:0.6rem;padding:0.6rem 1rem;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;margin-bottom:0.1rem;}
+.step-item:hover{background:var(--surface);}
+.step-item.active{border-left-color:var(--lime);background:var(--lime-dim);}
+.step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0;transition:all 0.15s;}
+.step-item.active .step-num{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-item.done .step-num{background:rgba(200,224,0,0.15);border-color:var(--lime-border);color:var(--lime);}
+.step-label{font-size:0.76rem;color:var(--dim);font-weight:500;}
+.step-item.active .step-label{color:var(--lime);}
+.step-item.done .step-label{color:rgba(255,255,255,0.65);}
+.leftnav-footer{margin-top:auto;padding:1rem;border-top:1px solid var(--border);}
+.leftnav-footer a{font-size:0.7rem;color:var(--muted);text-decoration:none;display:block;margin-bottom:0.3rem;}
+.leftnav-footer a:hover{color:var(--pink);}
+.panel{flex:0 0 440px;background:var(--navy-mid);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.panel-header{padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,#1a2a6e,#2a3f9f);}
+.panel-step-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:0.35rem;display:block;}
+.panel-title{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:900;color:white;line-height:1.1;margin-bottom:0.2rem;}
+.panel-sub{font-size:0.8rem;color:var(--dim);line-height:1.6;}
+.panel-body{flex:1;overflow-y:auto;padding:1.25rem 1.5rem 2rem;}
+.panel-body::-webkit-scrollbar{width:4px;}
+.panel-body::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
+.panel-nav{display:flex;justify-content:space-between;align-items:center;padding:0.875rem 1.5rem;border-top:1px solid var(--border);flex-shrink:0;}
+.btn-prev{background:transparent;border:1px solid var(--border-mid);color:var(--dim);border-radius:100px;padding:0.5rem 1.1rem;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.btn-prev:hover{border-color:var(--border-hi);color:white;}
+.btn-next{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.5rem 1.25rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.btn-next:hover{opacity:0.9;}
+.pview{display:none;}
+.pview.active{display:block;}
+.sl{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:0.55rem;margin-top:1.35rem;display:block;}
+.sl:first-child{margin-top:0;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
+.ff{display:flex;flex-direction:column;gap:0.3rem;}
+.ff.full{grid-column:1/-1;}
+.ff label{font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);}
+.hint{font-size:0.67rem;color:var(--muted);line-height:1.5;margin-top:0.2rem;}
+.fi{padding:0.62rem 0.875rem;border-radius:var(--r);border:1px solid var(--border-mid);background:var(--surface);color:white;font-size:0.84rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.18s;width:100%;}
+.fi:focus{border-color:var(--lime);background:rgba(255,255,255,0.05);}
+.fi::placeholder{color:var(--muted);}
+select.fi option{background:#161E30;}
+/* toggles */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0.875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:0.5rem;}
+.toggle-label{font-size:0.82rem;color:var(--text);}
+.toggle-sub{font-size:0.68rem;color:var(--muted);margin-top:1px;}
+.toggle{width:38px;height:22px;background:var(--border-mid);border-radius:100px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.toggle.on{background:var(--lime);}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:left 0.2s;}
+.toggle.on::after{left:19px;}
+/* service rows */
+.svc-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;}
+.svc-name{flex:1;padding:0.55rem 0.75rem;border-radius:var(--r);border:1px solid var(--border-mid);background:var(--surface);color:white;font-size:0.82rem;font-family:'DM Sans',sans-serif;outline:none;}
+.svc-name:focus{border-color:var(--lime);}
+.svc-price{width:90px;padding:0.55rem 0.75rem;border-radius:var(--r);border:1px solid var(--border-mid);background:var(--surface);color:white;font-size:0.82rem;font-family:'DM Sans',sans-serif;outline:none;text-align:right;}
+.svc-price:focus{border-color:var(--lime);}
+.svc-del{width:26px;height:26px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.7rem;color:var(--muted);flex-shrink:0;transition:all 0.15s;}
+.svc-del:hover{background:rgba(238,112,188,0.15);border-color:var(--pink);color:var(--pink);}
+.btn-add-row{background:transparent;border:1px dashed var(--border-mid);color:var(--muted);border-radius:var(--r);padding:0.45rem 0.875rem;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;width:100%;margin-top:0.25rem;}
+.btn-add-row:hover{border-color:var(--lime);color:var(--lime);}
+/* link rows */
+.link-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;}
+.link-icon{width:32px;height:32px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.link-url{flex:1;padding:0.55rem 0.75rem;border-radius:var(--r);border:1px solid var(--border-mid);background:var(--surface);color:white;font-size:0.82rem;font-family:'DM Sans',sans-serif;outline:none;}
+.link-url:focus{border-color:var(--lime);}
+/* photo upload */
+.photo-upload-zone{border:2px dashed var(--border-mid);border-radius:var(--rl);padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;margin-bottom:0.75rem;}
+.photo-upload-zone:hover{border-color:var(--lime);background:var(--lime-dim);}
+.photo-upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 0.5rem;display:block;}
+.photo-placeholder{font-size:2rem;margin-bottom:0.4rem;}
+.photo-label{font-size:0.78rem;color:var(--dim);}
+.photo-hint{font-size:0.67rem;color:var(--muted);}
+/* palette */
+.pal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;margin-bottom:0.75rem;}
+.pal-swatch{border-radius:var(--r);height:36px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;position:relative;}
+.pal-swatch.sel{border-color:white;transform:scale(1.08);}
+.pal-swatch::after{content:attr(data-name);position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:0.5rem;color:var(--muted);white-space:nowrap;opacity:0;}
+.pal-swatch:hover::after{opacity:1;}
+.pal-cat-label{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin:1rem 0 0.4rem;}
+/* preview pane */
+.previewPane{flex:1;background:#1a1a2e;display:flex;flex-direction:column;overflow:hidden;}
+.preview-topbar{height:40px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1rem;gap:0.5rem;flex-shrink:0;}
+.preview-dot{width:10px;height:10px;border-radius:50%;}
+.preview-url{flex:1;background:rgba(255,255,255,0.05);border-radius:100px;padding:0.2rem 0.75rem;font-size:0.65rem;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;}
+.preview-phone{flex:1;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;}
+.phone-shell{width:280px;min-height:500px;background:#111;border-radius:36px;border:6px solid #333;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;}
+.phone-notch{height:28px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.phone-notch-bar{width:80px;height:5px;background:#222;border-radius:100px;}
+.phone-screen{flex:1;overflow-y:auto;background:#fff;}
+.phone-screen::-webkit-scrollbar{width:0;}
+/* gen view */
+.gen-view{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.gen-view.active{display:flex;}
+.gen-loading{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;}
+.gen-dots{display:flex;gap:6px;}
+.gen-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:gd 1.2s ease-in-out infinite;}
+.gen-dot:nth-child(2){animation-delay:.2s;}.gen-dot:nth-child(3){animation-delay:.4s;}
+@keyframes gd{0%,60%,100%{opacity:0.2;transform:scale(0.8);}30%{opacity:1;transform:scale(1);}}
+.gen-label{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--lime);letter-spacing:0.08em;}
+.gen-preview{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.gen-preview-bar{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;flex-shrink:0;flex-wrap:wrap;}
+.gen-preview-title{font-size:0.82rem;font-weight:600;color:white;flex:1;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.5rem 1.25rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.gen-preview-frame{flex:1;border:none;background:white;}
+.gen-error{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;text-align:center;}
+.btn-generate-big{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.75rem 2rem;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;}
+.review-wrap{display:none;flex:1;flex-direction:column;overflow-y:auto;padding:2rem;}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem;}
+.review-card-title{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;}
+.review-item{display:flex;justify-content:space-between;align-items:baseline;padding:0.3rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+.review-item:last-child{border-bottom:none;}
+.review-item-label{color:var(--dim);}
+.review-item-value{color:white;font-weight:500;text-align:right;max-width:60%;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="tn-left">
+    <a href="/dashboard.html" class="logo-wrap">
+      <div class="logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 11L7 3L12 11H2Z" fill="#12192B"/></svg></div>
+      <span class="logo-text">Builtsy</span>
+    </a>
+    <div class="tn-divider"></div>
+    <span class="tn-stepcount" id="tn-stepcount">Step 1 of 6</span>
+  </div>
+  <div class="tn-right">
+    <div class="tn-saved" id="tn-saved">✓ Saved</div>
+    <button class="btn-generate-top" onclick="goToGenerate()"><span>⚡</span> Generate My Page</button>
+  </div>
+</div>
+
+<div class="workspace">
+
+  <div class="leftnav">
+    <div class="step-item active" onclick="goStep(0)" id="si-0"><div class="step-num">1</div><div class="step-label">Profile</div></div>
+    <div class="step-item" onclick="goStep(1)" id="si-1"><div class="step-num">2</div><div class="step-label">Services</div></div>
+    <div class="step-item" onclick="goStep(2)" id="si-2"><div class="step-num">3</div><div class="step-label">Links</div></div>
+    <div class="step-item" onclick="goStep(3)" id="si-3"><div class="step-num">4</div><div class="step-label">Features</div></div>
+    <div class="step-item" onclick="goStep(4)" id="si-4"><div class="step-num">5</div><div class="step-label">Design</div></div>
+    <div class="step-item" onclick="goStep(5)" id="si-5"><div class="step-num">6</div><div class="step-label">Review</div></div>
+    <div class="step-item" onclick="goToGenerate()" id="si-gen"><div class="step-num">⚡</div><div class="step-label">Generate</div></div>
+    <div class="leftnav-footer">
+      <a href="/dashboard.html">← Dashboard</a>
+    </div>
+  </div>
+
+  <div class="panel" id="mainPanel">
+    <div class="panel-header">
+      <span class="panel-step-label" id="ph-eyebrow">Step 1 of 6 · Profile</span>
+      <div class="panel-title" id="ph-title">Your profile</div>
+      <div class="panel-sub" id="ph-sub">Tell us who you are. This shows at the top of your link in bio.</div>
+    </div>
+
+    <div class="panel-body" id="panel-body">
+
+      <!-- STEP 1: PROFILE -->
+      <div class="pview active" id="pv-0">
+        <div class="photo-upload-zone" id="photo-zone" onclick="document.getElementById('photo-input').click()">
+          <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)" style="display:none">
+          <div id="photo-placeholder-content">
+            <div class="photo-placeholder">📸</div>
+            <div class="photo-label">Upload your photo</div>
+            <div class="photo-hint">Square photo works best · JPG or PNG</div>
+          </div>
+        </div>
+        <div class="fg">
+          <div class="ff full">
+            <label>Your name *</label>
+            <input class="fi" id="f-name" placeholder="e.g. Sarah M." oninput="showSaved();updatePreview()">
+          </div>
+          <div class="ff full">
+            <label>Tagline *</label>
+            <input class="fi" id="f-tagline" placeholder="e.g. French & Spanish lessons in Denver" oninput="showSaved();updatePreview()">
+          </div>
+          <div class="ff full">
+            <label>Short bio (optional)</label>
+            <textarea class="fi" id="f-bio" rows="3" placeholder="A sentence or two about you and what you offer..." oninput="showSaved();updatePreview()"></textarea>
+          </div>
+          <div class="ff full">
+            <label>Location</label>
+            <input class="fi" id="f-location" placeholder="e.g. Denver, CO" oninput="showSaved()">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: SERVICES -->
+      <div class="pview" id="pv-1">
+        <span class="sl">Your services &amp; pricing</span>
+        <p class="hint" style="margin-bottom:1rem;">Add the services you want to show on your link in bio. Customers will see these with prices.</p>
+        <div id="svc-rows">
+          <div class="svc-row">
+            <input class="svc-name" placeholder="Service name (e.g. 60-min lesson)" oninput="showSaved();updatePreview()">
+            <input class="svc-price" type="number" placeholder="75" oninput="showSaved();updatePreview()">
+            <div class="svc-del" onclick="this.parentNode.remove();updatePreview()">✕</div>
+          </div>
+          <div class="svc-row">
+            <input class="svc-name" placeholder="Service name (e.g. 30-min session)" oninput="showSaved();updatePreview()">
+            <input class="svc-price" type="number" placeholder="45" oninput="showSaved();updatePreview()">
+            <div class="svc-del" onclick="this.parentNode.remove();updatePreview()">✕</div>
+          </div>
+        </div>
+        <button class="btn-add-row" onclick="addSvcRow()">+ Add another service</button>
+
+        <span class="sl" style="margin-top:1.5rem;">Booking phone number</span>
+        <p class="hint" style="margin-bottom:0.75rem;">For SMS booking — customers will tap to text you.</p>
+        <div class="fg">
+          <div class="ff full">
+            <input class="fi" id="f-phone" placeholder="(720) 555-0123" oninput="showSaved()">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: LINKS -->
+      <div class="pview" id="pv-2">
+        <span class="sl">Your links</span>
+        <p class="hint" style="margin-bottom:1rem;">Add the links you want to show. Leave blank to skip.</p>
+        <div class="link-row"><div class="link-icon">🌐</div><input class="link-url fi" id="l-website" placeholder="Website URL" oninput="showSaved()"></div>
+        <div class="link-row"><div class="link-icon">📸</div><input class="link-url fi" id="l-instagram" placeholder="Instagram URL" oninput="showSaved()"></div>
+        <div class="link-row"><div class="link-icon">👥</div><input class="link-url fi" id="l-facebook" placeholder="Facebook URL" oninput="showSaved()"></div>
+        <div class="link-row"><div class="link-icon">🎵</div><input class="link-url fi" id="l-tiktok" placeholder="TikTok URL" oninput="showSaved()"></div>
+        <div class="link-row"><div class="link-icon">💼</div><input class="link-url fi" id="l-linkedin" placeholder="LinkedIn URL" oninput="showSaved()"></div>
+        <div class="link-row"><div class="link-icon">📅</div><input class="link-url fi" id="l-booking" placeholder="Booking/Calendly URL" oninput="showSaved()"></div>
+        <span class="sl" style="margin-top:1.25rem;">Custom link</span>
+        <div class="fg">
+          <div class="ff"><input class="fi" id="l-custom-label" placeholder="Label (e.g. Shop)" oninput="showSaved()"></div>
+          <div class="ff"><input class="fi" id="l-custom-url" placeholder="URL" oninput="showSaved()"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: FEATURES -->
+      <div class="pview" id="pv-3">
+        <span class="sl">Features</span>
+        <p class="hint" style="margin-bottom:1rem;">Choose what to include on your link in bio page.</p>
+
+        <div class="toggle-row">
+          <div><div class="toggle-label">Pricing calculator</div><div class="toggle-sub">Interactive calculator from Step 2</div></div>
+          <div class="toggle on" id="tog-calc" onclick="toggleFeature(this,'calc')"></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label">SMS booking button</div><div class="toggle-sub">Tap to text you — opens native SMS</div></div>
+          <div class="toggle on" id="tog-sms" onclick="toggleFeature(this,'sms')"></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label">Contact form</div><div class="toggle-sub">Simple name + email + message</div></div>
+          <div class="toggle" id="tog-form" onclick="toggleFeature(this,'form')"></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label">Testimonial</div><div class="toggle-sub">One short quote from a happy client</div></div>
+          <div class="toggle" id="tog-testimonial" onclick="toggleFeature(this,'testimonial')"></div>
+        </div>
+        <div id="testimonial-fields" style="display:none;margin-top:0.75rem;">
+          <div class="fg">
+            <div class="ff full"><input class="fi" id="f-testimonial-text" placeholder="Quote from a client..." oninput="showSaved()"></div>
+            <div class="ff full"><input class="fi" id="f-testimonial-name" placeholder="Client name (e.g. Sarah M.)" oninput="showSaved()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: DESIGN -->
+      <div class="pview" id="pv-4">
+        <span class="sl">Color palette</span>
+        <div id="pal-grid-wrap"></div>
+        <span class="sl">Mode</span>
+        <div class="fg">
+          <div class="ff">
+            <select class="fi" id="f-mode" onchange="showSaved()">
+              <option value="light">Light mode</option>
+              <option value="dark">Dark mode</option>
+            </select>
+          </div>
+        </div>
+        <span class="sl">Font style</span>
+        <div class="fg">
+          <div class="ff full">
+            <select class="fi" id="f-font" onchange="showSaved()">
+              <option value="modern">Modern Sans (clean, minimal)</option>
+              <option value="elegant">Elegant Serif (Playfair + DM Sans)</option>
+              <option value="friendly">Friendly Round (soft, approachable)</option>
+              <option value="bold">Bold Display (strong, confident)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6: REVIEW -->
+      <div class="pview" id="pv-5">
+        <div class="review-wrap" id="review-wrap" style="display:block;padding:0;">
+          <div class="review-card">
+            <div class="review-card-title">Profile</div>
+            <div class="review-item"><span class="review-item-label">Name</span><span class="review-item-value" id="rv-name">—</span></div>
+            <div class="review-item"><span class="review-item-label">Tagline</span><span class="review-item-value" id="rv-tagline">—</span></div>
+            <div class="review-item"><span class="review-item-label">Location</span><span class="review-item-value" id="rv-location">—</span></div>
+          </div>
+          <div class="review-card">
+            <div class="review-card-title">Services</div>
+            <div id="rv-services">—</div>
+          </div>
+          <div class="review-card">
+            <div class="review-card-title">Features</div>
+            <div class="review-item"><span class="review-item-label">Calculator</span><span class="review-item-value" id="rv-calc">On</span></div>
+            <div class="review-item"><span class="review-item-label">SMS Booking</span><span class="review-item-value" id="rv-sms">On</span></div>
+            <div class="review-item"><span class="review-item-label">Contact Form</span><span class="review-item-value" id="rv-form">Off</span></div>
+          </div>
+          <div class="review-card">
+            <div class="review-card-title">Design</div>
+            <div class="review-item"><span class="review-item-label">Palette</span><span class="review-item-value" id="rv-palette">—</span></div>
+            <div class="review-item"><span class="review-item-label">Mode</span><span class="review-item-value" id="rv-mode">Light</span></div>
+          </div>
+          <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Page</button>
+        </div>
+      </div>
+
+    </div><!-- /panel-body -->
+
+    <div class="panel-nav" id="panel-nav">
+      <button class="btn-prev" id="btn-prev" onclick="goStep(currentStep-1)" style="visibility:hidden;">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="goStep(currentStep+1)">Continue →</button>
+    </div>
+  </div><!-- /panel -->
+
+  <!-- PREVIEW PANE -->
+  <div class="previewPane" id="previewPane">
+    <div class="preview-topbar">
+      <div class="preview-dot" style="background:#ff5f57;"></div>
+      <div class="preview-dot" style="background:#febc2e;"></div>
+      <div class="preview-dot" style="background:#28c840;"></div>
+      <div class="preview-url" id="preview-url-bar">yourname.netlify.app</div>
+    </div>
+    <div class="preview-phone">
+      <div class="phone-shell">
+        <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+        <div class="phone-screen" id="phone-screen">
+          <div style="padding:2rem;text-align:center;font-family:'DM Sans',sans-serif;color:#888;font-size:0.82rem;line-height:1.6;">
+            <div style="font-size:1.5rem;margin-bottom:0.5rem;">📱</div>
+            Fill in your info to see a live preview
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /previewPane -->
+
+  <!-- GENERATE VIEW -->
+  <div class="gen-view" id="genView">
+    <div class="gen-loading" id="loadingState">
+      <div class="gen-dots"><div class="gen-dot"></div><div class="gen-dot"></div><div class="gen-dot"></div></div>
+      <div class="gen-label" id="gen-label">Building your link in bio page…</div>
+    </div>
+    <div class="gen-preview" id="previewState" style="display:none;flex-direction:column;">
+      <div class="gen-preview-bar">
+        <div class="gen-preview-title" id="preview-title">Your link in bio page is ready!</div>
+        <button class="btn-dl" onclick="downloadSite()">⬇ Download</button>
+      </div>
+      <iframe class="gen-preview-frame" id="previewFrame"></iframe>
+    </div>
+    <div class="gen-error" id="errorState">
+      <div style="font-size:1rem;color:var(--pink);">Something went wrong</div>
+      <div class="error-msg" id="errorMsg" style="font-size:0.82rem;color:var(--dim);"></div>
+      <button class="btn-generate-big" onclick="startGenerate()">Try again</button>
+    </div>
+  </div>
+
+</div><!-- /workspace -->
+
+<script>
+var currentStep = 0;
+var totalSteps = 6;
+var bpPalette = {name:'Soft Pink',bg:'#FFF0F3',primary:'#C2185B',secondary:'#E91E8C',accent:'#FFD6E0',text:'#1A1A1A'};
+var photoData = '';
+var features = {calc:true, sms:true, form:false, testimonial:false};
+var generatedHTML = '';
+
+var STEP_META = [
+  {eyebrow:'Step 1 of 6 · Profile', title:'Your profile', sub:'Tell us who you are. This shows at the top of your link in bio.'},
+  {eyebrow:'Step 2 of 6 · Services', title:'Services & pricing', sub:'What do you offer? Add your services with prices.'},
+  {eyebrow:'Step 3 of 6 · Links', title:'Your links', sub:'Add the links you want people to tap.'},
+  {eyebrow:'Step 4 of 6 · Features', title:'Features', sub:'Choose what to include on your page.'},
+  {eyebrow:'Step 5 of 6 · Design', title:'Design', sub:'Choose your colors and style.'},
+  {eyebrow:'Step 6 of 6 · Review', title:'Almost ready!', sub:'Review your page details then generate.'},
+];
+
+var PALETTE_CATEGORIES = [
+  {id:'soft',label:'🌸 Soft & Feminine',palettes:[["Blush Dream","#FFF5F8","#D4788A","#E8A0AE","#FFE4EE","#2A1A1F"],["Soft Pink","#FFF0F3","#C2185B","#E91E8C","#FFD6E0","#1A1A1A"],["Peony","#F5E9E2","#D44D5C","#773344","#E3B5A4","#160029"],["Peach Glow","#FFF8F2","#D4724A","#E8946A","#FFF0E6","#1A1A1A"],["Lavender Mist","#FAFAFF","#9B8EC4","#C4B8E0","#EEE8FF","#1A1A2E"],["Powder Blue","#F7FAFF","#6BA3C8","#9BC3E0","#E8F1FA","#1A2A3A"]]},
+  {id:'organic',label:'🌿 Calm & Organic',palettes:[["Sage Light","#E3EED4","#375534","#0F2A1D","#C8DDB4","#1A1A1A"],["Organic Modern","#F5F5F5","#7A8755","#5C4033","#E2D5C4","#2A2A2A"],["Desert Clay","#F9F7F0","#B17457","#D8D2C2","#4A4947","#2A2A2A"],["Warm Mist","#F7CBCA","#5D6B6B","#A5C4C4","#F1F1F1","#1A1A1A"],["Sage Whisper","#F8FBF8","#7BA898","#A8C9BF","#E8F4F0","#1A2A26"],["Mint Cream","#F5FDF8","#6BAF8A","#9ED4B4","#DFF5EB","#1A2D22"]]},
+  {id:'clean',label:'🤍 Clean & Professional',palettes:[["Editorial","#F8F5F0","#2C2C2C","#8B7355","#EDE9E3","#1A1A1A"],["Sky Clean","#F7FAFC","#2B6CB0","#63B3ED","#EDF2F7","#1A202C"],["Soft Neutral","#FAFAF8","#4A4A4A","#888888","#F0EFED","#1A1A1A"],["Navy & Amber","#FFFFFF","#FCA311","#E5E5E5","#14213D","#000000"],["Off White","#FDFCF8","#403D39","#E3DBCC","#D8D4CC","#101010"],["White Sand","#E7E7DD","#1D1D1B","#D8D2C2","#C8C8BC","#1D1D1B"]]},
+  {id:'bold',label:'⚡ Bold & Modern',palettes:[["Bold Modern","#1A1A1A","#C8E000","#D4EE00","#2D2D2D","#F5F5F5"],["Navy & Fire","#082032","#FF4C29","#FF6B4A","#1A3D5C","#F5F5F5"],["Yellow Power","#192230","#FFD700","#3D474E","#2C2F38","#F5F5F5"],["High Contrast","#FFFFFF","#0066FF","#111111","#F4F4F4","#111111"],["Ember Navy","#181A2F","#FDA481","#FFB89A","#2E3560","#F5F5F5"],["Midnight Storm","#1A1E3A","#C38EB4","#9BC4E2","#2E3A6E","#F5F5F5"]]},
+  {id:'luxury',label:'✨ Luxury & Elevated',palettes:[["Trust & Pro","#1B3A5C","#C9A84C","#E8B96A","#2E5F8A","#F5F0E8"],["Luxe Purple","#1A0533","#F5C842","#FFD966","#3D1066","#F5F5F5"],["Saffron & Night","#F2ECDD","#F5CB5C","#CD9C20","#333533","#0B0B0B"],["Grown & Gathered","#F5F0E8","#7B1F3A","#A3294D","#E8E0D4","#1A1A1A"],["Wine & Midnight","#800021","#881144","#243A66","#FF69B4","#FFB9B4"],["Obsidian & Gold","#0A0A0A","#B8960C","#D4B44A","#111111","#F7F3E9"]]},
+  {id:'warm',label:'🧡 Warm & Local',palettes:[["Warm Local","#FAF6F2","#C1603A","#D4724A","#EDE8E0","#1A1A1A"],["Warm Industrial","#FFFCF2","#EB5E28","#CCC5B9","#403D39","#252422"],["Ember Warm","#F2ECDD","#E57734","#F5CB5C","#3D2E02","#1A1A1A"],["Nordic Warm","#E7ADA2","#7AB57C","#5E6462","#E4DED4","#1A1A1A"],["Desert Sunset","#017F7A","#E57734","#B6ACAD","#3D2E02","#1A1A1A"],["Autumn Leaves","#5A3211","#D68631","#3D717E","#0B2839","#F5F5F5"]]},
+];
+
+var PALETTES = [];
+PALETTE_CATEGORIES.forEach(function(cat){
+  cat.palettes.forEach(function(p){
+    PALETTES.push({name:p[0],bg:p[1],primary:p[2],secondary:p[3],accent:p[4],text:p[5]});
+  });
+});
+
+function escapeHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function showSaved(){
+  var el = document.getElementById('tn-saved');
+  el.style.display='flex';
+  clearTimeout(window._st);
+  window._st=setTimeout(function(){el.style.display='none';},2500);
+}
+
+function handlePhoto(input){
+  if(!input.files||!input.files[0])return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    photoData = e.target.result;
+    var zone = document.getElementById('photo-placeholder-content');
+    zone.innerHTML = '<img src="'+photoData+'" class="photo-preview"><div class="photo-hint">Tap to change</div>';
+    updatePreview();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function addSvcRow(){
+  var row = document.createElement('div');
+  row.className = 'svc-row';
+  row.innerHTML = '<input class="svc-name" placeholder="Service name" oninput="showSaved();updatePreview()">'
+    +'<input class="svc-price" type="number" placeholder="0" oninput="showSaved();updatePreview()">'
+    +'<div class="svc-del" onclick="this.parentNode.remove();updatePreview()">✕</div>';
+  document.getElementById('svc-rows').appendChild(row);
+}
+
+function toggleFeature(el, key){
+  el.classList.toggle('on');
+  features[key] = el.classList.contains('on');
+  if(key==='testimonial'){
+    document.getElementById('testimonial-fields').style.display = features[key]?'block':'none';
+  }
+  showSaved();
+}
+
+function getServices(){
+  var rows = document.querySelectorAll('#svc-rows .svc-row');
+  var svcs = [];
+  rows.forEach(function(row){
+    var n = row.querySelector('.svc-name');
+    var p = row.querySelector('.svc-price');
+    if(n&&p&&n.value.trim())svcs.push({name:n.value.trim(),price:parseFloat(p.value)||0});
+  });
+  return svcs;
+}
+
+function updatePreview(){
+  var name = (document.getElementById('f-name')||{value:''}).value || 'Your Name';
+  var tagline = (document.getElementById('f-tagline')||{value:''}).value || 'Your tagline here';
+  var bio = (document.getElementById('f-bio')||{value:''}).value || '';
+  var svcs = getServices();
+  var bg = bpPalette.bg || '#FFF0F3';
+  var primary = bpPalette.primary || '#C2185B';
+  var textColor = bpPalette.text || '#1A1A1A';
+
+  var html = '<div style="font-family:\'DM Sans\',sans-serif;background:'+bg+';min-height:100%;padding:1.5rem 1rem;color:'+textColor+';">';
+  html += '<div style="text-align:center;margin-bottom:1.5rem;">';
+  if(photoData){html += '<img src="'+photoData+'" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:0.75rem;border:3px solid '+primary+';">';}
+  else{html += '<div style="width:80px;height:80px;border-radius:50%;background:'+primary+';display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 0.75rem;">📸</div>';}
+  html += '<div style="font-size:1.2rem;font-weight:700;margin-bottom:0.3rem;">'+escapeHtml(name)+'</div>';
+  html += '<div style="font-size:0.82rem;opacity:0.7;margin-bottom:0.5rem;">'+escapeHtml(tagline)+'</div>';
+  if(bio)html += '<div style="font-size:0.75rem;opacity:0.6;line-height:1.5;">'+escapeHtml(bio)+'</div>';
+  html += '</div>';
+
+  if(svcs.length){
+    html += '<div style="margin-bottom:1.5rem;">';
+    html += '<div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;opacity:0.5;margin-bottom:0.75rem;text-align:center;">Services</div>';
+    svcs.forEach(function(s){
+      html += '<div style="background:rgba(0,0,0,0.05);border-radius:10px;padding:0.65rem 0.875rem;margin-bottom:0.4rem;display:flex;justify-content:space-between;align-items:center;">';
+      html += '<span style="font-size:0.82rem;font-weight:500;">'+escapeHtml(s.name)+'</span>';
+      html += '<span style="font-size:0.82rem;font-weight:700;color:'+primary+';">$'+s.price+'</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div style="text-align:center;">';
+  html += '<div style="background:'+primary+';color:white;border-radius:100px;padding:0.65rem 1.5rem;font-size:0.85rem;font-weight:600;margin-bottom:0.75rem;display:inline-block;">📱 Book via SMS</div>';
+  html += '</div>';
+  html += '</div>';
+
+  document.getElementById('phone-screen').innerHTML = html;
+  var slug = name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'') || 'yourname';
+  document.getElementById('preview-url-bar').textContent = slug + '.netlify.app';
+}
+
+function renderPalettes(){
+  var wrap = document.getElementById('pal-grid-wrap');
+  var html = '';
+  PALETTE_CATEGORIES.forEach(function(cat){
+    html += '<div class="pal-cat-label">'+cat.label+'</div>';
+    html += '<div class="pal-grid">';
+    cat.palettes.forEach(function(p){
+      var sel = p[0] === bpPalette.name ? ' sel' : '';
+      html += '<div class="pal-swatch'+sel+'" data-name="'+escapeHtml(p[0])+'" title="'+escapeHtml(p[0])+'" style="background:linear-gradient(135deg,'+p[2]+' 0%,'+p[3]+' 100%);" onclick="pickPalette(\''+p[0]+'\',\''+p[1]+'\',\''+p[2]+'\',\''+p[3]+'\',\''+p[4]+'\',\''+p[5]+'\')"></div>';
+    });
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function pickPalette(name,bg,primary,secondary,accent,text){
+  bpPalette = {name:name,bg:bg,primary:primary,secondary:secondary,accent:accent,text:text};
+  document.querySelectorAll('.pal-swatch').forEach(function(s){s.classList.remove('sel');});
+  document.querySelectorAll('.pal-swatch[data-name="'+name+'"]').forEach(function(s){s.classList.add('sel');});
+  updatePreview();showSaved();
+}
+
+function goStep(n){
+  if(n < 0 || n >= totalSteps) return;
+  if(n === totalSteps-1) updateReview();
+  currentStep = n;
+  document.querySelectorAll('.pview').forEach(function(v,i){v.classList.toggle('active',i===n);});
+  document.querySelectorAll('.step-item[id^="si-"]').forEach(function(si,i){
+    si.classList.toggle('active',i===n);
+    si.classList.toggle('done',i<n);
+  });
+  var m = STEP_META[n];
+  document.getElementById('ph-eyebrow').textContent = m.eyebrow;
+  document.getElementById('ph-title').textContent = m.title;
+  document.getElementById('ph-sub').textContent = m.sub;
+  document.getElementById('tn-stepcount').textContent = 'Step '+(n+1)+' of '+totalSteps;
+  document.getElementById('btn-prev').style.visibility = n===0?'hidden':'visible';
+  document.getElementById('btn-next').textContent = n===totalSteps-1 ? '⚡ Generate' : 'Continue →';
+  document.getElementById('panel-nav').style.display = n===totalSteps-1 ? '' : '';
+  if(n===totalSteps-1){document.getElementById('btn-next').onclick=function(){goToGenerate();};}
+  else{document.getElementById('btn-next').onclick=function(){goStep(currentStep+1);};}
+  document.getElementById('genView').classList.remove('active');
+  document.getElementById('mainPanel').style.display = '';
+  document.getElementById('previewPane').style.display = '';
+}
+
+function updateReview(){
+  var name = (document.getElementById('f-name')||{value:''}).value||'—';
+  var tagline = (document.getElementById('f-tagline')||{value:''}).value||'—';
+  var location = (document.getElementById('f-location')||{value:''}).value||'—';
+  document.getElementById('rv-name').textContent = name;
+  document.getElementById('rv-tagline').textContent = tagline;
+  document.getElementById('rv-location').textContent = location;
+  var svcs = getServices();
+  var svcHtml = svcs.length ? svcs.map(function(s){
+    return '<div class="review-item"><span class="review-item-label">'+escapeHtml(s.name)+'</span><span class="review-item-value">$'+s.price+'</span></div>';
+  }).join('') : '<div class="review-item"><span class="review-item-label">No services added</span></div>';
+  document.getElementById('rv-services').innerHTML = svcHtml;
+  document.getElementById('rv-calc').textContent = features.calc?'On':'Off';
+  document.getElementById('rv-sms').textContent = features.sms?'On':'Off';
+  document.getElementById('rv-form').textContent = features.form?'On':'Off';
+  document.getElementById('rv-palette').textContent = bpPalette.name||'—';
+  var modeEl = document.getElementById('f-mode');
+  document.getElementById('rv-mode').textContent = modeEl ? (modeEl.value==='dark'?'Dark':'Light') : 'Light';
+}
+
+function buildPrompt(){
+  var name = (document.getElementById('f-name')||{value:''}).value||'';
+  var tagline = (document.getElementById('f-tagline')||{value:''}).value||'';
+  var bio = (document.getElementById('f-bio')||{value:''}).value||'';
+  var location = (document.getElementById('f-location')||{value:''}).value||'';
+  var phone = (document.getElementById('f-phone')||{value:''}).value||'';
+  var mode = (document.getElementById('f-mode')||{value:'light'}).value||'light';
+  var font = (document.getElementById('f-font')||{value:'modern'}).value||'modern';
+  var svcs = getServices();
+  var links = [];
+  ['website','instagram','facebook','tiktok','linkedin','booking'].forEach(function(k){
+    var el = document.getElementById('l-'+k);
+    if(el&&el.value.trim())links.push({platform:k,url:el.value.trim()});
+  });
+  var customLabel = (document.getElementById('l-custom-label')||{value:''}).value||'';
+  var customUrl = (document.getElementById('l-custom-url')||{value:''}).value||'';
+  if(customLabel&&customUrl)links.push({platform:customLabel,url:customUrl});
+  var testimonialText = (document.getElementById('f-testimonial-text')||{value:''}).value||'';
+  var testimonialName = (document.getElementById('f-testimonial-name')||{value:''}).value||'';
+
+  var fontMap = {modern:'DM Sans, sans-serif',elegant:'Playfair Display for headings + DM Sans for body',friendly:'Nunito, sans-serif',bold:'Oswald for headings + DM Sans for body'};
+  var fontInstructions = fontMap[font]||fontMap.modern;
+
+  var p = 'You are a world-class mobile UI designer. Create a beautiful, conversion-optimized LINK IN BIO page for the following person.\n\n';
+  p += 'PERSON INFO:\n';
+  p += '• Name: '+name+'\n';
+  p += '• Tagline: '+tagline+'\n';
+  if(bio)p += '• Bio: '+bio+'\n';
+  if(location)p += '• Location: '+location+'\n';
+  if(phone)p += '• Phone (for SMS booking): '+phone+'\n';
+  p += '\nSERVICES:\n';
+  svcs.forEach(function(s){p += '• '+s.name+' — $'+s.price+'\n';});
+  if(links.length){
+    p += '\nLINKS TO INCLUDE:\n';
+    links.forEach(function(l){p += '• '+l.platform+': '+l.url+'\n';});
+  }
+  p += '\nFEATURES TO INCLUDE:\n';
+  if(features.calc&&svcs.length)p += '• Pricing calculator — place a div with id="builtsy-calculator-placeholder"></div> where the calculator should go\n';
+  if(features.sms&&phone){
+    var smsMsg = encodeURIComponent('Hi '+name+'! I found you on your link in bio and would love to book a session. What availability do you have?');
+    p += '• SMS booking button — large tap target, opens: sms:'+phone+'?body='+smsMsg+'\n';
+  }
+  if(features.form)p += '• Simple contact form (name, email, message)\n';
+  if(features.testimonial&&testimonialText)p += '• Testimonial: "'+testimonialText+'" — '+testimonialName+'\n';
+  if(photoData)p += '• Profile photo: use <img src="'+photoData+'" ...> for the profile photo\n';
+  p += '\nDESIGN REQUIREMENTS:\n';
+  p += '• Background color: '+bpPalette.bg+'\n';
+  p += '• Primary/accent color: '+bpPalette.primary+'\n';
+  p += '• Secondary color: '+bpPalette.secondary+'\n';
+  p += '• Text color: '+bpPalette.text+'\n';
+  p += '• Mode: '+mode+'\n';
+  p += '• Font: '+fontInstructions+'\n';
+  p += '\nDESIGN PRINCIPLES — THIS IS A MOBILE LINK IN BIO PAGE:\n';
+  p += '• MOBILE FIRST — design for 390px width, full-bleed, thumb-friendly tap targets (min 44px)\n';
+  p += '• The page should feel like a premium mobile app, not a website\n';
+  p += '• Profile section at top: photo (circular, 100px), name, tagline, bio\n';
+  p += '• Services listed as clean cards with name and price\n';
+  p += '• Social/booking links as large pill buttons with icons\n';
+  p += '• SMS booking button should be prominent — large, colored, with phone emoji\n';
+  p += '• Generous whitespace, rounded corners, subtle shadows\n';
+  p += '• Everything centered, single column\n';
+  p += '• NO navigation bar, NO header/footer — just the content\n';
+  p += '• Load Google Fonts if needed\n';
+  p += '\nOUTPUT: Single self-contained index.html. Mobile viewport meta tag required. All CSS inline. No frameworks. Start with <!DOCTYPE html>. Raw HTML only. IMPORTANT: All JavaScript must be fully compatible with Safari on iOS — use var not const/let, function(){} not arrow functions, onclick= not addEventListener.';
+  return p;
+}
+
+function goToGenerate(){
+  document.getElementById('mainPanel').style.display = 'none';
+  document.getElementById('previewPane').style.display = 'none';
+  document.getElementById('genView').classList.add('active');
+  document.getElementById('loadingState').style.display = 'flex';
+  document.getElementById('previewState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'none';
+  startGenerate();
+}
+
+async function startGenerate(){
+  try {
+    var prompt = buildPrompt();
+    var response = await fetch('https://builtsy-api-production.up.railway.app/generate', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:prompt})
+    });
+    if(!response.ok){
+      var err = await response.json().catch(function(){return {};});
+      throw new Error(err.error||'API error '+response.status);
+    }
+    var data = await response.json();
+    var raw = data.html||'';
+    raw = raw.replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
+    if(raw.indexOf('<!DOCTYPE')===-1&&raw.indexOf('<html')===-1){
+      throw new Error('Response does not look like valid HTML.');
+    }
+    // Inject calculator if needed
+    if(features.calc&&raw.indexOf('builtsy-calculator-placeholder')!==-1){
+      raw = injectCalculator(raw);
+    }
+    generatedHTML = raw;
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('previewState').style.display = 'flex';
+    document.getElementById('previewState').style.flexDirection = 'column';
+    document.getElementById('previewFrame').srcdoc = raw;
+    var name = (document.getElementById('f-name')||{value:''}).value||'Your Page';
+    document.getElementById('preview-title').textContent = name + '\'s link in bio is ready!';
+    saveProjectToRailway();
+  } catch(err) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'flex';
+    document.getElementById('errorState').style.flexDirection = 'column';
+    document.getElementById('errorMsg').textContent = err.message;
+  }
+}
+
+function injectCalculator(html){
+  var hasPlaceholder = html.indexOf('builtsy-calculator-placeholder') !== -1;
+  if(!hasPlaceholder)return html;
+  var svcs = getServices();
+  if(!svcs.length)return html;
+  var primary = bpPalette.primary||'#C2185B';
+  var r = parseInt(primary.slice(1,3),16)||194;
+  var g = parseInt(primary.slice(3,5),16)||24;
+  var b = parseInt(primary.slice(5,7),16)||91;
+  var isLight = (r*299+g*587+b*114)/1000>128;
+  var textOn = isLight?'#1A1A1A':'#FFFFFF';
+  var defaultPrice = svcs.length>1?svcs[1].price:svcs[0].price;
+  var calc = '<div class="builtsy-calc" style="font-family:inherit;padding:1rem 0;">';
+  calc += '<style>.bc-svc-grid{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}'
+    +'.bc-svc{border:2px solid rgba('+r+','+g+','+b+',0.2);border-radius:12px;padding:0.875rem 1rem;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;}'
+    +'.bc-svc:hover{border-color:rgba('+r+','+g+','+b+',0.5);}'
+    +'.bc-svc.on{border-color:'+primary+';background:rgba('+r+','+g+','+b+',0.08);}'
+    +'.bc-svc-name{font-size:0.92rem;font-weight:500;}'
+    +'.bc-svc-price{font-size:1rem;font-weight:700;color:'+primary+';}'
+    +'.bc-total{background:rgba('+r+','+g+','+b+',0.08);border:2px solid rgba('+r+','+g+','+b+',0.2);border-radius:16px;padding:1.25rem;display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;}'
+    +'.bc-total-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.6;}'
+    +'.bc-total-amount{font-size:2rem;font-weight:900;color:'+primary+';}'
+    +'</style>';
+  calc += '<div class="bc-svc-grid">';
+  svcs.forEach(function(s,i){
+    calc += '<div class="bc-svc'+(i===1?' on':'') +'" onclick="bcPick(this,'+s.price+')">'
+      +'<span class="bc-svc-name">'+s.name+'</span>'
+      +'<span class="bc-svc-price">$'+s.price+'</span>'
+      +'</div>';
+  });
+  calc += '</div>';
+  calc += '<div class="bc-total"><div><div class="bc-total-label">Your estimate</div><div style="font-size:0.72rem;opacity:0.45;">Per session</div></div><div class="bc-total-amount">$<span id="bc-t">'+defaultPrice+'</span></div></div>';
+  calc += '<script>var _bcp='+defaultPrice+';function bcPick(el,p){document.querySelectorAll(".bc-svc").forEach(function(c){c.classList.remove("on");});el.classList.add("on");_bcp=p;var t=document.getElementById("bc-t");if(t)t.textContent=p;}<\/script>';
+  calc += '</div>';
+  html = html.replace(/<div[^>]*id=["\']builtsy-calculator-placeholder["\'][^>]*>\s*<\/div>/gi,calc);
+  html = html.replace(/<div[^>]*id=["\']builtsy-calculator-placeholder["\'][^>]*\/>/gi,calc);
+  return html;
+}
+
+function downloadSite(){
+  if(!generatedHTML)return;
+  var blob = new Blob([generatedHTML],{type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href=url;
+  var name = (document.getElementById('f-name')||{value:'linkbio'}).value||'linkbio';
+  a.download = name.toLowerCase().replace(/\s+/g,'-')+'-linkbio.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function saveProjectToRailway(){
+  try {
+    var name = (document.getElementById('f-name')||{value:''}).value||'';
+    if(!name)return;
+    var project = {
+      id:'lb-'+Date.now(),
+      type:'link-bio',
+      name:name,
+      industry:'Link in Bio',
+      location:(document.getElementById('f-location')||{value:''}).value||'',
+      savedAt:new Date().toISOString(),
+      status:'ready',
+      url:'blueprint-linkbio.html'
+    };
+    fetch('https://builtsy-api-production.up.railway.app/projects/save',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(project)
+    }).catch(function(){});
+    try{
+      var existing=JSON.parse(localStorage.getItem('builtsy-boost-projects')||'[]');
+      var found=false;
+      for(var i=0;i<existing.length;i++){if(existing[i].name===project.name){existing[i]=project;found=true;break;}}
+      if(!found)existing.push(project);
+      localStorage.setItem('builtsy-boost-projects',JSON.stringify(existing));
+    }catch(e){}
+  }catch(e){}
+}
+
+// INIT
+renderPalettes();
+updatePreview();
+</script>
+</body>
+</html>
