@@ -11,1421 +11,501 @@
 :root{
   --navy:#12192B;--navy-mid:#161E30;--navy-deep:#0D1220;
   --lime:#C8E000;--lime-dim:rgba(200,224,0,0.1);--lime-border:rgba(200,224,0,0.22);
-  --pink:#ee70bc;--pink-dim:rgba(238,112,188,0.1);
-  --iris:#8ba2f0;--iris-dim:rgba(139,162,240,0.1);
+  --pink:#ee70bc;--iris:#8ba2f0;--builtsy-blue:#4361EE;
   --text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.3);
   --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.1);--border-hi:rgba(255,255,255,0.18);
   --surface:rgba(255,255,255,0.03);--surface-hi:rgba(255,255,255,0.055);
   --r:0.6rem;--rl:0.875rem;--rxl:1.1rem;
+  --cream:#fafaf7;--white:#ffffff;
 }
-html,body{height:100%;overflow:hidden;}
-body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:var(--text);display:flex;flex-direction:column;}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
 
-/* ═══ TOP NAV BAR ═══════════════════════════════ */
-.topnav{height:52px;background:var(--navy-deep);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;flex-shrink:0;z-index:20;}
-.tn-left{display:flex;align-items:center;gap:1rem;}
-.logo-wrap{display:flex;align-items:center;gap:0.6rem;}
-.logo-mark{width:26px;height:26px;background:var(--lime);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-mark svg{width:14px;height:14px;}
-.logo-text{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:white;font-weight:500;}
-.logo-sub{font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;}
-.tn-divider{width:1px;height:20px;background:var(--border-mid);}
-.tn-stepcount{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+/* ── TOPBAR ── */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--builtsy-blue);color:white;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
 .tn-right{display:flex;align-items:center;gap:0.75rem;}
-.tn-saved{font-size:0.75rem;color:rgba(200,224,0,0.65);display:flex;align-items:center;gap:0.35rem;}
-.btn-generate-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.5rem 1.25rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;}
-.btn-generate-top:hover{opacity:0.9;transform:translateY(-1px);}
-.btn-generate-top.pink{background:linear-gradient(135deg,var(--pink),var(--iris));color:white;box-shadow:0 4px 20px rgba(238,112,188,0.3);}
+.tn-saved{font-size:0.72rem;color:rgba(200,224,0,0.7);font-family:'DM Mono',monospace;}
+.btn-generate-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.btn-generate-top:hover{opacity:.9;}
+/* hide old layout elements */
+.workspace,.leftnav,.panel,.preview-pane,.preview-banner{display:none!important;}
 
-/* ═══ WORKSPACE ═════════════════════════════════ */
-.workspace{display:flex;flex:1;overflow:hidden;}
+/* ── WELCOME BANNER ── */
+.welcome-banner{background:var(--builtsy-blue);color:white;text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;letter-spacing:.03em;}
+.welcome-banner a{color:var(--lime);}
 
-/* ═══ LEFT NAV (step list) ══════════════════════ */
-.leftnav{width:160px;background:var(--navy-deep);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1rem 0;flex-shrink:0;overflow-y:auto;}
-.step-item{display:flex;align-items:center;gap:0.6rem;padding:0.6rem 1rem;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;margin-bottom:0.1rem;}
-.step-item:hover{background:var(--surface);}
-.step-item.active{border-left-color:var(--lime);background:var(--lime-dim);}
-.step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0;transition:all 0.15s;}
-.step-item.active .step-num{background:var(--lime);border-color:var(--lime);color:var(--navy);}
-.step-item.done .step-num{background:rgba(200,224,0,0.15);border-color:var(--lime-border);color:var(--lime);}
-.step-label{font-size:0.76rem;color:var(--dim);font-weight:500;transition:color 0.15s;}
-.step-item.active .step-label{color:var(--lime);}
-.step-item.done .step-label{color:rgba(255,255,255,0.65);}
-.leftnav-footer{margin-top:auto;padding:1rem;border-top:1px solid var(--border);}
-.leftnav-footer a{font-size:0.7rem;color:var(--muted);text-decoration:none;display:block;margin-bottom:0.3rem;}
-.leftnav-footer a:hover{color:var(--pink);}
+/* ── HERO ── */
+.bp-hero{background:var(--navy);color:white;padding:44px 24px 36px;text-align:center;}
+.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.15;margin-bottom:10px;}
+.bp-hero h1 span{color:var(--lime);}
+.bp-hero p{color:rgba(255,255,255,0.65);font-size:.95rem;max-width:500px;margin:0 auto;}
+#hero-industry-name{color:var(--lime);}
 
-/* ═══ MIDDLE PANEL (controls) ═══════════════════ */
-.panel{flex:0 0 440px;background:var(--navy-mid);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.panel.design-mode{border-right:none;}
-.panel-header{padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,#1a2a6e,#2a3f9f);}
-.panel-step-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:0.35rem;display:block;}
-.panel-title{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:900;color:white;line-height:1.1;margin-bottom:0.2rem;}
-.panel-sub{font-size:0.8rem;color:var(--dim);line-height:1.6;}
-.panel-body{flex:1;overflow-y:auto;padding:1.25rem 1.5rem 2rem;}
-.panel-body.design-mode{padding:1.75rem 2.5rem 2rem;}
-.panel-body::-webkit-scrollbar{width:4px;}
-.panel-body::-webkit-scrollbar-track{background:transparent;}
-.panel-body::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
+/* ── STEP PROGRESS ── */
+.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:700px;margin:0 auto;}
+.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:16px;}
+.step-line.done{background:var(--lime);}
 
-/* panel step view */
-.pview{display:none;}
-.pview.active{display:block;}
+/* ── FORM WRAP ── */
+.form-wrap{max-width:700px;margin:0 auto;padding:0 16px 80px;}
+.step-panel{display:none;padding-top:24px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
+.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:22px;}
 
-/* section label */
-.sl{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:space-between;margin-bottom:0.55rem;margin-top:1.35rem;}
-.sl:first-child{margin-top:0;}
-.sl a{color:var(--iris);font-size:0.68rem;font-family:'DM Sans',sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;}
-.sl a:hover{text-decoration:underline;}
+/* ── FORM FIELDS (light theme) ── */
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi-light{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.fi-light:focus{border-color:var(--builtsy-blue);}
+.fi-light::placeholder{color:#9ca3af;}
+textarea.fi-light{resize:vertical;min-height:80px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.field-grid{grid-template-columns:1fr;}}
 
-/* form fields */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
-.ff{display:flex;flex-direction:column;gap:0.3rem;}
-.ff.full{grid-column:1/-1;}
-.ff label{font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);}
-.hint{font-size:0.67rem;color:var(--muted);line-height:1.5;}
-.fi{padding:0.62rem 0.875rem;border-radius:var(--r);border:1px solid var(--border-mid);background:var(--surface);color:white;font-size:0.84rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.18s,background 0.18s;width:100%;}
-.fi:focus{border-color:var(--lime);background:rgba(255,255,255,0.05);}
-.fi::placeholder{color:var(--muted);}
-textarea.fi{resize:vertical;min-height:72px;}
-select.fi option{background:#161E30;}
+/* ── CHIP SELECTORS (light) ── */
+.chip-group{display:flex;flex-wrap:wrap;gap:8px;}
+.chip-light{border:1.5px solid rgba(67,97,238,0.25);border-radius:24px;padding:7px 15px;font-size:.82rem;font-weight:500;cursor:pointer;background:white;color:var(--navy);transition:all .2s;user-select:none;}
+.chip-light:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.05);}
+.chip-light.sel{background:var(--navy);color:var(--lime);border-color:var(--navy);font-weight:600;}
+/* also support old chip-on toggle */
+.chip-light.chip-on{background:var(--navy);color:var(--lime);border-color:var(--navy);font-weight:600;}
+.chip-loading{font-size:.8rem;color:#9ca3af;font-style:italic;padding:6px 2px;animation:chipPulse 1.2s ease-in-out infinite;}
+@keyframes chipPulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* option cards */
-.og{display:grid;grid-template-columns:repeat(3,1fr);gap:0.45rem;margin-bottom:0.75rem;}
-.og.two{grid-template-columns:1fr 1fr;}
-.oc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:0.75rem 0.875rem;cursor:pointer;transition:all 0.15s;}
-.oc:hover{border-color:var(--border-hi);background:var(--surface-hi);}
-.oc.sel{border-color:var(--lime);background:var(--lime-dim);}
-.oc-icon{font-size:1.1rem;margin-bottom:0.3rem;display:block;}
-.oc-name{font-size:0.77rem;font-weight:600;color:white;margin-bottom:0.1rem;}
-.oc-desc{font-size:0.63rem;color:var(--muted);line-height:1.45;}
+/* ── OPTION CARDS (light) ── */
+.oc-light{background:white;border:1.5px solid rgba(67,97,238,0.2);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;}
+.oc-light:hover{border-color:var(--builtsy-blue);}
+.oc-light.sel{border-color:var(--navy);background:rgba(18,25,43,0.04);}
+.oc-light .oc-icon{font-size:1.1rem;margin-bottom:4px;display:block;}
+.oc-light .oc-name{font-size:.8rem;font-weight:600;color:var(--navy);}
+.oc-light .oc-desc{font-size:.7rem;color:#6b7280;margin-top:2px;}
+.og-light{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.og-light.two{grid-template-columns:1fr 1fr;}
+@media(max-width:480px){.og-light{grid-template-columns:1fr 1fr;}}
 
-/* callout */
-.callout{border-radius:var(--rl);padding:0.875rem 1.1rem;margin-bottom:1rem;}
-.callout-lime{background:var(--lime-dim);border:1px solid var(--lime-border);}
-.callout-iris{background:var(--iris-dim);border:1px solid rgba(139,162,240,0.15);}
-.callout-pink{background:var(--pink-dim);border:1px solid rgba(238,112,188,0.15);}
-.callout .ctag{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.3rem;}
-.callout-lime .ctag{color:var(--lime);}
-.callout-iris .ctag{color:var(--iris);}
-.callout-pink .ctag{color:var(--pink);}
-.callout p{font-size:0.82rem;color:var(--dim);line-height:1.68;}
-.callout p strong{color:white;}
+/* ── SECTION LABEL ── */
+.sl-light{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:10px;margin-top:24px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+.sl-light:first-child{margin-top:0;}
 
-/* pricing */
-.pricing-box{background:var(--navy-deep);border:1px solid var(--border-mid);border-radius:var(--rxl);overflow:hidden;margin-bottom:1rem;}
-.pb-hdr{background:var(--surface);padding:0.75rem 1.1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.pb-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);}
-.pb-tabs{display:flex;gap:0.2rem;background:rgba(255,255,255,0.04);border-radius:100px;padding:2px;}
-.pb-tab{padding:0.25rem 0.75rem;border-radius:100px;border:none;background:transparent;color:var(--dim);font-size:0.68rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;font-weight:500;}
-.pb-tab.on{background:var(--lime);color:var(--navy);font-weight:700;}
-.pb-body{padding:1rem;}
-.svc-rows{display:flex;flex-direction:column;gap:0.45rem;margin-bottom:0.875rem;}
-.svc-row{display:grid;grid-template-columns:1fr auto auto auto;gap:0.6rem;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:0.55rem 0.75rem;transition:border-color 0.15s;}
-.svc-row:hover{border-color:var(--border-hi);}
-.sr-name{font-size:0.8rem;font-weight:600;color:white;}
-.sr-dur{font-size:0.65rem;color:var(--dim);}
-.sr-price{width:72px;background:rgba(255,255,255,0.05);border:1px solid var(--border-mid);border-radius:0.4rem;padding:0.28rem 0.55rem;color:var(--lime);font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:700;text-align:right;outline:none;transition:border-color 0.15s;}
-.sr-price:focus{border-color:var(--lime);}
-.sr-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem;border-radius:0.35rem;transition:all 0.15s;}
-.sr-del:hover{color:var(--pink);background:rgba(238,112,188,0.09);}
-.add-svc{background:none;border:1.5px dashed rgba(200,224,0,0.18);border-radius:var(--r);color:rgba(200,224,0,0.5);font-size:0.77rem;padding:0.48rem 1rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;width:100%;margin-bottom:0.875rem;}
-.add-svc:hover{border-color:var(--lime);color:var(--lime);}
-.pricing-summary{background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:var(--r);padding:0.875rem 1.1rem;display:flex;justify-content:space-between;align-items:center;}
-.ps-lbl{font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,224,0,0.55);margin-bottom:0.15rem;}
-.ps-range{font-size:0.9rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;}
-.ps-est{font-size:0.72rem;color:var(--dim);}
-.ps-est strong{color:white;}
+/* ── PRICING ROWS (light) ── */
+.svc-row-light{display:flex;align-items:center;gap:10px;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;margin-bottom:8px;}
+.svc-row-light .sr-name{font-size:.85rem;font-weight:600;color:var(--navy);}
+.svc-row-light .sr-dur{font-size:.72rem;color:#9ca3af;}
+.sr-price-light{border:none;border-bottom:1.5px solid #e5e7eb;font-size:1rem;font-weight:700;color:var(--builtsy-blue);font-family:'DM Mono',monospace;width:70px;outline:none;background:transparent;padding:2px 0;}
+.sr-del-light{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1rem;margin-left:auto;}
+.sr-del-light:hover{color:#ef4444;}
+.btn-add-row{background:none;border:1.5px dashed #d1d5db;border-radius:10px;padding:9px 16px;font-size:.82rem;color:#9ca3af;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:4px;}
+.btn-add-row:hover{border-color:var(--builtsy-blue);color:var(--builtsy-blue);}
 
-/* toggles */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:0.7rem 0.95rem;margin-bottom:0.45rem;transition:border-color 0.15s;}
-.toggle-row:hover{border-color:var(--border-hi);}
-.tg-label{font-size:0.8rem;font-weight:600;color:white;}
-.tg-desc{font-size:0.67rem;color:var(--muted);margin-top:0.08rem;}
-.switch{position:relative;width:38px;height:20px;flex-shrink:0;}
+/* ── TOGGLE ROWS (light) ── */
+.toggle-row-light{display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 16px;margin-bottom:8px;}
+.tg-label-light{font-size:.85rem;font-weight:600;color:var(--navy);}
+.tg-desc-light{font-size:.75rem;color:#6b7280;margin-top:2px;}
+/* reuse existing switch styles */
+.switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
 .switch input{opacity:0;width:0;height:0;}
-.track{position:absolute;inset:0;background:rgba(255,255,255,0.08);border-radius:100px;cursor:pointer;transition:background 0.2s;}
+.track{position:absolute;cursor:pointer;inset:0;background:#d1d5db;border-radius:22px;transition:.3s;}
+.track:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
 .switch input:checked+.track{background:var(--lime);}
-.thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:white;border-radius:50%;transition:transform 0.2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.switch input:checked~.thumb{transform:translateX(18px);}
+.switch input:checked+.track:before{transform:translateX(18px);}
 
-/* ─── DESIGN STEP SPECIFIC ────────────── */
+/* ── PHOTO UPLOAD (light) ── */
+.upload-zone-light{border:2px dashed #d1d5db;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;}
+.upload-zone-light:hover{border-color:var(--builtsy-blue);}
+.upload-zone-light.has-file{border-color:var(--lime);background:#f7fde8;}
+.upload-zone-light input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon-light{font-size:1.6rem;margin-bottom:6px;}
+.upload-label-light{font-size:.82rem;color:#6b7280;}
+.upload-label-light strong{color:var(--navy);}
+.gallery-grid-light{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;}
+.gallery-slot-light{aspect-ratio:1;border:2px dashed #d1d5db;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#9ca3af;cursor:pointer;background:white;transition:all .2s;position:relative;overflow:hidden;text-align:center;padding:8px;}
+.gallery-slot-light:hover{border-color:var(--builtsy-blue);}
+.gallery-slot-light.filled{border-color:var(--lime);background:#f7fde8;}
+.gallery-slot-light input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 
-/* Style preset cards */
-.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:0.5rem;}
-.style-card{border:1.5px solid var(--border);border-radius:var(--rxl);overflow:hidden;cursor:pointer;transition:all 0.18s;position:relative;}
-.style-card:hover{border-color:var(--border-hi);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.35);}
-.style-card.sel{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,224,0,0.1);}
-.sc-check{position:absolute;top:6px;right:6px;width:16px;height:16px;background:var(--lime);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:0.55rem;color:var(--navy);font-weight:900;z-index:2;}
-.style-card.sel .sc-check{display:flex;}
-.sc-preview{height:110px;padding:0.75rem;overflow:hidden;}
-.sc-info{padding:0.55rem 0.75rem 0.65rem;background:var(--surface);border-top:1px solid var(--border);}
-.sc-name{font-size:0.78rem;font-weight:700;color:white;margin-bottom:0.1rem;}
-.sc-desc{font-size:0.6rem;color:var(--muted);line-height:1.4;}
+/* ── PALETTE GRID (light) ── */
+.palette-grid-light{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+@media(max-width:480px){.palette-grid-light{grid-template-columns:repeat(3,1fr);}}
+.palette-card-light{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.palette-card-light.sel{border-color:var(--navy);}
+.palette-preview-light{height:40px;display:flex;}
+.palette-swatch{flex:1;}
+.palette-name-light{font-size:.62rem;padding:4px 6px;background:white;color:var(--navy);font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.palette-cat-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#9ca3af;margin:18px 0 8px;display:block;}
+.palette-cat-label:first-child{margin-top:0;}
 
-/* Palette cards — stacked bar style */
-.pal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem;margin-bottom:0.75rem;}
-.pal-grid-three{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:0.75rem;}
-.pal-grid-full{display:grid;grid-template-columns:repeat(9,1fr);gap:0.625rem;margin-bottom:0.875rem;}
-.pal-card{border:2px solid transparent;border-radius:0.875rem;overflow:hidden;cursor:pointer;transition:all 0.18s;position:relative;background:#ffffff;}
-.pal-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.18);}
-.pal-card.sel{border-color:#4A6CF7;box-shadow:0 0 0 3px rgba(74,108,247,0.15);}
-.pc-check{position:absolute;top:7px;right:7px;width:18px;height:18px;background:#4A6CF7;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:0.55rem;color:#fff;font-weight:900;z-index:2;}
-.pal-card.sel .pc-check{display:flex;}
-.pal-swatches{display:flex;flex-direction:column;gap:3px;padding:0.6rem 0.6rem 0.5rem;background:#ffffff;}
-.pal-bar{height:28px;border-radius:0.45rem;width:100%;flex-shrink:0;}
-.pal-mini-ui-row{display:none;}
-.pal-swatch-dots{display:none;}
-.pal-swatch-main{display:none;}
-.pal-dot{display:none;}
-.pal-info{padding:0.4rem 0.6rem 0.55rem;background:#ffffff;border-top:1px solid rgba(0,0,0,0.06);}
-.pal-name{font-size:0.66rem;font-weight:700;color:#111827;margin-bottom:0.18rem;line-height:1.2;}
-.pal-desc{font-size:0.54rem;color:#9CA3AF;line-height:1.35;}
-.pal-accent-line{width:18px;height:2px;border-radius:2px;margin-top:0.3rem;}
-.pal-extended{display:none;}
-.pal-extended.open{display:contents;}
-.pal-show-more{background:none;border:1px dashed var(--border-mid);border-radius:var(--r);color:var(--dim);font-size:0.74rem;padding:0.38rem 1rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s;width:100%;margin-bottom:0.75rem;}
-.pal-show-more:hover{border-color:var(--border-hi);color:white;}
-.pal-filter-btn{background:var(--surface);border:1.5px solid var(--border-mid);color:var(--dim);border-radius:100px;padding:0.3rem 0.875rem;font-size:0.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
-.pal-filter-btn:hover{border-color:var(--border-hi);color:white;}
-.pal-filter-active{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.35);color:white;}
-.a11y-badge{display:none;align-items:center;gap:0.35rem;font-size:0.68rem;color:rgba(200,224,0,0.65);margin-bottom:0.5rem;}
-.a11y-badge.show{display:flex;}
+/* ── NAV BUTTONS ── */
+.step-nav-light{display:flex;gap:10px;margin-top:28px;}
+.btn-back-light{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;transition:all .2s;}
+.btn-back-light:hover{border-color:var(--navy);color:var(--navy);}
+.btn-next-light{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-next-light:hover{background:#b8d000;}
+.btn-generate-big-light{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-generate-big-light:hover{background:#1e2d4a;}
 
-/* Typography cards */
-.font-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.45rem;margin-bottom:0.75rem;}
-.fc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxl);padding:0.875rem 0.875rem 0.75rem;cursor:pointer;transition:all 0.18s;}
-.fc:hover{border-color:var(--border-hi);background:var(--surface-hi);}
-.fc.sel{border-color:var(--lime);background:var(--lime-dim);}
-.fc-sample{font-size:1.35rem;color:white;margin-bottom:0.15rem;line-height:1.1;}
-.fc-body{font-size:0.6rem;color:var(--dim);margin-bottom:0.35rem;line-height:1.35;}
-.fc-label{font-size:0.63rem;font-weight:700;color:white;margin-bottom:0.05rem;}
-.fc-sub{font-size:0.58rem;color:var(--muted);font-family:'DM Mono',monospace;}
+/* ── GENERATING OVERLAY ── */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:48px;height:48px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
+.gen-sub{color:rgba(255,255,255,.55);font-size:.88rem;max-width:300px;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.78rem;min-height:18px;}
 
-/* dark/light toggle */
-.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem;}
-.theme-card{border:1.5px solid var(--border);border-radius:var(--rxl);overflow:hidden;cursor:pointer;transition:all 0.18s;}
-.theme-card:hover{border-color:var(--border-hi);}
-.theme-card.sel{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,224,0,0.08);}
-.theme-preview{padding:0.75rem;display:flex;flex-direction:column;gap:0.35rem;}
-.tpv-hl{border-radius:3px;padding:4px 7px;font-size:0.65rem;font-weight:700;}
-.tpv-line{height:3px;border-radius:2px;width:60%;}
-.tpv-btn{border-radius:3px;padding:3px 8px;font-size:0.58rem;font-weight:700;width:fit-content;}
-.theme-info{padding:0.55rem 0.75rem 0.65rem;background:var(--surface);border-top:1px solid var(--border);}
-.theme-name{font-size:0.78rem;font-weight:700;color:white;margin-bottom:0.1rem;}
-.theme-desc{font-size:0.62rem;color:var(--muted);line-height:1.4;}
+/* ── BLURRED PROMPT (step 7) ── */
+.prompt-blur-wrap{position:relative;margin-bottom:22px;}
+.prompt-blur-text{background:var(--navy);border-radius:12px;padding:18px;font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.8);line-height:1.7;min-height:180px;max-height:260px;overflow:hidden;filter:blur(4px);user-select:none;pointer-events:none;white-space:pre-wrap;}
+.prompt-blur-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(18,25,43,.45);border-radius:12px;}
+.prompt-blur-badge{background:rgba(200,224,0,.15);border:1px solid rgba(200,224,0,.3);border-radius:8px;padding:7px 14px;font-size:.68rem;font-family:'DM Mono',monospace;color:var(--lime);letter-spacing:.08em;}
+.prompt-blur-sub{font-size:.78rem;color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;}
 
-/* custom color */
-.custom-toggle{background:none;border:none;color:var(--iris);font-size:0.74rem;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0.4rem 0;text-decoration:underline;}
-.custom-area{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;margin-top:0.5rem;}
-.custom-area.open{display:block;}
-.pal-roles{display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem;}
-.pal-role{display:flex;flex-direction:column;align-items:center;gap:0.3rem;cursor:pointer;}
-.pal-role-swatch{width:34px;height:34px;border-radius:0.45rem;border:2px solid rgba(255,255,255,0.1);transition:transform 0.15s;}
-.pal-role:hover .pal-role-swatch{transform:scale(1.08);}
-.pal-role-name{font-size:0.58rem;color:var(--muted);text-align:center;}
-.pal-role-hex{font-family:'DM Mono',monospace;font-size:0.56rem;color:var(--dim);text-align:center;}
+/* ── OUTPUT PANEL ── */
+#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
+.output-toolbar-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.btn-dl:hover{background:#b8d000;}
+.btn-revise-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;white-space:nowrap;}
+.btn-revise-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.btn-rebuild-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;white-space:nowrap;}
+.btn-rebuild-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(67,97,238,.12);border-bottom:1px solid rgba(67,97,238,.2);padding:9px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.deploy-bar a{color:var(--lime);font-weight:600;}
+.deploy-bar .db-saved{color:rgba(255,255,255,.4);}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
+#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-error.active{display:block;}
+#revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
+#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#revise-input::placeholder{color:rgba(255,255,255,.35);}
+#revise-input:focus{border-color:rgba(255,255,255,.4);}
+.btn-revise-submit{background:var(--pink);color:white;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
 
-/* panel nav */
-.panel-nav{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:var(--navy-mid);}
-.btn-back{background:none;border:1px solid var(--border-mid);color:var(--dim);border-radius:100px;padding:0.55rem 1.25rem;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s;}
-.btn-back:hover{border-color:var(--border-hi);color:white;}
-.btn-next{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.58rem 1.5rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s;display:flex;align-items:center;gap:0.4rem;}
-.btn-next:hover{opacity:0.9;transform:translateY(-1px);}
+/* ── AI PALETTE SUGGESTIONS ── */
+.ai-palette-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+@media(max-width:480px){.ai-palette-grid{grid-template-columns:repeat(2,1fr);}}
+.ai-palette-card{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;background:white;}
+.ai-palette-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.ai-palette-card.sel{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,25,43,.15);}
+.ai-palette-preview{height:44px;display:flex;}
+.ai-palette-swatch{flex:1;}
+.ai-palette-name{font-size:.7rem;padding:5px 8px;background:white;color:var(--navy);font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ai-palette-why{font-size:.65rem;padding:0 8px 6px;color:#6b7280;text-align:center;line-height:1.3;}
+.ai-hint{display:none;background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.25);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--navy);margin-bottom:16px;line-height:1.6;}
 
-/* ═══ RIGHT PANEL (live preview) ════════════════ */
-.preview-pane{flex:1;background:#1a1a1a;display:flex;flex-direction:column;overflow:hidden;}
-.preview-toolbar{background:var(--navy-deep);border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.pt-left{display:flex;align-items:center;gap:0.65rem;}
-.preview-dots{display:flex;gap:4px;}
-.preview-dot{width:9px;height:9px;border-radius:50%;}
-.preview-dot:nth-child(1){background:#ff5f57;}
-.preview-dot:nth-child(2){background:#febc2e;}
-.preview-dot:nth-child(3){background:#28c840;}
-.preview-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
-.pt-viewbtns{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:0.5rem;padding:2px;}
-.pt-vbtn{background:none;border:none;color:var(--muted);cursor:pointer;padding:0.25rem 0.55rem;border-radius:0.35rem;font-size:0.75rem;transition:all 0.15s;}
-.pt-vbtn.active{background:var(--border-mid);color:white;}
-.preview-frame-wrap{flex:1;overflow:hidden;position:relative;}
-.preview-frame{width:100%;height:100%;border:none;display:block;background:white;transition:opacity 0.3s;}
-.preview-frame.updating{opacity:0.6;}
+/* ── BOOST PANEL (kept but hidden until step 8) ── */
+#boost-panel-wrap{display:none;}
+#boost-panel-wrap.active{display:block;padding:0 0 80px;}
 
-/* preview placeholder (before generation) */
-.preview-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;background:white;overflow:auto;}
-
-/* ═══ GENERATE VIEW ══════════════════════════════ */
-.gen-view{display:none;flex:1;overflow-y:auto;padding:3rem 2rem;}
-.gen-view.active{display:block;}
-.gen-loading{text-align:center;padding:4rem 1rem;}
-.spinner{width:40px;height:40px;border:2.5px solid rgba(200,224,0,0.12);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1.25rem;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.ls-steps{display:flex;flex-direction:column;gap:0.45rem;max-width:280px;margin:1.5rem auto 0;text-align:left;}
-.ls-item{display:flex;align-items:center;gap:0.65rem;font-size:0.8rem;color:var(--muted);}
-.ls-item.done{color:rgba(200,224,0,0.7);}
-.ls-item.active-ls{color:white;}
-.ls-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.56rem;flex-shrink:0;}
-.ls-item.done .ls-dot{background:var(--lime);border-color:var(--lime);color:var(--navy);}
-.ls-item.active-ls .ls-dot{border-color:var(--lime);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-
-/* prompt box */
-.pc-box{background:var(--navy-deep);border:1px solid var(--border-mid);border-radius:var(--rxl);overflow:hidden;margin-bottom:1.25rem;box-shadow:0 8px 40px rgba(0,0,0,0.4),0 0 40px rgba(200,224,0,0.06);}
-.pc-hdr{background:var(--surface);padding:0.75rem 1.1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
-.pc-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);}
-.pc-wc{font-family:'DM Mono',monospace;font-size:0.65rem;background:var(--iris-dim);border:1px solid rgba(139,162,240,0.2);color:var(--iris);padding:2px 8px;border-radius:8px;}
-.pc-visible{padding:0.875rem 1.1rem 0;font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.85;white-space:pre-wrap;}
-.pc-blur-zone{position:relative;padding:0 1.1rem;}
-.pc-blur-text{font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.6);line-height:1.85;filter:blur(4px);user-select:none;pointer-events:none;padding-bottom:8px;}
-.pc-blur-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgba(13,18,32,0.8) 35%,rgba(13,18,32,0.98) 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14px;gap:5px;}
-.pc-lock{display:flex;align-items:center;gap:5px;background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);border-radius:100px;padding:3px 10px;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);}
-.pc-lock-sub{font-size:0.7rem;color:rgba(255,255,255,0.3);text-align:center;}
-.pc-lock-sub strong{color:rgba(255,255,255,0.55);}
-.pc-gen-bar{padding:0.875rem 1.1rem 1.1rem;display:flex;justify-content:center;}
-.btn-generate-big{background:linear-gradient(135deg,var(--pink),var(--iris));color:white;border:none;border-radius:2rem;padding:0.875rem 2.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:0.55rem;box-shadow:0 6px 24px rgba(238,112,188,0.3);transition:all 0.2s;}
-.btn-generate-big:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(238,112,188,0.4);}
-
-/* error */
-.error-state{display:none;text-align:center;padding:3rem 1rem;}
-.error-state.vis{display:block;}
-.error-msg{font-size:0.85rem;color:var(--dim);margin-bottom:1.25rem;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.7;}
-
-/* tags */
-.tag{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 9px;border-radius:100px;}
-.tag-lime{color:var(--lime);background:var(--lime-dim);border:1px solid var(--lime-border);}
-.tag-iris{color:var(--iris);background:var(--iris-dim);border:1px solid rgba(139,162,240,0.2);}
-.tag-pink{color:var(--pink);background:var(--pink-dim);border:1px solid rgba(238,112,188,0.2);}
-
-/* ═══ STORY PANELS ══════════════════════════════ */
-.story-panel{display:none;flex:1;overflow:hidden;height:100%;}
-.story-panel.active{display:flex;flex-direction:column;}
-
-/* ── Step 1: Introduction ── */
-.sp-intro{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2.5rem;text-align:center;background:var(--navy-deep);position:relative;overflow:hidden;}
-.sp-intro::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(200,224,0,0.04) 0%,transparent 70%);pointer-events:none;}
-.sp1-hi{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:white;line-height:1;margin-bottom:0.5rem;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-.sp1-sub{font-size:1rem;color:var(--dim);margin-bottom:2.5rem;line-height:1.6;min-height:1.6em;transition:opacity 0.3s;}
-.sp1-chips{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;max-width:380px;min-height:2rem;}
-.chip{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:0.35rem 0.875rem;font-size:0.78rem;color:var(--dim);animation:chipIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
-@keyframes chipIn{from{opacity:0;transform:scale(0.7) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.chip.lime{background:var(--lime-dim);border-color:var(--lime-border);color:var(--lime);}
-.chip.iris{background:var(--iris-dim);border-color:rgba(139,162,240,0.2);color:var(--iris);}
-.chip.pink{background:var(--pink-dim);border-color:rgba(238,112,188,0.2);color:var(--pink);}
-.sp1-footer{margin-top:2rem;font-size:0.78rem;color:var(--muted);font-style:italic;min-height:1.2em;}
-
-/* ── Step 2: Offer Card ── */
-.sp-offer-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;background:var(--navy-deep);gap:1.25rem;position:relative;overflow:hidden;}
-.sp-offer-wrap::before{content:'';position:absolute;bottom:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(139,162,240,0.06) 0%,transparent 70%);pointer-events:none;}
-.sp2-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
-.sp2-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:1.25rem;padding:2rem;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.5);transition:all 0.3s;backdrop-filter:blur(10px);}
-.sp2-card-eyebrow{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;}
-.sp2-card-name{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:white;margin-bottom:0.4rem;line-height:1.15;min-height:1.75rem;}
-.sp2-card-tagline{font-size:0.85rem;color:var(--dim);margin-bottom:1.25rem;min-height:1.2em;line-height:1.5;}
-.sp2-pricing-rows{display:flex;flex-direction:column;gap:0.45rem;margin-bottom:1.25rem;}
-.sp2-price-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0.875rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:0.6rem;}
-.sp2-pr-name{font-size:0.82rem;font-weight:600;color:white;}
-.sp2-pr-price{font-family:'DM Mono',monospace;font-size:0.9rem;font-weight:700;color:var(--lime);}
-.sp2-cta{width:100%;background:var(--lime);color:var(--navy);border:none;border-radius:0.75rem;padding:0.875rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s;}
-.sp2-cta:hover{opacity:0.88;}
-.sp2-insight{font-size:0.78rem;color:var(--iris);text-align:center;min-height:1.2em;font-style:italic;}
-
-/* ── Step 3: Blueprint Wireframe ── */
-.sp-blueprint-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:2rem 1.5rem;background:var(--navy-deep);gap:0.875rem;overflow-y:auto;}
-.sp3-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);align-self:flex-start;}
-.sp3-desc{font-size:0.8rem;color:var(--dim);align-self:flex-start;}
-.sp3-wireframe{width:100%;max-width:420px;}
-.wf-browser{background:#1a2035;border:1px solid var(--border-mid);border-radius:0.875rem;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);}
-.wf-bar{background:#0d1220;padding:0.6rem 0.875rem;display:flex;align-items:center;gap:0.4rem;border-bottom:1px solid var(--border);}
-.wf-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);}
-.wf-url{flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:16px;margin-left:0.5rem;}
-.wf-sections{padding:0.5rem;}
-.wf-section{border:1.5px dashed rgba(255,255,255,0.08);border-radius:0.6rem;margin-bottom:0.4rem;overflow:hidden;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);opacity:0.25;transform:scale(0.97);}
-.wf-section.always{opacity:1;transform:scale(1);border-color:rgba(200,224,0,0.2);border-style:solid;}
-.wf-section.on{opacity:1;transform:scale(1);border-color:rgba(139,162,240,0.35);border-style:solid;background:rgba(139,162,240,0.04);}
-.wf-section-inner{display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.875rem;}
-.wf-icon{font-size:0.875rem;flex-shrink:0;}
-.wf-slabel{font-size:0.76rem;color:rgba(255,255,255,0.6);font-weight:500;flex:1;}
-.wf-section.always .wf-slabel,.wf-section.on .wf-slabel{color:white;}
-.wf-stag{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:100px;}
-.always-tag{background:var(--lime-dim);border:1px solid var(--lime-border);color:var(--lime);}
-.sp3-count{font-size:0.8rem;color:var(--dim);text-align:center;}
-.sp3-count strong{color:var(--lime);}
-
-/* ── Step 4: Live Preview (reuse existing toolbar styles) ── */
-#sp-3{position:relative;}
-#sp-3 .preview-frame-wrap{flex:1;}
-
-/* ── Step 5: Launch Ready ── */
-.sp5-wrap{flex:1;display:flex;flex-direction:column;padding:2rem 2rem;overflow-y:auto;background:var(--navy-deep);}
-.sp5-header{margin-bottom:1.5rem;}
-.sp5-ready-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:100px;padding:0.35rem 0.875rem;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:0.75rem;}
-.sp5-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:white;line-height:1.2;}
-.sp5-checklist{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.5rem;}
-.sp5-check{display:flex;align-items:center;gap:0.75rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:0.65rem 1rem;transition:all 0.3s;}
-.sp5-check.done{border-color:var(--lime-border);background:var(--lime-dim);}
-.chk-icon{width:18px;height:18px;border-radius:50%;background:var(--lime);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;flex-shrink:0;}
-.chk-label{font-size:0.82rem;font-weight:600;color:white;flex:1;}
-.chk-val{font-size:0.72rem;color:var(--lime);font-weight:500;text-align:right;}
-.sp5-prompt-preview{background:var(--navy-deep);border:1px solid var(--border-mid);border-radius:var(--rxl);overflow:hidden;margin-bottom:0.5rem;}
-.sp5-prompt-header{background:var(--surface);padding:0.65rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
-.sp5-prompt-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);}
-.sp5-wc{font-family:'DM Mono',monospace;font-size:0.62rem;background:var(--iris-dim);border:1px solid rgba(139,162,240,0.2);color:var(--iris);padding:2px 8px;border-radius:8px;}
-.sp5-prompt-text{padding:0.875rem 1rem 0;font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.65);line-height:1.8;white-space:pre-wrap;max-height:120px;overflow:hidden;}
-.sp5-prompt-blur{background:linear-gradient(to bottom,transparent,var(--navy-deep) 80%);padding:1.5rem 1rem 0.875rem;text-align:center;}
-.sp5-lock{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:rgba(200,224,0,0.5);}
-
-/* ── Income Goal Calculator ── */
-.income-goal-box{background:var(--navy-deep);border:1px solid var(--iris-dim);border-radius:var(--rxl);overflow:hidden;margin-top:1rem;}
-.ig-header{display:flex;align-items:flex-start;gap:0.75rem;padding:1rem 1.1rem 0.75rem;border-bottom:1px solid var(--border);}
-.ig-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
-.ig-title{font-size:0.84rem;font-weight:700;color:white;margin-bottom:0.15rem;}
-.ig-sub{font-size:0.7rem;color:var(--muted);line-height:1.45;}
-.ig-inputs{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding:0.875rem 1.1rem;}
-.ig-result{background:var(--lime-dim);border-top:1px solid var(--lime-border);padding:0.875rem 1.1rem;display:flex;flex-direction:column;gap:0.5rem;}
-.ig-result-row{display:flex;justify-content:space-between;align-items:center;}
-.ig-result-label{font-size:0.75rem;color:var(--dim);}
-.ig-result-val{font-family:'DM Mono',monospace;font-size:0.85rem;font-weight:700;color:var(--lime);}
-.ig-apply{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.55rem 1.25rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:0.5rem;display:block;width:100%;transition:all 0.2s;position:relative;z-index:5;}
-.ig-apply:hover{opacity:0.88;transform:translateY(-1px);}
-.ig-result{flex-direction:column!important;}
-
-/* ── Blinking cursor on step 1 name field ── */
-#f-name.blink-hint{box-shadow:0 0 0 2px rgba(200,224,0,0.35);}
-.field-hint-arrow{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:rgba(200,224,0,0.5);margin-top:0.35rem;animation:hintPulse 2s ease-in-out infinite;}
-@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
-.cursor-blink{display:inline-block;width:2px;height:0.9em;background:var(--lime);border-radius:1px;margin-left:2px;animation:cursorBlink 1s step-end infinite;vertical-align:text-bottom;}
-@keyframes cursorBlink{0%,100%{opacity:1;}50%{opacity:0;}}
-
-/* ── Step panel background stays dark on all steps ── */
-#sp-0,#sp-1,#sp-2,#sp-4{background:var(--navy-deep);}
-
-/* ── Remove duplicate generate button from panel-nav on review step ── */
-@keyframes boostDot{0%,60%,100%{opacity:0.2;transform:scale(0.8);}30%{opacity:1;transform:scale(1);}}
-.panel-nav .btn-next.hidden{display:none;}
-
-/* ── Prompt/blueprint renamed label ── */
-.prompt-feature-row{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--dim);padding:0.35rem 0;}
-.prompt-feature-row .pf-icon{font-size:0.8rem;}
-
-/* ═══ GHOST SITE SYSTEM ════════════════════════════ */
-.ghost-wrap,.live-wrap,.review-wrap{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;}
-.review-wrap{overflow-y:auto;}
-
-.ghost-site{
-  flex:1;overflow-y:auto;background:#EEF2FF;
-  font-family:'DM Sans',system-ui,sans-serif;
-  display:flex;flex-direction:column;
-}
-.ghost-site::-webkit-scrollbar{width:4px;}
-.ghost-site::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px;}
-
-/* Blueprint document styles */
-.bp-doc-header{
-  background:#4A6CF7;
-  padding:1.25rem 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
-.bp-doc-title-wrap{display:flex;align-items:center;gap:0.875rem;}
-.bp-doc-icon{width:42px;height:42px;background:rgba(255,255,255,0.18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.bp-doc-title{font-size:1.3rem;font-weight:800;color:#ffffff;line-height:1.2;font-family:'DM Sans',sans-serif;}
-.bp-doc-subtitle{font-size:0.75rem;color:rgba(255,255,255,0.7);margin-top:2px;}
-.bp-step-badge{background:rgba(255,255,255,0.18);color:#ffffff;border:1.5px solid rgba(255,255,255,0.35);border-radius:100px;padding:5px 14px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
-.bp-doc{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:0.875rem;flex:1;}
-
-/* Cards grid */
-.bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
-.bp-grid.full{grid-template-columns:1fr;}
-.bp-card{background:#FFFFFF;border:1.5px solid #C7D2FE;border-radius:14px;padding:1rem 1.1rem;transition:all 0.3s;box-shadow:0 2px 8px rgba(74,108,247,0.07);}
-.bp-card.active{border-color:#4A6CF7;box-shadow:0 0 0 3px rgba(74,108,247,0.1);}
-.bp-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;}
-.bp-card-title-wrap{display:flex;align-items:center;gap:0.5rem;}
-.bp-card-icon{font-size:1rem;}
-.bp-card-title{font-size:0.85rem;font-weight:700;color:#1E2875;}
-.bp-card-check{width:22px;height:22px;border-radius:50%;background:#EEF2FF;border:1.5px solid #C7D2FE;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#4A6CF7;transition:all 0.3s;flex-shrink:0;}
-.bp-card-check.done{background:#4A6CF7;border-color:#4A6CF7;color:white;box-shadow:0 2px 8px rgba(74,108,247,0.35);}
-.bp-field-row{display:flex;gap:0.6rem;margin-bottom:0.45rem;font-size:0.76rem;line-height:1.5;align-items:baseline;}
-.bp-field-label{color:#4A6CF7;font-size:0.6rem;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;min-width:68px;flex-shrink:0;}
-.bp-field-value{color:#111827;font-weight:500;}
-.bp-field-value.empty{color:#A5B4FC;font-style:italic;font-weight:400;}
-
-/* Tags */
-.bp-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.25rem;}
-.bp-tag{background:#4A6CF7;color:#ffffff;border-radius:100px;padding:4px 12px;font-size:0.69rem;font-weight:600;animation:tagIn 0.35s cubic-bezier(0.34,1.56,0.64,1);}
-.bp-tag-ghost{background:transparent;color:#9CA3AF;border:1px dashed #C7D2FE;border-radius:100px;padding:4px 12px;font-size:0.69rem;font-style:italic;animation:none;}
-@keyframes tagIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
-
-/* Field value appear animation */
-@keyframes valueIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-.bp-field-value.just-set{animation:valueIn 0.3s ease;}
-
-/* Card flash when updated */
-@keyframes cardFlash{0%{box-shadow:0 0 0 0 rgba(200,224,0,0.5);}50%{box-shadow:0 0 0 6px rgba(200,224,0,0.2);}100%{box-shadow:0 0 0 0 rgba(200,224,0,0);}}
-.bp-card.flash{animation:cardFlash 0.5s ease;}
-
-/* Label flash */
-@keyframes labelFlash{0%,100%{color:#4A6CF7;}50%{color:#C8E000;}}
-.bp-field-label.flash{animation:labelFlash 0.4s ease;}
-
-/* Check bounce */
-@keyframes checkBounce{0%{transform:scale(1);}40%{transform:scale(1.3);}70%{transform:scale(0.9);}100%{transform:scale(1);}}
-.bp-card-check.bounce{animation:checkBounce 0.4s ease;}
-
-/* Progress bar pulse */
-@keyframes barPulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
-.bp-prompt-fill.pulse{animation:barPulse 0.4s ease;}
-
-/* Site structure */
-.bp-structure-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin-top:0.25rem;}
-.bp-structure-item{display:flex;align-items:center;gap:0.45rem;font-size:0.75rem;color:#374151;}
-.bp-structure-item .bp-si-check{width:16px;height:16px;background:#4A6CF7;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.52rem;color:white;flex-shrink:0;}
-
-/* Pricing rows */
-.bp-pricing-row{display:flex;align-items:center;gap:0.75rem;padding:0.4rem 0;border-bottom:1px solid #EEF2FF;}
-.bp-pricing-row:last-child{border-bottom:none;}
-.bp-pricing-icon{color:#A5B4FC;font-size:0.75rem;}
-.bp-pricing-label{font-size:0.78rem;color:#374151;flex:1;}
-.bp-pricing-bar{height:3px;background:#E0E7FF;border-radius:2px;flex:1;max-width:80px;}
-
-/* Prompt ready */
-.bp-prompt-bar{background:#E0E7FF;border-radius:4px;height:6px;overflow:hidden;margin:0.75rem 0 0.5rem;}
-.bp-prompt-fill{height:100%;background:linear-gradient(90deg,#4A6CF7,#818CF8);border-radius:4px;transition:width 0.8s ease;width:0%;}
-.bp-prompt-label{font-size:0.7rem;color:#4A6CF7;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:0.04em;}
-
-/* Bottom bar */
-.bp-bottom-bar{background:#EEF2FF;border-top:2px solid #C7D2FE;padding:0.875rem 1.5rem;display:flex;align-items:center;gap:0.75rem;}
-.bp-bottom-icon{color:#4A6CF7;font-size:0.9rem;}
-.bp-bottom-text{font-size:0.75rem;color:#3730A3;}
-.bp-bottom-text strong{color:#1E2875;}
-
-.preview-banner{
-  background:var(--lime);
-  border-bottom:2px solid var(--navy-deep);
-  padding:0.65rem 1.25rem;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
-.pb-left{display:flex;align-items:center;gap:0.6rem;}
-.pb-dot{width:7px;height:7px;border-radius:50%;background:var(--navy);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
-.pb-label{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--navy);font-weight:700;}
-.pb-note{font-size:0.78rem;color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:600;}
-.pb-step-badge{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);background:rgba(13,13,85,0.12);border:1px solid rgba(13,13,85,0.2);border-radius:100px;padding:0.25rem 0.75rem;white-space:nowrap;font-weight:600;}
-
-/* STEP 4 TRANSITION */
-.live-wrap{animation:siteReveal 0.6s ease both;}
-@keyframes siteReveal{from{opacity:0;transform:scale(0.985);}to{opacity:1;transform:scale(1);}}
-
-.bp-sec-label{position:absolute;left:0;width:58px;font-family:'DM Mono',monospace;font-size:0.42rem;letter-spacing:0.08em;text-transform:uppercase;color:#4A6CF7;line-height:1.4;text-align:center;padding:3px 2px;background:rgba(238,242,255,0.9);border-right:2px solid #C7D2FE;border-bottom:1px solid #C7D2FE;}
-.bp-sec-label span{color:#9CA3AF;font-size:0.38rem;}
-
-.btn-ai-write{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.3);color:var(--lime);border-radius:100px;padding:0.25rem 0.75rem;font-size:0.65rem;font-weight:600;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:0.06em;transition:all 0.15s;white-space:nowrap;}
-.btn-ai-write:hover{background:rgba(200,224,0,0.18);border-color:rgba(200,224,0,0.5);}
-.btn-ai-write:disabled{opacity:0.4;cursor:not-allowed;}
-
-/* ── Photo Upload Zones ── */
-.photo-upload-section{background:var(--navy-deep);border:1px solid var(--border-mid);border-radius:var(--rxl);overflow:hidden;margin-bottom:1rem;}
-.pus-header{background:var(--surface);padding:0.875rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.6rem;}
-.pus-title{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);}
-.pus-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.875rem;}
-.photo-zone{border:1.5px dashed rgba(255,255,255,0.15);border-radius:var(--rl);padding:1rem;cursor:pointer;transition:all 0.2s;position:relative;}
-.photo-zone:hover{border-color:rgba(200,224,0,0.4);background:rgba(200,224,0,0.03);}
-.photo-zone.has-photo{border-color:rgba(200,224,0,0.5);border-style:solid;background:rgba(200,224,0,0.05);}
-.pz-top{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem;}
-.pz-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
-.photo-zone.has-photo .pz-icon{background:rgba(200,224,0,0.12);}
-.pz-info{flex:1;}
-.pz-label{font-size:0.82rem;font-weight:700;color:white;margin-bottom:0.12rem;}
-.pz-desc{font-size:0.68rem;color:var(--muted);line-height:1.45;}
-.pz-hint{font-size:0.65rem;color:rgba(200,224,0,0.5);font-family:'DM Mono',monospace;}
-.pz-preview{width:100%;height:80px;border-radius:0.5rem;overflow:hidden;margin-top:0.5rem;display:none;}
-.pz-preview img{width:100%;height:100%;object-fit:cover;}
-.photo-zone.has-photo .pz-preview{display:block;}
-.pz-remove{position:absolute;top:0.6rem;right:0.6rem;background:rgba(238,112,188,0.15);border:1px solid rgba(238,112,188,0.3);border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:0.6rem;color:var(--pink);}
-.photo-zone.has-photo .pz-remove{display:flex;}
-.pz-input{display:none;}
-.photo-size-note{font-size:0.68rem;color:var(--muted);text-align:center;padding:0.5rem 0 0.25rem;font-style:italic;}
-
-/* ── Smart Chips ── */
-.chips-section{margin-top:0.6rem;}
-.chips-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;}
-.chips-label::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(200,224,0,0.5);display:block;flex-shrink:0;}
-.chips-wrap{display:flex;flex-wrap:wrap;gap:0.35rem;}
-.chip{display:inline-flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:0.3rem 0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.6);cursor:pointer;transition:all 0.15s;user-select:none;font-family:'DM Sans',sans-serif;}
-.chip:hover{background:rgba(200,224,0,0.08);border-color:rgba(200,224,0,0.3);color:rgba(255,255,255,0.9);}
-.chip.chip-on{background:rgba(200,224,0,0.14);border-color:rgba(200,224,0,0.45);color:var(--lime);}
-.chip.chip-on::before{content:'✓ ';font-size:0.65rem;font-weight:700;}
+/* hide old-layout-only elements that JS might try to access */
+.gen-loading,.gen-loadingState,.error-state,.pview,.sc-preview,.step-item,.leftnav,.panel,.preview-pane,.workspace{display:none!important;}
+/* keep bp-out hidden — JS still writes to it */
+#bp-out{display:none!important;}
 </style>
+
 </head>
 <body>
 
-<!-- TOP NAV -->
+<!-- TOPNAV -->
 <div class="topnav">
-  <div class="tn-left">
-    <a href="/" style="text-decoration:none;" title="Back to Builtsy home">
-    <div class="logo-wrap">
-      <div class="logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 11L7 3L12 11H2Z" fill="#12192B"/></svg></div>
-      <div>
-        <div class="logo-text">Builtsy</div>
-        <div class="logo-sub" id="bp-nav-label">Blueprints</div>
-      </div>
-    </div>
-    </a>
-    <div class="tn-divider"></div>
-    <div class="tn-stepcount" id="tn-stepcount">Step 1 of 6</div>
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">builtsy</a>
   </div>
+  <span class="tn-tag" id="bp-nav-label">✦ Blueprint</span>
   <div class="tn-right">
-    <div class="tn-saved" id="tn-saved" style="display:none;">✓ All changes saved</div>
+    <span class="tn-saved" id="saved-indicator" style="display:none;">✓ Saved</span>
+    <button class="btn-generate-top" onclick="goToGenerate()">⚡ Generate</button>
   </div>
 </div>
 
-<div class="workspace">
+<!-- WELCOME BANNER -->
+<div class="welcome-banner">
+  ✦ Builtsy writes the perfect prompt and builds your site — download and drag to <a href="https://app.netlify.com/drop" target="_blank">Netlify Drop</a> in seconds ✦
+</div>
 
-  <!-- LEFT STEP NAV -->
-  <div class="leftnav">
-    <div class="step-item active" onclick="goStep(0)" id="si-0">
-      <div class="step-num">1</div><div class="step-label">Business</div>
-    </div>
-    <div class="step-item" onclick="goStep(1)" id="si-1">
-      <div class="step-num">2</div><div class="step-label">Offer & Pricing</div>
-    </div>
-    <div class="step-item" onclick="goStep(2)" id="si-2">
-      <div class="step-num">3</div><div class="step-label">Features</div>
-    </div>
-    <div class="step-item" onclick="goStep(3)" id="si-3">
-      <div class="step-num">4</div><div class="step-label">Design</div>
-    </div>
-    <div class="step-item" onclick="goStep(4)" id="si-4">
-      <div class="step-num">5</div><div class="step-label">Art Direction</div>
-    </div>
-    <div class="step-item" onclick="goStep(5)" id="si-5">
-      <div class="step-num">6</div><div class="step-label">Review</div>
-    </div>
-    <div class="step-item" onclick="goStep(6)" id="si-6">
-      <div class="step-num">✦</div><div class="step-label">Boost</div>
-    </div>
-    <div class="step-item" onclick="goToGenerate()" id="si-gen">
-      <div class="step-num">⚡</div><div class="step-label">Generate</div>
-    </div>
-    <div class="leftnav-footer">
-      <a href="/dashboard.html" style="display:flex;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.72rem;text-decoration:none;padding:0.4rem 0;border-top:1px solid var(--border);margin-bottom:0.4rem;">← Dashboard</a>
-      <a href="#">Help</a>
-      <a href="#">Settings</a>
-    </div>
-  </div>
+<!-- HERO -->
+<div class="bp-hero">
+  <h1>Builtsy a <span id="hero-industry-name">beautiful site</span><br>in one shot.</h1>
+  <p>Answer a few questions. Builtsy writes the perfect prompt and builds your entire site — ready to launch.</p>
+</div>
 
-  <!-- MIDDLE CONTROL PANEL -->
-  <div class="panel" id="mainPanel">
-    <div class="panel-header">
-      <span class="panel-step-label" id="ph-eyebrow">Step 1 of 6 · Business</span>
-      <div class="panel-title" id="ph-title">Tell us about your business</div>
-      <div class="panel-sub" id="ph-sub">No jargon. Just what you do and who you do it for.</div>
-    </div>
+<!-- STEP PROGRESS -->
+<div class="step-progress" id="stepProgress">
+  <div class="step-dot active" id="sdot-0">1</div>
+  <div class="step-line" id="sline-0"></div>
+  <div class="step-dot" id="sdot-1">2</div>
+  <div class="step-line" id="sline-1"></div>
+  <div class="step-dot" id="sdot-2">3</div>
+  <div class="step-line" id="sline-2"></div>
+  <div class="step-dot" id="sdot-3">4</div>
+  <div class="step-line" id="sline-3"></div>
+  <div class="step-dot" id="sdot-4">5</div>
+</div>
 
-    <div class="panel-body">
+<!-- FORM PANELS -->
+<div class="form-wrap">
 
-      <!-- ── STEP 1: BUSINESS ── -->
-      <div class="pview active" id="pv-0">
-        <div class="sl" style="margin-top:0;" id="sl-subject">What do you offer?</div>
-        <div class="og" id="og-subject">
-          <!-- Populated by initFromConfig() -->
-        </div>
-        <div class="fg" style="margin-top:1rem;">
-          <div class="ff full"><label id="label-name">Your name or business name <span class="cursor-blink" id="name-cursor"></span></label><input class="fi" id="f-name" type="text" placeholder="e.g. Your Business Name" onfocus="hideCursor()" oninput="buildPrompt();updateGhostHero();showSaved();"></div>
-          <div class="ff"><label id="label-specific">What specifically do you offer?</label><input class="fi" id="f-subject" type="text" placeholder="e.g. Your specialty" oninput="buildPrompt();updateGhostHero();showSaved();">
-            <div class="chips-section"><div class="chips-label">No AI used here — just smart suggestions</div><div class="chips-wrap" id="chips-subject"></div></div>
-          </div>
-          <div class="ff"><label>Your city / area</label><input class="fi" id="f-location" type="text" placeholder="e.g. Denver, CO" oninput="buildPrompt();updateGhostHero();showSaved();"></div>
-          <div class="ff full"><label id="label-client">Who are your ideal clients?</label><input class="fi" id="f-students" type="text" placeholder="e.g. Your target clients" oninput="buildPrompt();updateGhostHero();showSaved();">
-            <div class="chips-section"><div class="chips-label">No AI used here — just smart suggestions</div><div class="chips-wrap" id="chips-students"></div></div>
-          </div>
-          <div class="ff full"><label id="label-creds">Credentials <span style="color:var(--muted);font-weight:400">(optional)</span></label><input class="fi" id="f-creds" type="text" placeholder="e.g. Years of experience, certifications" oninput="buildPrompt();updateGhostHero();showSaved();">
-            <div class="chips-section"><div class="chips-label">No AI used here — just smart suggestions</div><div class="chips-wrap" id="chips-creds"></div></div>
-          </div>
-        </div>
-        <div class="sl" id="sl-location">Where do you work?</div>
-        <div class="og two" id="og-location">
-          <!-- Populated by initFromConfig() -->
-        </div>
+  <!-- STEP 0: Business Basics -->
+  <div class="step-panel active" id="v2-step-0">
+    <div class="step-label-top">Step 1 of 5 · Business</div>
+    <div class="step-title-main" id="ph-title">Tell us about your business</div>
+    <div class="step-sub-main" id="ph-sub">No jargon. Just what you do and who you do it for.</div>
 
-        <!-- PHOTO UPLOAD ZONES -->
-        <div class="photo-upload-section" style="margin-top:1.25rem;">
-          <div class="pus-header">
-            <span style="font-size:1rem;">📸</span>
-            <span class="pus-title">Add your photos</span>
-            <span style="font-size:0.68rem;color:var(--muted);margin-left:auto;">Optional — but makes your site feel real</span>
-          </div>
-          <div class="pus-body">
-            <div class="photo-zone" id="zone-hero" onclick="document.getElementById('input-hero').click()">
-              <input class="pz-input" type="file" id="input-hero" accept="image/*" onchange="handlePhoto(this,'zone-hero','img-hero','hero')">
-              <div class="pz-top">
-                <div class="pz-icon">🏠</div>
-                <div class="pz-info">
-                  <div class="pz-label">Hero / Banner photo</div>
-                  <div class="pz-desc">The first thing visitors see. Your space, your work, or you in action.</div>
-                </div>
-              </div>
-              <div class="pz-hint">Click to upload · JPG or PNG · Keep under 500KB</div>
-              <div class="pz-preview" id="preview-hero"><img id="img-hero" src=""></div>
-              <div class="pz-remove" onclick="removePhoto(event,'zone-hero','img-hero','hero')">✕</div>
-            </div>
-            <div class="photo-zone" id="zone-about" onclick="document.getElementById('input-about').click()">
-              <input class="pz-input" type="file" id="input-about" accept="image/*" onchange="handlePhoto(this,'zone-about','img-about','about')">
-              <div class="pz-top">
-                <div class="pz-icon">🙋</div>
-                <div class="pz-info">
-                  <div class="pz-label">Your photo</div>
-                  <div class="pz-desc">A photo of you. Warm, professional, approachable. Used in your About section.</div>
-                </div>
-              </div>
-              <div class="pz-hint">Click to upload · JPG or PNG · Keep under 300KB</div>
-              <div class="pz-preview" id="preview-about"><img id="img-about" src=""></div>
-              <div class="pz-remove" onclick="removePhoto(event,'zone-about','img-about','about')">✕</div>
-            </div>
-            <!-- Gallery: up to 4 photos -->
-            <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;margin-top:0.25rem;">
-              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
-                <span style="font-size:0.9rem;">🖼️</span>
-                <div>
-                  <div style="font-size:0.82rem;font-weight:700;color:white;">Gallery photos</div>
-                  <div style="font-size:0.68rem;color:var(--muted);">Up to 4 photos of your work, students, or space. Used in your services or gallery section.</div>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;" id="gallery-grid">
-                <div class="photo-zone" id="gzone-1" onclick="document.getElementById('ginput-1').click()" style="padding:0.75rem;">
-                  <input class="pz-input" type="file" id="ginput-1" accept="image/*" onchange="handleGalleryPhoto(this,1)">
-                  <div style="text-align:center;">
-                    <div style="font-size:1.2rem;margin-bottom:0.3rem;">+</div>
-                    <div style="font-size:0.65rem;color:var(--muted);">Photo 1</div>
-                  </div>
-                  <img id="gthumb-1" src="" style="display:none;width:100%;height:60px;object-fit:cover;border-radius:4px;margin-top:0.4rem;">
-                  <div class="pz-remove" onclick="removeGalleryPhoto(event,1)" style="top:4px;right:4px;">✕</div>
-                </div>
-                <div class="photo-zone" id="gzone-2" onclick="document.getElementById('ginput-2').click()" style="padding:0.75rem;">
-                  <input class="pz-input" type="file" id="ginput-2" accept="image/*" onchange="handleGalleryPhoto(this,2)">
-                  <div style="text-align:center;">
-                    <div style="font-size:1.2rem;margin-bottom:0.3rem;">+</div>
-                    <div style="font-size:0.65rem;color:var(--muted);">Photo 2</div>
-                  </div>
-                  <img id="gthumb-2" src="" style="display:none;width:100%;height:60px;object-fit:cover;border-radius:4px;margin-top:0.4rem;">
-                  <div class="pz-remove" onclick="removeGalleryPhoto(event,2)" style="top:4px;right:4px;">✕</div>
-                </div>
-                <div class="photo-zone" id="gzone-3" onclick="document.getElementById('ginput-3').click()" style="padding:0.75rem;">
-                  <input class="pz-input" type="file" id="ginput-3" accept="image/*" onchange="handleGalleryPhoto(this,3)">
-                  <div style="text-align:center;">
-                    <div style="font-size:1.2rem;margin-bottom:0.3rem;">+</div>
-                    <div style="font-size:0.65rem;color:var(--muted);">Photo 3</div>
-                  </div>
-                  <img id="gthumb-3" src="" style="display:none;width:100%;height:60px;object-fit:cover;border-radius:4px;margin-top:0.4rem;">
-                  <div class="pz-remove" onclick="removeGalleryPhoto(event,3)" style="top:4px;right:4px;">✕</div>
-                </div>
-                <div class="photo-zone" id="gzone-4" onclick="document.getElementById('ginput-4').click()" style="padding:0.75rem;">
-                  <input class="pz-input" type="file" id="ginput-4" accept="image/*" onchange="handleGalleryPhoto(this,4)">
-                  <div style="text-align:center;">
-                    <div style="font-size:1.2rem;margin-bottom:0.3rem;">+</div>
-                    <div style="font-size:0.65rem;color:var(--muted);">Photo 4</div>
-                  </div>
-                  <img id="gthumb-4" src="" style="display:none;width:100%;height:60px;object-fit:cover;border-radius:4px;margin-top:0.4rem;">
-                  <div class="pz-remove" onclick="removeGalleryPhoto(event,4)" style="top:4px;right:4px;">✕</div>
-                </div>
-              </div>
-            </div>
-            <div class="photo-size-note">Photos are automatically compressed in your browser — any size welcome</div>
-            <div id="photo-size-warning" style="display:none;font-size:0.68rem;color:rgba(238,112,188,0.8);font-family:'DM Mono',monospace;text-align:center;padding:0.4rem 0;"></div>
-          </div>
-        </div>
+    <div class="field-grid">
+      <div class="field" style="grid-column:1/-1">
+        <label id="label-name">Your name or business name <span class="cursor-blink" id="name-cursor"></span></label>
+        <input class="fi-light" id="f-name" type="text" placeholder="e.g. Your Business Name" onfocus="hideCursor()" oninput="buildPrompt();updateGhostHero();showSaved();">
       </div>
-
-      <!-- ── STEP 2: OFFER & PRICING ── -->
-      <div class="pview" id="pv-1">
-        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;margin-top:0;">
-          <span style="font-size:0.9rem;flex-shrink:0;">✦</span>
-          <span style="font-size:0.82rem;color:var(--lime);font-weight:600;font-family:'DM Sans',sans-serif;line-height:1.4;">Any field you leave blank — AI writes it from your blueprint.</span>
-        </div>
-        <div class="callout callout-iris"><span class="ctag">💡 Why this matters</span><p>A <strong>named, packaged offer</strong> converts browsers into bookings.</p></div>
-        <div class="sl" style="margin-top:0;">Your offer</div>
-        <div class="fg">
-          <div class="ff"><label>Signature service name <span style="font-size:0.7rem;color:var(--muted);font-weight:400;">(optional)</span></label><input class="fi" id="f-signame" type="text" placeholder="e.g. The Foundation Program" ><span class="hint">Makes it feel like a real product.</span></div>
-          <div class="ff">
-            <label>One-line tagline <span style="font-size:0.7rem;color:var(--muted);font-weight:400;">(optional)</span></label>
-            <input class="fi" id="f-tagline" type="text" placeholder="e.g. Real technique. Real results." oninput="buildPrompt();updateGhostHero();showSaved();">
-          </div>
-          <div class="ff full">
-            <label>What makes your teaching different? <span style="font-size:0.7rem;color:var(--muted);font-weight:400;">(optional)</span></label>
-            <textarea class="fi" id="f-diff" placeholder="e.g. I specialize in adult beginners…" oninput="buildPrompt();showSaved();" style="min-height:80px;resize:vertical;"></textarea>
-          </div>
-        </div>
-        <div class="sl">Pricing</div>
-        <div class="callout callout-lime"><span class="ctag">💰 Guidance</span><p>Metro + experience: <strong>$60–$90/hr</strong>. Specialized: <strong>$90–$150/hr</strong>.</p></div>
-        <div class="pricing-box">
-          <div class="pb-hdr"><span class="pb-title" id="pricing-tab-title">📋 Service Menu</span><div class="pb-tabs"><button class="pb-tab on" id="tab-sessions" onclick="pView('sessions')" id="tab-label-sessions">By Session</button><button class="pb-tab" id="tab-packages" onclick="pView('packages')">Packages</button><button class="pb-tab" id="tab-monthly" onclick="pView('monthly')">Monthly</button></div></div>
-          <div class="pb-body">
-            <div id="pv-sessions">
-              <div class="svc-rows" id="svcRows">
-                <!-- Populated by initFromConfig() -->
-              </div>
-              <button class="add-svc" onclick="addRow()">+ Add session type</button>
-              <div class="pricing-summary"><div><div class="ps-lbl">Rate range</div><div class="ps-range" id="ps-range">$40–$95 / session</div></div><div class="ps-est">10 sessions/wk = <strong id="ps-week">$700/wk</strong></div></div>
-            </div>
-            <div id="pv-packages" style="display:none">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;margin-bottom:0.875rem;">
-                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;"><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="Starter Pack"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="240" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ 4 sessions</span></div></div>
-                <div style="background:var(--lime-dim);border:1px solid var(--lime);border-radius:var(--rl);padding:0.875rem;position:relative;"><div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--lime);color:var(--navy);font-family:'DM Mono',monospace;font-size:0.52rem;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap;">⭐ Popular</div><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="Foundation Pack"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="440" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ 8 sessions</span></div></div>
-                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;"><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="Deep Dive Pack"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="780" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ 12 sessions</span></div></div>
-              </div>
-              <div class="pricing-summary"><div><div class="ps-lbl">Package range</div><div class="ps-range" id="ps-pkg">$240–$780</div></div><div class="ps-est">Best value: <strong>Foundation Pack</strong></div></div>
-            </div>
-            <div id="pv-monthly" style="display:none">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;margin-bottom:0.875rem;">
-                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;"><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="2x Monthly"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="mo-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="120" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ month</span></div></div>
-                <div style="background:var(--lime-dim);border:1px solid var(--lime);border-radius:var(--rl);padding:0.875rem;position:relative;"><div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--lime);color:var(--navy);font-family:'DM Mono',monospace;font-size:0.52rem;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap;">⭐ Recommended</div><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="Weekly Sessions"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="mo-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="240" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ month</span></div></div>
-                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:0.875rem;"><input style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-mid);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;padding:0.15rem 0;margin-bottom:0.5rem;outline:none;" type="text" value="Intensive Monthly"><div style="display:flex;align-items:baseline;gap:0.15rem;margin-bottom:0.55rem;"><span style="color:var(--muted);font-size:0.85rem">$</span><input class="mo-price" style="background:transparent;border:none;color:var(--lime);font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:700;width:70px;outline:none;" type="number" value="420" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:0.65rem;color:var(--muted)">/ month</span></div></div>
-              </div>
-              <div class="pricing-summary"><div><div class="ps-lbl">Monthly range</div><div class="ps-range" id="ps-mo">$120–$420/mo</div></div><div class="ps-est">5 subscribers = <strong id="ps-mo-est">$1,200/mo</strong></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- INCOME GOAL CALCULATOR (inside pv-1) -->
-        <div class="income-goal-box">
-          <div class="ig-header">
-            <span class="ig-icon">🎯</span>
-            <div>
-              <div class="ig-title">What do you need to make?</div>
-              <div class="ig-sub">Enter your goal — we'll show you what to charge.</div>
-            </div>
-          </div>
-          <div class="ig-inputs">
-            <div class="ff">
-              <label>Monthly income goal</label>
-              <div style="position:relative;">
-                <span style="position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:0.9rem;">$</span>
-                <input class="fi" id="ig-goal" type="number" placeholder="5,000" style="padding-left:1.75rem;" oninput="calcIncomeGoal()">
-              </div>
-            </div>
-            <div class="ff">
-              <label>Sessions per week</label>
-              <input class="fi" id="ig-sessions" type="number" placeholder="10" value="10" oninput="calcIncomeGoal()">
-            </div>
-          </div>
-          <div class="ig-result" id="ig-result" style="display:none;">
-            <div class="ig-result-row"><span class="ig-result-label">Suggested rate</span><span class="ig-result-val" id="ig-rate"></span></div>
-            <div class="ig-result-row"><span class="ig-result-label">Monthly at this rate</span><span class="ig-result-val" id="ig-monthly"></span></div>
-            <div class="ig-result-row"><span class="ig-result-label">Suggested package</span><span class="ig-result-val" id="ig-pkg"></span></div>
-            <button class="ig-apply" onclick="applyIncomeGoal()">Apply these rates to my pricing →</button>
-          </div>
-        </div>
-
-        <!-- ADD-ONS SECTION -->
-        <div style="margin-top:1.25rem;">
-          <div class="sl" style="margin-top:0;"><span>Add-ons <span style="opacity:0.5;font-weight:400;text-transform:none;letter-spacing:0;font-size:0.72rem;">(optional)</span></span></div>
-          <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.75rem;line-height:1.5;">Optional extras clients can add on. These become an interactive builder on your site — total updates live as they select.</div>
-          <div id="addon-rows" style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.6rem;"></div>
-          <button onclick="addAddonRow()" style="background:none;border:1px dashed var(--border-mid);color:var(--dim);border-radius:var(--r);padding:0.4rem 1rem;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--lime)';this.style.color='var(--lime)';" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--dim)';">+ Add an option</button>
-          <div style="font-size:0.62rem;color:rgba(200,224,0,0.45);font-family:'DM Mono',monospace;letter-spacing:0.06em;margin-top:0.5rem;">● No AI used here — just smart suggestions</div>
-          <div class="chips-wrap" id="addon-chips" style="margin-top:0.5rem;"></div>
-        </div>
-
+      <div class="field" style="grid-column:1/-1">
+        <label id="label-specific">What specifically do you offer?</label>
+        <input class="fi-light" id="f-subject" type="text" placeholder="e.g. Your specialty" oninput="buildPrompt();updateGhostHero();showSaved();">
       </div>
-
-      <!-- ── STEP 3: FEATURES ── -->
-      <div class="pview" id="pv-2">
-        <div class="callout callout-pink" style="margin-top:0;" id="features-callout"><span class="ctag" id="features-callout-tag">✨ Builtsy signature</span><p id="features-callout-body">The <strong>Interactive Pricing Builder</strong> lets visitors build their own package — price updates live.</p></div>
-        <div id="toggles-container"><!-- Populated by initFromConfig() --></div>
-
-        <!-- CONFETTI SECTION -->
-        <div style="margin-top:1.25rem;background:rgba(200,224,0,0.06);border:1px solid rgba(200,224,0,0.2);border-radius:var(--rxl);overflow:hidden;">
-          <div style="padding:0.875rem 1.1rem;border-bottom:1px solid rgba(200,224,0,0.15);display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:0.6rem;">
-              <span style="font-size:1rem;">🎉</span>
-              <div>
-                <div style="font-size:0.84rem;font-weight:700;color:white;">Celebration moment</div>
-                <div style="font-size:0.7rem;color:var(--muted);">Add a confetti burst when visitors book or arrive</div>
-              </div>
-            </div>
-            <label class="switch"><input type="checkbox" id="t-confetti" checked onchange="buildPrompt();toggleConfettiOptions();showSaved()"><span class="track"></span><span class="thumb"></span></label>
-          </div>
-          <div id="confetti-options" style="padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.875rem;">
-            <div>
-              <div style="font-size:0.68rem;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Style</div>
-              <div class="chips-wrap">
-                <div class="chip chip-on" id="cs-classic" onclick="selectConfettiChip('style','classic',this)">🎉 Classic</div>
-                <div class="chip" id="cs-hearts" onclick="selectConfettiChip('style','hearts',this)">❤️ Hearts</div>
-                <div class="chip" id="cs-stars" onclick="selectConfettiChip('style','stars',this)">⭐ Stars</div>
-                <div class="chip" id="cs-petals" onclick="selectConfettiChip('style','petals',this)">🌸 Petals</div>
-                <div class="chip" id="cs-sparkles" onclick="selectConfettiChip('style','sparkles',this)">✨ Sparkles</div>
-                <div class="chip" id="cs-notes" onclick="selectConfettiChip('style','notes',this)">🎵 Notes</div>
-              </div>
-            </div>
-            <div>
-              <div style="font-size:0.68rem;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Behavior</div>
-              <div class="chips-wrap">
-                <div class="chip chip-on" id="cb-burst" onclick="selectConfettiChip('behavior','burst',this)">💥 Burst</div>
-                <div class="chip" id="cb-fall" onclick="selectConfettiChip('behavior','fall',this)">🍂 Fall from top</div>
-                <div class="chip" id="cb-fountain" onclick="selectConfettiChip('behavior','fountain',this)">⛲ Fountain</div>
-              </div>
-            </div>
-            <div>
-              <div style="font-size:0.68rem;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Trigger</div>
-              <div class="chips-wrap">
-                <div class="chip chip-on" id="ct-book" onclick="selectConfettiChip('trigger','book',this)">📅 Book button click</div>
-                <div class="chip" id="ct-load" onclick="selectConfettiChip('trigger','load',this)">🚀 Page load</div>
-                <div class="chip" id="ct-form" onclick="selectConfettiChip('trigger','form',this)">✅ Form submit</div>
-              </div>
-            </div>
-            <div style="font-size:0.65rem;color:rgba(200,224,0,0.5);font-family:'DM Mono',monospace;letter-spacing:0.08em;">● No AI used here — just smart suggestions</div>
-          </div>
-        </div>
+      <div class="field">
+        <label>Your city / area</label>
+        <input class="fi-light" id="f-location" type="text" placeholder="e.g. Denver, CO" oninput="buildPrompt();updateGhostHero();showSaved();">
       </div>
-
-      <!-- ── STEP 4: DESIGN ── -->
-      <div class="pview" id="pv-3">
-
-        <div style="max-width:960px;margin:0 auto;">
-
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;margin-top:0;">
-            <div>
-              <div style="font-size:1.25rem;font-weight:800;color:white;margin-bottom:0.25rem;font-family:'Playfair Display',serif;">Choose your color palette.</div>
-              <div style="font-size:0.85rem;color:var(--dim);">Pick a palette that sets the tone for your brand.</div>
-              <div style="font-size:0.78rem;color:var(--muted);margin-top:0.15rem;">Your structure stays the same. Style changes the feel.</div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:0.4rem;flex-shrink:0;background:rgba(139,162,240,0.08);border:1px solid rgba(139,162,240,0.18);border-radius:0.6rem;padding:0.55rem 0.75rem;max-width:200px;">
-              <span style="color:var(--iris);font-size:0.8rem;flex-shrink:0;">ℹ</span>
-              <div style="font-size:0.68rem;color:var(--dim);line-height:1.5;">This is a style simulation. Your blueprint structure stays the same.</div>
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:1rem;flex-wrap:wrap;">
-            <span style="font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;width:100%;margin-bottom:0.25rem;">Filter by vibe:</span>
-            <button onclick="filterByCategory('all',this)" class="pal-filter-btn pal-filter-active" id="pf-all">All</button>
-            <button onclick="filterByCategory('soft',this)" class="pal-filter-btn" id="pf-soft">🌸 Soft & Feminine</button>
-            <button onclick="filterByCategory('organic',this)" class="pal-filter-btn" id="pf-organic">🌿 Calm & Organic</button>
-            <button onclick="filterByCategory('clean',this)" class="pal-filter-btn" id="pf-clean">🤍 Clean & Pro</button>
-            <button onclick="filterByCategory('bold',this)" class="pal-filter-btn" id="pf-bold">⚡ Bold & Modern</button>
-            <button onclick="filterByCategory('luxury',this)" class="pal-filter-btn" id="pf-luxury">✨ Luxury</button>
-            <button onclick="filterByCategory('warm',this)" class="pal-filter-btn" id="pf-warm">🧡 Warm & Local</button>
-            <button onclick="filterByCategory('playful',this)" class="pal-filter-btn" id="pf-playful">🎨 Playful</button>
-            <button onclick="filterByCategory('coastal',this)" class="pal-filter-btn" id="pf-coastal">🌊 Coastal</button>
-            <button onclick="filterByCategory('moody',this)" class="pal-filter-btn" id="pf-moody">🎭 Moody</button>
-            <button onclick="filterByCategory('sporty',this)" class="pal-filter-btn" id="pf-sporty">🏆 Sporty</button>
-          </div>
-          <div id="pal-vibe-desc" style="font-size:0.72rem;color:var(--iris);font-family:'DM Sans',sans-serif;margin-bottom:0.75rem;min-height:1.2rem;"></div>
-
-          <div class="pal-grid-three" id="bp-palette-grid"></div>
-          <div class="a11y-badge" id="bp-a11y-note">✓ Accessible contrast</div>
-
-          <div style="margin-top:1.25rem;">
-            <div class="sl" style="margin-top:0;"><span>Design notes <span style="opacity:0.5;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></span></div>
-            <textarea class="fi" id="f-style-notes" oninput="buildPrompt();showSaved()" rows="2" placeholder="e.g. Warm and approachable. Think boutique studio, not corporate." style="max-width:600px;"></textarea>
-          </div>
-
-        </div>
-
-        <!-- Hidden inputs kept for buildPrompt() compatibility -->
-        <input type="hidden" id="t-rounded" value="true">
-        <input type="hidden" id="t-anim" value="true">
-        <input type="color" style="display:none" id="bp-bg-picker" value="#1A1A1A" oninput="syncColor('bg')">
-        <input type="color" style="display:none" id="bp-primary-picker" value="#C8E000" oninput="syncColor('primary')">
-        <input type="color" style="display:none" id="bp-accent-picker" value="#D4EE00" oninput="syncColor('accent')">
-        <input type="color" style="display:none" id="bp-surface-picker" value="#2D2D2D" oninput="syncColor('surface')">
-
+      <div class="field">
+        <label id="label-creds">Credentials <span class="opt">(optional)</span></label>
+        <input class="fi-light" id="f-creds" type="text" placeholder="e.g. Certifications, years experience" oninput="buildPrompt();showSaved();">
       </div>
-
-      <!-- ── STEP 5: ART DIRECTION ── -->
-      <div class="pview" id="pv-4">
-        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
-          <span style="font-size:0.85rem;">✦</span>
-          <span style="font-size:0.82rem;color:var(--lime);font-weight:600;">Leave anything as "Let AI decide" — it'll pick the best option for your industry.</span>
-        </div>
-
-        <!-- HERO LAYOUT -->
-        <div class="sl" style="margin-top:0;">Hero photo style</div>
-        <div class="og" id="og-hero-layout">
-          <div class="oc sel" onclick="pickArt(this,'og-hero-layout')"><span class="oc-icon">🖼️</span><div class="oc-name">Full bleed</div><div class="oc-desc">Photo fills entire hero background</div></div>
-          <div class="oc" onclick="pickArt(this,'og-hero-layout')"><span class="oc-icon">⬛</span><div class="oc-name">Split layout</div><div class="oc-desc">Text left, photo right column</div></div>
-          <div class="oc" onclick="pickArt(this,'og-hero-layout')"><span class="oc-icon">🤖</span><div class="oc-name">Let AI decide</div><div class="oc-desc">Best choice for your category</div></div>
-        </div>
-
-        <!-- GALLERY TREATMENT -->
-        <div class="sl">Gallery style</div>
-        <div class="og" id="og-gallery-style">
-          <div class="oc sel" onclick="pickArt(this,'og-gallery-style')"><span class="oc-icon">🎨</span><div class="oc-name">Mixed grid</div><div class="oc-desc">One large + smaller, varied sizes</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-style')"><span class="oc-icon">📸</span><div class="oc-name">Stacked</div><div class="oc-desc">Overlapping with slight rotation</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-style')"><span class="oc-icon">🎞️</span><div class="oc-name">Film strip</div><div class="oc-desc">Horizontal scrolling gallery</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-style')"><span class="oc-icon">🌄</span><div class="oc-name">Full width</div><div class="oc-desc">Each photo full-width, stacked</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-style')"><span class="oc-icon">🤖</span><div class="oc-name">Let AI decide</div><div class="oc-desc">Best choice for your category</div></div>
-        </div>
-
-        <!-- GALLERY ANIMATION -->
-        <div class="sl">Gallery animation</div>
-        <div class="og" id="og-gallery-anim">
-          <div class="oc sel" onclick="pickArt(this,'og-gallery-anim')"><span class="oc-icon">✨</span><div class="oc-name">Fade in</div><div class="oc-desc">Photos fade up as you scroll</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-anim')"><span class="oc-icon">🔍</span><div class="oc-name">Hover zoom</div><div class="oc-desc">Subtle scale on hover only</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-anim')"><span class="oc-icon">⬜</span><div class="oc-name">No animation</div><div class="oc-desc">Static, clean, no movement</div></div>
-          <div class="oc" onclick="pickArt(this,'og-gallery-anim')"><span class="oc-icon">🤖</span><div class="oc-name">Let AI decide</div><div class="oc-desc">Best choice for your category</div></div>
-        </div>
-
-        <!-- OVERALL VIBE / DESIGN NOTES -->
-        <div class="sl">Additional art direction <span style="opacity:0.5;font-weight:400;text-transform:none;letter-spacing:0;font-size:0.72rem;">(optional)</span></div>
-        <textarea class="fi" id="f-style-notes" oninput="buildPrompt();showSaved();" rows="3" placeholder="e.g. Warm and approachable. Think boutique studio, not corporate." style="resize:vertical;"></textarea>
-        <div style="margin-top:0.5rem;" id="art-direction-defaults"></div>
+      <div class="field" style="grid-column:1/-1">
+        <label id="label-client">Who are your ideal clients?</label>
+        <div class="chip-group" id="chips-students" style="margin-bottom:8px;"><!-- populated by config --></div>
+        <input class="fi-light" id="f-students" type="text" placeholder="e.g. Your target clients" oninput="buildPrompt();showSaved();">
       </div>
+    </div>
 
-      <!-- ── STEP 6: REVIEW (prompt) ── -->
-      <div class="pview" id="pv-5">
-        <div class="pc-box">
-          <div class="pc-hdr">
-            <span class="pc-title">Builtsy Blueprint Perfect Prompt™</span>
-            <span class="pc-wc">⚡ <span id="bp-wc">0</span> words</span>
-          </div>
-          <div class="pc-visible" id="bp-preview"><span style="color:var(--muted);">Fill in your details to see your prompt.</span></div>
-          <div class="pc-blur-zone">
-            <div class="pc-blur-text">JSON-LD Schema: LocalBusiness with geo coordinates, Organization, WebSite, WebPage, Service, FAQPage
-SEO: Unique title tags, meta descriptions, canonical URLs, H1 on every page, Open Graph, Twitter cards
-AI DISCOVERABILITY: robots.txt allowing GPTBot ClaudeBot PerplexityBot anthropic-ai Bytespider
-ACCESSIBILITY: WCAG 2.1 AA, alt text, keyboard nav, 4.5:1 contrast minimum
-PERFORMANCE: WebP images, mobile-first responsive, no render-blocking CSS
-PHOTO PLACEHOLDERS: Styled CSS placeholder for every image slot
-LEGAL: Privacy Policy and Terms linked in footer
-FORMS: Netlify Forms with honeypot spam protection</div>
-            <div class="pc-blur-overlay">
-              <div class="pc-lock">🔒 Proprietary GEO-optimization logic</div>
-              <div class="pc-lock-sub">Full Bible-quality build instructions included. <strong>Click Generate below.</strong></div>
-            </div>
-          </div>
-          <div class="pc-gen-bar">
-            <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Site</button>
-          </div>
-        </div>
-      </div>
+    <span class="sl-light" id="sl-subject">What do you offer?</span>
+    <div class="og-light" id="og-subject"><!-- populated by config --></div>
 
-      <!-- ── STEP 7: BOOST ── -->
-      <div class="pview" id="pv-6">
-        <div style="padding:1.5rem;max-width:760px;">
+    <span class="sl-light" id="sl-location">Where do you work?</span>
+    <div class="og-light two" id="og-location"><!-- populated by config --></div>
 
-          <div id="boost-context-pill" style="background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);border-radius:10px;padding:0.65rem 1rem;font-size:0.75rem;color:rgba(255,255,255,0.6);margin-bottom:1.5rem;line-height:1.55;">
-            Loading your business context...
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
-
-            <!-- CHAT COLUMN -->
-            <div style="display:flex;flex-direction:column;gap:0;">
-              <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Your Boost assistant</div>
-              <div id="boost-messages" style="background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;min-height:280px;max-height:380px;overflow-y:auto;margin-bottom:0.75rem;">
-                <div style="display:flex;gap:8px;align-items:flex-start;">
-                  <div style="width:22px;height:22px;border-radius:50%;background:var(--lime);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;flex-shrink:0;margin-top:2px;font-family:'DM Mono',monospace;">B</div>
-                  <div id="boost-opening-msg" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:0.6rem 0.85rem;font-size:0.78rem;line-height:1.65;color:rgba(255,255,255,0.8);">Loading your blueprint...</div>
-                </div>
-              </div>
-
-              <!-- Prompt suggestion cards -->
-              <div id="boost-prompt-cards" style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.75rem;"></div>
-
-              <!-- Input -->
-              <div style="display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.4rem 0.5rem 0.4rem 0.85rem;">
-                <input id="boost-input" style="flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:white;" placeholder="Ask anything about your business..." onkeydown="if(event.key==='Enter')boostSend()">
-                <button onclick="boostSend()" style="width:28px;height:28px;background:var(--lime);border:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6L2 2L4 6L2 10L10 6Z" fill="#12192B"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- OUTPUT COLUMN -->
-            <div style="display:flex;flex-direction:column;gap:0;">
-              <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Output</div>
-              <div id="boost-output-empty" style="background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;flex:1;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-                <div style="font-size:1.25rem;opacity:0.25;margin-bottom:0.5rem;">✦</div>
-                <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);">Click a prompt to generate</div>
-              </div>
-              <div id="boost-output-generating" style="display:none;background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;min-height:280px;align-items:center;justify-content:center;flex-direction:column;">
-                <div style="display:flex;gap:5px;justify-content:center;margin-bottom:0.75rem;">
-                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out infinite;"></div>
-                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out 0.2s infinite;"></div>
-                  <div style="width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.4;animation:boostDot 1.2s ease-in-out 0.4s infinite;"></div>
-                </div>
-                <div id="boost-gen-label" style="font-size:0.7rem;color:var(--lime);font-family:'DM Mono',monospace;letter-spacing:0.06em;">Generating...</div>
-              </div>
-              <div id="boost-output-result" style="display:none;background:var(--navy);border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:280px;flex-direction:column;">
-                <div style="padding:0.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-                  <div id="boost-result-title" style="font-size:0.78rem;font-weight:500;color:white;"></div>
-                  <button id="boost-dl-btn" onclick="boostDownload()" style="background:var(--lime);color:var(--navy);border:none;border-radius:6px;padding:0.3rem 0.75rem;font-size:0.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Download</button>
-                </div>
-                <div id="boost-addon-out" style="display:none;padding:0.75rem 1rem;overflow-y:auto;max-height:240px;">
-                  <div id="boost-addon-list" style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.75rem;"></div>
-                  <button onclick="boostAddToBP()" style="width:100%;background:var(--lime);color:var(--navy);border:none;border-radius:7px;padding:0.55rem;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Add selected to blueprint</button>
-                </div>
-                <div id="boost-text-out" style="display:none;padding:0.75rem 1rem;overflow-y:auto;max-height:240px;">
-                  <div id="boost-text-body" style="font-size:0.75rem;line-height:1.75;color:rgba(255,255,255,0.75);white-space:pre-wrap;"></div>
-                </div>
-                <div style="padding:0.6rem 1rem;border-top:1px solid var(--border);">
-                  <div style="font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem;">Tweak it:</div>
-                  <div id="boost-tweaks" style="display:flex;gap:0.35rem;flex-wrap:wrap;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Generate CTA at bottom -->
-          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="font-size:0.78rem;color:var(--muted);">Ready to build your site?</div>
-            <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Site</button>
-          </div>
-
-        </div>
-      </div>
-
-    </div><!-- /panel-body -->
-
-    <!-- PANEL BOTTOM NAV -->
-    <div class="panel-nav">
-      <button class="btn-back" id="btn-prev" onclick="prevStep()" style="visibility:hidden;">← Back</button>
-      <button class="btn-next" id="btn-next" onclick="nextStep()">Continue →</button>
+    <div class="step-nav-light">
+      <button class="btn-next-light" onclick="v2goStep(1)">Next — Services &amp; Pricing →</button>
     </div>
   </div>
 
-  <!-- RIGHT STORY PANEL -->
-  <div class="preview-pane" id="previewPane">
+  <!-- STEP 1: AI-Powered Services + Pricing -->
+  <div class="step-panel" id="v2-step-1">
+    <div class="step-label-top">Step 2 of 5 · Services & Pricing</div>
+    <div class="step-title-main">Design your offer</div>
+    <div class="step-sub-main">Turn your skill into a real, sellable service.</div>
 
-    <!-- TOOLBAR (shown on design + review steps) -->
-    <div class="preview-toolbar" id="previewToolbar" style="display:none;">
-      <div class="pt-left">
-        <div class="preview-dots"><div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div></div>
-        <div class="preview-label" id="previewLabel">Live Preview</div>
-      </div>
-      <div class="pt-viewbtns">
-        <button class="pt-vbtn active" onclick="setPreviewWidth('100%',this)">🖥</button>
-        <button class="pt-vbtn" onclick="setPreviewWidth('390px',this)">📱</button>
-      </div>
+    <div class="ai-hint" id="ai-services-hint"></div>
+
+    <span class="sl-light">Your services</span>
+    <div class="chip-group" id="ai-service-chips" style="margin-bottom:14px;">
+      <div class="chip-loading">Getting service ideas for your business…</div>
     </div>
 
-    <!-- STEP 1: THE INTRODUCTION -->
-    <!-- UNIFIED GHOST SITE (steps 1-3) + LIVE PREVIEW (step 4) + REVIEW (step 5) -->
+    <span class="sl-light">Pricing</span>
+    <div id="svcRows"><!-- populated by config --></div>
+    <button class="btn-add-row" onclick="addSvcRow()">+ Add a service</button>
 
-    <!-- GHOST SITE: visible on steps 0-2 -->
-    <div id="ghost-site-wrap" class="ghost-wrap">
-      <!-- PREVIEW BANNER -->
-      <div class="preview-banner">
-        <div class="pb-left">
-          <div class="pb-dot"></div>
-          <span class="pb-label">Blueprint Preview</span>
-          <span class="pb-note">This is NOT your final site — the real design happens when you generate ✨</span>
+    <span class="sl-light" style="margin-top:18px;">Packages</span>
+    <div id="pkgRows" style="margin-bottom:8px;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px;">
+          <input style="width:100%;background:transparent;border:none;border-bottom:1.5px solid #e5e7eb;color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;padding:.15rem 0;margin-bottom:.5rem;outline:none;" type="text" value="Starter Pack">
+          <div style="display:flex;align-items:baseline;gap:.15rem;"><span style="font-size:.7rem;color:#9ca3af">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--builtsy-blue);font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;width:70px;outline:none;" type="number" value="240" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:.62rem;color:#9ca3af">/ 4 sessions</span></div>
         </div>
-        <span class="pb-step-badge" id="ghost-badge-text">Your site is taking shape →</span>
-      </div>
-
-      <!-- ART DIRECTION PREVIEW PANEL — shown only on Step 5 -->
-      <div id="artdir-preview-panel" style="display:none;flex-direction:column;flex:1;overflow-y:auto;background:#ffffff;">
-        <div class="bp-doc-header">
-          <div class="bp-doc-title-wrap">
-            <div class="bp-doc-icon">🎬</div>
-            <div>
-              <div class="bp-doc-title">Visual guide</div>
-              <div class="bp-doc-subtitle">See what each option looks like</div>
-            </div>
-          </div>
-          <div class="bp-step-badge">Step 5 of 6</div>
+        <div style="background:white;border:2px solid var(--builtsy-blue);border-radius:10px;padding:12px;position:relative;">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--builtsy-blue);color:white;font-family:'DM Mono',monospace;font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap;">⭐ Popular</div>
+          <input style="width:100%;background:transparent;border:none;border-bottom:1.5px solid #e5e7eb;color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;padding:.15rem 0;margin-bottom:.5rem;outline:none;" type="text" value="Foundation Pack">
+          <div style="display:flex;align-items:baseline;gap:.15rem;"><span style="font-size:.7rem;color:#9ca3af">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--builtsy-blue);font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;width:70px;outline:none;" type="number" value="440" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:.62rem;color:#9ca3af">/ 8 sessions</span></div>
         </div>
-        <div style="padding:1.25rem 1.5rem;flex:1;background:#F3F4F6;" id="artdir-preview-body">
-          <div style="text-align:center;color:#9CA3AF;font-size:0.8rem;margin-top:2rem;">Make a selection to see the preview</div>
-        </div>
-      </div>
-
-      <!-- PALETTE PREVIEW PANEL — shown only on Step 4 -->
-      <div id="palette-preview-panel" style="display:none;flex-direction:column;flex:1;overflow-y:auto;background:#ffffff;">
-        <div class="bp-doc-header">
-          <div class="bp-doc-title-wrap">
-            <div class="bp-doc-icon">🎨</div>
-            <div>
-              <div class="bp-doc-title">Palette preview</div>
-              <div class="bp-doc-subtitle">See how your chosen palette will feel</div>
-            </div>
-          </div>
-          <div class="bp-step-badge">Step 4 of 6</div>
-        </div>
-        <div style="padding:1.25rem 1.5rem;flex:1;background:#F3F4F6;" id="pal-preview-body">
-          <div style="text-align:center;color:#9CA3AF;font-size:0.8rem;margin-top:2rem;">Select a palette to see the preview</div>
-        </div>
-      </div>
-
-      <div class="ghost-site" id="ghost-site">
-
-          <!-- BLUE BANNER HEADER -->
-          <div class="bp-doc-header">
-            <div class="bp-doc-title-wrap">
-              <div class="bp-doc-icon">📋</div>
-              <div>
-                <div class="bp-doc-title">Blueprint in progress</div>
-                <div class="bp-doc-subtitle">This structure powers your final site</div>
-              </div>
-            </div>
-            <div class="bp-step-badge" id="bp-step-badge">Step 1 of 6</div>
-          </div>
-
-        <div class="bp-doc" id="bp-doc">
-
-          <!-- ROW 1: Business + Offer -->
-          <div class="bp-grid">
-            <div class="bp-card" id="bpc-business">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">🏢</span><span class="bp-card-title">Business</span></div>
-                <div class="bp-card-check" id="bpcheck-business">✓</div>
-              </div>
-              <div class="bp-field-row"><span class="bp-field-label">Name</span><span class="bp-field-value empty" id="bpf-name">Not yet set</span></div>
-              <div class="bp-field-row"><span class="bp-field-label">Category</span><span class="bp-field-value" id="bpf-category">Music Lessons</span></div>
-              <div class="bp-field-row"><span class="bp-field-label">Location</span><span class="bp-field-value empty" id="bpf-location">Not yet set</span></div>
-              <div class="bp-field-row"><span class="bp-field-label">Format</span><span class="bp-field-value" id="bpf-format">In-person</span></div>
-            </div>
-            <div class="bp-card" id="bpc-offer">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">🎁</span><span class="bp-card-title">Offer</span></div>
-                <div class="bp-card-check" id="bpcheck-offer">✓</div>
-              </div>
-              <div class="bp-field-row"><span class="bp-field-label">Service</span><span class="bp-field-value empty" id="bpf-subject">Not yet set</span></div>
-              <div class="bp-field-row"><span class="bp-field-label">Audience</span><span class="bp-field-value empty" id="bpf-students">Not yet set</span></div>
-              <div class="bp-field-row"><span class="bp-field-label">Focus</span><span class="bp-field-value empty" id="bpf-diff">Not yet set</span></div>
-            </div>
-          </div>
-
-          <!-- POSITIONING TAGS -->
-          <div class="bp-card bp-grid full" id="bpc-tags">
-            <div class="bp-card-header">
-              <div class="bp-card-title-wrap"><span class="bp-card-icon">🏷️</span><span class="bp-card-title">Positioning tags</span></div>
-              <div class="bp-card-check" id="bpcheck-tags">✓</div>
-            </div>
-            <div class="bp-tags" id="bpf-tags">
-              <div class="bp-tag bp-tag-ghost">Select a category to begin</div>
-            </div>
-          </div>
-
-          <!-- ROW 2: Credentials + Site Structure -->
-          <div class="bp-grid">
-            <div class="bp-card" id="bpc-creds">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">🛡️</span><span class="bp-card-title">Credentials</span></div>
-                <div class="bp-card-check" id="bpcheck-creds">✓</div>
-              </div>
-              <div id="bpf-creds-list">
-                <div class="bp-field-row"><span class="bp-field-value empty">None added yet</span></div>
-              </div>
-            </div>
-            <div class="bp-card" id="bpc-structure">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">🗂️</span><span class="bp-card-title">Site structure</span></div>
-                <div class="bp-card-check done">✓</div>
-              </div>
-              <div class="bp-structure-grid" id="bpf-structure">
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Hero section</div>
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Testimonials</div>
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Services</div>
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Contact</div>
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Pricing</div>
-                <div class="bp-structure-item"><span class="bp-si-check">✓</span>Footer + legal</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ROW 3: Pricing + Prompt Ready -->
-          <div class="bp-grid">
-            <div class="bp-card" id="bpc-pricing">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">💲</span><span class="bp-card-title">Pricing structure</span></div>
-                <div class="bp-card-check" id="bpcheck-pricing">✓</div>
-              </div>
-              <div id="bpf-pricing-rows">
-                <div class="bp-pricing-row"><span class="bp-pricing-icon">◷</span><span class="bp-pricing-label">30 min lesson</span><div class="bp-pricing-bar"></div></div>
-                <div class="bp-pricing-row"><span class="bp-pricing-icon">◷</span><span class="bp-pricing-label">60 min lesson</span><div class="bp-pricing-bar"></div></div>
-                <div class="bp-pricing-row"><span class="bp-pricing-icon">◷</span><span class="bp-pricing-label">90 min lesson</span><div class="bp-pricing-bar"></div></div>
-              </div>
-            </div>
-            <div class="bp-card" id="bpc-prompt">
-              <div class="bp-card-header">
-                <div class="bp-card-title-wrap"><span class="bp-card-icon">✦</span><span class="bp-card-title">Structured prompt ready</span></div>
-                <div class="bp-card-check done">✓</div>
-              </div>
-              <div style="font-size:0.75rem;color:#6B7280;line-height:1.6;">Your inputs have been structured into a high-quality prompt designed to get it right the first time.</div>
-              <div class="bp-prompt-bar"><div class="bp-prompt-fill" id="bp-prompt-fill"></div></div>
-              <div class="bp-prompt-label" id="bp-prompt-label">Blueprint compiled</div>
-            </div>
-          </div>
-
-          <!-- BOTTOM BAR -->
-          <div class="bp-bottom-bar">
-            <span class="bp-bottom-icon">🛡</span>
-            <div class="bp-bottom-text"><strong>Intentional AI. Zero guesswork.</strong> We structure everything so the AI can deliver the right result.</div>
-          </div>
-
-        </div>
-      </div><!-- /ghost-site -->
-
-
-    </div><!-- /ghost-wrap -->
-
-    <!-- STEP 4: LIVE SITE PREVIEW -->
-    <div id="live-site-wrap" class="live-wrap" style="display:none;flex-direction:column;background:#FFFFFF;">
-      <!-- BLUEPRINT IN PROGRESS BAR -->
-      <div style="background:#C8E000;padding:0.5rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:0.75rem;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#0D0D55;opacity:0.5;"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0D0D55;">Builtsy Blueprint in progress</span>
-          <span style="font-size:0.72rem;color:rgba(13,13,85,0.65);font-family:'DM Sans',sans-serif;">This is your Builtsy Blueprint with styles applied.</span>
-        </div>
-        <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,85,0.5);">Step 4 of 6 · Design</span>
-      </div>
-      <!-- BLUEPRINT HEADER -->
-      <div style="padding:1rem 1.5rem 0.75rem;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;gap:0.875rem;background:#FFFFFF;flex-shrink:0;">
-        <div style="width:36px;height:36px;background:#EEF2FF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">📋</div>
-        <div>
-          <div style="font-size:0.95rem;font-weight:700;color:#111827;font-family:'DM Sans',sans-serif;">Builtsy Blueprint</div>
-          <div style="font-size:0.72rem;color:#6B7280;font-family:'DM Sans',sans-serif;">We're applying your selected style to your structure.</div>
-        </div>
-      </div>
-      <!-- IFRAME WRAP with section labels overlay -->
-      <div class="preview-frame-wrap" id="previewFrameWrap" style="flex:1;min-height:0;position:relative;background:#F9FAFB;">
-        <div class="preview-placeholder" id="previewPlaceholder" style="height:100%;display:flex;align-items:center;justify-content:center;background:#F9FAFB;flex-direction:column;gap:1rem;">
-          <div style="width:40px;height:40px;background:#EEF2FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">📋</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;text-align:center;">Pick a style to apply it to your blueprint</div>
-        </div>
-        <iframe class="preview-frame" id="livePreviewFrame" style="display:none;width:100%;height:100%;border:none;" sandbox="allow-scripts allow-same-origin"></iframe>
-        <!-- SECTION LABELS OVERLAY -->
-        <div id="bp-section-labels" style="display:none;position:absolute;top:0;left:0;width:60px;height:100%;pointer-events:none;z-index:5;">
-          <div style="position:absolute;top:0;left:0;width:60px;display:flex;flex-direction:column;gap:0;">
-            <div class="bp-sec-label" style="top:0;">HEADER<br><span>(Planned)</span></div>
-            <div class="bp-sec-label" style="top:60px;">HERO<br><span>(Planned)</span></div>
-            <div class="bp-sec-label" style="top:280px;">FEATURES<br><span>(Planned)</span></div>
-            <div class="bp-sec-label" style="top:420px;">PRICING<br><span>(Planned)</span></div>
-            <div class="bp-sec-label" style="top:680px;">FOOTER<br><span>(Planned)</span></div>
-          </div>
+        <div style="background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px;">
+          <input style="width:100%;background:transparent;border:none;border-bottom:1.5px solid #e5e7eb;color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;padding:.15rem 0;margin-bottom:.5rem;outline:none;" type="text" value="Deep Dive Pack">
+          <div style="display:flex;align-items:baseline;gap:.15rem;"><span style="font-size:.7rem;color:#9ca3af">$</span><input class="pkg-price" style="background:transparent;border:none;color:var(--builtsy-blue);font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;width:70px;outline:none;" type="number" value="780" oninput="updateSummary();buildPrompt();showSaved()"><span style="font-size:.62rem;color:#9ca3af">/ 12 sessions</span></div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 5: REVIEW PANEL -->
-    <div id="review-site-wrap" class="review-wrap" style="display:none;">
+    <span class="sl-light" style="margin-top:18px;">Add-ons</span>
+    <div id="addonChips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><!-- populated by config --></div>
+    <input class="fi-light" id="f-addons-custom" type="text" placeholder="Add your own add-on… (press Enter)" style="margin-top:4px;" onkeydown="if(event.key==='Enter'){addCustomAddon(this.value);this.value='';buildPrompt();showSaved();}">
 
-      <!-- BLUE BANNER HEADER -->
-      <div style="background:linear-gradient(135deg,#1a2a6e,#2a3f9f);padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:0.3rem;">Step 5 of 6 · Review</div>
-          <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:white;line-height:1.1;">Your blueprint is complete.</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-top:0.25rem;">Review your prompt and generate your site.</div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:flex-end;max-width:320px;">
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.62rem;background:rgba(200,224,0,0.15);border:1px solid rgba(200,224,0,0.3);color:var(--lime);padding:3px 9px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">✓ SEO optimized</span>
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.62rem;background:rgba(139,162,240,0.15);border:1px solid rgba(139,162,240,0.3);color:var(--iris);padding:3px 9px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">✓ AI searchable</span>
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.62rem;background:rgba(238,112,188,0.15);border:1px solid rgba(238,112,188,0.3);color:var(--pink);padding:3px 9px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">✓ JSON-LD schema</span>
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.62rem;background:rgba(255,255,255,0.08);border:1px solid var(--border-mid);color:var(--dim);padding:3px 9px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">✓ WCAG accessible</span>
-          <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.62rem;background:rgba(255,255,255,0.08);border:1px solid var(--border-mid);color:var(--dim);padding:3px 9px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">✓ Mobile-first</span>
-        </div>
-      </div>
-
-      <!-- MAIN CONTENT -->
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:0;flex:1;overflow:hidden;min-height:0;">
-
-        <!-- LEFT: PROMPT HERO -->
-        <div style="padding:2rem 2rem 2rem 2.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.25rem;border-right:1px solid var(--border);">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-              <div>
-                <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:0.2rem;">Builtsy Blueprint Perfect Prompt™</div>
-                <div style="font-size:0.75rem;color:var(--muted);">This is what gets sent to the AI. Your inputs, structured for perfect output.</div>
-              </div>
-              <span style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--iris);background:rgba(139,162,240,0.1);border:1px solid rgba(139,162,240,0.2);padding:3px 10px;border-radius:100px;">⚡ <span id="sp5-wc">0</span> words</span>
-            </div>
-            <!-- Visible prompt preview -->
-            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;font-family:'DM Mono',monospace;font-size:0.72rem;line-height:1.7;color:var(--dim);max-height:280px;overflow-y:auto;margin-bottom:0.5rem;" id="sp5-prompt-text"></div>
-            <!-- Blurred proprietary section -->
-            <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-              <div style="padding:1.25rem;font-family:'DM Mono',monospace;font-size:0.72rem;line-height:1.7;color:var(--dim);filter:blur(4px);user-select:none;pointer-events:none;">JSON-LD Schema: LocalBusiness with geo coordinates, Organization, WebSite, WebPage, Service, FAQPage
-SEO: Unique title tags, meta descriptions, canonical URLs, H1, Open Graph, Twitter cards
-AI DISCOVERABILITY: robots.txt allowing GPTBot ClaudeBot PerplexityBot anthropic-ai
-ACCESSIBILITY: WCAG 2.1 AA, alt text, keyboard nav, 4.5:1 contrast minimum
-PERFORMANCE: WebP images, mobile-first responsive, no render-blocking CSS
-LEGAL: Privacy Policy, Terms of Service, Cookie consent banner</div>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,15,35,0.7);backdrop-filter:blur(2px);">
-                <div style="font-size:1.1rem;margin-bottom:0.4rem;">🔒</div>
-                <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);text-align:center;">Proprietary GEO + SEO logic included</div>
-                <div style="font-size:0.72rem;color:var(--dim);margin-top:0.25rem;text-align:center;">Full Bible-quality build instructions</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- GENERATE BUTTON -->
-          <div style="display:flex;justify-content:center;padding:0.5rem 0 1rem;">
-            <button class="btn-generate-big" onclick="goToGenerate()"><span>⚡</span> Generate My Site</button>
-          </div>
-        </div>
-
-        <!-- RIGHT: CHECKLIST SUMMARY -->
-        <div style="padding:1.75rem 1.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:0.75rem;">
-          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem;">Blueprint summary</div>
-          <div class="sp5-checklist" id="sp5-checklist">
-            <div class="sp5-check done" id="chk-0"><span class="chk-icon">✓</span><span class="chk-label">Business info</span><span class="chk-val" id="chk-0-val"></span></div>
-            <div class="sp5-check done" id="chk-1"><span class="chk-icon">✓</span><span class="chk-label">Offer & Pricing</span><span class="chk-val" id="chk-1-val"></span></div>
-            <div class="sp5-check done" id="chk-2"><span class="chk-icon">✓</span><span class="chk-label">Site Features</span><span class="chk-val" id="chk-2-val"></span></div>
-            <div class="sp5-check done" id="chk-3"><span class="chk-icon">✓</span><span class="chk-label">Design</span><span class="chk-val" id="chk-3-val"></span></div>
-          </div>
-          <div style="margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);">
-            <div style="font-size:0.72rem;color:var(--muted);line-height:1.6;text-align:center;">Your blueprint is structured and ready. The AI will use every detail you've provided to build a custom, launch-ready site.</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-  <!-- GENERATE VIEW (full width, replaces workspace) -->
-  <div class="gen-view" id="genView">
-    <div style="max-width:820px;margin:0 auto;">
-      <div style="display:flex;gap:0.5rem;margin-bottom:1.25rem;"><span class="tag tag-lime">Generating</span><span class="tag tag-pink">Private Lessons Site</span></div>
-      <h1 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:0.4rem;">Building your site...</h1>
-      <p style="font-size:0.875rem;color:var(--dim);margin-bottom:2rem;line-height:1.7;">Hang tight. Builtsy is turning your blueprint into a real, launch-ready business website.</p>
-
-      <div id="loadingState" class="gen-loading">
-        <div class="spinner"></div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:0.4rem;">Building your site</div>
-        <div style="font-size:0.85rem;color:var(--dim);">This takes about 15–30 seconds</div>
-        <div class="ls-steps">
-          <div class="ls-item active-ls" id="ls1"><div class="ls-dot">·</div><span>Reading your blueprint</span></div>
-          <div class="ls-item" id="ls2"><div class="ls-dot">·</div><span>Assembling your business structure</span></div>
-          <div class="ls-item" id="ls3"><div class="ls-dot">·</div><span>Writing your pricing logic</span></div>
-          <div class="ls-item" id="ls4"><div class="ls-dot">·</div><span>Generating your site HTML</span></div>
-          <div class="ls-item" id="ls5"><div class="ls-dot">·</div><span>Finalizing and rendering</span></div>
-        </div>
-      </div>
-
-      <div id="previewState" style="display:none;">
-        <div style="background:var(--navy-deep);border:1px solid var(--border-mid);border-radius:1rem;overflow:hidden;">
-          <div style="background:var(--navy-deep);border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-            <!-- Left: dots + URL -->
-            <div style="display:flex;align-items:center;gap:0.65rem;flex-shrink:0;">
-              <div style="display:flex;gap:4px;"><div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div></div>
-              <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);background:var(--surface);padding:0.25rem 0.75rem;border-radius:0.4rem;border:1px solid var(--border);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="previewUrl">yoursite.netlify.app</div>
-            </div>
-            <!-- Center: individual file downloads -->
-            <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;" id="dl-buttons"></div>
-            <!-- Right: primary actions -->
-            <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
-              <button onclick="backToBlueprint()" style="background:none;border:1px solid var(--border-mid);color:var(--dim);border-radius:100px;padding:0.4rem 1rem;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">← Edit</button>
-              <button onclick="downloadSite()" style="background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">⬇ Download All</button>
-            </div>
-          </div>
-          <iframe id="previewFrame" style="width:100%;height:720px;border:none;display:block;background:white;" sandbox="allow-scripts allow-same-origin"></iframe>
-        </div>
-      </div>
-
-      <div class="error-state" id="errorState">
-        <div style="font-size:2rem;margin-bottom:1rem;">⚠️</div>
-        <div class="error-msg" id="errorMsg">Something went wrong. Your blueprint is saved — try again.</div>
-        <button class="btn-generate-big" onclick="startGenerate()"><span>⚡</span> Try Again</button>
-        <div style="margin-top:1rem;"><button class="btn-back" onclick="backToBlueprint()">← Edit Blueprint</button></div>
-      </div>
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="v2goStep(0)">← Back</button>
+      <button class="btn-next-light" onclick="v2goStep(2)">Next — Features →</button>
     </div>
   </div>
 
-</div><!-- /workspace -->
+  <!-- STEP 2: Features + Palette -->
+  <div class="step-panel" id="v2-step-2">
+    <div class="step-label-top">Step 3 of 5 · Design & Features</div>
+    <div class="step-title-main">Design your site.</div>
+    <div class="step-sub-main">Pick a palette and choose your features — built in automatically.</div>
 
-<div id="bp-out" style="display:none;"></div>
+    <span class="sl-light">Color palette</span>
+
+    <!-- AI Palette Suggestions -->
+    <div id="ai-palette-hint" style="display:none;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.2);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--navy);margin-bottom:12px;line-height:1.5;"></div>
+
+    <div id="ai-palette-suggestions" style="margin-bottom:16px;">
+      <div class="chip-loading" style="padding:10px 0;">Getting palette suggestions for your business…</div>
+    </div>
+
+    <!-- Full palette grid — collapsed by default -->
+    <div id="palette-expander-toggle" onclick="toggleFullPalette()" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 14px;background:white;border:1.5px solid rgba(67,97,238,.2);border-radius:10px;margin-bottom:8px;transition:all .2s;">
+      <span style="font-size:.8rem;font-weight:600;color:var(--builtsy-blue);" id="palette-expander-label">↓ See all palettes</span>
+      <span style="font-size:.72rem;color:#9ca3af;margin-left:auto;">40+ options</span>
+    </div>
+    <div id="palette-container-v2" style="display:none;"><!-- rendered by renderPalettesV2() --></div>
+
+    <span class="sl-light" style="margin-top:24px;">Features</span>
+    <div id="toggles-container"><!-- populated by initFromConfig() --></div>
+
+    <div class="field" style="margin-top:16px;">
+      <label>Your tagline <span class="opt">(optional — we'll write one if blank)</span></label>
+      <input class="fi-light" id="f-tagline" type="text" placeholder="e.g. Real technique. Real results." oninput="buildPrompt();showSaved();">
+    </div>
+    <div class="field">
+      <label>What makes you different? <span class="opt">(optional)</span></label>
+      <textarea class="fi-light" id="f-diff" placeholder="e.g. I specialize in adult beginners…" oninput="buildPrompt();showSaved();" style="min-height:70px;"></textarea>
+    </div>
+
+    <!-- Hidden art direction with smart defaults — still feeds buildPrompt() -->
+    <div style="display:none;">
+      <div class="og-light" id="og-hero-layout"><div class="oc-light sel" onclick="pickLight(this,'og-hero-layout','Full bleed')"><div class="oc-name">Full bleed</div></div></div>
+      <div class="og-light" id="og-gallery-style"><div class="oc-light sel" onclick="pickLight(this,'og-gallery-style','Mixed grid')"><div class="oc-name">Mixed grid</div></div></div>
+      <div class="og-light" id="og-gallery-anim"><div class="oc-light sel" onclick="pickLight(this,'og-gallery-anim','Fade in')"><div class="oc-name">Fade in</div></div></div>
+      <textarea id="f-style-notes" style="display:none;"></textarea>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="v2goStep(1)">← Back</button>
+      <button class="btn-next-light" onclick="v2goStep(3)">Next — Photos →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Photos -->
+  <div class="step-panel" id="v2-step-3">
+    <div class="step-label-top">Step 4 of 5 · Photos</div>
+    <div class="step-title-main">Add your photos.</div>
+    <div class="step-sub-main">Skip any you don't have — styled placeholders will hold their spot.</div>
+
+    <div class="field">
+      <label>Hero photo <span class="opt">(main image at top of site)</span></label>
+      <div class="upload-zone-light" id="v2-hero-zone">
+        <input type="file" accept="image/*" onchange="v2HandlePhoto('hero',this)">
+        <div class="upload-icon-light">📸</div>
+        <div class="upload-label-light"><strong>Click to upload</strong> — you, your space, or your work</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>About photo <span class="opt">(a photo of you — optional)</span></label>
+      <div class="upload-zone-light" id="v2-about-zone">
+        <input type="file" accept="image/*" onchange="v2HandlePhoto('about',this)">
+        <div class="upload-icon-light">🤳</div>
+        <div class="upload-label-light"><strong>Click to upload</strong> — a headshot or candid works great</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Gallery photos <span class="opt">(up to 4 — your work, space, results)</span></label>
+      <div class="gallery-grid-light" id="v2-gallery-grid">
+        <div class="gallery-slot-light" id="v2-gs-1"><input type="file" accept="image/*" onchange="v2HandleGallery(1,this)"><div style="pointer-events:none;">📷<br>Photo 1</div></div>
+        <div class="gallery-slot-light" id="v2-gs-2"><input type="file" accept="image/*" onchange="v2HandleGallery(2,this)"><div style="pointer-events:none;">📷<br>Photo 2</div></div>
+        <div class="gallery-slot-light" id="v2-gs-3"><input type="file" accept="image/*" onchange="v2HandleGallery(3,this)"><div style="pointer-events:none;">📷<br>Photo 3</div></div>
+        <div class="gallery-slot-light" id="v2-gs-4"><input type="file" accept="image/*" onchange="v2HandleGallery(4,this)"><div style="pointer-events:none;">📷<br>Photo 4</div></div>
+      </div>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="v2goStep(2)">← Back</button>
+      <button class="btn-next-light" onclick="v2goStep(4)">Next — Review →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Blurred Prompt + Generate -->
+  <div class="step-panel" id="v2-step-4">
+    <div class="step-label-top">Step 5 of 5 · Generate</div>
+    <div class="step-title-main">Your site is ready to build.</div>
+    <div class="step-sub-main">Builtsy wrote the perfect brief. Click generate and watch it come to life.</div>
+
+    <div class="prompt-blur-wrap">
+      <div class="prompt-blur-text" id="v2-prompt-preview"></div>
+      <div class="prompt-blur-overlay">
+        <div class="prompt-blur-badge">✦ BUILTSY PROMPT — READY</div>
+        <div class="prompt-blur-sub">Engineered for your exact business</div>
+      </div>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="v2goStep(3)">← Back</button>
+      <button class="btn-generate-big-light" onclick="v2StartGenerate()">⚡ Builtsy My Site</button>
+    </div>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- BOOST PANEL (post-generate) -->
+<div id="boost-panel-wrap"></div>
+
+<!-- GENERATING OVERLAY -->
+<div class="gen-overlay" id="v2-gen-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title">Building your site…</div>
+  <div class="gen-sub">Builtsy is writing and designing your entire site from scratch.</div>
+  <div class="gen-msg" id="v2-gen-msg">Picking the perfect palette…</div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-toolbar-title">Your site — scroll to preview</span>
+    <button class="btn-revise-tb" onclick="toggleReviseDrawer()">✏️ Revise</button>
+    <button class="btn-rebuild-tb" onclick="v2Rebuild()">↺ Rebuild</button>
+    <button class="btn-dl" onclick="downloadSite()">⬇ Download</button>
+  </div>
+  <div class="deploy-bar">
+    <span>🚀 <strong style="color:white;">To go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → instant live link. 10 seconds.</span>
+    <span class="db-saved">| 💾 Your site is saved in Projects — edit or redeploy anytime.</span>
+  </div>
+  <div class="output-error" id="v2-error-msg"></div>
+  <div id="revise-drawer">
+    <textarea id="revise-input" placeholder="Describe what to change — colors, copy, sections, anything…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="v2SubmitRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN INPUTS for backward compat with buildPrompt() -->
+<div style="display:none;">
+  <div id="bp-out"></div>
+  <div id="loadingState"></div>
+  <div id="previewState"></div>
+  <div id="errorState"></div>
+  <div id="previewUrl"></div>
+  <div id="previewFrame"></div>
+  <div id="dl-buttons"></div>
+  <div id="previewFrameWrap"></div>
+  <input id="f-signame" type="text">
+  <select id="og-subject-hidden"></select>
+</div>
+
+
 
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -2363,7 +1443,7 @@ var generatedHTML = '';
 var showMoreOpen = false;
 
 var STEP_META = [
-  {eyebrow:'Step 1 of 7 · Business', title:'Tell us about your business', sub:'No jargon. Just what you do and who you do it for.'},
+  {eyebrow:'Step 1 of 5 · Business', title:'Tell us about your business', sub:'No jargon. Just what you do and who you do it for.'},
   {eyebrow:'Step 2 of 7 · Offer & Pricing', title:'Design your offer', sub:'Turn your skill into a real, sellable service.'},
   {eyebrow:'Step 3 of 7 · Features', title:'Site features', sub:'These get built into your site automatically.'},
   {eyebrow:'Step 4 of 7 · Design', title:'Design your brand', sub:'See your site come to life as you choose your style.'},
@@ -2657,9 +1737,9 @@ function goStep(n) {
   document.getElementById('ph-eyebrow').textContent = m.eyebrow;
   document.getElementById('ph-title').textContent = m.title;
   document.getElementById('ph-sub').textContent = m.sub;
-  document.getElementById('tn-stepcount').textContent = 'Step '+(n+1)+' of 7';
+  var _sc=document.getElementById('tn-stepcount'); if(_sc) _sc.textContent='Step '+(n+1)+' of 7';
   document.getElementById('btn-prev').style.visibility = n===0?'hidden':'visible';
-  document.getElementById('btn-next').textContent = n===totalSteps-1 ? '⚡ Generate my site' : 'Continue →';
+  var _bn=document.getElementById('btn-next'); if(_bn) _bn.textContent=n===totalSteps-1?'⚡ Generate my site':'Continue →';
   var panelNav = document.querySelector('.panel-nav');
   if(panelNav) panelNav.style.display = (n===5 || n===6) ? 'none' : '';
   if(n !== 5 && n !== 6) document.getElementById('mainPanel').style.display = '';
@@ -2930,7 +2010,8 @@ function setPreviewWidth(w, btn) {
 }
 
 function showSaved() {
-  var el = document.getElementById('tn-saved');
+  var el = document.getElementById('saved-indicator') || document.getElementById('tn-saved');
+  if (!el) return;
   el.style.display = 'flex';
   clearTimeout(window._savedTimer);
   window._savedTimer = setTimeout(function(){el.style.display='none';},2500);
@@ -3618,6 +2699,17 @@ function buildPrompt() {
   fullPrompt.push('CREATIVE MANDATE:');
   fullPrompt.push('Hero directive: ' + brief.heroDirective);
   fullPrompt.push('');
+  fullPrompt.push('DELIGHT MANDATE — NON-NEGOTIABLE:');
+  fullPrompt.push('Every site must have a minimum of 2 moments of delight and 1 surprise moment. These are required, not optional:');
+  fullPrompt.push('REQUIRED TIER 1 — Standard delight (must include both):');
+  fullPrompt.push('(1) Scroll-triggered entrance animations on every section — sections fade up 20px as they enter the viewport using IntersectionObserver. Stagger child elements with 0.1s delays. Use var/function(){} syntax only.');
+  fullPrompt.push('(2) Micro-interactions on all interactive elements — buttons lift on hover (translateY:-2px + shadow), cards have hover states, nav links have colored underline animations, form inputs glow on focus.');
+  fullPrompt.push('REQUIRED TIER 2 — Industry-matched celebration (pick the one that fits):');
+  fullPrompt.push('Beauty/wellness → soft petal or sparkle confetti on booking CTA click. Kids/education → colorful star burst on form submit. Fitness/sports → energy pulse animation on CTA. Food/hospitality → subtle shimmer on menu items. Professional/trades → clean ripple effect on CTA click. Creative → paint splash or ink drop animation on page load.');
+  fullPrompt.push('REQUIRED TIER 3 — One surprise moment (be inventive, make it specific to THIS business):');
+  fullPrompt.push('Add one unexpected interactive moment that will make someone smile or say "whoa." It must be specific to this exact business — not generic. Examples: a before/after slider for a salon, a sound trigger for a music teacher, a countdown timer for an upcoming event, a quiz for a fitness trainer, a "build your visit" calculator that updates live, a typing animation that spells out the business name, a parallax scroll effect on the hero photo. Use your best judgment. Make it memorable. This is the moment users screenshot and share.');
+  fullPrompt.push('All animations and interactions MUST use var (not const/let), function(){} (not arrow functions), onclick= or oninput= (not addEventListener). No exceptions.');
+  fullPrompt.push('');
   fullPrompt.push('Section-by-section creative direction:');
   fullPrompt.push('• HERO: Full viewport height (min-height:100vh). CRITICAL CSS: use display:flex; align-items:center on the hero section so content is always vertically centered — never starts at the top. Headline uses clamp(2.8rem, 6vw, 5.5rem) for font-size — never a fixed px that overflows. Left-aligned text layouts must have max-width:580px on the text container so the ragged right edge looks designed, not broken. Split layouts (text left + image right) use display:grid; grid-template-columns:1fr 1fr; align-items:center — image side uses a rounded div with aspect-ratio:4/5 and overflow:hidden. CRITICAL: In a split layout the right column must NEVER be empty — it must always contain a photo placeholder div styled with a gradient background using the palette colors, with aspect-ratio:4/5, border-radius:16px, and a box-shadow. Minimum hero padding: padding:140px 2rem on desktop, padding:100px 1.5rem on mobile. The headline should be 3–5 words — bold, specific, evocative. Subheadline explains. ONE primary CTA, maximum visual confidence.');
   fullPrompt.push('• NAVIGATION ANCHOR IDs — CRITICAL: Every link in the nav must scroll to a real section. Each section must have an id attribute matching its nav link exactly. If nav has "About" → section has id="about". If nav has "Pricing" → section has id="pricing". If nav has "Services" → section has id="services". If nav has "Reviews" or "Testimonials" → section has id="reviews". If nav has "Contact" → section has id="contact". If nav has "Booking" → section has id="booking". NEVER add a nav link without a matching section id. Test every link mentally before outputting.');
@@ -4161,15 +3253,15 @@ function injectCalculator(html) {
 async function startGenerate() {
   var prompt = document.getElementById('bp-out').textContent;
   if (!prompt || prompt.trim().length < 50) {
-    document.getElementById('loadingState').style.display = 'none';
+    var _s_loadingState=document.getElementById('loadingState');if(_s_loadingState)_s_loadingState.style.display='none';;
     document.getElementById('errorMsg').textContent = 'Please fill in your name and what you teach first.';
-    document.getElementById('errorState').classList.add('vis');
+    var _c_errorState=document.getElementById('errorState');if(_c_errorState)_c_errorState.classList.add('vis');;
     return;
   }
 
-  document.getElementById('loadingState').style.display = 'block';
-  document.getElementById('previewState').style.display = 'none';
-  document.getElementById('errorState').classList.remove('vis');
+  var _s_loadingState=document.getElementById('loadingState');if(_s_loadingState)_s_loadingState.style.display='block';;
+  var _s_previewState=document.getElementById('previewState');if(_s_previewState)_s_previewState.style.display='none';;
+  var _c_errorState=document.getElementById('errorState');if(_c_errorState)_c_errorState.classList.remove('vis');;
   animateLoading();
 
   try {
@@ -4292,8 +3384,8 @@ async function startGenerate() {
     var slug = name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').slice(0,30);
     document.getElementById('previewUrl').textContent = slug + '.netlify.app';
     document.getElementById('previewFrame').srcdoc = htmlWithPhotos;
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('previewState').style.display = 'block';
+    var _s_loadingState=document.getElementById('loadingState');if(_s_loadingState)_s_loadingState.style.display='none';;
+    var _s_previewState=document.getElementById('previewState');if(_s_previewState)_s_previewState.style.display='block';;
 
     // Update download buttons
     var dlBar = document.getElementById('dl-buttons');
@@ -4312,9 +3404,9 @@ async function startGenerate() {
     }
 
   } catch(err) {
-    document.getElementById('loadingState').style.display = 'none';
+    var _s_loadingState=document.getElementById('loadingState');if(_s_loadingState)_s_loadingState.style.display='none';;
     document.getElementById('errorMsg').textContent = 'Generation error: ' + err.message + '. Your blueprint is saved — try again.';
-    document.getElementById('errorState').classList.add('vis');
+    var _c_errorState=document.getElementById('errorState');if(_c_errorState)_c_errorState.classList.add('vis');;
   }
 }
 
@@ -5094,6 +4186,20 @@ function toggleChip(el, fieldId, val) {
   buildPrompt(); updateGhostHero(); showSaved();
 }
 
+function toggleChipLight(el, fieldId, val) {
+  var field = document.getElementById(fieldId);
+  if (!field) return;
+  var isOn = el.classList.toggle('sel');
+  var current = field.value.trim();
+  if (isOn) {
+    field.value = current ? current + ', ' + val : val;
+  } else {
+    var parts = current.split(', ').filter(function(p){ return p.trim() !== val; });
+    field.value = parts.join(', ');
+  }
+  buildPrompt(); showSaved();
+}
+
 // ════════════════════════════════════════════
 // INCOME GOAL CALCULATOR
 // ════════════════════════════════════════════
@@ -5726,8 +4832,8 @@ function initFromConfig() {
   // Subject option cards
   var ogSubject = document.getElementById('og-subject');
   if (ogSubject && cfg.subjectOptions) {
-    ogSubject.innerHTML = cfg.subjectOptions.map(function(opt) {
-      return '<div class="oc" onclick="pick(this,\'og-subject\',\'' + opt.name.replace(/'/g,"\\'") + '\')">'
+    ogSubject.className = "og-light"; ogSubject.innerHTML = cfg.subjectOptions.map(function(opt) {
+      return '<div class="oc-light" onclick="pickLight(this,\'og-subject\',\'' + opt.name.replace(/'/g,"\\'") + '\')">'
         + '<span class="oc-icon">' + opt.icon + '</span>'
         + '<div class="oc-name">' + opt.name + '</div>'
         + '<div class="oc-desc">' + opt.desc + '</div>'
@@ -5760,7 +4866,7 @@ function initFromConfig() {
   var chipsStudents = document.getElementById('chips-students');
   if (chipsStudents && cfg.clientChips) {
     chipsStudents.innerHTML = cfg.clientChips.map(function(chip) {
-      return '<div class="chip" onclick="toggleChip(this,\'f-students\',\'' + chip.replace(/'/g,"\\'") + '\')">' + chip + '</div>';
+      return '<div class="chip-light" onclick="toggleChipLight(this,\'f-students\',\'' + chip.replace(/'/g,"\\'") + '\')">' + chip + '</div>';
     }).join('');
   }
 
@@ -5769,12 +4875,12 @@ function initFromConfig() {
   if (slLocation) slLocation.firstChild.textContent = cfg.locationSectionLabel || 'Where do you work?';
   var ogLocation = document.getElementById('og-location');
   if (ogLocation && cfg.locationOptions) {
-    ogLocation.innerHTML = cfg.locationOptions.map(function(opt) {
-      return '<label class="oc" onclick="pick(this,\'og-location\')">'
+    ogLocation.className = "og-light two"; ogLocation.innerHTML = cfg.locationOptions.map(function(opt) {
+      return '<div class="oc-light" onclick="pickLight(this,\'og-location\',\'' + opt.name.replace(/'/g,"\\'") + '\')">'
         + '<span class="oc-icon">' + opt.icon + '</span>'
         + '<div class="oc-name">' + opt.name + '</div>'
         + '<div class="oc-desc">' + opt.desc + '</div>'
-        + '</label>';
+        + '</div>';
     }).join('');
   }
 
@@ -5840,24 +4946,450 @@ updateSummary();
 buildPrompt();
 hookInputs();
 initFromConfig();
-// Init ghost site on step 0
-setGhostStep(0);
-updateGhostHero();
-var _initCatName = (function(){
-  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
-  return cfg && cfg.subjectOptions && cfg.subjectOptions[0] ? cfg.subjectOptions[0].name : 'Music';
-})();
-renderAddonChips(_initCatName);
-// Run after everything renders
-setTimeout(function() {
-  var _initCat = document.querySelector('#og-subject .sel .oc-name');
-  var catName = _initCat ? _initCat.textContent.trim() : _initCatName;
-  updateStyleDescriptions(catName);
-  setIndustryConfetti(catName);
-  updateTrustBadges(catName);
-}, 50);
+setTimeout(function() { v2Init(); }, 80);
 var tb = document.getElementById('previewToolbar');
 if(tb) tb.style.display = 'none';
+
+// ════════════════════════════════════════════
+// V2 STEP NAVIGATION + UI
+// ════════════════════════════════════════════
+var v2CurrentStep = 0;
+var v2GeneratedHTML = '';
+var v2PhotoData = {};
+var v2GenInterval = null;
+var v2GenMsgs = ['Picking the perfect palette…','Writing your headlines…','Building your pricing section…','Adding your features…','Laying out your gallery…','Polishing every detail…','Almost there…'];
+var v2GenMsgIdx = 0;
+
+function v2goStep(n) {
+  if (v2CurrentStep === 0 && n === 1) v2LoadServiceChips();
+  if (v2CurrentStep === 1 && n === 2) v2LoadPaletteSuggestions();
+  if (n === 4) {
+    buildPrompt();
+    // Small delay so buildPrompt() finishes writing to bp-out
+    setTimeout(function() {
+      var box = document.getElementById('v2-prompt-preview');
+      var bpOut = document.getElementById('bp-out');
+      var text = bpOut ? (bpOut.textContent || bpOut.innerText || '') : '';
+      if (!text || text.trim().length < 50) {
+        // Fallback skeleton so the blur box always looks full
+        text = 'BUILTSY BLUEPRINT — SITE GENERATION BRIEF\n\nBusiness: ' +
+          ((document.getElementById('f-name')||{}).value || '[Business Name]') + '\n' +
+          'Industry: ' + ((document.getElementById('f-subject')||{}).value || '[Specialty]') + '\n' +
+          'Location: ' + ((document.getElementById('f-location')||{}).value || '[Location]') + '\n\n' +
+          'JSON-LD Schema · LocalBusiness · Organization · WebSite · Service · FAQPage\n' +
+          'SEO: Title tags · Meta descriptions · Canonical URLs · Open Graph · Twitter cards\n' +
+          'AI DISCOVERABILITY: robots.txt · GPTBot · ClaudeBot · PerplexityBot · llms.txt\n' +
+          'ACCESSIBILITY: WCAG 2.1 AA · Alt text · Keyboard nav · 4.5:1 contrast\n' +
+          'PERFORMANCE: Mobile-first · WebP images · No render-blocking CSS\n\n' +
+          'DELIGHT MANDATE: Scroll animations · Micro-interactions · Celebration moment\n' +
+          'CREATIVE: Typography mixing · Section eyebrows · Gallery treatment\n' +
+          'PRICING: Interactive calculator · Package tiers · Add-on builder\n\n' +
+          '[ Builtsy Proprietary GEO + SEO logic — Full Bible-quality build instructions ]';
+      }
+      if (box) box.textContent = text;
+    }, 150);
+  }
+  var prevDot = document.getElementById('sdot-' + v2CurrentStep);
+  if (prevDot) { prevDot.classList.remove('active'); prevDot.classList.add('done'); }
+  var prevLine = document.getElementById('sline-' + v2CurrentStep);
+  if (prevLine && n > v2CurrentStep) prevLine.classList.add('done');
+  var oldPanel = document.getElementById('v2-step-' + v2CurrentStep);
+  if (oldPanel) oldPanel.classList.remove('active');
+  v2CurrentStep = n;
+  var newDot = document.getElementById('sdot-' + n);
+  if (newDot) { newDot.classList.remove('done'); newDot.classList.add('active'); }
+  var newPanel = document.getElementById('v2-step-' + n);
+  if (newPanel) newPanel.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function v2LoadServiceChips() {
+  var name = (document.getElementById('f-name')||{}).value || '';
+  var subject = (document.getElementById('f-subject')||{}).value || '';
+  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+  var industry = cfg ? (cfg.label || 'service business') : 'service business';
+  var chipsEl = document.getElementById('ai-service-chips');
+  if (!chipsEl) return;
+  chipsEl.innerHTML = '<div class="chip-loading">Getting service ideas for ' + industry + '…</div>';
+  var prompt = 'For a ' + industry + (subject ? ' specializing in ' + subject : '') + (name ? ' called "' + name + '"' : '')
+    + ', generate 8 specific service or specialty options a client would choose from on their website. Each 2-4 words, specific to this industry. Respond ONLY with valid JSON array: ["Service 1","Service 2",...]';
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = (data.text || data.html || '').replace(/```json|```/g,'').trim();
+    var match = raw.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('no array');
+    var items = JSON.parse(match[0]);
+    if (!Array.isArray(items) || !items.length) throw new Error('empty');
+    chipsEl.innerHTML = items.map(function(s) {
+      return '<div class="chip-light" data-val="' + s.replace(/"/g,'&quot;') + '" onclick="v2ToggleServiceChip(this)">' + s + '</div>';
+    }).join('');
+  })
+  .catch(function() {
+    var cfg2 = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+    var opts = cfg2 && cfg2.subjectOptions ? cfg2.subjectOptions.map(function(o){return o.name;}) : ['Individual sessions','Group sessions','Workshops','Consultations'];
+    chipsEl.innerHTML = opts.map(function(s) {
+      return '<div class="chip-light" data-val="' + s + '" onclick="v2ToggleServiceChip(this)">' + s + '</div>';
+    }).join('');
+  });
+}
+
+function v2ToggleServiceChip(el) {
+  el.classList.toggle('sel');
+  var chips = document.querySelectorAll('#ai-service-chips .chip-light.sel');
+  var vals = [];
+  chips.forEach(function(c){ vals.push(c.getAttribute('data-val')); });
+  var subjectEl = document.getElementById('f-subject');
+  if (subjectEl && vals.length) { subjectEl.value = vals.join(', '); buildPrompt(); }
+}
+
+// ── AI Palette Suggestions ──
+function v2LoadPaletteSuggestions() {
+  var name = (document.getElementById('f-name')||{}).value || '';
+  var subject = (document.getElementById('f-subject')||{}).value || '';
+  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+  var industry = cfg ? (cfg.label || 'service business') : 'service business';
+
+  var sugEl = document.getElementById('ai-palette-suggestions');
+  if (!sugEl) return;
+  sugEl.innerHTML = '<div class="chip-loading" style="padding:10px 0;">Picking palettes for ' + (name || industry) + '…</div>';
+
+  // Build list of all palette names for AI to choose from
+  var allPaletteNames = [];
+  if (typeof PALETTE_CATEGORIES !== 'undefined') {
+    PALETTE_CATEGORIES.forEach(function(cat) {
+      cat.palettes.forEach(function(p) { allPaletteNames.push(p[0]); });
+    });
+  }
+
+  var prompt = 'A ' + industry + ' business' + (name ? ' called "' + name + '"' : '') + (subject ? ' specializing in ' + subject : '') + ' needs a website color palette. '
+    + 'From this list of available palettes, pick the 5 best matches that would feel right for this specific business. '
+    + 'Consider the industry, business name, and vibe. '
+    + 'Available palettes: ' + allPaletteNames.join(', ') + '. '
+    + 'For each pick, give a one-sentence reason why it fits (max 8 words). '
+    + 'Respond ONLY with valid JSON: [{"name":"Palette Name","why":"reason it fits"},...]';
+
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = (data.text || data.html || '').replace(/```json|```/g,'').trim();
+    var match = raw.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('no json');
+    var picks = JSON.parse(match[0]);
+    if (!Array.isArray(picks) || !picks.length) throw new Error('empty');
+
+    // Match names to actual palette data
+    var html = '<div class="ai-palette-grid">';
+    var found = 0;
+    picks.forEach(function(pick) {
+      if (typeof PALETTE_CATEGORIES === 'undefined') return;
+      PALETTE_CATEGORIES.forEach(function(cat) {
+        cat.palettes.forEach(function(p) {
+          if (p[0].toLowerCase() === pick.name.toLowerCase() && found < 6) {
+            found++;
+            var isSelected = (bpPalette && bpPalette.bg === p[2]) ? ' sel' : (found === 1 && !bpPalette.bg ? ' sel' : '');
+            // Auto-select first suggestion if nothing picked yet
+            if (found === 1 && (!bpPalette || !bpPalette.bg)) {
+              bpPalette = { bg:p[2], primary:p[3], accent:p[4], surface:p[5], text:p[6] };
+              buildPrompt();
+            }
+            html += '<div class="ai-palette-card' + isSelected + '" onclick="v2PickAIPalette(this,\'' + p[2] + '\',\'' + p[3] + '\',\'' + p[4] + '\',\'' + p[5] + '\',\'' + p[6] + '\',\'' + p[0].replace(/'/g,"\\'") + '\')">'
+              + '<div class="ai-palette-preview">'
+              + '<div class="ai-palette-swatch" style="background:' + p[2] + '"></div>'
+              + '<div class="ai-palette-swatch" style="background:' + p[3] + '"></div>'
+              + '<div class="ai-palette-swatch" style="background:' + p[4] + '"></div>'
+              + '</div>'
+              + '<div class="ai-palette-name">' + p[0] + '</div>'
+              + '<div class="ai-palette-why">' + (pick.why || '') + '</div>'
+              + '</div>';
+          }
+        });
+      });
+    });
+    html += '</div>';
+
+    var hint = document.getElementById('ai-palette-hint');
+    if (hint) {
+      hint.style.display = 'block';
+      hint.innerHTML = '✦ Suggested for <strong>' + (name || industry) + '</strong> — tap to select, or expand below to see all.';
+    }
+    sugEl.innerHTML = html;
+    // Also render full grid (hidden)
+    renderPalettesV2();
+  })
+  .catch(function() {
+    // Fallback — just show full grid directly
+    sugEl.innerHTML = '<div style="font-size:.8rem;color:#9ca3af;margin-bottom:8px;">Showing all palettes:</div>';
+    renderPalettesV2();
+    var container = document.getElementById('palette-container-v2');
+    if (container) container.style.display = 'block';
+    var toggle = document.getElementById('palette-expander-toggle');
+    if (toggle) toggle.style.display = 'none';
+  });
+}
+
+function v2PickAIPalette(el, bg, pri, acc, sur, txt, name) {
+  document.querySelectorAll('.ai-palette-card, .palette-card-light').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  bpPalette = { bg:bg, primary:pri, accent:acc, surface:sur, text:txt };
+  buildPrompt(); showSaved();
+}
+
+function toggleFullPalette() {
+  var container = document.getElementById('palette-container-v2');
+  var label = document.getElementById('palette-expander-label');
+  if (!container) return;
+  var isOpen = container.style.display !== 'none';
+  container.style.display = isOpen ? 'none' : 'block';
+  if (label) label.textContent = isOpen ? '↓ See all palettes' : '↑ Hide full palette grid';
+  if (!isOpen && container.innerHTML.trim() === '') renderPalettesV2();
+}
+
+function pickLight(el, groupId, val) {
+  var group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.oc-light').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  buildPrompt();
+}
+
+function renderPalettesV2() {
+  var container = document.getElementById('palette-container-v2');
+  if (!container || typeof PALETTE_CATEGORIES === 'undefined') return;
+  var html = '';
+  PALETTE_CATEGORIES.forEach(function(cat) {
+    html += '<span class="palette-cat-label">' + cat.label + '</span><div class="palette-grid-light">';
+    cat.palettes.forEach(function(p) {
+      var isSelected = (bpPalette && bpPalette.bg === p[2]) ? ' sel' : '';
+      html += '<div class="palette-card-light' + isSelected + '" onclick="v2PickPalette(this,\'' + p[2] + '\',\'' + p[3] + '\',\'' + p[4] + '\',\'' + p[5] + '\',\'' + p[6] + '\',\'' + p[0].replace(/'/g,"\\'") + '\')" title="' + p[0] + '">'
+        + '<div class="palette-preview-light"><div class="palette-swatch" style="background:' + p[2] + '"></div><div class="palette-swatch" style="background:' + p[3] + '"></div><div class="palette-swatch" style="background:' + p[4] + '"></div></div>'
+        + '<div class="palette-name-light">' + p[0] + '</div></div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function v2PickPalette(el, bg, pri, acc, sur, txt, name) {
+  document.querySelectorAll('#palette-container-v2 .palette-card-light, .ai-palette-card').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  bpPalette = { bg:bg, primary:pri, accent:acc, surface:sur, text:txt };
+  buildPrompt(); showSaved();
+}
+
+function v2HandlePhoto(key, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var result = e.target.result;
+    v2PhotoData[key] = { data: result, mime: result.split(',')[0].split(':')[1].split(';')[0] };
+    var zoneId = key === 'hero' ? 'v2-hero-zone' : 'v2-about-zone';
+    var zone = document.getElementById(zoneId);
+    if (zone) {
+      zone.classList.add('has-file');
+      zone.innerHTML = '<input type="file" accept="image/*" onchange="v2HandlePhoto(\'' + key + '\',this)">'
+        + '<img src="' + result + '" style="max-height:140px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
+        + '<div style="font-size:.75rem;color:var(--navy);font-weight:600;margin-top:6px;">✓ ' + file.name + '</div>';
+    }
+    buildPrompt();
+  };
+  reader.readAsDataURL(file);
+}
+
+function v2HandleGallery(idx, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var result = e.target.result;
+    v2PhotoData['gallery' + idx] = { data: result };
+    if (typeof photoData !== 'undefined') photoData['gallery' + idx] = { data: result };
+    var slot = document.getElementById('v2-gs-' + idx);
+    if (slot) {
+      slot.classList.add('filled');
+      slot.innerHTML = '<input type="file" accept="image/*" onchange="v2HandleGallery(' + idx + ',this)">'
+        + '<img src="' + result + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function v2StartGenerate() {
+  buildPrompt();
+  var prompt = (document.getElementById('bp-out')||{}).textContent || '';
+  if (!prompt || prompt.trim().length < 50) { alert('Please fill in your business name and what you offer first.'); v2goStep(0); return; }
+  if (typeof photoData === 'undefined') window.photoData = {};
+  if (v2PhotoData.hero) photoData.hero = v2PhotoData.hero;
+  if (v2PhotoData.about) photoData.about = v2PhotoData.about;
+  [1,2,3,4].forEach(function(i){ if (v2PhotoData['gallery'+i]) photoData['gallery'+i] = v2PhotoData['gallery'+i]; });
+  document.getElementById('v2-gen-overlay').classList.add('active');
+  v2GenMsgIdx = 0;
+  document.getElementById('v2-gen-msg').textContent = v2GenMsgs[0];
+  v2GenInterval = setInterval(function() { v2GenMsgIdx = (v2GenMsgIdx+1) % v2GenMsgs.length; document.getElementById('v2-gen-msg').textContent = v2GenMsgs[v2GenMsgIdx]; }, 3200);
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    clearInterval(v2GenInterval);
+    document.getElementById('v2-gen-overlay').classList.remove('active');
+    if (data.error) { v2ShowError(data.error); return; }
+    var raw = data.html || '';
+    raw = raw.replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
+    var di = raw.indexOf('<!DOCTYPE'); var hi = raw.indexOf('<html');
+    var si = di !== -1 ? di : (hi !== -1 ? hi : 0);
+    if (si > 0) raw = raw.slice(si);
+    if (!raw || raw.length < 200) { v2ShowError('Generation returned empty output. Try again.'); return; }
+    if (!raw.includes('<!DOCTYPE') && !raw.includes('<html')) { v2ShowError('Unexpected output. Try again.'); return; }
+    var html = raw;
+    if (v2PhotoData.hero && v2PhotoData.hero.data) html = html.replace(/(<img\s[^>]*id="builtsy-hero-photo"[^>]*src=")[^"]*(")/,'$1'+v2PhotoData.hero.data+'$2');
+    if (v2PhotoData.about && v2PhotoData.about.data) html = html.replace(/(<img\s[^>]*id="builtsy-about-photo"[^>]*src=")[^"]*(")/,'$1'+v2PhotoData.about.data+'$2');
+    [1,2,3,4].forEach(function(i){ if (v2PhotoData['gallery'+i]&&v2PhotoData['gallery'+i].data) html = html.replace(new RegExp('(<img\\s[^>]*id="builtsy-gallery-'+i+'"[^>]*src=")[^"]*(")', 'i'),'$1'+v2PhotoData['gallery'+i].data+'$2'); });
+    if (typeof injectCalculator === 'function') html = injectCalculator(html);
+    if (typeof injectAnimatedCalcSection === 'function') html = injectAnimatedCalcSection(html);
+    if (typeof injectConfetti === 'function') html = injectConfetti(html);
+    v2GeneratedHTML = html; generatedHTML = html; window.generatedFiles = { 'index.html': html };
+    v2ShowOutput(html);
+  })
+  .catch(function(err) { clearInterval(v2GenInterval); document.getElementById('v2-gen-overlay').classList.remove('active'); v2ShowError('Connection error: ' + err.message); });
+}
+
+function v2ShowOutput(html) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.welcome-banner').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var frame = document.getElementById('output-preview-frame');
+  var blob = new Blob([html],{type:'text/html'});
+  var blobUrl = URL.createObjectURL(blob);
+  if (frame._blobUrl) URL.revokeObjectURL(frame._blobUrl);
+  frame._blobUrl = blobUrl; frame.src = blobUrl;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function v2ShowError(msg) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.welcome-banner').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var el = document.getElementById('v2-error-msg');
+  el.textContent = msg; el.classList.add('active');
+}
+
+function v2Rebuild() {
+  document.getElementById('output-panel').classList.remove('active');
+  document.querySelector('.bp-hero').style.display = '';
+  document.querySelector('.welcome-banner').style.display = '';
+  document.querySelector('.step-progress').style.display = '';
+  document.querySelector('.form-wrap').style.display = '';
+  document.getElementById('v2-error-msg').classList.remove('active');
+  var frame = document.getElementById('output-preview-frame');
+  if (frame._blobUrl) { URL.revokeObjectURL(frame._blobUrl); frame._blobUrl = null; }
+  frame.src = 'about:blank';
+  v2GeneratedHTML = ''; v2goStep(0);
+}
+
+function toggleReviseDrawer() { document.getElementById('revise-drawer').classList.toggle('active'); }
+
+function v2SubmitRevise() {
+  var note = (document.getElementById('revise-input')||{}).value;
+  if (!note||!note.trim()||!v2GeneratedHTML) return;
+  document.getElementById('revise-drawer').classList.remove('active');
+  document.getElementById('v2-gen-overlay').classList.add('active');
+  document.getElementById('v2-gen-msg').textContent = 'Applying your changes…';
+  var prompt = 'Here is the current site HTML:\n\n' + v2GeneratedHTML + '\n\nPlease make these revisions: ' + note + '\n\nOutput ONLY the complete revised HTML. No explanation, no markdown fences.';
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('v2-gen-overlay').classList.remove('active');
+    var html = (data.html||'').replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
+    if (html && html.length > 200) {
+      v2GeneratedHTML = html; generatedHTML = html; window.generatedFiles = { 'index.html': html };
+      var frame = document.getElementById('output-preview-frame');
+      var blob = new Blob([html],{type:'text/html'});
+      var blobUrl = URL.createObjectURL(blob);
+      if (frame._blobUrl) URL.revokeObjectURL(frame._blobUrl);
+      frame._blobUrl = blobUrl; frame.src = blobUrl;
+      document.getElementById('revise-input').value = '';
+    } else { v2ShowError('Revision returned empty. Try again.'); }
+  })
+  .catch(function(err) { document.getElementById('v2-gen-overlay').classList.remove('active'); v2ShowError('Revision error: ' + err.message); });
+}
+
+function goToGenerate() { v2goStep(4); }
+
+function v2Init() {
+  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+  var heroName = document.getElementById('hero-industry-name');
+  if (heroName && cfg) heroName.textContent = (cfg.label || 'beautiful site').toLowerCase();
+  renderPalettesV2();
+  v2RenderSvcRows();
+  v2RenderToggles();
+}
+
+function v2RenderSvcRows() {
+  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+  var svcRows = document.getElementById('svcRows');
+  if (!svcRows || !cfg || !cfg.sessionRows) return;
+  svcRows.innerHTML = cfg.sessionRows.map(function(row) {
+    return '<div class="svc-row-light"><div><div class="sr-name">' + row.name + '</div><div style="font-size:.72rem;color:#9ca3af;">' + row.duration + '</div></div>'
+      + '<span style="font-size:.7rem;color:#9ca3af;margin-left:auto;">$</span>'
+      + '<input class="sr-price sr-price-light" type="number" value="' + row.defaultPrice + '" oninput="updateSummary();buildPrompt();showSaved();">'
+      + '<button class="sr-del-light" onclick="delRow(this)">✕</button></div>';
+  }).join('');
+}
+
+function v2RenderToggles() {
+  var cfg = (typeof getBlueprintConfig === 'function') ? getBlueprintConfig() : null;
+  var container = document.getElementById('toggles-container');
+  if (!container || !cfg || !cfg.toggles) return;
+  var html = '';
+  cfg.toggles.forEach(function(t) {
+    var checked = t.default ? 'checked' : '';
+    var onchange = 'buildPrompt();' + (t.hasField==='calendly'?'toggleCalendlyField();':'') + (t.hasField==='testimonials'?'toggleTestimonialField();':'') + 'showSaved();';
+    html += '<div class="toggle-row-light"><div><div class="tg-label-light">' + t.label + '</div><div class="tg-desc-light">' + t.desc + '</div></div>'
+      + '<label class="switch"><input type="checkbox" id="' + t.id + '" ' + checked + ' onchange="' + onchange + '"><span class="track"></span><span class="thumb"></span></label></div>';
+    if (t.hasField === 'calendly') {
+      html += '<div id="calendly-field-wrap" style="display:none;margin:0 0 8px;padding:12px 14px;background:rgba(200,224,0,.06);border:1px solid rgba(200,224,0,.2);border-radius:10px;">'
+        + '<label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:6px;font-family:\'DM Mono\',monospace;letter-spacing:.08em;text-transform:uppercase;">' + (cfg.calendlyLabel||'Your booking URL') + '</label>'
+        + '<input type="text" id="f-calendly" placeholder="' + (cfg.calendlyPlaceholder||'e.g. calendly.com/yourbusiness') + '" class="fi-light" oninput="buildPrompt();showSaved();" style="width:100%;">'
+        + '<div style="font-size:.65rem;color:#9ca3af;margin-top:4px;">Paste your booking link — we\'ll embed it directly on your site.</div></div>';
+    }
+    if (t.hasField === 'testimonials') {
+      html += '<div id="testimonial-field-wrap" style="display:none;margin:0 0 8px;padding:12px 14px;background:#fafaf9;border:1.5px solid #e5e7eb;border-radius:10px;">'
+        + '<label style="font-size:.72rem;color:#6b7280;display:block;margin-bottom:6px;font-family:\'DM Mono\',monospace;letter-spacing:.08em;text-transform:uppercase;">Your real testimonials</label>'
+        + '<textarea id="f-testimonials" class="fi-light" rows="4" placeholder="Paste real reviews here…" oninput="buildPrompt();showSaved();" style="width:100%;resize:vertical;min-height:80px;font-size:.82rem;"></textarea>'
+        + '<div style="font-size:.65rem;color:#9ca3af;margin-top:4px;">No testimonials yet? Leave this off — you can add them after launch.</div></div>';
+    }
+  });
+  container.innerHTML = html;
+}
+
+function addSvcRow() {
+  var svcRows = document.getElementById('svcRows');
+  if (!svcRows) return;
+  var row = document.createElement('div');
+  row.className = 'svc-row-light';
+  row.innerHTML = '<input class="fi-light sr-name" type="text" placeholder="Service name" style="width:150px;font-size:.85rem;padding:4px 8px;">'
+    + '<span style="font-size:.7rem;color:#9ca3af;margin-left:auto;">$</span>'
+    + '<input class="sr-price sr-price-light" type="number" placeholder="0" oninput="updateSummary();buildPrompt();showSaved();">'
+    + '<button class="sr-del-light" onclick="delRow(this)">✕</button>';
+  svcRows.appendChild(row);
+}
 </script>
 </body>
 </html>

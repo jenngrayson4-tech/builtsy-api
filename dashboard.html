@@ -12,7 +12,7 @@
   --navy:#12192B;--navy-deep:#0D1220;--navy-mid:#161E30;
   --lime:#C8E000;--pink:#ee70bc;--iris:#8ba2f0;
   --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.12);
-  --surface:rgba(255,255,255,0.04);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.28);
+  --surface:rgba(255,255,255,0.04);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.55);
 }
 html,body{height:100%;overflow:hidden;}
 body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;display:flex;flex-direction:column;}
@@ -114,12 +114,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .pt-empty-sub{font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.25rem;}
 
 /* ── BLUEPRINT LAUNCHER ── */
-.bp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;margin-bottom:2rem;}
-.bp-card{border-radius:10px;padding:0.875rem 0.75rem 0.75rem;cursor:pointer;transition:all 0.15s;border:1px solid transparent;position:relative;}
+.bp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;margin-bottom:2rem;}
+.bp-card{border-radius:10px;padding:1rem 1rem 0.875rem;cursor:pointer;transition:all 0.15s;border:1px solid transparent;position:relative;}
 .bp-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.15)!important;}
-.bp-card-icon{font-size:1.15rem;margin-bottom:0.4rem;display:block;}
-.bp-card-name{font-size:0.75rem;font-weight:600;color:white;margin-bottom:0.1rem;line-height:1.2;}
-.bp-card-desc{font-size:0.6rem;color:rgba(255,255,255,0.38);line-height:1.35;}
+.bp-card-icon{font-size:1.35rem;margin-bottom:0.5rem;display:block;}
+.bp-card-name{font-size:0.82rem;font-weight:600;color:white;margin-bottom:0.2rem;line-height:1.2;}
+.bp-card-desc{font-size:0.62rem;color:rgba(255,255,255,0.62);line-height:1.35;}
+.proj-vis-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;}
+.proj-vis-card:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);}
+.proj-vis-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.proj-vis-body{padding:0.75rem 0.875rem;border-top:1px solid var(--border);}
+.proj-vis-name{font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.9);}
+.proj-vis-meta{font-size:0.65rem;color:var(--muted);margin-top:0.15rem;}
+.proj-vis-new{background:transparent;border:1px dashed rgba(255,255,255,0.12);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;cursor:pointer;gap:0.4rem;transition:all .15s;}
+.proj-vis-new:hover{border-color:rgba(255,255,255,0.25);}
+.proj-vis-new-icon{font-size:1.25rem;color:rgba(255,255,255,0.2);}
+.proj-vis-new-label{font-size:0.7rem;color:rgba(255,255,255,0.3);}
 .bp-refresh{background:rgba(200,224,0,0.07);border-color:rgba(200,224,0,0.2)!important;}
 .bp-lessons{background:rgba(139,162,240,0.07);border-color:rgba(139,162,240,0.15)!important;}
 .bp-caretaker{background:rgba(238,112,188,0.07);border-color:rgba(238,112,188,0.14)!important;}
@@ -292,43 +302,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
       <span class="nav-icon">◫</span>My Projects
     </div>
 
-    <div class="nav-section">Blueprints</div>
-    <div class="nav-item" onclick="launchBP('site-refresh','blueprint-site-refresh.html')">
-      <div class="nav-dot" style="background:var(--lime);"></div>Site Refresh
-    </div>
-    <div class="nav-item" onclick="launchBP('private-lessons','blueprint-industry.html?type=private-lessons')">
-      <div class="nav-dot" style="background:var(--iris);"></div>Private Lessons
-    </div>
-    <div class="nav-item" onclick="launchBP('caretaker','blueprint-industry.html?type=caretaker')">
-      <div class="nav-dot" style="background:var(--pink);"></div>Caretaker
-    </div>
-    <div class="nav-item" onclick="launchBP('service-provider','blueprint-industry.html?type=service-provider')">
-      <div class="nav-dot" style="background:#ffbe50;"></div>Service Provider
-    </div>
-    <div class="nav-item" onclick="launchBP('health-wellness','blueprint-industry.html?type=health-wellness')">
-      <div class="nav-dot" style="background:#64c88c;"></div>Health & Wellness
-    </div>
-    <div class="nav-item" onclick="launchBP('beauty','blueprint-industry.html?type=beauty')">
-      <div class="nav-dot" style="background:#f090d0;"></div>Beauty
-    </div>
-    <div class="nav-item" onclick="launchBP('fitness','blueprint-industry.html?type=fitness')">
-      <div class="nav-dot" style="background:#ff6432;"></div>Fitness
-    </div>
-    <div class="nav-item" onclick="launchBP('food-hospitality','blueprint-industry.html?type=food-hospitality')">
-      <div class="nav-dot" style="background:#ffb43c;"></div>Food & Hospitality
-    </div>
-    <div class="nav-item" onclick="launchBP('home-trades','blueprint-industry.html?type=home-trades')">
-      <div class="nav-dot" style="background:#50c878;"></div>Home & Trades
-    </div>
-    <div class="nav-item" onclick="launchBP('professional-services','blueprint-industry.html?type=professional-services')">
-      <div class="nav-dot" style="background:#a0b4f8;"></div>Professional
-    </div>
-    <div class="nav-item" onclick="launchBP('creative','blueprint-industry.html?type=creative')">
-      <div class="nav-dot" style="background:#c864ff;"></div>Creative
-    </div>
-    <div class="nav-item" onclick="location.href='blueprint-linkbio.html'">
-      <div class="nav-dot" style="background:#ee70bc;"></div>Link in Bio
-    </div>
+
 
     <div class="nav-section">Boost</div>
     <div class="nav-item" id="nav-boost" onclick="showSection('boost')">
@@ -387,26 +361,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
         <span class="sec-title">My Projects</span>
         <a class="sec-link" onclick="showSection('projects')">View all →</a>
       </div>
-      <div class="projects-table" id="projects-table">
-        <div class="pt-head">
-          <span>Business</span>
-          <span>Blueprint</span>
-          <span>Last edited</span>
-          <span>Status</span>
-          <span></span>
-        </div>
-        <div class="loading-row" id="projects-loading">Loading projects…</div>
-        <div id="projects-rows"></div>
-        <div class="pt-empty" id="projects-empty" style="display:none;">
-          <div class="pt-empty-icon">◫</div>
-          No projects yet.
-          <div class="pt-empty-sub">Start a blueprint below to create your first project.</div>
+
+      <!-- Visual project cards -->
+      <div id="proj-card-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;margin-bottom:1.75rem;">
+        <div class="loading-row" id="projects-loading" style="grid-column:1/-1;">Loading projects…</div>
+        <div id="projects-rows" style="display:contents;"></div>
+        <div id="projects-empty" style="display:none;grid-column:1/-1;">
+          <div class="proj-vis-new" onclick="document.getElementById('new-bp-modal').style.display='flex'" style="min-height:140px;border-color:rgba(67,97,238,0.3);gap:0.6rem;">
+            <div style="font-size:2.2rem;opacity:0.5;">📁</div>
+            <div style="font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.7);">No projects yet</div>
+            <div style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:-0.2rem;">Start a blueprint below to create your first</div>
+            <div style="margin-top:0.3rem;background:rgba(67,97,238,0.15);border:1px solid rgba(67,97,238,0.35);border-radius:6px;padding:5px 14px;font-size:0.72rem;font-weight:600;color:#8ba2f0;">+ New Blueprint</div>
+          </div>
         </div>
       </div>
 
-      <!-- BLUEPRINT LAUNCHER -->
-      <div class="sec-hdr">
-        <span class="sec-title">Start a New Blueprint</span>
+      <!-- BLUEPRINT DIVIDER -->
+      <div style="border-top:2px solid #4361EE;margin-bottom:0;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0 0.9rem;">
+        <div style="display:flex;align-items:center;gap:0.65rem;">
+          <span style="font-size:1.1rem;color:#4361EE;">⊞</span>
+          <span style="font-size:0.95rem;font-weight:600;color:white;letter-spacing:.01em;">Start a New Blueprint</span>
+        </div>
+        <span style="font-size:0.68rem;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">13 blueprints available</span>
       </div>
       <div class="bp-grid">
         <div class="bp-card bp-refresh" onclick="launchBP('site-refresh','blueprint-site-refresh.html')">
@@ -464,10 +441,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
           <div class="bp-card-name">Creative</div>
           <div class="bp-card-desc">Photographers & designers</div>
         </div>
-        <div class="bp-card" style="background:rgba(238,112,188,0.12);border-color:rgba(238,112,188,0.25);" onclick="location.href='blueprint-linkbio.html'">
+        <div class="bp-card" style="background:rgba(67,97,238,0.1);border-color:rgba(67,97,238,0.25);" onclick="location.href='blueprint-linkbio.html'">
           <span class="bp-card-icon">🔗</span>
           <div class="bp-card-name">Link in Bio</div>
           <div class="bp-card-desc">Mobile page for Instagram</div>
+        </div>
+        <div class="bp-card" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.25);" onclick="location.href='blueprint-event-invite.html'">
+          <span class="bp-card-icon">🎉</span>
+          <div class="bp-card-name">Event Invite</div>
+          <div class="bp-card-desc">Birthdays, showers &amp; more</div>
         </div>
       </div>
 
@@ -754,33 +736,31 @@ function renderProjects(projects) {
     document.getElementById('stat-ready').textContent = '0';
     return;
   }
+  empty.style.display = 'none';
   document.getElementById('stat-projects').textContent = projects.length;
   var ready = projects.filter(function(p){ return p.status === 'ready' || p.tier; }).length;
   document.getElementById('stat-ready').textContent = ready;
   var html = '';
-  projects.slice(0, 8).forEach(function(p){
+  var thumbColors = ['rgba(139,162,240,0.15)','rgba(238,112,188,0.15)','rgba(200,224,0,0.12)','rgba(67,97,238,0.15)','rgba(255,190,80,0.12)','rgba(100,200,140,0.12)'];
+  projects.slice(0, 3).forEach(function(p, i){
     var meta = BP_META[p.type] || { icon:'◫', label: p.type, pill:'pill-iris' };
     var savedDate = p.savedAt ? new Date(p.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    var isReady = p.status === 'ready' || p.tier;
-    var statusHtml = isReady
-      ? '<div class="pt-status st-ready"><div class="st-dot"></div>Ready</div>'
-      : '<div class="pt-status st-draft"><div class="st-dot"></div>In progress</div>';
     var url = p.url || (p.type === 'site-refresh' ? 'blueprint-site-refresh.html' : 'blueprint-industry.html?type=' + p.type);
-    html += '<div class="pt-row" onclick="window.location.href=\'' + url + '\'">'
-      + '<div class="pt-business">'
-      + '<div class="pt-icon" style="background:rgba(255,255,255,0.04);">' + meta.icon + '</div>'
-      + '<div><div class="pt-bname">' + escapeHtml(p.name) + '</div>'
-      + '<div class="pt-bsub">' + (p.palette || '') + '</div></div>'
-      + '</div>'
-      + '<div><span class="pt-pill ' + meta.pill + '">' + meta.label + '</span></div>'
-      + '<div class="pt-date">' + savedDate + '</div>'
-      + statusHtml
-      + '<div class="pt-actions" onclick="event.stopPropagation()">'
-      + '<button class="ta-btn go" onclick="window.location.href=\'' + url + '\'">Continue →</button>'
-      + '<button class="ta-btn del" onclick="deleteProject(\'' + p.id + '\',this)">Delete</button>'
-      + '</div>'
-      + '</div>';
+    var isReady = p.status === 'ready' || p.tier;
+    var statusDot = isReady ? 'color:rgba(200,224,0,0.8)' : 'color:rgba(255,255,255,0.3)';
+    html += '<div class="proj-vis-card" onclick="window.location.href=\'' + url + '\'">'
+      + '<div class="proj-vis-thumb" style="background:' + thumbColors[i % thumbColors.length] + '">' + meta.icon + '</div>'
+      + '<div class="proj-vis-body">'
+      + '<div class="proj-vis-name">' + escapeHtml(p.name) + '</div>'
+      + '<div class="proj-vis-meta"><span class="pt-pill ' + meta.pill + '" style="font-size:0.58rem;padding:2px 7px;">' + meta.label + '</span> <span style="' + statusDot + ';margin-left:4px;font-size:0.62rem;">' + (isReady ? '● Ready' : '● Draft') + '</span></div>'
+      + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;">' + savedDate + '</div>'
+      + '</div></div>';
   });
+  // Add "new project" card
+  html += '<div class="proj-vis-new" onclick="document.getElementById(\'new-bp-modal\').style.display=\'flex\'">'
+    + '<div class="proj-vis-new-icon">＋</div>'
+    + '<div class="proj-vis-new-label">New project</div>'
+    + '</div>';
   rows.innerHTML = html;
 }
 

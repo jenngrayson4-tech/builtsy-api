@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Invite Blueprint — Builtsy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #12192B;
+    --lime: #C8E000;
+    --pink: #ee70bc;
+    --iris: #8ba2f0;
+    --builtsy-blue: #4361EE;
+    --white: #ffffff;
+    --cream: #fafaf7;
+    --mid: #6b7280;
+    --border: #e5e7eb;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--navy);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--lime);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .topbar-tag {
+    background: var(--builtsy-blue);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── WELCOME BANNER ── */
+  .stop-banner {
+    background: var(--builtsy-blue);
+    color: var(--white);
+    text-align: center;
+    padding: 8px 24px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+
+  /* ── HERO ── */
+  .bp-hero {
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .bp-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .bp-hero h1 span { color: var(--lime); }
+  .bp-hero p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── STEP PROGRESS ── */
+  .step-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 24px 24px 0;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .step-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--white);
+    color: var(--mid);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .3s;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .step-dot.active { background: var(--builtsy-blue); border-color: var(--builtsy-blue); color: white; }
+  .step-dot.done { background: var(--lime); border-color: var(--lime); color: var(--navy); }
+  .step-line { flex: 1; height: 2px; background: var(--border); min-width: 20px; }
+  .step-line.done { background: var(--lime); }
+
+  /* ── FORM CARD ── */
+  .form-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+  .step-panel { display: none; padding-top: 28px; }
+  .step-panel.active { display: block; }
+  .step-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .step-sub {
+    color: var(--mid);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .field { margin-bottom: 22px; }
+  .field label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.72rem;
+    margin-bottom: 7px;
+    color: #4361EE;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+  }
+  .field label .opt {
+    font-weight: 400;
+    color: var(--mid);
+    font-size: 0.72rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--navy);
+    background: var(--white);
+    transition: border-color .2s;
+    outline: none;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--navy); }
+  .field textarea { resize: vertical; min-height: 90px; }
+
+  /* ── CHIP SELECTORS ── */
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1.5px solid rgba(139,162,240,0.35);
+    border-radius: 24px;
+    padding: 7px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--navy);
+    transition: all .2s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--builtsy-blue); background: rgba(67,97,238,0.06); }
+  .chip.selected { background: var(--navy); color: var(--lime); border-color: var(--navy); font-weight: 600; }
+  .chip.multi.selected { background: var(--iris); color: var(--navy); border-color: var(--iris); }
+
+  /* ── PHOTO UPLOAD ── */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    background: var(--white);
+    position: relative;
+  }
+  .upload-zone:hover { border-color: var(--navy); }
+  .upload-zone.has-file { border-color: var(--lime); background: #f7fde8; }
+  .upload-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .upload-label { font-size: 0.85rem; color: var(--mid); }
+  .upload-label strong { color: var(--navy); }
+  .upload-preview {
+    display: none;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ── GALLERY UPLOAD GRID ── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .gallery-slot {
+    aspect-ratio: 1;
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--mid);
+    cursor: pointer;
+    background: var(--white);
+    transition: all .2s;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 8px;
+  }
+  .gallery-slot:hover { border-color: var(--navy); }
+  .gallery-slot.filled { border-color: var(--lime); background: #f7fde8; }
+  .gallery-slot input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+  }
+  .gallery-slot-label { pointer-events: none; font-size: 0.72rem; line-height: 1.3; }
+
+  /* ── RSVP SECTION ── */
+  .rsvp-question-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .rsvp-question-row input { flex: 1; }
+  .rsvp-remove-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    width: 36px; height: 42px;
+    cursor: pointer;
+    color: var(--mid);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: all .2s;
+  }
+  .rsvp-remove-btn:hover { border-color: var(--pink); color: var(--pink); }
+  .add-question-btn {
+    background: none;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    color: var(--mid);
+    cursor: pointer;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+    margin-top: 4px;
+  }
+  .add-question-btn:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* ── HELP LIST MODULE ── */
+  .helplist-chip{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid #e5e7eb;border-radius:8px;padding:6px 10px;font-size:.8rem;font-weight:500;color:var(--navy);}
+  .helplist-chip input{border:none;outline:none;font-size:.8rem;font-weight:500;color:var(--navy);min-width:60px;max-width:140px;font-family:'DM Sans',sans-serif;}
+  .helplist-chip .del-chip{cursor:pointer;color:#9ca3af;font-size:1.1rem;line-height:1;}
+  .helplist-chip .del-chip:hover{color:#ef4444;}
+  @keyframes lb-wave{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-16px);}}
+
+  /* ── NAV BUTTONS ── */
+  .step-nav {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-back:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-next {
+    flex: 1;
+    background: var(--lime);
+    color: var(--navy);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-next:hover { background: #b8d000; }
+  .btn-generate {
+    flex: 1;
+    background: var(--navy);
+    color: var(--lime);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-generate:hover { background: #1e2d4a; }
+
+  /* ── GENERATING STATE ── */
+  .generating-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(18,25,43,0.92);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    padding: 24px;
+  }
+  .generating-overlay.active { display: flex; }
+  .generating-spinner {
+    width: 52px; height: 52px;
+    border: 3px solid rgba(200,224,0,0.2);
+    border-top-color: var(--lime);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .generating-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 1.4rem;
+  }
+  .generating-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    max-width: 320px;
+  }
+  .generating-messages {
+    color: var(--lime);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    min-height: 20px;
+  }
+
+  /* ── OUTPUT PANEL ── */
+  #output-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: #e8e8e0;
+    flex-direction: column;
+  }
+  #output-panel.active { display: flex; }
+  .output-toolbar {
+    background: var(--navy);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .output-badge {
+    background: var(--lime);
+    color: var(--navy);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .output-toolbar-title {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .btn-download {
+    background: var(--lime);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .btn-download:hover { background: #b8d000; }
+  .btn-revise {
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .btn-revise:hover { border-color: rgba(255,255,255,0.5); color: white; }
+  .btn-rebuild {
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .btn-rebuild:hover { border-color: rgba(255,255,255,0.5); color: white; }
+  .output-preview-wrap {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 20px;
+    min-height: 0;
+  }
+  .output-preview-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    overflow: hidden;
+    width: 390px;
+    flex-shrink: 0;
+  }
+  #preview-frame {
+    width: 390px;
+    height: calc(100vh - 120px);
+    min-height: 600px;
+    border: none;
+    display: block;
+    margin: 0 auto;
+  }
+  .error-msg {
+    background: #fff0f0;
+    border: 1.5px solid #fca5a5;
+    border-radius: var(--radius);
+    padding: 16px;
+    color: #b91c1c;
+    font-size: 0.9rem;
+    margin: 20px;
+    display: none;
+  }
+  .error-msg.active { display: block; }
+
+  /* ── REVISE DRAWER ── */
+  #revise-panel {
+    display: none;
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 14px 16px;
+    flex-shrink: 0;
+  }
+  #revise-panel.active { display: flex; gap: 10px; align-items: flex-start; }
+  #revise-input {
+    flex: 1;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    resize: none;
+    min-height: 42px;
+    outline: none;
+  }
+  #revise-input::placeholder { color: rgba(255,255,255,0.4); }
+  #revise-input:focus { border-color: rgba(255,255,255,0.4); }
+  .btn-revise-submit {
+    background: var(--pink);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+  .btn-revise-submit:hover { background: #d45fa8; }
+
+  .chip-loading {
+    font-size: 0.8rem;
+    color: var(--mid);
+    font-style: italic;
+    padding: 6px 2px;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .step-nav { flex-direction: column; }
+    .output-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="dashboard.html" class="topbar-logo">builtsy</a>
+  <span class="topbar-tag">✦ Event Invite</span>
+</div>
+
+<!-- WELCOME BANNER -->
+<div class="stop-banner">
+  ✦ Builtsy writes the perfect prompt and designs your entire invite — download and drag to <a href="https://netlify.com/drop" target="_blank" style="color:var(--lime);text-decoration:underline;">Netlify Drop</a> in seconds ✦
+</div>
+
+<!-- HERO -->
+<div class="bp-hero">
+  <h1>Builtsy a <span>beautiful invite</span><br>in one shot.</h1>
+  <p>Answer a few questions. Builtsy writes the perfect prompt and designs your entire invite page — download it, drag it to <a href="https://netlify.com/drop" target="_blank" style="color:var(--lime);">Netlify Drop</a>, and your invite is live.</p>
+</div>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress" id="stepProgress">
+  <div class="step-dot active" id="dot-1">1</div>
+  <div class="step-line" id="line-1"></div>
+  <div class="step-dot" id="dot-2">2</div>
+  <div class="step-line" id="line-2"></div>
+  <div class="step-dot" id="dot-3">3</div>
+  <div class="step-line" id="line-3"></div>
+  <div class="step-dot" id="dot-4">4</div>
+  <div class="step-line" id="line-4"></div>
+  <div class="step-dot" id="dot-5">5</div>
+  <div class="step-line" id="line-5"></div>
+  <div class="step-dot" id="dot-6">6</div>
+  <div class="step-line" id="line-6"></div>
+  <div class="step-dot" id="dot-7">7</div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- STEP 1: Event Basics -->
+  <div class="step-panel active" id="step-1">
+    <div class="step-label">Step 1 of 6</div>
+    <div class="step-title">What's the occasion?</div>
+    <div class="step-sub">Tell us who it's for and what we're celebrating.</div>
+
+    <div class="field">
+      <label>What kind of event is this?</label>
+      <div class="chip-group" id="eventTypeChips">
+        <div class="chip" data-val="Birthday party">🎂 Birthday party</div>
+        <div class="chip" data-val="Sweet 16">🌸 Sweet 16</div>
+        <div class="chip" data-val="Baby shower">🍼 Baby shower</div>
+        <div class="chip" data-val="Bridal shower">💍 Bridal shower</div>
+        <div class="chip" data-val="Bachelorette">🥂 Bachelorette</div>
+        <div class="chip" data-val="Wedding">💒 Wedding</div>
+        <div class="chip" data-val="Graduation party">🎓 Graduation party</div>
+        <div class="chip" data-val="Retirement party">🎉 Retirement party</div>
+        <div class="chip" data-val="Holiday party">🎄 Holiday party</div>
+        <div class="chip" data-val="Family reunion">🏡 Family reunion</div>
+        <div class="chip" data-val="Sleepover / girls night">🛏️ Sleepover / girls night</div>
+        <div class="chip" data-val="Team retreat">🤝 Team retreat</div>
+        <div class="chip" data-val="Other">Other</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Name(s) of the guest(s) of honor</label>
+      <input type="text" id="honoreeNames" placeholder="e.g. Everlynn & Vivian, or just Sarah" />
+    </div>
+
+    <div class="field">
+      <label>Event date(s) <span class="opt">(or 'TBD')</span></label>
+      <input type="text" id="eventDate" placeholder="e.g. June 16–18, 2026" />
+    </div>
+
+    <div class="field">
+      <label>Location / venue <span class="opt">(or 'TBD' or 'Private location')</span></label>
+      <input type="text" id="eventLocation" placeholder="e.g. Private Airbnb, Arvada CO" />
+    </div>
+
+    <div class="field">
+      <label>Theme or dress code <span class="opt">(optional — or leave blank)</span></label>
+      <input type="text" id="eventTheme" placeholder="e.g. Pink Flamingo Pool Party, All black, Coachella" />
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-next" onclick="goStep(2)">Next — Vibe & Style →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Vibe & Style -->
+  <div class="step-panel" id="step-2">
+    <div class="step-label">Step 2 of 6</div>
+    <div class="step-title">What's the vibe?</div>
+    <div class="step-sub">This shapes everything — colors, fonts, emojis, layout. Pick the closest one.</div>
+
+    <div class="field">
+      <label>Overall vibe</label>
+      <div class="chip-group" id="vibeChips">
+        <div class="chip-loading">Loading suggestions…</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tone of the copy</label>
+      <div class="chip-group" id="toneChips">
+        <div class="chip-loading">Loading suggestions…</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Any vibe reference? <span class="opt">(optional but powerful)</span></label>
+      <input type="text" id="vibeRef" placeholder="e.g. 'Barbie movie meets summer camp', 'dark academia', a color, a song..." />
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn-next" onclick="goStep(3)">Next — Event Details →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Details & Itinerary -->
+  <div class="step-panel" id="step-3">
+    <div class="step-label">Step 3 of 6</div>
+    <div class="step-title">Fill us in.</div>
+    <div class="step-sub">Add as much or as little as you want. Claude will fill creative gaps.</div>
+
+    <div class="field">
+      <label>What should guests know? <span class="opt">(the plan, what's included, vibe notes)</span></label>
+      <textarea id="eventDescription" placeholder="e.g. Two nights at a private Airbnb — indoor pool, karaoke, hot tub, flamingo floats. This is a sleepover so pack for two nights!"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Itinerary / schedule <span class="opt">(optional — list items, times, or just leave blank)</span></label>
+      <textarea id="eventItinerary" placeholder="e.g. Tuesday June 16 — Drop-off 2:30pm at Chaparral HS&#10;Thursday June 18 — Pickup 12pm same spot"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Anything else to include? <span class="opt">(what to bring, special notes, hashtag, etc.)</span></label>
+      <input type="text" id="eventExtras" placeholder="e.g. 'Bring swimsuit & sleeping bag', 'cash gift only', 'no phones rule'" />
+    </div>
+
+    <div class="field">
+      <label>Contact info for questions <span class="opt">(optional)</span></label>
+      <input type="text" id="contactInfo" placeholder="e.g. Text Jennifer at (720) 982-1376" />
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn-next" onclick="goStep(4)">Next — Photos →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Photos -->
+  <div class="step-panel" id="step-4">
+    <div class="step-label">Step 4 of 6</div>
+    <div class="step-title">Add your photos.</div>
+    <div class="step-sub">Skip any you don't have — styled placeholders will hold their spot.</div>
+
+    <div class="field">
+      <label>Hero photo <span class="opt">(main image, top of page)</span></label>
+      <div class="upload-zone" id="heroZone" onclick="document.getElementById('heroInput').click()">
+        <input type="file" id="heroInput" accept="image/*" onchange="handleUpload('heroInput','heroZone','heroPreview','heroB64','heroMime')">
+        <div class="upload-icon">📸</div>
+        <div class="upload-label"><strong>Click to upload</strong> — a photo of the guest(s) of honor works great</div>
+        <div class="upload-preview" id="heroPreview"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Gallery photos <span class="opt">(optional — venue, activities, mood shots)</span></label>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- slots rendered by JS -->
+      </div>
+      <p style="font-size:0.78rem;color:var(--mid);margin-top:8px;">Up to 6 gallery photos. Leave empty for styled placeholders.</p>
+    </div>
+
+    <!-- hidden base64 stores -->
+    <input type="hidden" id="heroB64">
+    <input type="hidden" id="heroMime">
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-next" onclick="goStep(5)">Next — RSVP →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: RSVP -->
+  <div class="step-panel" id="step-5">
+    <div class="step-label">Step 5 of 6</div>
+    <div class="step-title">Set up your RSVP.</div>
+    <div class="step-sub">Who should RSVPs go to? What do you need to know?</div>
+
+    <div class="field">
+      <label>RSVP deadline <span class="opt">(optional)</span></label>
+      <input type="text" id="rsvpDeadline" placeholder="e.g. RSVP by May 15" />
+    </div>
+
+    <div class="field">
+      <label>Where should RSVPs go?</label>
+      <div class="chip-group" id="rsvpMethodChips">
+        <div class="chip" data-val="form-on-page">Form on the page</div>
+        <div class="chip" data-val="pre-filled-text">Pre-filled text message</div>
+        <div class="chip" data-val="email-link">Email link</div>
+        <div class="chip" data-val="no-rsvp">No RSVP needed</div>
+      </div>
+    </div>
+
+    <div id="rsvpFormSection" style="display:none;">
+      <div class="field" style="margin-top:16px;">
+        <label>What questions should the RSVP form ask?</label>
+        <div id="rsvpQuestions">
+          <div class="rsvp-question-row">
+            <input type="text" placeholder="e.g. Guest's name" class="rsvp-q-input" />
+            <button class="rsvp-remove-btn" onclick="removeRsvpQ(this)">×</button>
+          </div>
+          <div class="rsvp-question-row">
+            <input type="text" placeholder="e.g. Will she be there? (Yes / No)" class="rsvp-q-input" />
+            <button class="rsvp-remove-btn" onclick="removeRsvpQ(this)">×</button>
+          </div>
+          <div class="rsvp-question-row">
+            <input type="text" placeholder="e.g. Parent's phone number" class="rsvp-q-input" />
+            <button class="rsvp-remove-btn" onclick="removeRsvpQ(this)">×</button>
+          </div>
+        </div>
+        <button class="add-question-btn" onclick="addRsvpQ()">+ Add another question</button>
+      </div>
+    </div>
+
+    <div id="rsvpTextSection" style="display:none;">
+      <div class="field" style="margin-top:16px;">
+        <label>Phone number for texts</label>
+        <input type="text" id="rsvpPhone" placeholder="e.g. (720) 982-1376" />
+      </div>
+    </div>
+
+    <div id="rsvpEmailSection" style="display:none;">
+      <div class="field" style="margin-top:16px;">
+        <label>Email address for RSVPs</label>
+        <input type="text" id="rsvpEmail" placeholder="e.g. jennifer@example.com" />
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(4)">← Back</button>
+      <button class="btn-next" onclick="goStep(6)">Next — Help Make It Happen →</button>
+    </div>
+  </div>
+
+
+  <!-- STEP 6: Help Make It Happen -->
+  <div class="step-panel" id="step-6">
+    <div class="step-label">Step 6 of 7 · Optional</div>
+    <div class="step-title">Help make it happen.</div>
+    <div class="step-sub">Let guests chip in — AI builds the perfect list for your event.</div>
+
+    <div class="toggle-row" style="margin-bottom:18px;">
+      <div>
+        <div style="font-weight:600;font-size:.9rem;color:var(--navy);">Add a "Help make it happen" section</div>
+        <div style="font-size:.78rem;color:#6b7280;margin-top:2px;">Guests can claim items to bring. Powered by AI.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="tog-helplist" onchange="toggleHelpList(this)">
+        <span class="track"></span><span class="thumb"></span>
+      </label>
+    </div>
+
+    <div id="helplist-module" style="display:none;">
+
+      <!-- AI Loading State -->
+      <div id="helplist-loading" style="display:none;text-align:center;padding:20px 0;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;">
+          <div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s -0.4s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+          <div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s -0.2s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+          <div class="wave-dot" style="background:#8ba2f0;animation:lb-wave 1.2s 0s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+          <div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s 0.2s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+          <div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s 0.4s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+        </div>
+        <div style="font-size:.8rem;color:#6b7280;">Building your list…</div>
+      </div>
+
+      <!-- Suggested items (editable chips) -->
+      <div id="helplist-items-wrap" style="display:none;">
+        <span class="sl-light">Suggested items — edit, delete, or add more</span>
+        <div id="helplist-items" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+        <button onclick="addHelpItem()" style="background:white;border:1.5px dashed rgba(67,97,238,0.3);border-radius:8px;padding:7px 14px;font-size:.8rem;color:#4361EE;font-weight:600;cursor:pointer;">+ Add item</button>
+      </div>
+
+      <!-- Section headline customization -->
+      <div class="field" style="margin-top:18px;">
+        <label>Section headline</label>
+        <input class="fi-light" id="helplist-headline" type="text" value="Help make it happen 🙌" placeholder="Help make it happen 🙌">
+      </div>
+      <div class="field">
+        <label>Intro copy</label>
+        <textarea class="fi-light" id="helplist-intro" rows="2" placeholder="We're covering the main plans, but if you'd like to help, choose something below.">We're covering the main plans, but if you'd like to help, choose something below.</textarea>
+      </div>
+
+      <!-- Allergy note -->
+      <div class="toggle-row" style="margin:16px 0 10px;">
+        <div>
+          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">Add allergy / dietary note</div>
+          <div style="font-size:.75rem;color:#6b7280;margin-top:1px;">Especially useful for kid events</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="tog-allergy" onchange="toggleAllergy(this)">
+          <span class="track"></span><span class="thumb"></span>
+        </label>
+      </div>
+      <div id="allergy-fields" style="display:none;">
+        <div class="field">
+          <label>Allergy note <span class="opt">(guests see this)</span></label>
+          <textarea class="fi-light" id="f-allergy-note" rows="3" placeholder="If your child has allergies or dietary restrictions, please pack separate meals or snacks they know are safe.">If your child has allergies or dietary restrictions, please pack separate meals or snacks they know are safe.</textarea>
+        </div>
+      </div>
+
+    </div><!-- /helplist-module -->
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(5)">← Back</button>
+      <button class="btn-next" onclick="goStep(7)">Next — Preview Prompt →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7: Blurred Prompt Preview -->
+  <div class="step-panel" id="step-7">
+    <div class="step-label">Step 7 of 7</div>
+    <div class="step-title">Your prompt is ready.</div>
+    <div class="step-sub">Builtsy wrote the perfect brief. Click generate and watch it come to life.</div>
+
+    <div style="position:relative;margin-bottom:24px;">
+      <div id="promptPreviewBox" style="
+        background:var(--navy);
+        border-radius:12px;
+        padding:20px;
+        font-family:'DM Mono',monospace;
+        font-size:0.72rem;
+        color:rgba(255,255,255,0.85);
+        line-height:1.7;
+        max-height:220px;
+        overflow:hidden;
+        filter:blur(4px);
+        user-select:none;
+        pointer-events:none;
+        white-space:pre-wrap;
+      "></div>
+      <!-- Overlay on blur box -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(18,25,43,0.45);border-radius:12px;">
+        <div style="background:rgba(200,224,0,0.15);border:1px solid rgba(200,224,0,0.3);border-radius:8px;padding:8px 16px;font-size:0.72rem;font-family:'DM Mono',monospace;color:var(--lime);letter-spacing:.08em;">✦ BUILTSY PROMPT — READY</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;">Engineered for this exact event</div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(5)">← Back</button>
+      <button class="btn-generate" onclick="generateInvite()">✨ Builtsy My Invite</button>
+    </div>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- GENERATING OVERLAY -->
+<div class="generating-overlay" id="generatingOverlay">
+  <div class="generating-spinner"></div>
+  <div class="generating-title">Building your invite…</div>
+  <div class="generating-sub">Builtsy is designing your page from scratch based on your vibe.</div>
+  <div class="generating-messages" id="generatingMsg">Mixing colors & picking fonts…</div>
+</div>
+
+<!-- OUTPUT PANEL — full screen preview -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-toolbar-title">Your invite — scroll to preview</span>
+    <button class="btn-revise" onclick="toggleRevise()">✏️ Revise</button>
+    <button class="btn-rebuild" onclick="rebuildFromScratch()">↺ Rebuild</button>
+    <button class="btn-download" onclick="downloadInvite()">⬇ Download</button>
+  </div>
+  <div style="background:rgba(67,97,238,0.12);border-bottom:1px solid rgba(67,97,238,0.2);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:0.78rem;font-family:'DM Sans',sans-serif;">
+    <span style="color:rgba(255,255,255,0.7);">🚀 <strong style="color:white;">To go live:</strong> Download → drag the file to <a href="https://app.netlify.com/drop" target="_blank" style="color:var(--lime);font-weight:600;">netlify.com/drop</a> → instant live link. Takes 10 seconds.</span>
+    <span style="color:rgba(255,255,255,0.4);">|</span>
+    <span style="color:rgba(255,255,255,0.5);">💾 Your invite is saved in Projects — edit or redeploy anytime.</span>
+  </div>
+  <div class="error-msg" id="errorMsg"></div>
+  <div id="revise-panel">
+    <textarea id="revise-input" placeholder="Describe what to change — color, wording, layout, anything…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="submitRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+var currentStep = 1;
+var totalSteps = 7;
+var generatedHTML = '';
+var galleryFiles = [null, null, null, null, null, null];
+var galleryB64 = ['','','','','',''];
+var galleryMime = ['','','','','',''];
+
+// ── GALLERY SLOTS ──
+function buildGalleryGrid() {
+  var grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+  for (var i = 0; i < 6; i++) {
+    (function(idx) {
+      var slot = document.createElement('div');
+      slot.className = 'gallery-slot';
+      slot.id = 'gslot-' + idx;
+      slot.innerHTML = '<input type="file" accept="image/*" onchange="handleGallery(' + idx + ', this)">' +
+        '<div class="gallery-slot-label" id="gslot-label-' + idx + '">📷<br>Photo ' + (idx+1) + '</div>';
+      grid.appendChild(slot);
+    })(i);
+  }
+}
+buildGalleryGrid();
+
+// ── PHOTO UPLOAD ──
+function handleUpload(inputId, zoneId, previewId, b64Id, mimeId) {
+  var file = document.getElementById(inputId).files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var result = e.target.result;
+    var mime = result.split(',')[0].split(':')[1].split(';')[0];
+    var b64 = result.split(',')[1];
+    document.getElementById(b64Id).value = b64;
+    document.getElementById(mimeId).value = mime;
+    // Show image preview inside the zone
+    var zone = document.getElementById(zoneId);
+    zone.classList.add('has-file');
+    zone.innerHTML = '<input type="file" id="' + inputId + '" accept="image/*" onchange="handleUpload(\'' + inputId + '\',\'' + zoneId + '\',\'' + previewId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
+      + '<img src="' + result + '" style="max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
+      + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + '</div>';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleGallery(idx, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var result = e.target.result;
+    galleryMime[idx] = result.split(',')[0].split(':')[1].split(';')[0];
+    galleryB64[idx] = result.split(',')[1];
+    var slot = document.getElementById('gslot-' + idx);
+    slot.classList.add('filled');
+    slot.innerHTML = '<input type="file" accept="image/*" onchange="handleGallery(' + idx + ', this)">'
+      + '<img src="' + result + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── CHIP SELECTORS ──
+function initChips(groupId, multi) {
+  var chips = document.querySelectorAll('#' + groupId + ' .chip');
+  chips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      if (multi) {
+        chip.classList.toggle('selected');
+        chip.classList.toggle('multi');
+      } else {
+        chips.forEach(function(c) { c.classList.remove('selected'); });
+        chip.classList.add('selected');
+      }
+    });
+  });
+}
+initChips('eventTypeChips', false);
+initChips('rsvpMethodChips', false);
+
+function getChipVal(groupId) {
+  var sel = document.querySelector('#' + groupId + ' .chip.selected');
+  return sel ? sel.getAttribute('data-val') : '';
+}
+
+// ── RSVP METHOD TOGGLE ──
+document.querySelectorAll('#rsvpMethodChips .chip').forEach(function(chip) {
+  chip.addEventListener('click', function() {
+    var val = chip.getAttribute('data-val');
+    document.getElementById('rsvpFormSection').style.display = val === 'form-on-page' ? 'block' : 'none';
+    document.getElementById('rsvpTextSection').style.display = val === 'pre-filled-text' ? 'block' : 'none';
+    document.getElementById('rsvpEmailSection').style.display = val === 'email-link' ? 'block' : 'none';
+  });
+});
+
+// ── RSVP QUESTIONS ──
+function addRsvpQ() {
+  var container = document.getElementById('rsvpQuestions');
+  var row = document.createElement('div');
+  row.className = 'rsvp-question-row';
+  row.innerHTML = '<input type="text" placeholder="e.g. Dietary restrictions?" class="rsvp-q-input" />' +
+    '<button class="rsvp-remove-btn" onclick="removeRsvpQ(this)">×</button>';
+  container.appendChild(row);
+}
+function removeRsvpQ(btn) {
+  var rows = document.querySelectorAll('.rsvp-question-row');
+  if (rows.length > 1) btn.parentElement.remove();
+}
+
+// ── STEP NAVIGATION ──
+function goStep(n) {
+  // Fire AI suggestions when leaving step 1
+  if (currentStep === 1 && n === 2) {
+    var eventType = getChipVal('eventTypeChips');
+    var honoree = document.getElementById('honoreeNames').value.trim();
+    if (eventType || honoree) {
+      loadAIVibeHints(eventType, honoree);
+    }
+  }
+
+  // Populate blurred prompt on step 6
+  if (n === 6) {
+    var data = collectFormData();
+    var built = buildPrompt(data);
+    var box = document.getElementById('promptPreviewBox');
+    if (box) box.textContent = built.prompt;
+  }
+
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('dot-' + currentStep).classList.remove('active');
+  document.getElementById('dot-' + currentStep).classList.add('done');
+  if (currentStep < n) {
+    for (var i = currentStep; i < n; i++) {
+      var line = document.getElementById('line-' + i);
+      if (line) line.classList.add('done');
+    }
+  }
+  currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('dot-' + n).classList.remove('done');
+  document.getElementById('dot-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── AI VIBE HINTS ──
+function loadAIVibeHints(eventType, honoree) {
+  // Show loading state in both chip groups
+  document.getElementById('vibeChips').innerHTML = '<div class="chip-loading">Getting vibe ideas for ' + (eventType || 'your event') + '…</div>';
+  document.getElementById('toneChips').innerHTML = '<div class="chip-loading">Getting tone ideas…</div>';
+
+  var prompt = 'For a ' + (eventType || 'party') + (honoree ? ' for ' + honoree : '')
+    + ', generate 7 specific creative vibe/aesthetic options and 5 tone-of-voice options for an event invite. '
+    + 'Vibes should be short evocative phrases (3-5 words) with a relevant emoji prefix, tailored specifically to this event type. '
+    + 'Tones should be 2-3 word descriptors. '
+    + 'Always include "🎲 Decide for me" as the last vibe option. Always include "Decide for me" as the last tone option. '
+    + 'Respond ONLY with valid JSON, no markdown: { "vibes": ["emoji phrase", ...], "tones": ["phrase", ...] }';
+
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = (data.text || data.html || '').replace(/```json|```/g, '').trim();
+    var match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('no json');
+    var parsed = JSON.parse(match[0]);
+
+    // Render vibe chips
+    if (parsed.vibes && parsed.vibes.length) {
+      document.getElementById('vibeChips').innerHTML = parsed.vibes.map(function(v) {
+        return '<div class="chip" data-val="' + v.replace(/"/g,'&quot;') + '">' + v + '</div>';
+      }).join('');
+      initChips('vibeChips', false);
+    }
+
+    // Render tone chips
+    if (parsed.tones && parsed.tones.length) {
+      document.getElementById('toneChips').innerHTML = parsed.tones.map(function(t) {
+        return '<div class="chip" data-val="' + t.replace(/"/g,'&quot;') + '">' + t + '</div>';
+      }).join('');
+      initChips('toneChips', false);
+    }
+  })
+  .catch(function() {
+    // Fallback to sensible defaults if API fails
+    var fallbackVibes = ['✨ Elegant & timeless','🌸 Soft & romantic','🎨 Bold & colorful','🌿 Garden party','📷 Retro film','🥂 Black-tie chic','🎲 Decide for me'];
+    var fallbackTones = ['Sweet & sincere','Playful & loud','Cool & understated','Funny / deadpan','Decide for me'];
+    document.getElementById('vibeChips').innerHTML = fallbackVibes.map(function(v) {
+      return '<div class="chip" data-val="' + v + '">' + v + '</div>';
+    }).join('');
+    document.getElementById('toneChips').innerHTML = fallbackTones.map(function(t) {
+      return '<div class="chip" data-val="' + t + '">' + t + '</div>';
+    }).join('');
+    initChips('vibeChips', false);
+    initChips('toneChips', false);
+  });
+}
+
+// ── COLLECTING DATA ──
+function collectFormData() {
+  // RSVP questions
+  var rsvpQs = [];
+  document.querySelectorAll('.rsvp-q-input').forEach(function(inp) {
+    if (inp.value.trim()) rsvpQs.push(inp.value.trim());
+  });
+
+  // Gallery images
+  var galleryImages = [];
+  for (var i = 0; i < 6; i++) {
+    if (galleryB64[i]) {
+      galleryImages.push({ b64: galleryB64[i], mime: galleryMime[i] });
+    }
+  }
+
+  return {
+    eventType: getChipVal('eventTypeChips'),
+    honoreeNames: document.getElementById('honoreeNames').value.trim(),
+    eventDate: document.getElementById('eventDate').value.trim(),
+    eventLocation: document.getElementById('eventLocation').value.trim(),
+    eventTheme: document.getElementById('eventTheme').value.trim(),
+    vibe: getChipVal('vibeChips'),
+    tone: getChipVal('toneChips'),
+    vibeRef: document.getElementById('vibeRef').value.trim(),
+    eventDescription: document.getElementById('eventDescription').value.trim(),
+    eventItinerary: document.getElementById('eventItinerary').value.trim(),
+    eventExtras: document.getElementById('eventExtras').value.trim(),
+    contactInfo: document.getElementById('contactInfo').value.trim(),
+    heroB64: document.getElementById('heroB64').value,
+    heroMime: document.getElementById('heroMime').value,
+    galleryImages: galleryImages,
+    rsvpDeadline: document.getElementById('rsvpDeadline').value.trim(),
+    rsvpMethod: getChipVal('rsvpMethodChips'),
+    rsvpQuestions: rsvpQs,
+    rsvpPhone: document.getElementById('rsvpPhone').value.trim(),
+    rsvpEmail: document.getElementById('rsvpEmail').value.trim()
+  };
+}
+
+// ── BUILD PROMPT ──
+function buildPrompt(data) {
+  var rsvpInstructions = '';
+  if (data.rsvpMethod === 'form-on-page') {
+    rsvpInstructions = 'Include an RSVP form directly on the page. Questions: ' +
+      (data.rsvpQuestions.length ? data.rsvpQuestions.join(', ') : 'Guest name, Will they attend (Yes/No)') +
+      '. The form should submit silently using fetch() with mode:"no-cors" to a placeholder Google Forms URL. Show a friendly confirmation message on success. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
+  } else if (data.rsvpMethod === 'pre-filled-text') {
+    rsvpInstructions = 'RSVP button opens a pre-filled SMS text message to ' + (data.rsvpPhone || '[phone number]') +
+      '. Pre-fill with a friendly message like "Hi! [Guest name] would love to come to [event]!" — use a tel: href with body param. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
+  } else if (data.rsvpMethod === 'email-link') {
+    rsvpInstructions = 'RSVP button is a mailto: link to ' + (data.rsvpEmail || '[email]') +
+      ' with a pre-filled subject line. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
+  } else {
+    rsvpInstructions = 'No RSVP form needed — just a "Save the date" feel.';
+  }
+
+  var photoInstructions = '';
+  if (data.heroB64) {
+    photoInstructions += 'A hero photo has been provided. Use src="HERO_PHOTO_PLACEHOLDER" for the hero <img> tag — it will be injected after generation. ';
+  } else {
+    photoInstructions += 'No hero photo. Create a beautiful full-bleed CSS gradient or pattern in the hero that matches the vibe. No broken <img> tags. ';
+  }
+
+  if (data.galleryImages.length > 0) {
+    photoInstructions += data.galleryImages.length + ' gallery photos provided. Use src="GALLERY_PHOTO_1_PLACEHOLDER", src="GALLERY_PHOTO_2_PLACEHOLDER", etc. for each gallery <img> — they will be injected after generation. ';
+  } else {
+    photoInstructions += 'No gallery photos. Create styled CSS placeholder cards with gradients or patterns that feel intentional — never broken img tags. ';
+  }
+
+  var prompt = 'You are building a beautiful single-page HTML event invite. This is a creative project — not a business website. No SEO, no JSON-LD, no meta tags beyond basics. Pure visual delight and emotional resonance.\n\n' +
+
+    '== EVENT INFO ==\n' +
+    'Type: ' + (data.eventType || 'Party') + '\n' +
+    'Honoree(s): ' + (data.honoreeNames || 'the guest of honor') + '\n' +
+    'Date: ' + (data.eventDate || 'TBD') + '\n' +
+    'Location: ' + (data.eventLocation || 'TBD') + '\n' +
+    (data.eventTheme ? 'Theme / Dress code: ' + data.eventTheme + '\n' : '') +
+    (data.eventDescription ? 'Description: ' + data.eventDescription + '\n' : '') +
+    (data.eventItinerary ? 'Itinerary:\n' + data.eventItinerary + '\n' : '') +
+    (data.eventExtras ? 'Extra notes: ' + data.eventExtras + '\n' : '') +
+    (data.contactInfo ? 'Contact: ' + data.contactInfo + '\n' : '') +
+
+    '\n== VIBE & STYLE ==\n' +
+    'Overall vibe: ' + (data.vibe || 'Decide for me — make it fun and beautiful') + '\n' +
+    'Tone of copy: ' + (data.tone || 'Decide for me') + '\n' +
+    (data.vibeRef ? 'Vibe reference: ' + data.vibeRef + '\n' : '') +
+
+    '\n== CREATIVE DIRECTION ==\n' +
+    'Go all in on the vibe. Choose a distinctive Google Font pairing (NOT Inter, NOT Roboto). Pick a color palette that feels designed for this specific event — not generic. The layout can be unexpected — center-heavy, asymmetric, editorial, whatever serves the feeling. Write all copy (headlines, taglines, body, button labels, confirmation message, footer) in the specified tone. Make the page feel like it was designed by someone who really loves this event.\n\n' +
+    'EMOJI RULE: Use a maximum of 3–5 emojis total across the entire page. Place them only where they add genuine visual accent — never use emojis as bullet points, section dividers, or decoration on every heading. A page with 3 well-placed emojis looks designed. A page with 30 emojis looks like a text message. Less is more.\n\n' +
+    '== DELIGHT MANDATE — NON-NEGOTIABLE ==\n' +
+    'This is a celebration page. It should feel like opening a gift. Every invite MUST have all three tiers:\n\n' +
+    'TIER 1 — Required animations (both required):\n' +
+    '(1) Hero entrance animation — the honoree name(s) animate in on load (fade up, slide in, or typewriter effect depending on vibe). Subheading follows 0.3s later. Makes the page feel alive the moment it opens.\n' +
+    '(2) Scroll-triggered reveals — every section below the hero fades or slides in as the user scrolls. Use IntersectionObserver with var/function(){} syntax only.\n\n' +
+    'TIER 2 — RSVP celebration moment (required):\n' +
+    'When a guest submits their RSVP or clicks the RSVP button, trigger a celebration animation — confetti burst, floating hearts, stars, balloons, or petals — matched to the event theme. For a beach party: wave animation. For a birthday: candles and sparkles. For a bridal shower: rose petals. For a graduation: diplomas and stars. Make it feel earned.\n\n' +
+    'TIER 3 — One surprise interactive moment (required, be inventive):\n' +
+    'Add one unexpected interaction specific to this event that will make guests smile or gasp. Examples: birthday candles guests can blow out using the microphone (Web Audio API detecting a sharp sound), a countdown timer to the event with animated numbers, a photo gallery that opens in a lightbox, a "who\'s coming" reveal that animates, a themed cursor (flamingo for a pool party, hearts for a bridal shower), a parallax hero background, an animated map pin showing the venue location. Pick what fits the event vibe best. This is the moment guests screenshot and share.\n\n' +
+    'All JS must use var (not const/let), function(){} (not arrow functions), onclick= (not addEventListener). No exceptions.\n\n'
+
+    '== PHOTOS ==\n' +
+    photoInstructions + '\n\n' +
+
+    '== RSVP ==\n' +
+    rsvpInstructions + '\n\n' +
+
+    (data.helpList && data.helpList.enabled && data.helpList.items.length ? (
+      '== HELP MAKE IT HAPPEN SECTION ==\n' +
+      'Include a "' + data.helpList.headline + '" section on the page.\n' +
+      'Intro copy: "' + data.helpList.intro + '"\n' +
+      'Items guests can claim: ' + data.helpList.items.join(', ') + '\n' +
+      'Build this as a grid of item cards. Each card shows the item name and a "Claim this →" button.\n' +
+      'When claimed: show a small name input ("Your first name?") that appears inline, then on submit the button changes to "✓ Claimed by [Name]" and the card gets a subtle checkmark style.\n' +
+      'On page load call https://builtsy-api-production.up.railway.app/claims/INVITE_ID_PLACEHOLDER and render claimed items. When claimed POST to https://builtsy-api-production.up.railway.app/claim with body {inviteId:INVITE_ID_PLACEHOLDER,item:itemName,name:guestName}. Poll every 15 seconds. Embed var INVITE_ID=\'INVITE_ID_PLACEHOLDER\' at top of script. Fallback to unclaimed state if fetch fails.\n' +
+      'All JS must use var/function(){}/onclick= syntax.\n' +
+      (data.helpList.allergyNote ? 'Allergy note (show as a callout box after the items): "' + data.helpList.allergyNote + '"\n' : '') +
+      '\n'
+    ) : '') +
+
+    '== TECHNICAL REQUIREMENTS ==\n' +
+    '- Single self-contained HTML file. All CSS and JS inline. No external files.\n' +
+    '- Google Fonts loaded via <link> tag (pick fonts that match the vibe).\n' +
+    '- MOBILE-FIRST IS NON-NEGOTIABLE. Design for a 390px phone screen first. Max content width 480px centered. Single column. Touch-friendly buttons (min 44px tall). Min 16px body text. Shared as a link, opened on phones. Desktop is secondary — just centered with max-width.\n' +
+    '- All photos embedded as base64 data URIs (provided above) OR replaced with styled CSS placeholders — never a broken <img> tag.\n' +
+    '- FAQ/accordion if needed: onclick="this.parentElement.classList.toggle(\'open\')"\n' +
+    '- Any JS must use var (not const/let), function(){} (not arrow functions), onclick= (not addEventListener). This is for maximum browser compatibility.\n' +
+    '- Footer: "Made with 💗 for ' + (data.honoreeNames || 'this moment') + ' · Invite made with <a href=\'https://builtsy.ai\'>builtsy</a>"\n' +
+    '- Output ONLY the complete HTML file. No explanation, no markdown fences, no preamble.\n';
+
+  return { prompt: prompt };
+}
+
+// ── GENERATING MESSAGES ──
+var genMessages = [
+  'Picking the perfect font pairing…',
+  'Choosing colors that match your vibe…',
+  'Writing headlines in your tone…',
+  'Designing the hero section…',
+  'Setting up your RSVP flow…',
+  'Adding the finishing touches…',
+  'Almost there — making it beautiful…'
+];
+var genMsgIdx = 0;
+var genMsgInterval = null;
+
+function startGenMessages() {
+  genMsgIdx = 0;
+  document.getElementById('generatingMsg').textContent = genMessages[0];
+  genMsgInterval = setInterval(function() {
+    genMsgIdx = (genMsgIdx + 1) % genMessages.length;
+    document.getElementById('generatingMsg').textContent = genMessages[genMsgIdx];
+  }, 3000);
+}
+function stopGenMessages() {
+  if (genMsgInterval) clearInterval(genMsgInterval);
+}
+
+// ── GENERATE ──
+function generateInvite() {
+  var data = collectFormData();
+  var built = buildPrompt(data);
+
+  document.getElementById('generatingOverlay').classList.add('active');
+  startGenMessages();
+
+  // Railway /generate expects { prompt: '...' } and returns { html: '...' }
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: built.prompt })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(json) {
+    stopGenMessages();
+    document.getElementById('generatingOverlay').classList.remove('active');
+
+    if (json.error) { showError(json.error); return; }
+
+    var html = json.html || json.text || '';
+    html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+
+    if (!html || html.length < 100) {
+      showError('Generation returned an empty response. Please try again.');
+      return;
+    }
+
+    // Inject hero photo if provided (swap placeholder src Railway won't have seen)
+    if (data.heroB64) {
+      html = html.replace(/src="HERO_PHOTO_PLACEHOLDER"/g, 'src="data:' + data.heroMime + ';base64,' + data.heroB64 + '"');
+    }
+    // Inject gallery photos
+    for (var gi = 0; gi < data.galleryImages.length; gi++) {
+      var ph = 'GALLERY_PHOTO_' + (gi + 1) + '_PLACEHOLDER';
+      html = html.replace(new RegExp('src="' + ph + '"', 'g'), 'src="data:' + data.galleryImages[gi].mime + ';base64,' + data.galleryImages[gi].b64 + '"');
+    }
+    // Inject real invite ID for claims
+    html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
+
+    generatedHTML = html;
+    showOutput(html);
+  })
+  .catch(function(err) {
+    stopGenMessages();
+    document.getElementById('generatingOverlay').classList.remove('active');
+    showError('Connection error: ' + err.message);
+  });
+}
+
+// ── OUTPUT ──
+function showOutput(html) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.stop-banner').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var frame = document.getElementById('preview-frame');
+  var blob = new Blob([html], {type: 'text/html'});
+  var blobUrl = URL.createObjectURL(blob);
+  if (frame._blobUrl) URL.revokeObjectURL(frame._blobUrl);
+  frame._blobUrl = blobUrl;
+  frame.src = blobUrl;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showError(msg) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.stop-banner').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('active');
+}
+
+function rebuildFromScratch() {
+  document.getElementById('output-panel').classList.remove('active');
+  document.querySelector('.bp-hero').style.display = '';
+  document.querySelector('.stop-banner').style.display = '';
+  document.querySelector('.step-progress').style.display = '';
+  document.querySelector('.form-wrap').style.display = '';
+  document.getElementById('errorMsg').classList.remove('active');
+  var clearFrame = document.getElementById('preview-frame');
+  if (clearFrame._blobUrl) { URL.revokeObjectURL(clearFrame._blobUrl); clearFrame._blobUrl = null; }
+  clearFrame.src = 'about:blank';
+  generatedHTML = '';
+  goStep(1);
+}
+
+// ── DOWNLOAD ──
+function downloadInvite() {
+  if (!generatedHTML) return;
+  var blob = new Blob([generatedHTML], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'invite.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── REVISE ──
+function toggleRevise() {
+  var panel = document.getElementById('revise-panel');
+  panel.classList.toggle('active');
+}
+
+function submitRevise() {
+  var note = document.getElementById('revise-input').value.trim();
+  if (!note || !generatedHTML) return;
+
+  document.getElementById('revise-panel').classList.remove('active');
+  document.getElementById('generatingOverlay').classList.add('active');
+  startGenMessages();
+
+  var prompt = 'Here is the current invite HTML:\n\n' + generatedHTML
+    + '\n\nPlease make these revisions: ' + note
+    + '\n\nOutput ONLY the complete revised HTML file. No explanation, no markdown fences. Start with <!DOCTYPE html>.';
+
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(json) {
+    stopGenMessages();
+    document.getElementById('generatingOverlay').classList.remove('active');
+    var html = json.html || json.text || '';
+    html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+    if (html && html.length > 100) {
+      generatedHTML = html;
+      var frame2 = document.getElementById('preview-frame');
+      var blob2 = new Blob([html], {type: 'text/html'});
+      var blobUrl2 = URL.createObjectURL(blob2);
+      if (frame2._blobUrl) URL.revokeObjectURL(frame2._blobUrl);
+      frame2._blobUrl = blobUrl2;
+      frame2.src = blobUrl2;
+      document.getElementById('revise-input').value = '';
+      document.getElementById('revise-panel').classList.remove('active');
+    } else {
+      showError('Revision returned empty. Try again.');
+    }
+  })
+  .catch(function(err) {
+    stopGenMessages();
+    document.getElementById('generatingOverlay').classList.remove('active');
+    showError('Revision error: ' + err.message);
+  });
+}
+// ── HELP MAKE IT HAPPEN MODULE ──
+var helpItems = [];
+
+// Generate a unique invite ID for claims
+function generateInviteId() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var id = 'inv_';
+  for(var i=0;i<8;i++) id += chars[Math.floor(Math.random()*chars.length)];
+  return id;
+}
+var currentInviteId = generateInviteId();
+
+function toggleHelpList(el) {
+  var mod = document.getElementById('helplist-module');
+  if (!mod) return;
+  mod.style.display = el.checked ? 'block' : 'none';
+  if (el.checked && helpItems.length === 0) loadHelpSuggestions();
+}
+
+function toggleAllergy(el) {
+  var f = document.getElementById('allergy-fields');
+  if (f) f.style.display = el.checked ? 'block' : 'none';
+}
+
+function loadHelpSuggestions() {
+  var loading = document.getElementById('helplist-loading');
+  var wrap = document.getElementById('helplist-items-wrap');
+  if (loading) loading.style.display = 'block';
+  if (wrap) wrap.style.display = 'none';
+
+  // Gather event context from prior steps
+  var eventType = (document.getElementById('eventType')||{value:''}).value || 'party';
+  var honoree = (document.getElementById('honoreeNames')||{value:''}).value || '';
+  var location = (document.getElementById('eventLocation')||{value:''}).value || '';
+  var desc = (document.getElementById('eventDescription')||{value:''}).value || '';
+  var itinerary = (document.getElementById('eventItinerary')||{value:''}).value || '';
+
+  var prompt = 'A host is planning a "' + eventType + '"'
+    + (honoree ? ' for ' + honoree : '')
+    + (location ? ' at ' + location : '') + '. '
+    + (desc ? 'Details: ' + desc + '. ' : '')
+    + (itinerary ? 'Itinerary: ' + itinerary + '. ' : '')
+    + 'Generate 10-14 smart, specific items guests could offer to bring. '
+    + 'Think practically — food, drinks, supplies, fun extras that fit this exact event. '
+    + 'Keep each item short (2-4 words). Mix categories naturally. '
+    + 'Respond ONLY with a JSON array of strings: ["Item 1","Item 2",...]';
+
+  fetch('https://builtsy-api-production.up.railway.app/grow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = (data.text || data.html || '').replace(/```json|```/g, '').trim();
+    var match = raw.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('no json');
+    var items = JSON.parse(match[0]);
+    if (!Array.isArray(items) || !items.length) throw new Error('empty');
+    helpItems = items;
+    renderHelpItems();
+    if (loading) loading.style.display = 'none';
+    if (wrap) wrap.style.display = 'block';
+  })
+  .catch(function() {
+    // Fallback defaults
+    helpItems = ['Snacks','Drinks','Ice','Paper goods','Desserts','Sunscreen','Pool towels','Pool floats','Games','Breakfast items','Easy lunch items','Allergy-friendly snacks'];
+    renderHelpItems();
+    if (loading) loading.style.display = 'none';
+    if (wrap) wrap.style.display = 'block';
+  });
+}
+
+function renderHelpItems() {
+  var container = document.getElementById('helplist-items');
+  if (!container) return;
+  container.innerHTML = helpItems.map(function(item, i) {
+    return '<div class="helplist-chip" id="hchip-' + i + '">'
+      + '<input type="text" value="' + escapeHtml(item) + '" oninput="helpItems[' + i + ']=this.value" style="width:' + Math.max(60, item.length * 8) + 'px;">'
+      + '<span class="del-chip" onclick="removeHelpItem(' + i + ')">×</span>'
+      + '</div>';
+  }).join('');
+}
+
+function removeHelpItem(i) {
+  helpItems.splice(i, 1);
+  renderHelpItems();
+}
+
+function addHelpItem() {
+  helpItems.push('New item');
+  renderHelpItems();
+  // Focus the new input
+  setTimeout(function() {
+    var chips = document.querySelectorAll('.helplist-chip input');
+    if (chips.length) chips[chips.length - 1].focus();
+  }, 50);
+}
+
+function getHelpListData() {
+  if (!document.getElementById('tog-helplist').checked) return null;
+  return {
+    enabled: true,
+    headline: (document.getElementById('helplist-headline')||{value:''}).value || 'Help make it happen 🙌',
+    intro: (document.getElementById('helplist-intro')||{value:''}).value || 'We\'re covering the main plans, but if you\'d like to help, choose something below.',
+    items: helpItems.filter(function(i){ return i.trim(); }),
+    allergyNote: document.getElementById('tog-allergy').checked ? (document.getElementById('f-allergy-note')||{value:''}).value : ''
+  };
+}
+
+</script>
+</body>
+</html>
