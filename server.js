@@ -51,6 +51,7 @@ const server = http.createServer(async (req, res) => {
     try {
       const { prompt } = JSON.parse(body);
 
+      // ── /grow route — lightweight conversational response ──
       if (req.url === '/grow') {
         const result = await new Promise((resolve, reject) => {
           const payload = JSON.stringify({
@@ -84,8 +85,8 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      const result = await new Promise((resolve, reject) => {
-        const payload = JSON.stringify({
+      // ── /generate route — unchanged ──
+      const result = await new Promise((resolve, reject) => {        const payload = JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 16000,
           system: SYSTEM_PROMPT,
@@ -112,7 +113,7 @@ const server = http.createServer(async (req, res) => {
       });
 
       const data = JSON.parse(result.body);
-      let html = data.content && data.content.find(b => b.type === 'text') ? data.content.find(b => b.type === 'text').text : '';
+      let html = data.content?.find(b => b.type === 'text')?.text || '';
       html = html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ html }));
