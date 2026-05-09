@@ -1,6 +1,23 @@
 const https = require('https');
 const http = require('http');
 
+// ── IN-MEMORY CLAIMS STORE ──
+// { inviteId: { itemName: claimedByName } }
+var claimsStore = {};
+
+function getClaims(inviteId) {
+  return claimsStore[inviteId] || {};
+}
+
+function setClaim(inviteId, item, name) {
+  if (!claimsStore[inviteId]) claimsStore[inviteId] = {};
+  claimsStore[inviteId][item] = name;
+}
+
+function removeClaim(inviteId, item) {
+  if (claimsStore[inviteId]) delete claimsStore[inviteId][item];
+}
+
 const SYSTEM_PROMPT = `You are a world-class frontend web designer and developer — think Stripe, Linear, or Loom landing pages. You build sites that feel premium, intentional, and conversion-focused. Never use generic templates or default browser styles.
 
 DESIGN PRINCIPLES:
@@ -39,11 +56,64 @@ OUTPUT: Single self-contained index.html with all CSS and JS inline. MUST BE COM
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') { res.writeHead(200); res.end(); return; }
-  if (req.method !== 'POST' || (req.url !== '/generate' && req.url !== '/grow')) { res.writeHead(404); res.end('Not found'); return; }
+
+  // ── GET /claims/:inviteId ──
+  var claimsMatch = req.url.match(/^\/claims\/([^/?]+)$/);
+  if (req.method === 'GET' && claimsMatch) {
+    var inviteId = decodeURIComponent(claimsMatch[1]);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ claims: getClaims(inviteId) }));
+    return;
+  }
+
+  // ── POST /claim ──
+  if (req.method === 'POST' && req.url === '/claim') {
+    let body = '';
+    req.on('data', function(chunk) { body += chunk; });
+    req.on('end', function() {
+      try {
+        var d = JSON.parse(body);
+        if (!d.inviteId || !d.item || !d.name) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'inviteId, item, and name are required' }));
+          return;
+        }
+        setClaim(d.inviteId, d.item, d.name);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, claims: getClaims(d.inviteId) }));
+      } catch(e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
+  // ── DELETE /claim ── (unclaim)
+  if (req.method === 'DELETE' && req.url === '/claim') {
+    let body = '';
+    req.on('data', function(chunk) { body += chunk; });
+    req.on('end', function() {
+      try {
+        var d = JSON.parse(body);
+        if (d.inviteId && d.item) removeClaim(d.inviteId, d.item);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, claims: getClaims(d.inviteId) }));
+      } catch(e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
+  if (req.method !== 'POST' || (req.url !== '/generate' && req.url !== '/grow')) {
+    res.writeHead(404); res.end('Not found'); return;
+  }
 
   let body = '';
   req.on('data', chunk => body += chunk);
@@ -51,7 +121,6 @@ const server = http.createServer(async (req, res) => {
     try {
       const { prompt } = JSON.parse(body);
 
-      // ── /grow route — lightweight conversational response ──
       if (req.url === '/grow') {
         const result = await new Promise((resolve, reject) => {
           const payload = JSON.stringify({
@@ -85,8 +154,8 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      // ── /generate route — unchanged ──
-      const result = await new Promise((resolve, reject) => {        const payload = JSON.stringify({
+      const result = await new Promise((resolve, reject) => {
+        const payload = JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 16000,
           system: SYSTEM_PROMPT,
@@ -113,7 +182,7 @@ const server = http.createServer(async (req, res) => {
       });
 
       const data = JSON.parse(result.body);
-      let html = data.content?.find(b => b.type === 'text')?.text || '';
+      let html = data.content && data.content.find(b => b.type === 'text') ? data.content.find(b => b.type === 'text').text : '';
       html = html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ html }));
