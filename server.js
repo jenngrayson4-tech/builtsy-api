@@ -183,7 +183,7 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.method !== 'POST' || (req.url !== '/generate' && req.url !== '/grow' && req.url !== '/invite')) {
+  if (req.method !== 'POST' || (req.url !== '/generate' && req.url !== '/grow' && req.url !== '/invite' && req.url !== '/collab')) {
     res.writeHead(404); res.end('Not found'); return;
   }
 
@@ -228,7 +228,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      if (req.url === '/grow') {
+      if (req.url === '/collab') { var collabPayload = JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 16000, system: 'You are Builtsy. Build a complete creator collab booking page. Single HTML file, all CSS JS inline, mobile-first, Google Fonts, timezone auto-detection, file rename logic. var not const. function(){} not arrows.', messages: [{ role: 'user', content: prompt }] }); const collabReq = https.request({ hostname: 'api.anthropic.com', path: '/v1/messages', method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'Content-Length': Buffer.byteLength(collabPayload) } }, function(r){ var d=''; r.on('data',function(c){d+=c;}); r.on('end',function(){ var parsed=JSON.parse(d); var html=parsed.content&&parsed.content.find(function(b){return b.type==='text';})?parsed.content.find(function(b){return b.type==='text';}).text:''; html=html.replace(/^```html?s*/i,'').replace(/s*```$/,'').trim(); res.writeHead(200,{'Content-Type':'application/json'}); res.end(JSON.stringify({html:html})); }); }); collabReq.on('error',function(e){res.writeHead(500,{'Content-Type':'application/json'});res.end(JSON.stringify({error:e.message}));}); collabReq.write(collabPayload); collabReq.end(); return; } if (req.url === '/grow') {
         const result = await new Promise((resolve, reject) => {
           const payload = JSON.stringify({
             model: 'claude-sonnet-4-20250514',
