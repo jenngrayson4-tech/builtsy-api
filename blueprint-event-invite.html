@@ -119,7 +119,7 @@
     margin: 0 auto;
     padding: 0 16px 80px;
   }
-  .step-panel { display: none; padding-top: 28px; }
+  .step-panel { display: none; padding-top: 28px; min-height: 200px; }
   .step-panel.active { display: block; }
   .step-label {
     font-size: 0.7rem;
@@ -589,6 +589,7 @@
   <div class="step-dot" id="dot-6">6</div>
   <div class="step-line" id="line-6"></div>
   <div class="step-dot" id="dot-7">7</div>
+  <div class="step-dot" id="dot-8">8</div>
 </div>
 
 <!-- FORM -->
@@ -627,6 +628,24 @@
     <div class="field">
       <label>Event date(s) <span class="opt">(or 'TBD')</span></label>
       <input type="text" id="eventDate" placeholder="e.g. June 16–18, 2026" />
+      <div style="font-size:.72rem;color:#9ca3af;margin-top:4px;">Include the year for an accurate countdown timer.</div>
+    </div>
+
+    <div class="field">
+      <label>Start time <span class="opt">(optional — for countdown accuracy)</span></label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input type="text" id="eventTime" placeholder="e.g. 4:30 PM" />
+        <select id="eventTimezone" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:var(--navy);background:white;outline:none;">
+          <option value="America/New_York">Eastern (ET)</option>
+          <option value="America/Chicago">Central (CT)</option>
+          <option value="America/Denver" selected>Mountain (MT)</option>
+          <option value="America/Los_Angeles">Pacific (PT)</option>
+          <option value="America/Anchorage">Alaska (AKT)</option>
+          <option value="Pacific/Honolulu">Hawaii (HT)</option>
+          <option value="UTC">UTC</option>
+        </select>
+      </div>
+      <div style="font-size:.72rem;color:#9ca3af;margin-top:4px;">Used to make the countdown tick to the exact right moment.</div>
     </div>
 
     <div class="field">
@@ -635,8 +654,14 @@
     </div>
 
     <div class="field">
-      <label>Theme or dress code <span class="opt">(optional — or leave blank)</span></label>
-      <input type="text" id="eventTheme" placeholder="e.g. Pink Flamingo Pool Party, All black, Coachella" />
+      <label>Venue link <span class="opt">(optional — Airbnb, Google Maps, website)</span></label>
+      <input type="url" id="venueLink" placeholder="e.g. https://airbnb.com/rooms/... or maps.google.com/..." />
+    </div>
+
+    <div class="field">
+      <label>Event vibe / theme <span class="opt">(optional)</span></label>
+      <div style="font-size:.75rem;color:#6b7280;margin-bottom:6px;">Describe the aesthetic, mood, or dress code. Claude uses this for design direction.</div>
+      <input type="text" id="eventTheme" placeholder="e.g. Pink retro glam pool party, All black, Coachella vibes" />
     </div>
 
     <div class="step-nav">
@@ -703,13 +728,222 @@
 
     <div class="step-nav">
       <button class="btn-back" onclick="goStep(2)">← Back</button>
-      <button class="btn-next" onclick="goStep(4)">Next — Photos →</button>
+      <button class="btn-next" onclick="goStep(4)">Next — Colors &amp; Fonts →</button>
     </div>
   </div>
 
-  <!-- STEP 4: Photos -->
+  <!-- STEP 4: Colors & Fonts -->
   <div class="step-panel" id="step-4">
-    <div class="step-label">Step 4 of 6</div>
+    <div class="step-label">Step 4 of 8</div>
+    <div class="step-title">Colors &amp; fonts.</div>
+    <div class="step-sub">Set the visual tone of your invite.</div>
+
+    <!-- Color Palette -->
+    <div class="field">
+      <label>Color palette</label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">Pick a mood or let AI choose based on your vibe.</div>
+
+      <!-- AI + Custom always visible -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div class="palette-card" data-palette="ai" data-tab="all" onclick="selectPalette(this,'ai')" style="border:2px solid #4361EE;border-radius:12px;padding:11px;cursor:pointer;background:white;">
+          <div style="display:flex;gap:4px;margin-bottom:7px;"><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#e879f9,#8b5cf6);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#10b981,#3b82f6);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#1e293b,#475569);"></div></div>
+          <div style="font-weight:700;font-size:.79rem;color:var(--navy);">✦ AI chooses</div>
+          <div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Best match for your vibe</div>
+        </div>
+        <div class="palette-card" data-palette="custom" data-tab="all" onclick="selectPalette(this,'custom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;">
+          <div style="display:flex;gap:4px;margin-bottom:7px;"><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#ff6b6b,#4361EE,#C8E000,#1a1a2e);"></div></div>
+          <div style="font-weight:700;font-size:.79rem;color:var(--navy);">🎨 Your colors</div>
+          <div style="font-size:.69rem;color:#6b7280;margin-top:2px;">AI places them for you</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <button id="ptab-light" onclick="switchPaletteTab('light')" style="flex:1;padding:8px 6px;border:2px solid #4361EE;border-radius:8px;background:#4361EE;color:white;font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">☀ Light</button>
+        <button id="ptab-dark"  onclick="switchPaletteTab('dark')"  style="flex:1;padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;color:var(--navy);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🌙 Dark</button>
+        <button id="ptab-mono"  onclick="switchPaletteTab('mono')"  style="flex:1;padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;color:var(--navy);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">◑ Mono</button>
+      </div>
+
+      <!-- Palette grid -->
+      <div id="paletteGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+<div class="palette-card" data-palette="rosepetal" data-tab="light" onclick="selectPalette(this,'rosepetal')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c77dff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3d0066;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Rose Petal</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft rose, blush & ivory</div></div>
+<div class="palette-card" data-palette="ballerina" data-tab="light" onclick="selectPalette(this,'ballerina')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8e8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a0bf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ba90c6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c0a0bd;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Ballerina</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Powder pink, mauve & nude</div></div>
+<div class="palette-card" data-palette="lavcloud" data-tab="light" onclick="selectPalette(this,'lavcloud')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b72cf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1b69;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Lavender Cloud</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Lavender, lilac & soft white</div></div>
+<div class="palette-card" data-palette="magnolia" data-tab="light" onclick="selectPalette(this,'magnolia')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf7f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f2d4c2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8b4a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b6355;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Magnolia</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Cream, blush & champagne</div></div>
+<div class="palette-card" data-palette="sugarplum" data-tab="light" onclick="selectPalette(this,'sugarplum')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f9f0f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a5c9;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b4f7c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d0a22;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Sugar Plum</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Plum, dusty rose & warm white</div></div>
+<div class="palette-card" data-palette="cottagecore" data-tab="light" onclick="selectPalette(this,'cottagecore')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5ede0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4b8a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8fbc8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a6741;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Cottagecore</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dusty sage, rose & linen</div></div>
+<div class="palette-card" data-palette="champagne" data-tab="light" onclick="selectPalette(this,'champagne')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf6e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8c99a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Champagne Toast</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Champagne, blush & soft gold</div></div>
+<div class="palette-card" data-palette="buttersage" data-tab="light" onclick="selectPalette(this,'buttersage')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fef9e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d890;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6a8a50;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Butter & Sage</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Butter yellow, sage & cream</div></div>
+<div class="palette-card" data-palette="coastlinen" data-tab="light" onclick="selectPalette(this,'coastlinen')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a3a4a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Coastal Linen</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft blue, white & sandy beige</div></div>
+<div class="palette-card" data-palette="mornmist" data-tab="light" onclick="selectPalette(this,'mornmist')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f4f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8ccd8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6888a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a38;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Morning Mist</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale blue, silver & white</div></div>
+<div class="palette-card" data-palette="peach" data-tab="light" onclick="selectPalette(this,'peach')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff5f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb899;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e87050;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a1a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Peach Soirée</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Peach, apricot & soft ivory</div></div>
+<div class="palette-card" data-palette="ivgold" data-tab="light" onclick="selectPalette(this,'ivgold')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf6ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a843;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b5e3c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Ivory & Gold</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ivory, antique gold & cognac</div></div>
+<div class="palette-card" data-palette="slatblush" data-tab="light" onclick="selectPalette(this,'slatblush')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ddd0d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#383048;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Slate & Blush</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft slate, blush & pearl</div></div>
+<div class="palette-card" data-palette="citrus" data-tab="light" onclick="selectPalette(this,'citrus')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff3e0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff9505;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffca3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6bcbf0;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Citrus Pop</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Orange, lemon & sky blue</div></div>
+<div class="palette-card" data-palette="midnight" data-tab="dark" onclick="selectPalette(this,'midnight')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d1a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6c63ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e0e0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Midnight</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dark, violet & lavender</div></div>
+<div class="palette-card" data-palette="editorial" data-tab="dark" onclick="selectPalette(this,'editorial')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5f5f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9002b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e0d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Editorial</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Black, white & red</div></div>
+<div class="palette-card" data-palette="blacktie" data-tab="dark" onclick="selectPalette(this,'blacktie')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a2a2a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8b8b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Black Tie</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ink, silver & champagne</div></div>
+<div class="palette-card" data-palette="darkrom" data-tab="dark" onclick="selectPalette(this,'darkrom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0508;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b0000;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Dark Romance</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep red, black & gold</div></div>
+<div class="palette-card" data-palette="noirgar" data-tab="dark" onclick="selectPalette(this,'noirgar')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0d0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3320;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b7355;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f0ead6;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Noir Garden</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Near-black, forest & champagne</div></div>
+<div class="palette-card" data-palette="velvet" data-tab="dark" onclick="selectPalette(this,'velvet')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0818;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e0a4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7b5ea7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8c0e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Velvet Night</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep navy, violet & silver</div></div>
+<div class="palette-card" data-palette="moodvio" data-tab="dark" onclick="selectPalette(this,'moodvio')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a1a8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Moody Violet</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dark plum, violet & blush</div></div>
+<div class="palette-card" data-palette="obsidian" data-tab="dark" onclick="selectPalette(this,'obsidian')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e1e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a3a3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e8e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Obsidian</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Jet black, charcoal & ice</div></div>
+<div class="palette-card" data-palette="goldgala" data-tab="dark" onclick="selectPalette(this,'goldgala')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a1a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fff8ee;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Golden Gala</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Navy, gold & warm cream</div></div>
+<div class="palette-card" data-palette="sunset" data-tab="dark" onclick="selectPalette(this,'sunset')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0533;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f97316;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fbbf24;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fde8d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Sunset</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Plum, orange & gold</div></div>
+<div class="palette-card" data-palette="berry" data-tab="dark" onclick="selectPalette(this,'berry')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0520;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b1d70;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e63995;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0f8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Berry Punch</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Berry, fuchsia & cream</div></div>
+<div class="palette-card" data-palette="neon" data-tab="dark" onclick="selectPalette(this,'neon')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#39ff14;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff10f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a1a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Neon Nights</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Neon green, hot pink & black</div></div>
+<div class="palette-card" data-palette="espresso" data-tab="dark" onclick="selectPalette(this,'espresso')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6b3e26;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9956c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6d3;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Espresso</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep brown, caramel & cream</div></div>
+<div class="palette-card" data-palette="bloom" data-tab="dark" onclick="selectPalette(this,'bloom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf2f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f472b6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a855f7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e2e;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Bloom</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Blush, pink & plum</div></div>
+<div class="palette-card" data-palette="mono-blush" data-tab="mono" onclick="selectPalette(this,'mono-blush')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8507a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7a1a35;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Blush</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale pink → deep rose</div></div>
+<div class="palette-card" data-palette="mono-sage" data-tab="mono" onclick="selectPalette(this,'mono-sage')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#eef5ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a8c8a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a7c4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Sage</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Mint → deep forest</div></div>
+<div class="palette-card" data-palette="mono-lavender" data-tab="mono" onclick="selectPalette(this,'mono-lavender')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7850c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1060;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Lavender</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale lilac → deep violet</div></div>
+<div class="palette-card" data-palette="mono-navy" data-tab="mono" onclick="selectPalette(this,'mono-navy')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#90b8d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a5888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#0a1828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Navy</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Powder blue → midnight</div></div>
+<div class="palette-card" data-palette="mono-noir" data-tab="mono" onclick="selectPalette(this,'mono-noir')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#ffffff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a0a0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#404040;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#080808;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Noir</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">White → jet black</div></div>
+<div class="palette-card" data-palette="mono-champagne" data-tab="mono" onclick="selectPalette(this,'mono-champagne')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a3010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Champagne</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ivory → cognac</div></div>
+<div class="palette-card" data-palette="mono-terra" data-tab="mono" onclick="selectPalette(this,'mono-terra')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a880;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c06030;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Terracotta</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Peach → burnt clay</div></div>
+<div class="palette-card" data-palette="mono-slate" data-tab="mono" onclick="selectPalette(this,'mono-slate')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f0f2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b0b8c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#607080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#182028;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Slate</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Silver → charcoal</div></div>
+<div class="palette-card" data-palette="mono-mauve" data-tab="mono" onclick="selectPalette(this,'mono-mauve')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d8b0b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a06878;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#481828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Mauve</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Blush beige → deep rose</div></div>
+<div class="palette-card" data-palette="mono-teal" data-tab="mono" onclick="selectPalette(this,'mono-teal')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f8f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#80c8c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#208888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#082828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Teal</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ice → deep ocean</div></div>
+<div class="palette-card" data-palette="mono-gold" data-tab="mono" onclick="selectPalette(this,'mono-gold')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fffff0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09820;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#483800;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Gold</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Butter → antique bronze</div></div>
+<div class="palette-card" data-palette="mono-plum" data-tab="mono" onclick="selectPalette(this,'mono-plum')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d0a0d0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#904090;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#300830;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Plum</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Lilac → deep eggplant</div></div>
+      </div>
+      <input type="hidden" id="paletteChoice" value="ai">
+
+      <!-- Your Colors — simplified, AI places them -->
+      <div id="custom-hex-fields" style="display:none;margin-top:14px;background:white;border:1.5px solid #4361EE;border-radius:14px;padding:18px;">
+        <div style="font-family:'DM Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4361EE;margin-bottom:6px;">🎨 Your Colors</div>
+        <div style="font-size:.78rem;color:#6b7280;margin-bottom:16px;line-height:1.5;">Pick up to 5 colors — AI decides the most beautiful way to use them in your invite.</div>
+
+        <!-- Color swatches row -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+          <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
+            <div id="uc-swatch-0" style="width:48px;height:48px;border-radius:12px;background:#ee70bc;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <input type="color" id="uc-input-0" value="#ee70bc" oninput="ucUpdate(0,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </div>
+          <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
+            <div id="uc-swatch-1" style="width:48px;height:48px;border-radius:12px;background:#4361EE;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <input type="color" id="uc-input-1" value="#4361EE" oninput="ucUpdate(1,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </div>
+          <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
+            <div id="uc-swatch-2" style="width:48px;height:48px;border-radius:12px;background:#ffffff;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <input type="color" id="uc-input-2" value="#ffffff" oninput="ucUpdate(2,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </div>
+          <div id="uc-slot-3" style="position:relative;width:48px;height:48px;flex-shrink:0;display:none;">
+            <div id="uc-swatch-3" style="width:48px;height:48px;border-radius:12px;background:#C8E000;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <input type="color" id="uc-input-3" value="#C8E000" oninput="ucUpdate(3,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </div>
+          <div id="uc-slot-4" style="position:relative;width:48px;height:48px;flex-shrink:0;display:none;">
+            <div id="uc-swatch-4" style="width:48px;height:48px;border-radius:12px;background:#1a1a2e;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <input type="color" id="uc-input-4" value="#1a1a2e" oninput="ucUpdate(4,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </div>
+          <button onclick="ucAddColor()" id="uc-add-btn" style="width:48px;height:48px;border-radius:12px;border:2px dashed #d1d5db;background:none;cursor:pointer;font-size:1.4rem;color:#9ca3af;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" title="Add a color">+</button>
+        </div>
+        <div style="font-size:.7rem;color:#9ca3af;">Click any swatch to change its color</div>
+
+        <!-- Hidden passthrough inputs (kept for prompt compatibility) -->
+        <input type="hidden" id="hex-bg-text"      value="">
+        <input type="hidden" id="hex-surface-text" value="">
+        <input type="hidden" id="hex-accent-text"  value="">
+        <input type="hidden" id="hex-accent2-text" value="">
+        <input type="hidden" id="hex-text-text"    value="">
+      </div>
+
+      </div><!-- /palette section -->
+
+      <!-- Hero Background Upload -->
+      <div class="field" style="margin-top:20px;">
+        <label>Hero Background Image <span class="opt">(optional)</span></label>
+        <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">Upload a background for the hero — tropical leaves, floral, marble, confetti, anything. Claude designs around it.</div>
+        <div class="upload-zone" id="heroBgZone" onclick="document.getElementById('heroBgInput').click()" style="padding:20px;">
+          <input type="file" id="heroBgInput" accept="image/*" onchange="handleHeroBgUpload(this)">
+          <div class="upload-icon" id="heroBgIcon">🖼</div>
+          <div class="upload-label" id="heroBgLabel"><strong>Click to upload</strong> — JPG, PNG, WebP</div>
+        </div>
+      </div>
+
+
+
+        <!-- Font Selection -->
+    <div class="field" style="margin-top:6px;">
+      <label>Typography</label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">AI picks fonts by default — or choose your own from Google Fonts.</div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;">
+        <div id="font-opt-ai" onclick="selectFontMode('ai')" style="flex:1;border:2px solid #4361EE;border-radius:12px;padding:12px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.1rem;margin-bottom:4px;">✦</div>
+          <div style="font-weight:700;font-size:.82rem;color:var(--navy);">AI chooses</div>
+          <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Best pair for your vibe</div>
+        </div>
+        <div id="font-opt-custom" onclick="selectFontMode('custom')" style="flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.1rem;margin-bottom:4px;">Aa</div>
+          <div style="font-weight:700;font-size:.82rem;color:var(--navy);">I'll choose</div>
+          <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Pick from Google Fonts</div>
+        </div>
+      </div>
+      <input type="hidden" id="fontChoice" value="ai">
+
+      <div id="custom-font-fields" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:6px;">Display font</div>
+            <input type="text" id="displayFontName" placeholder="e.g. Playfair Display" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;">
+            <div style="font-size:.7rem;color:#9ca3af;margin-top:4px;">Headlines &amp; names</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:6px;">Body font</div>
+            <input type="text" id="bodyFontName" placeholder="e.g. DM Sans" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;">
+            <div style="font-size:.7rem;color:#9ca3af;margin-top:4px;">Details &amp; copy</div>
+          </div>
+        </div>
+        <div style="font-size:.72rem;color:#6b7280;margin-top:8px;">Any Google Font name works — <a href="https://fonts.google.com" target="_blank" style="color:#4361EE;">browse fonts.google.com</a></div>
+      </div>
+    </div>
+
+    <!-- Always-present hidden inputs for background images -->
+    <input type="hidden" id="heroBgB64">
+    <input type="hidden" id="heroBgMime">
+
+    <!-- Photo Shape Picker -->
+    <div class="field" style="margin-top:22px;">
+      <label>Hero photo shape</label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:12px;">How should your hero photo be framed? AI also picks a border style that matches your overall design.</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" id="shapeChips">
+        <div class="shape-chip selected" data-shape="ai" onclick="selectShape(this)" style="border:2px solid var(--navy);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:var(--navy);color:var(--lime);transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">✦</div>
+          <div style="font-size:.72rem;font-weight:700;">AI chooses</div>
+        </div>
+        <div class="shape-chip" data-shape="arch" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">🔔</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Arch</div>
+        </div>
+        <div class="shape-chip" data-shape="circle" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">⭕</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Circle</div>
+        </div>
+        <div class="shape-chip" data-shape="rectangle" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">▭</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Rectangle</div>
+        </div>
+        <div class="shape-chip" data-shape="oval" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">🥚</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Oval</div>
+        </div>
+        <div class="shape-chip" data-shape="polaroid" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">📷</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Polaroid</div>
+        </div>
+      </div>
+      <input type="hidden" id="photoShape" value="ai">
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-next" onclick="goStep(5)">Next — Photos →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Photos -->
+  <div class="step-panel" id="step-5">
+    <div class="step-label">Step 5 of 8</div>
     <div class="step-title">Add your photos.</div>
     <div class="step-sub">Skip any you don't have — styled placeholders will hold their spot.</div>
 
@@ -731,19 +965,32 @@
       <p style="font-size:0.78rem;color:var(--mid);margin-top:8px;">Up to 6 gallery photos. Leave empty for styled placeholders.</p>
     </div>
 
+    <!-- Closing Section Background -->
+    <div class="field" style="margin-top:8px;">
+      <label>Closing Section Background <span class="opt">(optional — bottom of the invite)</span></label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">Add a second background for the closing/footer section — a different texture, pattern, or photo to bookend the design.</div>
+      <div class="upload-zone" id="closingBgZone" onclick="document.getElementById('closingBgInput').click()" style="padding:20px;">
+        <input type="file" id="closingBgInput" accept="image/*" onchange="handleClosingBgUpload(this)">
+        <div class="upload-icon">🎨</div>
+        <div class="upload-label"><strong>Click to upload</strong> — JPG, PNG, WebP</div>
+      </div>
+      <input type="hidden" id="closingBgB64">
+      <input type="hidden" id="closingBgMime">
+    </div>
+
     <!-- hidden base64 stores -->
     <input type="hidden" id="heroB64">
     <input type="hidden" id="heroMime">
 
     <div class="step-nav">
-      <button class="btn-back" onclick="goStep(3)">← Back</button>
-      <button class="btn-next" onclick="goStep(5)">Next — RSVP →</button>
+      <button class="btn-back" onclick="goStep(4)">← Back</button>
+      <button class="btn-next" onclick="goStep(6)">Next — RSVP →</button>
     </div>
   </div>
 
   <!-- STEP 5: RSVP -->
-  <div class="step-panel" id="step-5">
-    <div class="step-label">Step 5 of 6</div>
+  <div class="step-panel" id="step-6">
+    <div class="step-label">Step 6 of 8</div>
     <div class="step-title">Set up your RSVP.</div>
     <div class="step-sub">Who should RSVPs go to? What do you need to know?</div>
 
@@ -797,25 +1044,118 @@
       </div>
     </div>
 
+
+    <!-- Hero CTAs -->
+    <div class="field" style="margin-top:20px;border-top:1.5px solid #f0f0f0;padding-top:20px;">
+      <label>Hero section buttons</label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:12px;">The main RSVP button is always included. Add more here.</div>
+
+      <!-- RSVP CTA toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+        <div>
+          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">RSVP button in hero</div>
+          <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Scroll-to-RSVP button prominently in the hero section</div>
+        </div>
+        <label class="switch" style="flex-shrink:0;">
+          <input type="checkbox" id="tog-hero-rsvp" checked>
+          <span class="track"></span><span class="thumb"></span>
+        </label>
+      </div>
+
+
+    </div>
+
+    <!-- Confetti -->
+    <div class="field" style="margin-top:20px;border-top:1.5px solid #f0f0f0;padding-top:20px;">
+      <label>Confetti & celebration effects</label>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:12px;">Background particles and RSVP confetti burst.</div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:8px;">Background animation</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div class="confetti-card" data-confetti="sparkles" onclick="selectConfetti(this,'sparkles')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">✦</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Sparkles</div>
+          <div style="font-size:.7rem;color:#6b7280;">Floating particles</div>
+        </div>
+        <div class="confetti-card" data-confetti="stars" onclick="selectConfetti(this,'stars')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">⭐</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Stars</div>
+          <div style="font-size:.7rem;color:#6b7280;">Twinkling stars</div>
+        </div>
+        <div class="confetti-card" data-confetti="bubbles" onclick="selectConfetti(this,'bubbles')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">○</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Bubbles</div>
+          <div style="font-size:.7rem;color:#6b7280;">Rising circles</div>
+        </div>
+        <div class="confetti-card" data-confetti="petals" onclick="selectConfetti(this,'petals')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">🌸</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Petals</div>
+          <div style="font-size:.7rem;color:#6b7280;">Falling petals</div>
+        </div>
+        <div class="confetti-card" data-confetti="confetti" onclick="selectConfetti(this,'confetti')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">🎊</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Confetti</div>
+          <div style="font-size:.7rem;color:#6b7280;">Classic confetti</div>
+        </div>
+        <div class="confetti-card selected-confetti" data-confetti="none" onclick="selectConfetti(this,'none')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:4px;">○</div>
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">None</div>
+          <div style="font-size:.7rem;color:#6b7280;">Clean & still</div>
+        </div>
+      </div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:8px;">Background animation placement</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div class="confetti-layer-card selected-layer" data-layer="above" onclick="selectConfettiLayer(this,'above')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Above content</div>
+          <div style="font-size:.7rem;color:#6b7280;">Always visible, floats on top</div>
+        </div>
+        <div class="confetti-layer-card" data-layer="below" onclick="selectConfettiLayer(this,'below')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Below content</div>
+          <div style="font-size:.7rem;color:#6b7280;">Subtle, behind sections</div>
+        </div>
+      </div>
+
+      <!-- RSVP confetti burst toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;">
+        <div>
+          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">Confetti burst on RSVP</div>
+          <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Celebration burst when a guest submits their RSVP</div>
+        </div>
+        <label class="switch" style="flex-shrink:0;">
+          <input type="checkbox" id="tog-rsvp-confetti" checked>
+          <span class="track"></span><span class="thumb"></span>
+        </label>
+      </div>
+      <input type="hidden" id="confettiType" value="none">
+      <input type="hidden" id="confettiLayer" value="above">
+    </div>
+
     <div class="step-nav">
-      <button class="btn-back" onclick="goStep(4)">← Back</button>
-      <button class="btn-next" onclick="goStep(6)">Next — Help Make It Happen →</button>
+      <button class="btn-back" onclick="goStep(5)">← Back</button>
+      <button class="btn-next" onclick="goStep(7)">Next — Help Make It Happen →</button>
     </div>
   </div>
 
 
   <!-- STEP 6: Help Make It Happen -->
-  <div class="step-panel" id="step-6">
-    <div class="step-label">Step 6 of 7 · Optional</div>
+  <div class="step-panel" id="step-7">
+    <div class="step-label">Step 7 of 8 · Optional</div>
     <div class="step-title">Help make it happen.</div>
-    <div class="step-sub">Let guests chip in — AI builds the perfect list for your event.</div>
+    <div class="step-sub">Let guests claim items to bring. AI builds the perfect list for your event.</div>
 
-    <div class="toggle-row" style="margin-bottom:18px;">
+    <!-- Auto hero button note -->
+    <div style="background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:.78rem;color:#4a5568;">
+      <strong style="color:var(--navy);">✦ Auto hero button</strong> — when this section is enabled, a "Help Make It Happen" button will automatically appear in the invite hero linking here.
+    </div>
+
+    <!-- Toggle to enable -->
+    <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
       <div>
-        <div style="font-weight:600;font-size:.9rem;color:var(--navy);">Add a "Help make it happen" section</div>
-        <div style="font-size:.78rem;color:#6b7280;margin-top:2px;">Guests can claim items to bring. Powered by AI.</div>
+        <div style="font-weight:700;font-size:.9rem;color:var(--navy);">Add a "Help make it happen" section</div>
+        <div style="font-size:.78rem;color:#6b7280;margin-top:3px;">Guests see a list of items and can claim one to bring.</div>
       </div>
-      <label class="switch">
+      <label class="switch" style="flex-shrink:0;">
         <input type="checkbox" id="tog-helplist" onchange="toggleHelpList(this)">
         <span class="track"></span><span class="thumb"></span>
       </label>
@@ -823,42 +1163,69 @@
 
     <div id="helplist-module" style="display:none;">
 
-      <!-- AI Loading State -->
+      <!-- AI loading -->
       <div id="helplist-loading" style="display:none;text-align:center;padding:20px 0;">
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;">
-          <div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s -0.4s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
-          <div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s -0.2s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
-          <div class="wave-dot" style="background:#8ba2f0;animation:lb-wave 1.2s 0s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
-          <div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s 0.2s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
-          <div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s 0.4s ease-in-out infinite;width:11px;height:11px;border-radius:50%;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#C8E000;animation:lb-wave 1.2s -0.4s ease-in-out infinite;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#ee70bc;animation:lb-wave 1.2s -0.2s ease-in-out infinite;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#8ba2f0;animation:lb-wave 1.2s 0s ease-in-out infinite;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#C8E000;animation:lb-wave 1.2s 0.2s ease-in-out infinite;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#ee70bc;animation:lb-wave 1.2s 0.4s ease-in-out infinite;"></div>
         </div>
-        <div style="font-size:.8rem;color:#6b7280;">Building your list…</div>
+        <div style="font-size:.8rem;color:#6b7280;">Building your list for this event…</div>
       </div>
 
-      <!-- Suggested items (editable chips) -->
-      <div id="helplist-items-wrap" style="display:none;">
-        <span class="sl-light">Suggested items — edit, delete, or add more</span>
-        <div id="helplist-items" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
-        <button onclick="addHelpItem()" style="background:white;border:1.5px dashed rgba(67,97,238,0.3);border-radius:8px;padding:7px 14px;font-size:.8rem;color:#4361EE;font-weight:600;cursor:pointer;">+ Add item</button>
+      <!-- Items -->
+      <div id="helplist-items-wrap" style="display:block;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;">Items guests can claim</span>
+          <button onclick="refreshHelpSuggestions()" style="font-size:.72rem;color:#4361EE;background:none;border:none;cursor:pointer;font-weight:600;">↺ AI suggest</button>
+        </div>
+
+        <!-- Paste box -->
+        <div style="background:rgba(67,97,238,0.04);border:1.5px solid rgba(67,97,238,0.15);border-radius:10px;padding:12px;margin-bottom:12px;">
+          <div style="font-size:.72rem;color:#4361EE;font-weight:600;margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;">Paste your list</div>
+          <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">One item per line, or separated by commas. Paste your whole list at once.</div>
+          <textarea id="helplist-paste-box" rows="4" placeholder="Snacks&#10;Drinks&#10;Ice&#10;Birthday cake&#10;Balloons&#10;Photo booth props" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 10px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;"></textarea>
+          <button onclick="importPastedItems()" style="margin-top:8px;background:#4361EE;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;width:100%;">→ Turn into claimable items</button>
+        </div>
+
+        <!-- Chips preview -->
+        <div id="helplist-chips-label" style="display:none;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:8px;">Your list — tap × to remove</div>
+        <div id="helplist-items" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;min-height:0;"></div>
+
+        <!-- Add single item -->
+        <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+          <input type="text" id="helplist-add-input" placeholder="Add one more item…" style="flex:1;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;" onkeydown="if(event.key==='Enter')addHelpItemFromInput();">
+          <button onclick="addHelpItemFromInput()" style="background:white;border:1.5px solid #4361EE;color:#4361EE;border-radius:8px;padding:8px 14px;font-size:.82rem;font-weight:600;cursor:pointer;">+ Add</button>
+        </div>
       </div>
 
-      <!-- Section headline customization -->
+      <!-- Claims Script URL -->
+      <div class="field" style="margin-top:18px;background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:14px 16px;">
+        <label style="color:var(--navy);">📋 Your Google Sheet tracking URL</label>
+        <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">Paste your Apps Script Web App URL here so claims save to your Google Sheet. <a href="https://script.google.com" target="_blank" style="color:#4361EE;">Set up at script.google.com →</a></div>
+        <input class="fi-light" id="claimsScriptUrl" type="text" value="https://script.google.com/macros/s/AKfycbxwdYmxnTuD2knGVzhd7bqGl3SZSYUvDC9o82A-g6QHszlz84fhelVfnIKQBCLrHCvBzg/exec" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec" style="font-size:.78rem;">
+        <div style="font-size:.72rem;color:#9ca3af;margin-top:6px;">Leave blank to skip claim tracking (claims won't persist across devices).</div>
+      </div>
+
+      <!-- Section copy -->
       <div class="field" style="margin-top:18px;">
         <label>Section headline</label>
-        <input class="fi-light" id="helplist-headline" type="text" value="Help make it happen 🙌" placeholder="Help make it happen 🙌">
+        <input class="fi-light" id="helplist-headline" type="text" value="Help make it happen 🙌">
       </div>
       <div class="field">
         <label>Intro copy</label>
-        <textarea class="fi-light" id="helplist-intro" rows="2" placeholder="We're covering the main plans, but if you'd like to help, choose something below.">We're covering the main plans, but if you'd like to help, choose something below.</textarea>
+        <textarea class="fi-light" id="helplist-intro" rows="2">We're covering the main plans, but if you'd like to help out, grab something from the list below!</textarea>
       </div>
 
       <!-- Allergy note -->
-      <div class="toggle-row" style="margin:16px 0 10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;margin:16px 0 10px;">
         <div>
           <div style="font-weight:600;font-size:.85rem;color:var(--navy);">Add allergy / dietary note</div>
-          <div style="font-size:.75rem;color:#6b7280;margin-top:1px;">Especially useful for kid events</div>
+          <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Especially useful for kid events</div>
         </div>
-        <label class="switch">
+        <label class="switch" style="flex-shrink:0;">
           <input type="checkbox" id="tog-allergy" onchange="toggleAllergy(this)">
           <span class="track"></span><span class="thumb"></span>
         </label>
@@ -866,21 +1233,21 @@
       <div id="allergy-fields" style="display:none;">
         <div class="field">
           <label>Allergy note <span class="opt">(guests see this)</span></label>
-          <textarea class="fi-light" id="f-allergy-note" rows="3" placeholder="If your child has allergies or dietary restrictions, please pack separate meals or snacks they know are safe.">If your child has allergies or dietary restrictions, please pack separate meals or snacks they know are safe.</textarea>
+          <textarea class="fi-light" id="f-allergy-note" rows="2">If your child has allergies or dietary restrictions, please pack separate meals or snacks they know are safe.</textarea>
         </div>
       </div>
 
     </div><!-- /helplist-module -->
 
     <div class="step-nav">
-      <button class="btn-back" onclick="goStep(5)">← Back</button>
-      <button class="btn-next" onclick="goStep(7)">Next — Preview Prompt →</button>
+      <button class="btn-back" onclick="goStep(7)">← Back</button>
+      <button class="btn-next" onclick="goStep(8)">Next — Preview Prompt →</button>
     </div>
   </div>
 
   <!-- STEP 7: Blurred Prompt Preview -->
-  <div class="step-panel" id="step-7">
-    <div class="step-label">Step 7 of 7</div>
+  <div class="step-panel" id="step-8">
+    <div class="step-label">Step 8 of 8</div>
     <div class="step-title">Your prompt is ready.</div>
     <div class="step-sub">Builtsy wrote the perfect brief. Click generate and watch it come to life.</div>
 
@@ -952,7 +1319,7 @@
 <script>
 // ── STATE ──
 var currentStep = 1;
-var totalSteps = 7;
+var totalSteps = 8;
 var generatedHTML = '';
 var galleryFiles = [null, null, null, null, null, null];
 var galleryB64 = ['','','','','',''];
@@ -976,22 +1343,77 @@ function buildGalleryGrid() {
 buildGalleryGrid();
 
 // ── PHOTO UPLOAD ──
+function resizeForInvite(dataUrl, maxSize, callback) {
+  var img = new Image();
+  img.onload = function() {
+    var w = img.width, h = img.height;
+    var scale = Math.min(maxSize/w, maxSize/h, 1);
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.round(w*scale);
+    canvas.height = Math.round(h*scale);
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    var resized = canvas.toDataURL('image/jpeg', 0.82);
+    callback(resized);
+  };
+  img.src = dataUrl;
+}
+
 function handleUpload(inputId, zoneId, previewId, b64Id, mimeId) {
   var file = document.getElementById(inputId).files[0];
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    var result = e.target.result;
-    var mime = result.split(',')[0].split(':')[1].split(';')[0];
-    var b64 = result.split(',')[1];
-    document.getElementById(b64Id).value = b64;
-    document.getElementById(mimeId).value = mime;
-    // Show image preview inside the zone
-    var zone = document.getElementById(zoneId);
-    zone.classList.add('has-file');
-    zone.innerHTML = '<input type="file" id="' + inputId + '" accept="image/*" onchange="handleUpload(\'' + inputId + '\',\'' + zoneId + '\',\'' + previewId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
-      + '<img src="' + result + '" style="max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
-      + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + '</div>';
+    resizeForInvite(e.target.result, 1600, function(result) {
+      var mime = result.split(',')[0].split(':')[1].split(';')[0];
+      var b64 = result.split(',')[1];
+      document.getElementById(b64Id).value = b64;
+      document.getElementById(mimeId).value = mime;
+      var zone = document.getElementById(zoneId);
+      zone.classList.add('has-file');
+      zone.innerHTML = '<input type="file" id="' + inputId + '" accept="image/*" onchange="handleUpload(\'' + inputId + '\',\'' + zoneId + '\',\'' + previewId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
+        + '<img src="' + result + '" style="max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
+        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + '</div>';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleHeroBgUpload(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    resizeForInvite(e.target.result, 1600, function(result) {
+      var mime = result.split(',')[0].split(':')[1].split(';')[0];
+      var b64 = result.split(',')[1];
+      document.getElementById('heroBgB64').value = b64;
+      document.getElementById('heroBgMime').value = mime;
+      var zone = document.getElementById('heroBgZone');
+      zone.classList.add('has-file');
+      zone.innerHTML = '<input type="file" id="heroBgInput" accept="image/*" onchange="handleHeroBgUpload(this)">'
+        + '<img src="' + result + '" style="max-height:120px;max-width:100%;border-radius:8px;display:block;margin:0 auto;object-fit:cover;">'
+        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — hero background set</div>';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleClosingBgUpload(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    resizeForInvite(e.target.result, 1600, function(result) {
+      var mime = result.split(',')[0].split(':')[1].split(';')[0];
+      var b64 = result.split(',')[1];
+      document.getElementById('closingBgB64').value = b64;
+      document.getElementById('closingBgMime').value = mime;
+      var zone = document.getElementById('closingBgZone');
+      zone.classList.add('has-file');
+      zone.innerHTML = '<input type="file" id="closingBgInput" accept="image/*" onchange="handleClosingBgUpload(this)">'
+        + '<img src="' + result + '" style="max-height:120px;max-width:100%;border-radius:8px;display:block;margin:0 auto;object-fit:cover;">'
+        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — closing background set</div>';
+    });
   };
   reader.readAsDataURL(file);
 }
@@ -1001,13 +1423,14 @@ function handleGallery(idx, input) {
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    var result = e.target.result;
-    galleryMime[idx] = result.split(',')[0].split(':')[1].split(';')[0];
-    galleryB64[idx] = result.split(',')[1];
-    var slot = document.getElementById('gslot-' + idx);
-    slot.classList.add('filled');
-    slot.innerHTML = '<input type="file" accept="image/*" onchange="handleGallery(' + idx + ', this)">'
-      + '<img src="' + result + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">';
+    resizeForInvite(e.target.result, 600, function(result) {
+      galleryMime[idx] = result.split(',')[0].split(':')[1].split(';')[0];
+      galleryB64[idx] = result.split(',')[1];
+      var slot = document.getElementById('gslot-' + idx);
+      slot.classList.add('filled');
+      slot.innerHTML = '<input type="file" accept="image/*" onchange="handleGallery(' + idx + ', this)">'
+        + '<img src="' + result + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">';
+    });
   };
   reader.readAsDataURL(file);
 }
@@ -1070,8 +1493,8 @@ function goStep(n) {
     }
   }
 
-  // Populate blurred prompt on step 6
-  if (n === 6) {
+  // Populate blurred prompt on step 8
+  if (n === 8) {
     var data = collectFormData();
     var built = buildPrompt(data);
     var box = document.getElementById('promptPreviewBox');
@@ -1170,6 +1593,8 @@ function collectFormData() {
     eventType: getChipVal('eventTypeChips'),
     honoreeNames: document.getElementById('honoreeNames').value.trim(),
     eventDate: document.getElementById('eventDate').value.trim(),
+    eventTime: (document.getElementById('eventTime') ? document.getElementById('eventTime').value.trim() : ''),
+    eventTimezone: (document.getElementById('eventTimezone') ? document.getElementById('eventTimezone').value : 'America/Denver'),
     eventLocation: document.getElementById('eventLocation').value.trim(),
     eventTheme: document.getElementById('eventTheme').value.trim(),
     vibe: getChipVal('vibeChips'),
@@ -1177,21 +1602,94 @@ function collectFormData() {
     vibeRef: document.getElementById('vibeRef').value.trim(),
     eventDescription: document.getElementById('eventDescription').value.trim(),
     eventItinerary: document.getElementById('eventItinerary').value.trim(),
+    venueLink: (document.getElementById('venueLink') ? document.getElementById('venueLink').value.trim() : ''),
     eventExtras: document.getElementById('eventExtras').value.trim(),
     contactInfo: document.getElementById('contactInfo').value.trim(),
     heroB64: document.getElementById('heroB64').value,
     heroMime: document.getElementById('heroMime').value,
+    heroBgB64: document.getElementById('heroBgB64').value,
+    heroBgMime: document.getElementById('heroBgMime').value,
+    closingBgB64: document.getElementById('closingBgB64').value,
+    closingBgMime: document.getElementById('closingBgMime').value,
     galleryImages: galleryImages,
     rsvpDeadline: document.getElementById('rsvpDeadline').value.trim(),
     rsvpMethod: getChipVal('rsvpMethodChips'),
     rsvpQuestions: rsvpQs,
     rsvpPhone: document.getElementById('rsvpPhone').value.trim(),
-    rsvpEmail: document.getElementById('rsvpEmail').value.trim()
+    rsvpEmail: document.getElementById('rsvpEmail').value.trim(),
+    helpList: getHelpListData(),
+    claimsScriptUrl: (document.getElementById('claimsScriptUrl') ? document.getElementById('claimsScriptUrl').value.trim() : ''),
+    heroRsvpBtn: document.getElementById('tog-hero-rsvp') ? document.getElementById('tog-hero-rsvp').checked : true,
+    customCta: null, // auto-handled based on helpList
+    confettiType: (document.getElementById('confettiType')||{value:'none'}).value,
+    confettiLayer: (document.getElementById('confettiLayer')||{value:'above'}).value,
+    rsvpConfetti: document.getElementById('tog-rsvp-confetti') ? document.getElementById('tog-rsvp-confetti').checked : true,
+    palette: (document.getElementById('paletteChoice') ? document.getElementById('paletteChoice').value : ''),
+    customHex: (document.getElementById('paletteChoice') && document.getElementById('paletteChoice').value === 'custom' ? {
+      userColors: getUserColors()
+    } : null),
+    photoShape: (document.getElementById('photoShape') ? document.getElementById('photoShape').value : 'ai'),
+    fontChoice: (document.getElementById('fontChoice') ? document.getElementById('fontChoice').value : 'ai'),
+    displayFontName: (document.getElementById('displayFontName') ? document.getElementById('displayFontName').value.trim() : ''),
+    inspoB64: '', inspoMime: '', vibeInspoB64: '', vibeInspoMime: '',
+    bodyFontName: (document.getElementById('bodyFontName') ? document.getElementById('bodyFontName').value.trim() : '')
   };
 }
 
 // ── BUILD PROMPT ──
 function buildPrompt(data) {
+  // Parse event date into clean format for countdown
+  var cleanDate = '';
+  if (data.eventDate) {
+    // Extract first date-like string: handles "June 16-18, 2026", "June 16, 2026", "6/16/2026" etc.
+    var raw = data.eventDate;
+    // Try to find month name + day + year
+    // Try month name + day + optional range + year (handles "June 16-18, 2026", "June 16 2026", etc)
+    var monthMatch = raw.match(/(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2})[\s\S]{0,20}?(\d{4})/i);
+    if (monthMatch) {
+      cleanDate = monthMatch[1].charAt(0).toUpperCase() + monthMatch[1].slice(1).toLowerCase() + ' ' + monthMatch[2] + ', ' + monthMatch[3];
+    } else {
+      // Try MM/DD/YYYY or MM-DD-YYYY
+      var numMatch = raw.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+      if (numMatch) {
+        var months = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+        cleanDate = months[parseInt(numMatch[1])] + ' ' + numMatch[2] + ', ' + numMatch[3];
+      } else {
+        // Try to find a 4-digit year and use Jan 1 of that year as fallback
+        var yearMatch = raw.match(/(\d{4})/);
+        if (yearMatch) {
+          cleanDate = 'January 1, ' + yearMatch[1];
+        } else {
+          // No year found — assume current year, or next if already passed
+          var nowYear = new Date().getFullYear();
+          var attempt = raw + ', ' + nowYear;
+          if (!isNaN(new Date(attempt)) && new Date(attempt) > new Date()) {
+            cleanDate = attempt;
+          } else {
+            cleanDate = raw + ', ' + (nowYear + 1);
+          }
+        }
+      }
+    }
+  }
+  // Build precise countdown target with time + timezone
+  if (cleanDate && data.eventTime) {
+    // Parse time string like "4:30 PM", "16:30", "4pm"
+    var timeStr = data.eventTime.trim();
+    var hour = 0, min = 0;
+    var timeParts = timeStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+    if (timeParts) {
+      hour = parseInt(timeParts[1]);
+      min = timeParts[2] ? parseInt(timeParts[2]) : 0;
+      var meridiem = timeParts[3] ? timeParts[3].toLowerCase() : '';
+      if (meridiem === 'pm' && hour < 12) hour += 12;
+      if (meridiem === 'am' && hour === 12) hour = 0;
+    }
+    var paddedHour = hour < 10 ? '0' + hour : '' + hour;
+    var paddedMin = min < 10 ? '0' + min : '' + min;
+    cleanDate = cleanDate + ' ' + paddedHour + ':' + paddedMin + ':00';
+  }
+
   var rsvpInstructions = '';
   if (data.rsvpMethod === 'form-on-page') {
     rsvpInstructions = 'Include an RSVP form directly on the page. Questions: ' +
@@ -1208,80 +1706,336 @@ function buildPrompt(data) {
   }
 
   var photoInstructions = '';
-  if (data.heroB64) {
-    photoInstructions += 'A hero photo has been provided. Use src="HERO_PHOTO_PLACEHOLDER" for the hero <img> tag — it will be injected after generation. ';
+
+  if (data.heroBgB64 && data.heroB64) {
+    photoInstructions += 'HERO SECTION — BOTH BACKGROUND AND PORTRAIT PHOTO PROVIDED — NON-NEGOTIABLE LAYERING: ';
+    photoInstructions += '(1) Hero div uses __HERO_BG__ as a full-bleed CSS background: background-image:url(__HERO_BG__); background-size:cover; background-position:center; min-height:500px; position:relative; width:100%. ';
+    photoInstructions += '(2) CRITICAL — preserve the background colors exactly as uploaded. Only add a very subtle overlay if text sits directly on the background — maximum rgba(0,0,0,0.08) or rgba(255,255,255,0.08). Never darken or tint a pattern/stripe/texture background. ';
+    photoInstructions += '(3) Event headline and subheadline centered on top in a color that contrasts naturally with the background. ';
+    var shapeInBoth = data.photoShape || 'ai'; photoInstructions += '(4) Portrait photo (__HERO_PHOTO__ placeholder) in a framed shape. Shape: ' + (shapeInBoth === 'ai' ? 'choose the best shape for this vibe — arch, circle, or oval all work well here' : shapeInBoth) + '. Width: 65%, max-width:300px, object-fit:cover, overflow:hidden, display:block, margin:20px auto. Border: lean thin (1-2px), style matching the overall design personality. ';
+  } else if (data.heroBgB64) {
+    photoInstructions += 'HERO BACKGROUND — NON-NEGOTIABLE: Use __HERO_BG__ as a full-bleed CSS background: background-image:url(__HERO_BG__); background-size:cover; background-position:center; min-height:500px; position:relative; width:100%. ';
+    photoInstructions += 'CRITICAL — preserve the background image colors exactly as uploaded. Do NOT add any overlay or tint. If a pattern or texture was uploaded, it must show at full original color. Only if a dark photo was uploaded may you add a very subtle rgba(255,255,255,0.1) overlay. Headline and details sit directly on the background in a contrasting color. ';
+  } else if (data.heroB64) {
+    var shapeVal = data.photoShape || 'ai';
+    var shapeCSS = '';
+    var shapeBorder = 'Choose a border weight and style that fits the overall design personality — lean thin (1-2px default). Match border style to the vibe (solid for elegant/minimal, dashed for playful, double for luxury).';
+    if (shapeVal === 'arch') {
+      shapeCSS = 'border-radius:50% 50% 0 0 / 50% 50% 0 0; overflow:hidden; width:65%; max-width:300px; aspect-ratio:3/4; object-fit:cover; display:block; margin:20px auto;';
+    } else if (shapeVal === 'circle') {
+      shapeCSS = 'border-radius:50%; overflow:hidden; width:60%; max-width:280px; aspect-ratio:1/1; object-fit:cover; display:block; margin:20px auto;';
+    } else if (shapeVal === 'rectangle') {
+      shapeCSS = 'border-radius:12px; overflow:hidden; width:72%; max-width:320px; aspect-ratio:4/5; object-fit:cover; display:block; margin:20px auto;';
+    } else if (shapeVal === 'oval') {
+      shapeCSS = 'border-radius:50%; overflow:hidden; width:55%; max-width:260px; aspect-ratio:3/4; object-fit:cover; display:block; margin:20px auto;';
+    } else if (shapeVal === 'polaroid') {
+      shapeCSS = 'border-radius:4px; overflow:hidden; width:65%; max-width:300px; aspect-ratio:4/5; object-fit:cover; display:block; margin:20px auto; padding:10px 10px 32px 10px; background:white; box-shadow:0 4px 20px rgba(0,0,0,.15);';
+    } else {
+      shapeCSS = 'Choose the most beautiful frame shape for this event type and vibe. Options: arch (border-radius:50% 50% 0 0/50% 50% 0 0), circle (border-radius:50%), rectangle with rounded corners, or oval. width 60-70%, aspect-ratio appropriate to shape, object-fit:cover, display:block, margin:20px auto.';
+    }
+    photoInstructions += 'HERO PHOTO only (no background): Place __HERO_PHOTO__ in a framed shape. CSS: ' + shapeCSS + ' ' + shapeBorder + ' Place over a CSS gradient or pattern background.';
   } else {
-    photoInstructions += 'No hero photo. Create a beautiful full-bleed CSS gradient or pattern in the hero that matches the vibe. No broken <img> tags. ';
+    photoInstructions += 'No hero photo or background. Create a beautiful full-bleed CSS gradient or illustrated texture hero. No broken img tags. ';
+  }
+
+  if (data.closingBgB64) {
+    photoInstructions += 'CLOSING SECTION — NON-NEGOTIABLE: Use __CLOSING_BG__ as full-bleed CSS background: background-image:url(__CLOSING_BG__); background-size:cover; background-position:center. Preserve the image colors exactly — no heavy overlay. Text should contrast naturally with the background. ';
+  } else {
+    photoInstructions += 'No closing background. Use a CSS gradient or pattern for the closing section that complements the hero. ';
   }
 
   if (data.galleryImages.length > 0) {
-    photoInstructions += data.galleryImages.length + ' gallery photos provided. Use src="GALLERY_PHOTO_1_PLACEHOLDER", src="GALLERY_PHOTO_2_PLACEHOLDER", etc. for each gallery <img> — they will be injected after generation. ';
+    photoInstructions += data.galleryImages.length + ' gallery photos provided. Place <img> tags with these src placeholders in the gallery section — they will be replaced with real photos after generation: ';
+    for (var pi = 0; pi < data.galleryImages.length; pi++) {
+      photoInstructions += 'src="__GALLERY_PHOTO_' + (pi+1) + '__" ';
+    }
+    photoInstructions += 'Each image: object-fit:cover, border-radius matching design. ';
   } else {
-    photoInstructions += 'No gallery photos. Create styled CSS placeholder cards with gradients or patterns that feel intentional — never broken img tags. ';
+    photoInstructions += 'No gallery photos. Create styled CSS placeholder cards with gradients that feel intentional. ';
   }
 
-  var prompt = 'You are building a beautiful single-page HTML event invite. This is a creative project — not a business website. No SEO, no JSON-LD, no meta tags beyond basics. Pure visual delight and emotional resonance.\n\n' +
+  var vibe = data.vibe || 'fun and celebratory';
+  var tone = data.tone || 'warm and exciting';
+  var eventType = data.eventType || 'party';
+  var honoree = data.honoreeNames || 'the guest of honor';
+
+  // Compute font pairing from vibe
+  var displayFont = 'Cormorant Garamond';
+  var bodyFont = 'DM Sans';
+  var vibeL = vibe.toLowerCase();
+  var eventTypeL = (data.eventType || '').toLowerCase();
+  var combined = vibeL + ' ' + eventTypeL + ' ' + (data.eventDescription || '').toLowerCase();
+  if (combined.indexOf('elegant') > -1 || combined.indexOf('romantic') > -1 || combined.indexOf('bridal') > -1 || combined.indexOf('intimate') > -1 || combined.indexOf('wedding') > -1 || combined.indexOf('shower') > -1) {
+    displayFont = 'Cormorant Garamond'; bodyFont = 'DM Sans';
+  } else if (combined.indexOf('editorial') > -1 || combined.indexOf('moody') > -1 || combined.indexOf('dramatic') > -1 || combined.indexOf('chic') > -1 || combined.indexOf('fashion') > -1) {
+    displayFont = 'Fraunces'; bodyFont = 'Inter';
+  } else if (combined.indexOf('bold') > -1 || combined.indexOf('colorful') > -1 || combined.indexOf('neon') > -1 || combined.indexOf('rave') > -1) {
+    displayFont = 'Abril Fatface'; bodyFont = 'Poppins';
+  } else if (combined.indexOf('playful') > -1 || combined.indexOf('fun') > -1 || combined.indexOf('party') > -1 || combined.indexOf('birthday') > -1 || combined.indexOf('sweet') > -1 || combined.indexOf('celebration') > -1) {
+    displayFont = 'Cormorant Garamond'; bodyFont = 'DM Sans';
+  } else if (combined.indexOf('retro') > -1 || combined.indexOf('vintage') > -1 || combined.indexOf('glam') > -1 || combined.indexOf('warm') > -1 || combined.indexOf('classic') > -1) {
+    displayFont = 'Libre Baskerville'; bodyFont = 'Nunito';
+  } else if (combined.indexOf('formal') > -1 || combined.indexOf('luxury') > -1 || combined.indexOf('gala') > -1 || combined.indexOf('black tie') > -1) {
+    displayFont = 'Cinzel'; bodyFont = 'Raleway';
+  } else if (combined.indexOf('minimal') > -1 || combined.indexOf('clean') > -1 || combined.indexOf('modern') > -1 || combined.indexOf('simple') > -1) {
+    displayFont = 'Young Serif'; bodyFont = 'Karla';
+  } else if (combined.indexOf('earthy') > -1 || combined.indexOf('organic') > -1 || combined.indexOf('coastal') > -1 || combined.indexOf('natural') > -1 || combined.indexOf('garden') > -1 || combined.indexOf('boho') > -1) {
+    displayFont = 'Gilda Display'; bodyFont = 'Outfit';
+  } else if (combined.indexOf('pool') > -1 || combined.indexOf('summer') > -1 || combined.indexOf('tropical') > -1 || combined.indexOf('beach') > -1 || combined.indexOf('splash') > -1) {
+    displayFont = 'Libre Baskerville'; bodyFont = 'Nunito';
+  } else if (combined.indexOf('graduation') > -1 || combined.indexOf('grad') > -1 || combined.indexOf('achieve') > -1) {
+    displayFont = 'Fraunces'; bodyFont = 'Inter';
+  } else if (combined.indexOf('baby') > -1 || combined.indexOf('shower') > -1 || combined.indexOf('soft') > -1 || combined.indexOf('pastel') > -1) {
+    displayFont = 'Libre Baskerville'; bodyFont = 'Nunito';
+  }
+
+  // Compute animation — user selection overrides event type
+  var animType = data.confettiType && data.confettiType !== 'none' ? data.confettiType : 'none';
+  if (animType === 'none') {
+    // Auto-select based on event type if user picked none
+    animType = 'sparkles'; // default
+    var etL2 = eventType.toLowerCase();
+    if (etL2.indexOf('pool') > -1 || etL2.indexOf('beach') > -1 || etL2.indexOf('splash') > -1) animType = 'bubbles';
+    else if (etL2.indexOf('bridal') > -1 || etL2.indexOf('wedding') > -1) animType = 'petals';
+    else if (etL2.indexOf('birthday') > -1 || etL2.indexOf('sweet') > -1 || etL2.indexOf('grad') > -1) animType = 'confetti';
+    // But if user explicitly chose none, respect that
+    animType = data.confettiType === 'none' ? 'none' : animType;
+  }
+  var animType_legacy = animType;
+  var etL = eventType.toLowerCase();
+  if (etL.indexOf('pool') > -1 || etL.indexOf('beach') > -1 || etL.indexOf('splash') > -1 || vibeL.indexOf('pool') > -1) animType = 'bubbles';
+  else if (etL.indexOf('halloween') > -1) animType = 'bats';
+  else if (etL.indexOf('bridal') > -1 || etL.indexOf('wedding') > -1 || vibeL.indexOf('romantic') > -1) animType = 'petals';
+  else if (etL.indexOf('birthday') > -1 || etL.indexOf('sweet') > -1 || etL.indexOf('grad') > -1) animType = 'confetti';
+  else if (vibeL.indexOf('elegant') > -1 || vibeL.indexOf('chic') > -1) animType = 'stars';
+
+  var animCode = '';
+  if (animType_legacy === 'bubbles') {
+    animCode = 'Create 15 floating bubble divs (border-radius:50%, border:2px solid rgba(255,255,255,0.3), background:rgba(255,255,255,0.08), sizes 20-60px, position:fixed, z-index:0, pointer-events:none) that float upward continuously with CSS keyframes. Stagger delays 0-6s. Start immediately on load.';
+  } else if (animType_legacy === 'confetti') {
+    animCode = 'Canvas element (position:fixed, inset:0, pointer-events:none, z-index:0). JS particle system: 60 particles in palette colors that fall continuously from the top, each with x, y, rotation, speed, color, size. setInterval at 16ms. var/function(){} only. Subtle — not overwhelming.';
+  } else if (animType_legacy === 'petals') {
+    animCode = 'Create 12 soft petal shapes (border-radius:60% 40% 60% 40%, pastel palette tones, 12-22px, opacity:0.5, position:fixed, pointer-events:none) drifting downward and rotating gently. CSS keyframes, 5-9s duration, staggered delays.';
+  } else if (animType_legacy === 'stars') {
+    animCode = 'Create 20 small star shapes (✦, 3-7px, white/gold, opacity 0.3-0.6, position:fixed, pointer-events:none) twinkling via CSS opacity keyframes with staggered 0-4s delays. Spread across background.';
+  } else if (animType_legacy === 'bats') {
+    animCode = 'Create 6 bat emoji spans (font-size:14-20px, position:fixed, pointer-events:none) flying across screen at different heights using CSS translateX keyframes.';
+  } else {
+    animCode = 'Create 20 small sparkle particles (✦ characters, 4-10px, palette accent color, opacity 0.25-0.55, position:fixed, pointer-events:none, z-index:0) drifting upward and fading. CSS keyframes, 4-7s duration, staggered delays.';
+  }
+
+  var newPrompt =
+    '=== BUILTSY INVITE — CREATIVE BRIEF ===\n\n' +
+
+    '!! BEFORE YOU WRITE A SINGLE LINE OF HTML — READ THIS FIRST !!\n' +
+    'STEP 1: The very first element inside <body> MUST be this exact div:\n' +
+    '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden"></div>\n' +
+    'STEP 2: At the very end of <body>, before </body>, add a <script> that populates #bg-anim with animated particles. ' + (data.confettiType === 'none' ? 'Use sparkles: 20 spans inside #bg-anim, each position:absolute, random top/left across full viewport, ✦ char, palette accent color, CSS keyframe drifting upward.' : animCode + ' — append all elements INTO document.getElementById("bg-anim").') + '\n' +
+    'If #bg-anim is not the first child of <body>, the animation WILL NOT WORK. Do not skip this. Do not nest it inside any section.\n\n' +
+
+    '== DESIGNER PERSONA ==\n' +
+    'You are a world-class editorial art director and immersive digital designer. You craft emotional, cinematic, custom-feeling digital invitations. Every design decision is intentional. This must feel like it was designed for THIS event and THESE guests — never a template.\n\n' +
+
+    '== NON-NEGOTIABLE RULES ==\n' +
+    '1. FONTS: Display=' + displayFont + ' Body=' + bodyFont + ' — load BOTH from Google Fonts. Use display font bold italic for ALL headlines. Body font for everything else. Honoree name max 2.8rem. Subheadline italic 1.1rem. NEVER use other fonts.\n' +
+    '2. NO BLUE BUTTONS: ALL buttons/CTAs use palette accent color. Never #4361EE, never any default blue.\n' +
+    '3. ANIMATION: ' + (data.confettiType === 'none' ? 'No background animation.' : animCode) + ' CRITICAL: Place the animation container as the VERY FIRST child of <body>, before any other elements. Use position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; pointer-events:none; overflow:hidden — it must cover the entire screen from the top and stay fixed as the user scrolls. Never nest it inside a section or wrapper div.\n' +
+    '4. TEXT CONTAINERS: Every body text block inside a card. Preferred: <div style=\"background:linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.6));border-radius:16px;padding:24px 20px;border:1px solid rgba(0,0,0,0.07)\">\n' +
+    '5. EYEBROW+LINE — CRITICAL, EVERY SECTION, NO EXCEPTIONS: Every section MUST begin with this exact HTML eyebrow pattern. Count your sections and verify each one has it before outputting. EXACT HTML: <div style=\"display:flex;align-items:center;gap:10px;margin-bottom:16px\"><span style=\"font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:[ACCENT];font-weight:800;white-space:nowrap;font-family:[BODY_FONT];text-shadow:none\">[SECTION LABEL]</span><span style=\"flex:1;height:1.5px;background:[ACCENT];opacity:.4;margin-left:4px\"></span></div> — [ACCENT] = actual hex color (NOT a variable name), [BODY_FONT] = actual font name, [SECTION LABEL] = short all-caps label like THE PLAN · THE DETAILS · MEMORIES · QUESTIONS · RSVP · HELP US OUT · THE CLOSING. The line rule must be visible. Bold, colored, uppercase. Missing eyebrow = broken design.\n' +
+    '6. DIVIDERS: Between sections use only clean whitespace — no full-width color blocks or gradients between sections.\n' +
+    '7. INLINE COLOR: Highlight key phrases: <span style=\"color:[ACCENT];font-weight:600\">key phrase</span> — use in every body section for names, dates, contact info, action phrases\n' +
+    '8. HERO PHOTO SHAPE: Use the shape and CSS specified in PHOTO INSTRUCTIONS below. Choose border weight that fits the design personality — lean thin (1-2px default). Solid border for elegant/minimal, dashed for playful, double for luxury.\n' +
+    '9. EVENT BADGE in hero: <div style=\"display:inline-block;border:2px dashed [ACCENT];border-radius:20px;padding:6px 18px;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase\">EVENT THEME</div>\n' +
+    '10. WHEN/WHERE: Side by side with vertical divider: WHEN [date] | WHERE [location] — use micro-labels, italic serif for values\n' +
+    '11. OMBRÉ CARDS: Gradient backgrounds are ONLY allowed inside individual cards — never on the page background, never full-width, never between sections. Inside cards use: background:linear-gradient(135deg,rgba(ACCENT,0.06),rgba(255,255,255,0.95)). The page body background must stay clean and flat.\n' +
+    '12. MIXED BORDERS: Vary border styles — solid, dashed, none — across sections for editorial depth\n' +
+    '13. RSVP CONFETTI: ' + (data.rsvpConfetti ? 'On submit burst 50 colored particles from button.' : 'No confetti burst.') + '\n' +
+    '14. ZERO EMOJIS: No emojis anywhere on the page. Strip any from user-provided text.\n' +
+    '15. ALL INPUTS — NO DEFAULT BROWSER STYLES: Every input, textarea, and text field on the page must have: outline:none; border:1.5px solid rgba(ACCENT,0.3); border-radius:12px; padding:12px 14px; font-family:inherit; background:white. On focus: border-color:[ACCENT]; box-shadow:0 0 0 3px rgba(ACCENT,0.12). NEVER allow the default blue browser outline to appear anywhere.\n' +
+    '16. NOTE/CALLOUT CARDS: Any standalone note, instruction, or allergy callout must NOT be just plain italic text in a box. Every such card needs: (a) a small eyebrow label above it (e.g. "PLEASE NOTE", "GOOD TO KNOW", "FROM THE HOST") in accent color small caps, (b) the note text in body font at 0.9rem, (c) a left border accent: border-left:3px solid [ACCENT]; padding-left:16px. Never render a note as floating italic text alone.\n' +
+    '17. FONT CONSISTENCY: Every text element on the page must use either the display font or the body font — nothing else. Set this in a global CSS rule at the top: * { font-family: [BODY_FONT], sans-serif; } and h1,h2,h3,.display { font-family: [DISPLAY_FONT], serif; }. No element should fall back to a system font.\n\n' +
 
     '== EVENT INFO ==\n' +
-    'Type: ' + (data.eventType || 'Party') + '\n' +
-    'Honoree(s): ' + (data.honoreeNames || 'the guest of honor') + '\n' +
-    'Date: ' + (data.eventDate || 'TBD') + '\n' +
-    'Location: ' + (data.eventLocation || 'TBD') + '\n' +
-    (data.eventTheme ? 'Theme / Dress code: ' + data.eventTheme + '\n' : '') +
-    (data.eventDescription ? 'Description: ' + data.eventDescription + '\n' : '') +
-    (data.eventItinerary ? 'Itinerary:\n' + data.eventItinerary + '\n' : '') +
-    (data.eventExtras ? 'Extra notes: ' + data.eventExtras + '\n' : '') +
-    (data.contactInfo ? 'Contact: ' + data.contactInfo + '\n' : '') +
+    'Name: ' + (data.honoreeNames || '') + '\n' +
+    'Type: ' + (data.eventType || '') + '\n' +
+    'Date: ' + (data.eventDate || '') + (data.eventTime ? ' at ' + data.eventTime : '') + (data.eventTimezone ? ' ' + data.eventTimezone : '') + '\n' +
+    'Location: ' + (data.eventLocation || '') + '\n' +
+    'INTERNAL VIBE NOTE [DO NOT DISPLAY — NEVER SHOW ON PAGE]: ' + (data.vibe || '') + '\n' +
+    (data.eventTheme ? '[INTERNAL — DO NOT DISPLAY ON PAGE] Design direction: ' + data.eventTheme + '\n' : '') +
+    (data.vibeRef ? 'Tagline: \"' + data.vibeRef + '\"\n' : '') +
+    (data.eventDescription ? 'Description — use EXACT words: ' + data.eventDescription + '\n' : '') + '\n' +
 
-    '\n== VIBE & STYLE ==\n' +
-    'Overall vibe: ' + (data.vibe || 'Decide for me — make it fun and beautiful') + '\n' +
-    'Tone of copy: ' + (data.tone || 'Decide for me') + '\n' +
-    (data.vibeRef ? 'Vibe reference: ' + data.vibeRef + '\n' : '') +
+    '== PALETTE ==\n' +
+    (function() {
+      if (data.palette === 'custom' && data.customHex) {
+        return 'USER BRAND COLORS: ' + data.customHex.userColors.join(', ') + '. Use ONLY these colors throughout the entire design. You decide how to assign them — which is the background, which is the accent, which is the text color — choosing the most beautiful, legible, and cohesive combination. Do not introduce any colors not in this list.\n';
+      }
+      if (data.palette && data.palette.indexOf('mono-') === 0) {
+        return 'Monochromatic: ' + data.palette.replace('mono-','') + ' family, 4-5 tones\n';
+      }
+      var paletteLookup = {
+        'rosepetal':  {bg:'#fff0f3', surface:'#ffb3c1', accent:'#c77dff', text:'#3d0066'},
+        'ballerina':  {bg:'#f8e8ee', surface:'#e8a0bf', accent:'#ba90c6', text:'#3d1a4a'},
+        'lavcloud':   {bg:'#f5f0ff', surface:'#c8b8e8', accent:'#9b72cf', text:'#2d1b69'},
+        'magnolia':   {bg:'#faf7f0', surface:'#f2d4c2', accent:'#c8785a', text:'#3a1a10'},
+        'sugarplum':  {bg:'#f9f0f5', surface:'#d4a5c9', accent:'#9b4f7c', text:'#2d0a22'},
+        'cottagecore':{bg:'#f5ede0', surface:'#d4b8a0', accent:'#6a8a50', text:'#2a3a18'},
+        'champagne':  {bg:'#fdf6e8', surface:'#e8c99a', accent:'#c09060', text:'#3a2010'},
+        'buttersage': {bg:'#fef9e8', surface:'#c8d890', accent:'#6a8a50', text:'#1a2a10'},
+        'coastlinen': {bg:'#f8f6f0', surface:'#c8d8e8', accent:'#5080a0', text:'#1a2a3a'},
+        'mornmist':   {bg:'#f0f4f8', surface:'#b8ccd8', accent:'#5070a0', text:'#1a2a38'},
+        'peach':      {bg:'#fff5f0', surface:'#ffb899', accent:'#e87050', text:'#3a1a10'},
+        'ivgold':     {bg:'#faf6ee', surface:'#d4a843', accent:'#8b5e3c', text:'#1a0f08'},
+        'slatblush':  {bg:'#f8f6f8', surface:'#ddd0d8', accent:'#8070a0', text:'#282038'},
+        'citrus':     {bg:'#fff3e0', surface:'#ff9505', accent:'#e06000', text:'#1a0800'},
+        'midnight':   {bg:'#0d0d1a', surface:'#6c63ff', accent:'#c084fc', text:'#e0e0ff'},
+        'editorial':  {bg:'#0a0a0a', surface:'#f5f5f5', accent:'#c9002b', text:'#e8e0d8'},
+        'blacktie':   {bg:'#0d0d0d', surface:'#2a2a2a', accent:'#b8b8b8', text:'#f5e6c8'},
+        'darkrom':    {bg:'#0d0508', surface:'#8b0000', accent:'#c9a84c', text:'#f5e6c8'},
+        'noirgar':    {bg:'#0a0d0a', surface:'#1a3320', accent:'#8b7355', text:'#f0ead6'},
+        'velvet':     {bg:'#0a0818', surface:'#1e0a4a', accent:'#7b5ea7', text:'#c8c0e8'},
+        'moodvio':    {bg:'#1a0a2e', surface:'#4a1a8b', accent:'#c084fc', text:'#fdf0ff'},
+        'obsidian':   {bg:'#0a0a0a', surface:'#1e1e1e', accent:'#909090', text:'#e8e8e8'},
+        'goldgala':   {bg:'#1a1a2e', surface:'#c9a84c', accent:'#f5e6c8', text:'#fff8ee'},
+        'sunset':     {bg:'#1a0533', surface:'#f97316', accent:'#fbbf24', text:'#fde8d8'},
+        'berry':      {bg:'#1a0520', surface:'#9b1d70', accent:'#e63995', text:'#fdf0f8'},
+        'neon':       {bg:'#0d0d0d', surface:'#1a1a1a', accent:'#39ff14', text:'#ff10f0'},
+        'espresso':   {bg:'#1a0f08', surface:'#6b3e26', accent:'#c9956c', text:'#f5e6d3'},
+        'bloom':      {bg:'#fdf2f8', surface:'#f472b6', accent:'#a855f7', text:'#1e1e2e'}
+      };
+      if (data.palette && paletteLookup[data.palette]) {
+        var p = paletteLookup[data.palette];
+        return 'EXACT COLORS for "' + data.palette + '" palette — use these hex values precisely:\n' +
+               'bg=' + p.bg + ' surface=' + p.surface + ' accent=' + p.accent + ' text=' + p.text + '\n' +
+               'DO NOT substitute or invent different colors. These are the exact palette the user selected.\n';
+      }
+      return 'AI choice — match vibe, be specific and bold\n';
+    })() + '\n' +
 
-    '\n== CREATIVE DIRECTION ==\n' +
-    'Go all in on the vibe. Choose a distinctive Google Font pairing (NOT Inter, NOT Roboto). Pick a color palette that feels designed for this specific event — not generic. The layout can be unexpected — center-heavy, asymmetric, editorial, whatever serves the feeling. Write all copy (headlines, taglines, body, button labels, confirmation message, footer) in the specified tone. Make the page feel like it was designed by someone who really loves this event.\n\n' +
-    'EMOJI RULE: Use a maximum of 3–5 emojis total across the entire page. Place them only where they add genuine visual accent — never use emojis as bullet points, section dividers, or decoration on every heading. A page with 3 well-placed emojis looks designed. A page with 30 emojis looks like a text message. Less is more.\n\n' +
-    '== DELIGHT MANDATE — NON-NEGOTIABLE ==\n' +
-    'This is a celebration page. It should feel like opening a gift. Every invite MUST have all three tiers:\n\n' +
-    'TIER 1 — Required animations (both required):\n' +
-    '(1) Hero entrance animation — the honoree name(s) animate in on load (fade up, slide in, or typewriter effect depending on vibe). Subheading follows 0.3s later. Makes the page feel alive the moment it opens.\n' +
-    '(2) Scroll-triggered reveals — every section below the hero fades or slides in as the user scrolls. Use IntersectionObserver with var/function(){} syntax only.\n\n' +
-    'TIER 2 — RSVP celebration moment (required):\n' +
-    'When a guest submits their RSVP or clicks the RSVP button, trigger a celebration animation — confetti burst, floating hearts, stars, balloons, or petals — matched to the event theme. For a beach party: wave animation. For a birthday: candles and sparkles. For a bridal shower: rose petals. For a graduation: diplomas and stars. Make it feel earned.\n\n' +
-    'TIER 3 — One surprise interactive moment (required, be inventive):\n' +
-    'Add one unexpected interaction specific to this event that will make guests smile or gasp. Examples: birthday candles guests can blow out using the microphone (Web Audio API detecting a sharp sound), a countdown timer to the event with animated numbers, a photo gallery that opens in a lightbox, a "who\'s coming" reveal that animates, a themed cursor (flamingo for a pool party, hearts for a bridal shower), a parallax hero background, an animated map pin showing the venue location. Pick what fits the event vibe best. This is the moment guests screenshot and share.\n\n' +
-    'All JS must use var (not const/let), function(){} (not arrow functions), onclick= (not addEventListener). No exceptions.\n\n'
+    '== PAGE SECTIONS (in order) ==\n' +
+    '1. HERO (full viewport) — design it however feels right for this event and vibe. Be creative. This is your canvas.\n' +
+    'REQUIRED CONTENT — the hero MUST include all of these, styled however you choose:\n' +
+    '   - Honoree name — ' + displayFont + ', bold, large (2.4-2.8rem max)\n' +
+    '   - Event type / occasion — ' + (data.eventType || '') + '\n' +
+    '   - Date — ' + (data.eventDate || '') + '\n' +
+    (data.eventTime ? '   - Time — ' + data.eventTime + '\n' : '') +
+    '   - Location — ' + (data.eventLocation || '') + '\n' +
+    (data.eventTheme ? '   [DO NOT DISPLAY]\n' : '') +
+    (data.vibeRef ? '   - Tagline — "' + data.vibeRef + '"\n' : '') +
+    (data.heroRsvpBtn ? '   - RSVP button — accent color, never blue, scrolls to #rsvp\n' : '') +
+    (data.helpList && data.helpList.enabled ? '   - Help Make It Happen button — outline style, scrolls to #help\n' : '') +
+    'Think: arch card over bold background, oversized typography, layered composition, floating badge — surprise us. No emojis.\n' +
+    'HERO LAYOUT ORDER — always in this sequence: (1) event badge/label, (2) honoree name, (3) event type subtitle or tagline, (4) photo, (5) date/time/location, (6) buttons. The subtitle and label appear ABOVE the photo — never below it. This creates visual balance and context before the image.\n' +
+    'HERO DATE/LOCATION DISPLAY: Show date, time, and location as elegant micro-details — NOT in a chunky card or box. Use: small caps labels (WHEN / WHERE / TIME) in accent color at 0.6rem, values in italic display font at 0.95rem, arranged in a clean single row or two-column layout with a subtle vertical divider between them. Keep it refined and airy — not boxy or form-like.\n\n' +
 
-    '== PHOTOS ==\n' +
-    photoInstructions + '\n\n' +
+    '2. WHEN & WHERE — MUST start with eyebrow+line header labeled "THE DETAILS": Pink/tinted card. WHEN [date] | [vertical divider] | WHERE [location]. Micro-labels WHEN/WHERE in small caps. Date and location in italic display font.' + (data.venueLink ? ' Include a subtle "View venue →" link styled in accent color linking to: ' + data.venueLink + '. Place it below the location, small and refined — not a big button.' : '') + '\n\n' +
 
-    '== RSVP ==\n' +
+    '3. ITINERARY — MUST start with eyebrow+line header labeled "THE DETAILS" or "THE PLAN": ' + (data.eventItinerary ?
+      'Timeline layout with date labels in accent color (micro-label style), event name in italic display font, details in body font. Use EXACT details from itinerary below — do not add or change anything. Contained in white card. Include dashed callout box for any important notes/exceptions. No emojis.\nItinerary details: ' + data.eventItinerary :
+      'No itinerary was provided — generate a simple, elegant itinerary based ONLY on the event date, time, location, and description already given. Keep it minimal — arrival, main event, departure. Use placeholder-style labels like "Arrive", "Celebration begins", "Evening ends". Do not invent specific activities not mentioned. Style as timeline with date/time labels in accent color micro-label style, details in body font, white card container.') + '\n\n' +
+
+    '4. STORY/DESCRIPTION — MUST start with eyebrow+line header labeled "THE STORY" or "THE CELEBRATION": ' + (data.eventDescription ? 'Use EXACT words from the description below — do not rewrite, summarize, or add to it. Ombré gradient card. Inline accent color on key names/phrases. Do NOT display the event theme or vibe field as a pull quote — it is a design direction only, not copy to show on the page.\nDescription: ' + data.eventDescription : 'Skip if no description provided.') + '\n\n' +
+
+    '5. FAQ (id=\"faq\") — REQUIRED: Accordion with 4-6 event-specific questions parents/guests would ask. Warm conversational tone. Examples: drop-off/pickup, what to bring, food/allergies, contact info, parking. Style with eyebrow+line, border-bottom on each row, smooth expand.\n\n' +
+
+    '6. RSVP (id=\"rsvp\"): Style as a premium editorial form. REQUIRED design pattern:\n' +
+    'TOP: Deadline pill badge if set: <div style=\"display:inline-block;background:ACCENT;color:white;border-radius:20px;padding:5px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;margin-bottom:16px\">RSVP BY DATE</div>\n' +
+    'HEADLINE: Bold italic display font, emotional + event-specific\n' +
+    'SUBTEXT: One warm sentence about what happens after submit\n' +
+    'LABELS: ALL CAPS, letter-spacing:.08em, accent color, 0.75rem\n' +
+    'INPUTS: outline:none; border:1.5px solid rgba(ACCENT,0.3); border-radius:12px; padding:14px 16px — NO default blue browser outline ever\n' +
+    'YES/NO: Two side-by-side cards with text only (no emojis), soft border, accent border when selected\n' +
+    'BUTTON: Full width, accent background, white text, border-radius:30px, padding:16px, bold\n' +
     rsvpInstructions + '\n\n' +
+    (data.helpList && data.helpList.enabled && data.helpList.items.length ?
+      '7. HELP MAKE IT HAPPEN (id=\"help\") — REQUIRED:\n' +
+      'Headline: \"' + data.helpList.headline + '\"\n' +
+      'Intro: \"' + data.helpList.intro + '\"\n' +
+      'ITEM LIST — render EXACTLY these items, word for word. Do NOT add descriptions, subtitles, or extra text to any item. Each item is just its name:\n' +
+      data.helpList.items.map(function(item, i) { return '   ' + (i+1) + '. ' + item; }).join('\n') + '\n' +
+      'Layout: each item on its own row — item name LEFT in body font, Claim pill button RIGHT. Thin divider between rows. NO descriptions under item names.\n' +
+      'CLAIMS SYSTEM — copy this JS exactly into a script tag:\\n' +
+      'var INVITE_ID = "INVITE_ID_PLACEHOLDER";\\n' +
+      'var CLAIMS_BASE = "CLAIMS_SCRIPT_URL";\\n' +
+      'var claimedItems = {};\\n' +
+      'function loadClaims() {\\n' +
+      '  fetch(CLAIMS_BASE + "/claims/" + encodeURIComponent(INVITE_ID))\\n' +
+      '  .then(function(r){return r.json();})\\n' +
+      '  .then(function(d){\\n' +
+      '    if(d && d.claims){claimedItems=d.claims;renderClaimStates();}\\n' +
+      '  }).catch(function(){});\\n' +
+      '}\\n' +
+      'function renderClaimStates() {\\n' +
+      '  var rows = document.querySelectorAll("[data-item]");\\n' +
+      '  for(var i=0;i<rows.length;i++){\\n' +
+      '    var n=rows[i].getAttribute("data-item");\\n' +
+      '    if(claimedItems[n]){\\n' +
+      '      rows[i].innerHTML="<span style=\\\'background:#dcfce7;color:#16a34a;font-weight:700;font-size:.82rem;padding:5px 12px;border-radius:20px;display:inline-block\\\'>&check; Claimed by "+claimedItems[n]+"</span>";\\n' +
+      '    }\\n' +
+      '  }\\n' +
+      '}\\n' +
+      'function sanitizeId(s){return s.replace(/[^a-zA-Z0-9]/g,"_");}\\n' +
+      'function claimItem(itemName){\\n' +
+      '  var el=document.getElementById("claim-input-"+sanitizeId(itemName));\\n' +
+      '  if(!el){alert("Field not found.");return;}\\n' +
+      '  var nameVal=el.value.trim();\\n' +
+      '  if(!nameVal){alert("Please enter your name first!");return;}\\n' +
+      '  fetch(CLAIMS_BASE+"/claim",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({inviteId:INVITE_ID,item:itemName,name:nameVal})})\\n' +
+      '  .then(function(r){return r.json();})\\n' +
+      '  .then(function(d){\\n' +
+      '    if(d.ok){claimedItems[itemName]=nameVal;renderClaimStates();}\\n' +
+      '    else{alert("Already claimed!");}\\n' +
+      '  }).catch(function(){alert("Could not connect.");});\\n' +
+      '}\\n' +
+      'loadClaims();setInterval(loadClaims,10000);\\n' +
+      'CRITICAL HTML for each item row — use EXACTLY this structure:\\n' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.06)">\\n' +
+      '  <span>[ITEM NAME]</span>\\n' +
+      '  <div data-item="[ITEM NAME]" id="claim-state-[SANITIZED_ID]">\\n' +
+      '    <div style="display:flex;gap:8px;align-items:center">\\n' +
+      '      <input id="claim-input-[SANITIZED_ID]" type="text" placeholder="Your name" style="border:1px solid #ddd;border-radius:8px;padding:6px 10px;font-size:.85rem;width:110px;outline:none">\\n' +
+      '      <button onclick="claimItem(\\x27[ITEM NAME]\\x27)" style="background:var(--accent,#ee70bc);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer">Claim</button>\\n' +
+      '    </div>\\n' +
+      '  </div>\\n' +
+      '</div>\\n' +
+      'SANITIZED_ID = item name with ALL non-alphanumeric chars replaced by underscore. The data-item attribute value must be the EXACT original item name. The input id must use sanitizeId(). These must match exactly or claiming will break.\\n' +
+      (data.helpList.allergyNote ? 'Allergy callout box below list: \"' + data.helpList.allergyNote + '\"\n' : '') :
+      '') + '\n' +
 
-    (data.helpList && data.helpList.enabled && data.helpList.items.length ? (
-      '== HELP MAKE IT HAPPEN SECTION ==\n' +
-      'Include a "' + data.helpList.headline + '" section on the page.\n' +
-      'Intro copy: "' + data.helpList.intro + '"\n' +
-      'Items guests can claim: ' + data.helpList.items.join(', ') + '\n' +
-      'Build this as a grid of item cards. Each card shows the item name and a "Claim this →" button.\n' +
-      'When claimed: show a small name input ("Your first name?") that appears inline, then on submit the button changes to "✓ Claimed by [Name]" and the card gets a subtle checkmark style.\n' +
-      'On page load call https://builtsy-api-production.up.railway.app/claims/INVITE_ID_PLACEHOLDER and render claimed items. When claimed POST to https://builtsy-api-production.up.railway.app/claim with body {inviteId:INVITE_ID_PLACEHOLDER,item:itemName,name:guestName}. Poll every 15 seconds. Embed var INVITE_ID=\'INVITE_ID_PLACEHOLDER\' at top of script. Fallback to unclaimed state if fetch fails.\n' +
-      'All JS must use var/function(){}/onclick= syntax.\n' +
-      (data.helpList.allergyNote ? 'Allergy note (show as a callout box after the items): "' + data.helpList.allergyNote + '"\n' : '') +
-      '\n'
-    ) : '') +
+    '9. CLOSING CTA — CRITICAL LAYOUT RULE: This section MUST be a completely separate div that comes AFTER the gallery div is fully closed. NEVER use position:absolute or position:fixed. NEVER place this inside or overlapping the gallery. The closing div must have: display:block; width:100%; position:static; margin-top:0; padding:60px 24px; text-align:center; background:[soft gradient or closing bg]. It must appear as its own full-width row below all photos. Eyebrow+line header labeled "THE CLOSING" or "SEE YOU THERE". Large italic emotional message like "We cannot wait to celebrate with you!" in display font. If the closing text is appearing on top of photos, the structure is WRONG — close the gallery div first, then open a new section div.\n\n' +
 
-    '== TECHNICAL REQUIREMENTS ==\n' +
-    '- Single self-contained HTML file. All CSS and JS inline. No external files.\n' +
-    '- Google Fonts loaded via <link> tag (pick fonts that match the vibe).\n' +
-    '- MOBILE-FIRST IS NON-NEGOTIABLE. Design for a 390px phone screen first. Max content width 480px centered. Single column. Touch-friendly buttons (min 44px tall). Min 16px body text. Shared as a link, opened on phones. Desktop is secondary — just centered with max-width.\n' +
-    '- All photos embedded as base64 data URIs (provided above) OR replaced with styled CSS placeholders — never a broken <img> tag.\n' +
-    '- FAQ/accordion if needed: onclick="this.parentElement.classList.toggle(\'open\')"\n' +
-    '- Any JS must use var (not const/let), function(){} (not arrow functions), onclick= (not addEventListener). This is for maximum browser compatibility.\n' +
-    '- Footer: "Made with 💗 for ' + (data.honoreeNames || 'this moment') + ' · Invite made with <a href=\'https://builtsy.ai\'>builtsy</a>"\n' +
-    '- Output ONLY the complete HTML file. No explanation, no markdown fences, no preamble.\n';
+    '== PHOTO ==\n' +
+    photoInstructions + '\n' +
+    'Gallery: asymmetric mixed crops, thin white borders, curated editorial feel — never uniform grid.\n\n' +
 
-  return { prompt: prompt };
+    '== FORBIDDEN ==\n' +
+    'No blue buttons. No raw text on colored backgrounds without a card. No plain <hr>. No uniform grids. No emojis in hero/nav. No fonts larger than 2.8rem hero name. No SaaS/template feeling. No generic layouts. No equal-spacing sections. No browser prompt() or alert().\n\n' +
+
+    '== CRITICAL LAST-PASS RULES — THESE OVERRIDE EVERYTHING ABOVE ==\n' +
+    'RULE A — BACKGROUND ANIMATION (REQUIRED): Copy this EXACT HTML structure as the very first element after <body>:\n' +
+    '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden"></div>\n' +
+    'Then in a <script> tag at the bottom of <body>, populate it with: ' + (data.confettiType === 'none' ? 'default sparkles: create 20 span elements inside #bg-anim, each with position:absolute, random top/left starting positions spread across the full 100vw x 100vh, ✦ character, font-size 4-10px, palette accent color, opacity 0.25-0.55, CSS animation drifting upward and fading over 4-7s with staggered delays.' : animCode + ' — append all animation elements INTO the #bg-anim div.') + ' Since #bg-anim is position:fixed top:0 left:0, particles will appear from the very top of the page immediately on load.\n' +
+    'RULE B — RSVP CONFETTI BURST (REQUIRED): ' + (data.rsvpConfetti ? 'When the RSVP submit button is clicked, burst 50 colored particles from the button. Use absolutely-positioned divs, animate outward with gravity, fade over 1.5s. var/function(){} only.' : 'No confetti burst — user opted out.') + '\n' +
+    'RULE C — SECTION SPACING: Between sections use simple whitespace (padding 32px top/bottom). Do NOT use full-width ombré gradient dividers or any background gradient that bleeds between sections. No full-width colored backgrounds between sections — the page background should be clean and consistent. The only gradients allowed are INSIDE cards, never as full-width background elements.\n' +
+    'RULE D — FAQ SECTION IS REQUIRED: Section id="faq" MUST appear before the RSVP section. Generate 4-6 warm, conversational accordion questions. Each row: question bold left, arrow right, smooth expand/collapse on click, border-bottom divider. Eyebrow + line header above.\n' +
+    'RULE E — SMS RSVP DISPLAY: ' + (data.rsvpMethod === 'pre-filled-text' ?
+      'RSVP method is SMS/TEXT. Render ZERO form fields. RSVP section is ONLY: deadline badge + emotional headline + one warm sentence + ONE large tap-to-text button in accent color, href="sms:' + (data.rsvpPhone || '[phone]') + '?body=' + encodeURIComponent('Hi! Counting us in for ' + honoree + '!') + '".' :
+      'RSVP method is ' + (data.rsvpMethod || 'form-on-page') + ' — render the full styled form as instructed above.') + '\n' +
+    'RULE F — GALLERY PHOTO PLACEHOLDERS: ' + (data.galleryImages.length > 0 ?
+      'EXACTLY ' + data.galleryImages.length + ' photos uploaded. You MUST output EXACTLY ' + data.galleryImages.length + ' img tags — one for each photo. Here they are numbered — include ALL of them, do not skip any:\n' +
+      data.galleryImages.map(function(_, i){ return '   PHOTO ' + (i+1) + ': <img src="__GALLERY_PHOTO_' + (i+1) + '__" style="width:100%;height:100%;object-fit:cover;display:block">'; }).join('\n') + '\n' +
+      'CRITICAL: Photo ' + data.galleryImages.length + ' is the last one — it MUST appear in the gallery. Every photo number from 1 to ' + data.galleryImages.length + ' must have a corresponding img tag in your output. Missing any photo is a critical error.' :
+      'No gallery photos — use CSS gradient placeholder cards, no broken img tags.') + '\n' +
+    'RULE G — ZERO EMOJIS: No emojis anywhere. Strip from user text before rendering.\n' +
+    'RULE H — CLAIMS UX: In the Help Make It Happen section, the name input must be HIDDEN by default (display:none). When a guest clicks the Claim button, ONLY THEN show the input field and a Submit button for that row. The default state shows only the item name and a Claim button — clean and uncluttered.\n\n' +
+
+    '== OUTPUT ==\n' +
+    'Start IMMEDIATELY with <!DOCTYPE html> — nothing before it. Single self-contained HTML. All CSS/JS inline. Google Fonts via <link>. Mobile-first 390px max-width 480px centered. var/function(){}/onclick= only, no const/let/arrow. Footer: \"Made with love for ' + honoree + ' · <a href=\'https://builtsy.ai\'>builtsy</a>\".\n';
+
+  var prompt = newPrompt;
+  var prompt = newPrompt;
+  var prompt = newPrompt;
+  return { prompt: prompt, cleanDate: cleanDate };
 }
 
 // ── GENERATING MESSAGES ──
@@ -1313,15 +2067,23 @@ function stopGenMessages() {
 function generateInvite() {
   var data = collectFormData();
   var built = buildPrompt(data);
+  doGenerate(data, built);
+}
+
+function doGenerate(data, built) {
 
   document.getElementById('generatingOverlay').classList.add('active');
   startGenMessages();
 
-  // Railway /generate expects { prompt: '...' } and returns { html: '...' }
-  fetch('https://builtsy-api-production.up.railway.app/generate', {
+
+  // Use /invite endpoint for invite-specific system prompt
+  fetch('https://builtsy-api-production.up.railway.app/invite', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: built.prompt })
+    body: JSON.stringify({
+      prompt: built.prompt,
+      inspoImage: null
+    })
   })
   .then(function(res) { return res.json(); })
   .then(function(json) {
@@ -1338,17 +2100,43 @@ function generateInvite() {
       return;
     }
 
-    // Inject hero photo if provided (swap placeholder src Railway won't have seen)
+    // Photos now embedded directly in prompt — no injection needed
+    // Inject real invite ID for claims
+    html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
+    html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
+    var claimsUrl = 'https://builtsy-api-production.up.railway.app';
+    html = html.replace(/CLAIMS_SCRIPT_URL/g, claimsUrl);
+    html = html.replace(/CLAIMS_BASE\s*=\s*["'][^"']*["']/g, 'CLAIMS_BASE = "' + claimsUrl + '"');
+    // Also fix any Google Apps Script URLs that may have slipped through
+    html = html.replace(/https:\/\/script\.google\.com[^"']*/g, claimsUrl);
+
+    // Inject hero photo if provided
     if (data.heroB64) {
-      html = html.replace(/src="HERO_PHOTO_PLACEHOLDER"/g, 'src="data:' + data.heroMime + ';base64,' + data.heroB64 + '"');
+      var heroSrc = 'data:' + data.heroMime + ';base64,' + data.heroB64;
+      html = html.replace(/src="__HERO_PHOTO__"/g, 'src="' + heroSrc + '"');
+      html = html.replace(/src='__HERO_PHOTO__'/g, "src='" + heroSrc + "'");
+      html = html.replace(/__HERO_PHOTO__/g, heroSrc);
+    }
+    // Inject hero background if provided
+    if (data.heroBgB64) {
+      var heroBgSrc = 'data:' + data.heroBgMime + ';base64,' + data.heroBgB64;
+      html = html.replace(/__HERO_BG__/g, heroBgSrc);
+      html = html.replace(/url\(['"]?__HERO_BG__['"]?\)/g, 'url(' + heroBgSrc + ')');
+      html = html.replace(/"__HERO_BG__"/g, '"' + heroBgSrc + '"');
+      html = html.replace(/'__HERO_BG__'/g, "'" + heroBgSrc + "'");
+    }
+    // Inject closing background if provided
+    if (data.closingBgB64) {
+      var closingBgSrc = 'data:' + data.closingBgMime + ';base64,' + data.closingBgB64;
+      html = html.replace(/__CLOSING_BG__/g, closingBgSrc);
     }
     // Inject gallery photos
     for (var gi = 0; gi < data.galleryImages.length; gi++) {
-      var ph = 'GALLERY_PHOTO_' + (gi + 1) + '_PLACEHOLDER';
-      html = html.replace(new RegExp('src="' + ph + '"', 'g'), 'src="data:' + data.galleryImages[gi].mime + ';base64,' + data.galleryImages[gi].b64 + '"');
+      var galSrc = 'data:' + data.galleryImages[gi].mime + ';base64,' + data.galleryImages[gi].b64;
+      var ph = '__GALLERY_PHOTO_' + (gi+1) + '__';
+      html = html.replace(new RegExp('src="' + ph + '"', 'g'), 'src="' + galSrc + '"');
+      html = html.replace(new RegExp("src='" + ph + "'", 'g'), "src='" + galSrc + "'");
     }
-    // Inject real invite ID for claims
-    html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
 
     generatedHTML = html;
     showOutput(html);
@@ -1429,14 +2217,15 @@ function submitRevise() {
   document.getElementById('generatingOverlay').classList.add('active');
   startGenMessages();
 
-  var prompt = 'Here is the current invite HTML:\n\n' + generatedHTML
-    + '\n\nPlease make these revisions: ' + note
-    + '\n\nOutput ONLY the complete revised HTML file. No explanation, no markdown fences. Start with <!DOCTYPE html>.';
+
+  var prompt = 'You are revising a complete HTML invite page. Here is the full current HTML:\n\n' + generatedHTML
+    + '\n\n===REVISION REQUEST===\n' + note
+    + '\n\nOutput ONLY the complete revised HTML. No explanation. No markdown. Start with <!DOCTYPE html>.';
 
   fetch('https://builtsy-api-production.up.railway.app/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt })
+    body: JSON.stringify({ prompt: prompt, max_tokens: 16000 })
   })
   .then(function(res) { return res.json(); })
   .then(function(json) {
@@ -1444,6 +2233,7 @@ function submitRevise() {
     document.getElementById('generatingOverlay').classList.remove('active');
     var html = json.html || json.text || '';
     html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+    html = html.replace(/^===FILE:\s*index\.html===\s*/i, '').trim();
     if (html && html.length > 100) {
       generatedHTML = html;
       var frame2 = document.getElementById('preview-frame');
@@ -1464,10 +2254,10 @@ function submitRevise() {
     showError('Revision error: ' + err.message);
   });
 }
+
 // ── HELP MAKE IT HAPPEN MODULE ──
 var helpItems = [];
 
-// Generate a unique invite ID for claims
 function generateInviteId() {
   var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   var id = 'inv_';
@@ -1488,28 +2278,35 @@ function toggleAllergy(el) {
   if (f) f.style.display = el.checked ? 'block' : 'none';
 }
 
+function refreshHelpSuggestions() {
+  helpItems = [];
+  loadHelpSuggestions();
+}
+
 function loadHelpSuggestions() {
   var loading = document.getElementById('helplist-loading');
-  var wrap = document.getElementById('helplist-items-wrap');
+  var itemsEl = document.getElementById('helplist-items');
   if (loading) loading.style.display = 'block';
-  if (wrap) wrap.style.display = 'none';
+  if (itemsEl) itemsEl.innerHTML = '<div style="font-size:.8rem;color:#9ca3af;padding:8px 0;">Generating suggestions…</div>';
 
-  // Gather event context from prior steps
-  var eventType = (document.getElementById('eventType')||{value:''}).value || 'party';
+  // Use correct field IDs from prior steps
+  var eventType = getChipVal('eventTypeChips') || 'party';
   var honoree = (document.getElementById('honoreeNames')||{value:''}).value || '';
   var location = (document.getElementById('eventLocation')||{value:''}).value || '';
+  var theme = (document.getElementById('eventTheme')||{value:''}).value || '';
   var desc = (document.getElementById('eventDescription')||{value:''}).value || '';
-  var itinerary = (document.getElementById('eventItinerary')||{value:''}).value || '';
+  var vibe = getChipVal('vibeChips') || '';
 
-  var prompt = 'A host is planning a "' + eventType + '"'
-    + (honoree ? ' for ' + honoree : '')
-    + (location ? ' at ' + location : '') + '. '
+  var prompt = 'A host is planning a ' + eventType + (honoree ? ' for ' + honoree : '')
+    + (theme ? ' with a "' + theme + '" theme' : '')
+    + (location ? ' at ' + location : '')
+    + (vibe ? '. The vibe is: ' + vibe : '') + '. '
     + (desc ? 'Details: ' + desc + '. ' : '')
-    + (itinerary ? 'Itinerary: ' + itinerary + '. ' : '')
-    + 'Generate 10-14 smart, specific items guests could offer to bring. '
-    + 'Think practically — food, drinks, supplies, fun extras that fit this exact event. '
-    + 'Keep each item short (2-4 words). Mix categories naturally. '
-    + 'Respond ONLY with a JSON array of strings: ["Item 1","Item 2",...]';
+    + 'Generate 12 specific, practical items guests could offer to bring that perfectly match this event. '
+    + 'Be creative and specific to the theme — not just generic "snacks" and "drinks". '
+    + 'Think: themed food, supplies, fun extras, decorations, games that fit this exact event. '
+    + 'Keep each item short (2-5 words). '
+    + 'Respond ONLY with a JSON array of strings, nothing else: ["Item 1","Item 2",...]';
 
   fetch('https://builtsy-api-production.up.railway.app/grow', {
     method: 'POST',
@@ -1526,23 +2323,40 @@ function loadHelpSuggestions() {
     helpItems = items;
     renderHelpItems();
     if (loading) loading.style.display = 'none';
-    if (wrap) wrap.style.display = 'block';
   })
   .catch(function() {
-    // Fallback defaults
-    helpItems = ['Snacks','Drinks','Ice','Paper goods','Desserts','Sunscreen','Pool towels','Pool floats','Games','Breakfast items','Easy lunch items','Allergy-friendly snacks'];
+    // Theme-aware fallback
+    var type = getChipVal('eventTypeChips') || '';
+    if (type.toLowerCase().indexOf('sweet') > -1 || type.toLowerCase().indexOf('sixteen') > -1 || type.toLowerCase().indexOf('birthday') > -1) {
+      helpItems = ['Birthday cake','Sparkling cider','Fruit & veggie tray','Chips & dip','Candy bar setup','Pizza rolls','Cupcakes','Ice cream toppings','Photo booth props','Balloons','Streamers','Card games'];
+    } else {
+      helpItems = ['Snacks','Drinks','Ice','Paper goods','Desserts','Games','Extra chairs','Flowers','Candles','Music playlist','Camera','Allergy-friendly snacks'];
+    }
     renderHelpItems();
     if (loading) loading.style.display = 'none';
+    // Always ensure items wrap is visible
+    var wrap = document.getElementById('helplist-items-wrap');
     if (wrap) wrap.style.display = 'block';
   });
 }
 
 function renderHelpItems() {
   var container = document.getElementById('helplist-items');
+  var label = document.getElementById('helplist-chips-label');
+  var wrap = document.getElementById('helplist-items-wrap');
   if (!container) return;
+  if (wrap) wrap.style.display = 'block';
+  if (!helpItems.length) {
+    container.innerHTML = '';
+    if (label) label.style.display = 'none';
+    return;
+  }
+  if (label) label.style.display = 'block';
   container.innerHTML = helpItems.map(function(item, i) {
+    var safeVal = (item || '').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    var w = Math.max(70, (item.length || 5) * 8);
     return '<div class="helplist-chip" id="hchip-' + i + '">'
-      + '<input type="text" value="' + escapeHtml(item) + '" oninput="helpItems[' + i + ']=this.value" style="width:' + Math.max(60, item.length * 8) + 'px;">'
+      + '<input type="text" value="' + safeVal + '" oninput="helpItems[' + i + ']=this.value" style="width:' + w + 'px;">'
       + '<span class="del-chip" onclick="removeHelpItem(' + i + ')">×</span>'
       + '</div>';
   }).join('');
@@ -1553,10 +2367,35 @@ function removeHelpItem(i) {
   renderHelpItems();
 }
 
+function importPastedItems() {
+  var box = document.getElementById('helplist-paste-box');
+  if (!box || !box.value.trim()) return;
+  var raw = box.value.trim();
+  // Split by newlines OR commas, clean up each item
+  var items = raw.split(/[\n,]+/).map(function(s){ return s.trim().replace(/^[•\-\*\d\.]+\s*/, ''); }).filter(function(s){ return s.length > 0; });
+  if (!items.length) return;
+  // Merge with existing items (no duplicates)
+  items.forEach(function(item) {
+    var exists = helpItems.some(function(h){ return h.toLowerCase() === item.toLowerCase(); });
+    if (!exists) helpItems.push(item);
+  });
+  box.value = '';
+  renderHelpItems();
+  var label = document.getElementById('helplist-chips-label');
+  if (label && helpItems.length) label.style.display = 'block';
+}
+
+function addHelpItemFromInput() {
+  var input = document.getElementById('helplist-add-input');
+  if (!input || !input.value.trim()) return;
+  helpItems.push(input.value.trim());
+  input.value = '';
+  renderHelpItems();
+}
+
 function addHelpItem() {
   helpItems.push('New item');
   renderHelpItems();
-  // Focus the new input
   setTimeout(function() {
     var chips = document.querySelectorAll('.helplist-chip input');
     if (chips.length) chips[chips.length - 1].focus();
@@ -1564,15 +2403,274 @@ function addHelpItem() {
 }
 
 function getHelpListData() {
-  if (!document.getElementById('tog-helplist').checked) return null;
+  var tog = document.getElementById('tog-helplist');
+  if (!tog || !tog.checked) return null;
+  // Read live values from chip inputs in case user edited them
+  var liveItems = [];
+  document.querySelectorAll('.helplist-chip input').forEach(function(inp) {
+    if (inp.value.trim()) liveItems.push(inp.value.trim());
+  });
+  // Fall back to helpItems array if no chips rendered yet
+  if (liveItems.length === 0) {
+    liveItems = helpItems.filter(function(i){ return i && i.trim(); });
+  }
   return {
     enabled: true,
-    headline: (document.getElementById('helplist-headline')||{value:''}).value || 'Help make it happen 🙌',
-    intro: (document.getElementById('helplist-intro')||{value:''}).value || 'We\'re covering the main plans, but if you\'d like to help, choose something below.',
-    items: helpItems.filter(function(i){ return i.trim(); }),
-    allergyNote: document.getElementById('tog-allergy').checked ? (document.getElementById('f-allergy-note')||{value:''}).value : ''
+    headline: (document.getElementById('helplist-headline')||{value:''}).value || 'Help make it happen',
+    intro: (document.getElementById('helplist-intro')||{value:''}).value || "We're covering the main plans, but if you'd like to help, grab something below!",
+    items: liveItems,
+    allergyNote: (function(){
+      var t=document.getElementById('tog-allergy');
+      return (t&&t.checked) ? (document.getElementById('f-allergy-note')||{value:''}).value : '';
+    })()
   };
 }
+
+
+// ── HERO CTA + CONFETTI ──
+function toggleCustomCta(el) {
+  var f = document.getElementById('custom-cta-fields');
+  if (f) f.style.display = el.checked ? 'block' : 'none';
+}
+
+function selectConfetti(el, val) {
+  document.querySelectorAll('.confetti-card').forEach(function(c) {
+    c.style.border = '1.5px solid #e5e7eb';
+  });
+  el.style.border = '2px solid #4361EE';
+  document.getElementById('confettiType').value = val;
+}
+
+function selectConfettiLayer(el, val) {
+  document.querySelectorAll('.confetti-layer-card').forEach(function(c) {
+    c.style.border = '1.5px solid #e5e7eb';
+  });
+  el.style.border = '2px solid #4361EE';
+  document.getElementById('confettiLayer').value = val;
+}
+
+// ── INSPO PHOTO ──
+function handleInspoUpload(input, zoneId, b64Id, mimeId) {
+  var file = input.files ? input.files[0] : input;
+  if (!file) return;
+  zoneId = zoneId || 'inspoZone';
+  b64Id = b64Id || 'inspoB64';
+  mimeId = mimeId || 'inspoMime';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    resizeForInvite(e.target.result, 800, function(result) {
+      var mime = result.split(',')[0].split(':')[1].split(';')[0];
+      var b64 = result.split(',')[1];
+      document.getElementById(b64Id).value = b64;
+      document.getElementById(mimeId).value = mime;
+      var zone = document.getElementById(zoneId);
+      zone.onclick = null;
+      var isColor = zoneId === 'inspoZone';
+      zone.innerHTML = '<input type="file" accept="image/*" style="display:none" onchange="handleInspoUpload(this,\'' + zoneId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
+        + '<div style="position:relative;display:inline-block;">'
+        + '<img src="' + result + '" style="max-height:100px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
+        + '<button onclick="event.stopPropagation();clearInspoPhoto(\'' + zoneId + '\',\'' + b64Id + '\',\'' + mimeId + '\')" style="position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:white;border:none;cursor:pointer;font-size:13px;line-height:1;font-weight:700;">×</button>'
+        + '</div>'
+        + '<div style="font-size:0.72rem;color:var(--navy);font-weight:600;margin-top:6px;text-align:center;">✓ ' + (isColor ? 'Color inspo' : 'Vibe inspo') + ' uploaded</div>';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleInspoPhoto(event, inputId, zoneId, b64Id, mimeId) {
+  event.preventDefault();
+  var file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+  if (!file || !file.type.match('image.*')) return;
+  var zone = document.getElementById(zoneId || 'inspoZone');
+  if (zone) zone.style.borderColor = '';
+  handleInspoUpload(file, zoneId, b64Id, mimeId);
+}
+
+function clearInspoPhoto(zoneId, b64Id, mimeId) {
+  zoneId = zoneId || 'inspoZone';
+  b64Id = b64Id || 'inspoB64';
+  mimeId = mimeId || 'inspoMime';
+  document.getElementById(b64Id).value = '';
+  document.getElementById(mimeId).value = '';
+  var isColor = zoneId === 'inspoZone';
+  var zone = document.getElementById(zoneId);
+  zone.onclick = function() { document.getElementById(zoneId.replace('Zone','Input')).click(); };
+  zone.innerHTML = '<input type="file" accept="image/*" style="display:none" id="' + zoneId.replace('Zone','Input') + '" onchange="handleInspoUpload(this,\'' + zoneId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
+    + '<div class="upload-icon" style="font-size:1.2rem;">' + (isColor ? '🎨' : '✦') + '</div>'
+    + '<div class="upload-label"><strong>Click or drag & drop</strong></div>';
+}
+
+// ── INSPO COLOR EXTRACTION ──
+function extractColorsFromImage(b64, mime, callback) {
+  var img = new Image();
+  img.onload = function() {
+    var canvas = document.createElement('canvas');
+    var size = 100; // sample at 100x100
+    canvas.width = size; canvas.height = size;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+    var data = ctx.getImageData(0, 0, size, size).data;
+    // Sample colors at strategic points and cluster
+    var colorMap = {};
+    for (var i = 0; i < data.length; i += 16) { // sample every 4th pixel
+      var r = Math.round(data[i] / 32) * 32;
+      var g = Math.round(data[i+1] / 32) * 32;
+      var b = Math.round(data[i+2] / 32) * 32;
+      var key = r + ',' + g + ',' + b;
+      colorMap[key] = (colorMap[key] || 0) + 1;
+    }
+    // Sort by frequency, take top 6
+    var sorted = Object.keys(colorMap).sort(function(a, b) { return colorMap[b] - colorMap[a]; });
+    var hexColors = sorted.slice(0, 6).map(function(k) {
+      var parts = k.split(',');
+      var r = parseInt(parts[0]), g = parseInt(parts[1]), b = parseInt(parts[2]);
+      return '#' + ('0'+r.toString(16)).slice(-2) + ('0'+g.toString(16)).slice(-2) + ('0'+b.toString(16)).slice(-2);
+    });
+    callback(hexColors);
+  };
+  img.src = 'data:' + mime + ';base64,' + b64;
+}
+
+// ── PALETTE + FONT SELECTION ──
+var currentPaletteTab = 'light';
+
+function switchPaletteTab(tab) {
+  currentPaletteTab = tab;
+  // Update tab buttons
+  ['light','dark','mono'].forEach(function(t) {
+    var btn = document.getElementById('ptab-' + t);
+    if (!btn) return;
+    if (t === tab) {
+      btn.style.background = '#4361EE';
+      btn.style.color = 'white';
+      btn.style.border = '2px solid #4361EE';
+    } else {
+      btn.style.background = 'white';
+      btn.style.color = 'var(--navy)';
+      btn.style.border = '1.5px solid #e5e7eb';
+    }
+  });
+  // Show/hide cards
+  document.querySelectorAll('.palette-card').forEach(function(c) {
+    var cardTab = c.getAttribute('data-tab');
+    if (cardTab === 'all' || cardTab === tab) {
+      c.style.display = 'block';
+    } else {
+      c.style.display = 'none';
+    }
+  });
+}
+
+function selectPalette(el, val) {
+  document.querySelectorAll('.palette-card').forEach(function(c) {
+    c.style.border = '1.5px solid #e5e7eb';
+  });
+  el.style.border = '2px solid #4361EE';
+  document.getElementById('paletteChoice').value = val;
+  var hexFields = document.getElementById('custom-hex-fields');
+  if (hexFields) hexFields.style.display = val === 'custom' ? 'block' : 'none';
+}
+
+// Init palette tab on load
+document.addEventListener('DOMContentLoaded', function() {
+  switchPaletteTab('light');
+});
+
+// ── YOUR COLORS PICKER ──
+var ucCount = 3; // start with 3 swatches
+
+function ucUpdate(idx, val) {
+  var swatch = document.getElementById('uc-swatch-' + idx);
+  if (swatch) swatch.style.background = val;
+}
+
+function ucAddColor() {
+  if (ucCount >= 5) return;
+  var slot = document.getElementById('uc-slot-' + ucCount);
+  if (slot) slot.style.display = 'block';
+  ucCount++;
+  if (ucCount >= 5) {
+    var btn = document.getElementById('uc-add-btn');
+    if (btn) btn.style.display = 'none';
+  }
+}
+
+function getUserColors() {
+  var colors = [];
+  for (var i = 0; i < 5; i++) {
+    var input = document.getElementById('uc-input-' + i);
+    var slot = document.getElementById('uc-slot-' + i);
+    // slots 0-2 always visible, 3-4 only if shown
+    var visible = i < 3 || (slot && slot.style.display !== 'none');
+    if (input && visible) colors.push(input.value);
+  }
+  return colors;
+}
+
+// ── PHOTO SHAPE ──
+function selectShape(el) {
+  document.querySelectorAll('.shape-chip').forEach(function(c) {
+    c.style.border = '1.5px solid #e5e7eb';
+    c.style.background = 'white';
+    c.style.color = 'var(--navy)';
+  });
+  el.style.border = '2px solid var(--navy)';
+  el.style.background = 'var(--navy)';
+  el.style.color = 'var(--lime)';
+  var hidden = document.getElementById('photoShape');
+  if (hidden) hidden.value = el.dataset.shape;
+}
+
+function syncHexPicker(key, val) {
+  var textEl = document.getElementById('hex-' + key + '-text');
+  if (textEl) textEl.value = val;
+  var preview = document.getElementById('preview-' + key);
+  if (preview) preview.style.background = val;
+}
+
+function syncHexText(key, val) {
+  val = val.trim();
+  if (!/^#/.test(val)) val = '#' + val;
+  var preview = document.getElementById('preview-' + key);
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    var picker = document.getElementById('hex-' + key);
+    if (picker) picker.value = val;
+    if (preview) preview.style.background = val;
+  }
+}
+
+function syncHex(colorId, textId) {
+  var textEl = document.getElementById(textId);
+  var colorEl = document.getElementById(colorId);
+  if (!textEl || !colorEl) return;
+  var val = textEl.value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) colorEl.value = val;
+}
+
+// Sync color picker → text input
+document.addEventListener('DOMContentLoaded', function() {
+  ['bg','surface','accent','text'].forEach(function(key) {
+    var picker = document.getElementById('hex-' + key);
+    var text   = document.getElementById('hex-' + key + '-text');
+    if (picker && text) {
+      picker.addEventListener('input', function() { text.value = picker.value; });
+    }
+  });
+});
+
+function selectFontMode(mode) {
+  document.getElementById('fontChoice').value = mode;
+  if (mode === 'ai') {
+    document.getElementById('font-opt-ai').style.border = '2px solid #4361EE';
+    document.getElementById('font-opt-custom').style.border = '1.5px solid #e5e7eb';
+    document.getElementById('custom-font-fields').style.display = 'none';
+  } else {
+    document.getElementById('font-opt-ai').style.border = '1.5px solid #e5e7eb';
+    document.getElementById('font-opt-custom').style.border = '2px solid #4361EE';
+    document.getElementById('custom-font-fields').style.display = 'block';
+  }
+}
+
 
 </script>
 </body>
