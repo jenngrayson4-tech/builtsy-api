@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Business Name] — [Tagline]</title>
+  <meta name="description" content="[Business description for SEO — 1-2 sentences about what you do and who you serve.]">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────
+       CSS RESET & VARIABLES
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:  #5C8A6B;
+      --accent2: #A8C5B0;
+      --warm:    #FAF7F2;
+      --warm2:   #F0EBE1;
+      --dark:    #1C2B1E;
+      --mid:     #5A6B5C;
+      --light:   #9BA89D;
+      --serif:   'Nunito', sans-serif;
+      --sans:    'DM Sans', sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-xl: 32px;
+      --shadow-soft: 0 4px 24px rgba(28,43,30,0.07);
+      --shadow-card: 0 2px 16px rgba(28,43,30,0.06);
+      --shadow-hover: 0 8px 40px rgba(28,43,30,0.13);
+      --transition: 0.22s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--warm);
+      color: var(--dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.65;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .eyebrow {
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--mid);
+      font-weight: 300;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    /* ─────────────────────────────────────────
+       BUTTONS
+    ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(92,138,107,0.30);
+    }
+    .btn-primary:hover {
+      background: #4d7a5d;
+      box-shadow: 0 6px 28px rgba(92,138,107,0.40);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--dark);
+      border: 2px solid var(--warm2);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent2);
+      color: var(--accent);
+    }
+
+    .btn-white {
+      background: #fff;
+      color: var(--dark);
+      box-shadow: 0 4px 18px rgba(28,43,30,0.10);
+    }
+    .btn-white:hover {
+      background: var(--warm);
+      box-shadow: 0 6px 28px rgba(28,43,30,0.16);
+    }
+
+    /* ─────────────────────────────────────────
+       1. NAVIGATION
+    ───────────────────────────────────────── */
+    #wc-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #fff;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mid);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+    .nav-cta:hover {
+      background: #4d7a5d !important;
+      transform: translateY(-1px);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ─────────────────────────────────────────
+       2. HERO
+    ───────────────────────────────────────── */
+    #wc-hero {
+      background: var(--warm);
+      padding: 80px 0 96px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--warm2);
+      border-radius: 100px;
+      padding: 6px 16px 6px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mid);
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 22px;
+      letter-spacing: -0.02em;
+    }
+    .hero-headline span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.75;
+      margin-bottom: 38px;
+      max-width: 440px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    #wc-hero-zone {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, #E8F0EA 0%, #D4E6D8 40%, #C5DBC9 100%);
+      aspect-ratio: 4/5;
+      max-height: 560px;
+    }
+
+    #wc-hero-zone .zone-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--accent);
+    }
+    #wc-hero-zone .zone-placeholder .zone-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(92,138,107,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    #wc-hero-zone .zone-placeholder p {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+
+    #wc-hero-photo {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-review-card {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-hover);
+      max-width: 220px;
+      z-index: 2;
+    }
+    .hero-review-stars { font-size: 13px; margin-bottom: 6px; letter-spacing: 1px; }
+    .hero-review-quote { font-size: 13px; color: var(--dark); font-style: italic; font-weight: 500; margin-bottom: 4px; }
+    .hero-review-name { font-size: 11px; color: var(--light); font-weight: 500; }
+
+    /* ─────────────────────────────────────────
+       3. TRUST BAR
+    ───────────────────────────────────────── */
+    #wc-trust {
+      background: #fff;
+      border-top: 1px solid var(--warm2);
+      border-bottom: 1px solid var(--warm2);
+      padding: 22px 0;
+    }
+
+    .trust-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mid);
+      white-space: nowrap;
+    }
+    .trust-item .trust-icon {
+      font-size: 15px;
+    }
+
+    .trust-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--warm2);
+    }
+
+    /* ─────────────────────────────────────────
+       4. ABOUT
+    ───────────────────────────────────────── */
+    #wc-about {
+      background: var(--warm2);
+      padding: 96px 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 72px;
+      align-items: center;
+    }
+
+    .about-photos {
+      position: relative;
+      height: 520px;
+    }
+
+    #wc-about-a-zone {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 60px;
+      bottom: 80px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: linear-gradient(145deg, #D4E6D8 0%, #B8D4BE 100%);
+    }
+
+    #wc-about-b-zone {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 55%;
+      height: 52%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: linear-gradient(145deg, #E8D5C4 0%, #D4BFA8 100%);
+      box-shadow: 0 8px 32px rgba(28,43,30,0.12);
+      border: 4px solid var(--warm2);
+    }
+
+    .zone-placeholder-sm {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .zone-placeholder-sm .zone-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .zone-placeholder-sm p {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+    }
+
+    #wc-about-a-photo, #wc-about-b-photo {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .about-eyebrow { margin-bottom: 10px; }
+
+    .about-headline {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(30px, 3.5vw, 44px);
+      color: var(--dark);
+      margin-bottom: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .about-bio {
+      font-size: 16px;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .about-quote {
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      background: rgba(92,138,107,0.06);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 28px;
+    }
+    .about-quote p {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--dark);
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent);
+      transition: gap var(--transition);
+    }
+    .about-link:hover { gap: 10px; }
+
+    /* ─────────────────────────────────────────
+       5. SERVICES
+    ───────────────────────────────────────── */
+    #wc-services {
+      background: #fff;
+      padding: 96px 0;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .service-card {
+      background: #F0FAF4;
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      transition: box-shadow var(--transition), transform var(--transition);
+      border: 1px solid rgba(92,138,107,0.08);
+    }
+    .service-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+
+    .service-icon {
+      font-size: 36px;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .service-name {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       6. STATS
+    ───────────────────────────────────────── */
+    #wc-stats {
+      padding: 0 32px;
+      margin: 0 auto;
+      max-width: 1120px;
+    }
+
+    .stats-inner {
+      background: var(--accent);
+      border-radius: var(--radius-xl);
+      padding: 56px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0 16px;
+    }
+    .stat-item + .stat-item {
+      border-left: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(40px, 5vw, 60px);
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─────────────────────────────────────────
+       7. PROCESS
+    ───────────────────────────────────────── */
+    #wc-process {
+      background: var(--warm);
+      padding: 96px 0;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .process-connector {
+      position: absolute;
+      top: 28px;
+      left: calc(12.5% + 28px);
+      right: calc(12.5% + 28px);
+      height: 2px;
+      border-top: 2px dashed var(--accent2);
+      z-index: 0;
+    }
+
+    .process-step {
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: #fff;
+      border: 2px solid var(--accent2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    .step-title {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       8. TESTIMONIALS
+    ───────────────────────────────────────── */
+    #wc-testimonials {
+      background: #fff;
+      padding: 96px 0;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .testi-card {
+      background: var(--warm);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--warm2);
+      transition: box-shadow var(--transition);
+    }
+    .testi-card:hover { box-shadow: var(--shadow-soft); }
+
+    .testi-stars {
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      color: #F5A623;
+    }
+
+    .testi-quote {
+      font-size: 15px;
+      color: var(--mid);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .testi-client {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testi-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .testi-name {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--dark);
+    }
+
+    .testi-detail {
+      font-size: 12px;
+      color: var(--light);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .testi-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .testi-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warm2);
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+      border: none;
+      padding: 0;
+    }
+    .testi-dot.active {
+      background: var(--accent);
+      transform: scale(1.3);
+    }
+
+    .testi-summary {
+      text-align: center;
+    }
+    .testi-summary-stars {
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: #F5A623;
+      margin-bottom: 8px;
+    }
+    .testi-summary-text {
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 400;
+    }
+    .testi-summary-text strong {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    /* ─────────────────────────────────────────
+       9. PRICING
+    ───────────────────────────────────────── */
+    #wc-pricing {
+      background: var(--warm2);
+      padding: 96px 0;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: 40px 36px;
+      border: 1px solid rgba(92,138,107,0.10);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .pricing-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .pricing-card.featured {
+      background: var(--accent);
+      border-color: transparent;
+      transform: scale(1.03);
+    }
+    .pricing-card.featured:hover {
+      transform: scale(1.03) translateY(-4px);
+    }
+
+    .pricing-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    .pricing-tier {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .pricing-card.featured .pricing-tier { color: #fff; }
+
+    .pricing-desc {
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 300;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .pricing-card.featured .pricing-desc { color: rgba(255,255,255,0.80); }
+
+    .pricing-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-dollar {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--dark);
+    }
+    .pricing-card.featured .pricing-dollar { color: rgba(255,255,255,0.85); }
+
+    .pricing-amount {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: 48px;
+      color: var(--dark);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .pricing-card.featured .pricing-amount { color: #fff; }
+
+    .pricing-period {
+      font-size: 14px;
+      color: var(--light);
+      font-weight: 400;
+    }
+    .pricing-card.featured .pricing-period { color: rgba(255,255,255,0.60); }
+
+    .pricing-divider {
+      height: 1px;
+      background: var(--warm2);
+      margin-bottom: 24px;
+    }
+    .pricing-card.featured .pricing-divider { background: rgba(255,255,255,0.20); }
+
+    .pricing-features {
+      flex: 1;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 400;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--warm);
+      line-height: 1.5;
+    }
+    .pricing-card.featured .pricing-features li {
+      color: rgba(255,255,255,0.85);
+      border-bottom-color: rgba(255,255,255,0.12);
+    }
+    .pricing-features li:last-child { border-bottom: none; }
+
+    .pricing-check {
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .pricing-card.featured .pricing-check { color: rgba(255,255,255,0.9); }
+
+    .pricing-cta {
+      width: 100%;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* ─────────────────────────────────────────
+       10. FAQ
+    ───────────────────────────────────────── */
+    #wc-faq {
+      background: #fff;
+      padding: 96px 0;
+    }
+
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--warm2);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--warm2); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 4px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+    }
+
+    .faq-q-text {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--warm);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 400;
+      flex-shrink: 0;
+      transition: background var(--transition);
+      line-height: 1;
+    }
+    .faq-item.open .faq-icon { background: var(--accent); color: #fff; }
+
+    .faq-answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.25s ease;
+    }
+    .faq-answer-inner {
+      font-size: 15px;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.8;
+      padding-bottom: 22px;
+      padding-left: 4px;
+      padding-right: 48px;
+    }
+
+    /* ─────────────────────────────────────────
+       11. CTA SECTION
+    ───────────────────────────────────────── */
+    #wc-cta {
+      background: var(--dark);
+      padding: 96px 0;
+      text-align: center;
+    }
+
+    .cta-inner { max-width: 600px; margin: 0 auto; }
+
+    .cta-eyebrow {
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 20px;
+    }
+
+    .cta-headline {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(30px, 4.5vw, 52px);
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      margin-bottom: 38px;
+      line-height: 1.7;
+    }
+
+    .cta-email {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 400;
+      transition: color var(--transition);
+    }
+    .cta-email:hover { color: rgba(255,255,255,0.75); }
+
+    /* ─────────────────────────────────────────
+       12. CONTACT FORM
+    ───────────────────────────────────────── */
+    #wc-contact {
+      background: var(--warm);
+      padding: 96px 0;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .contact-info-headline {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--dark);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .contact-item-icon {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-card);
+    }
+
+    .contact-item-text .label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--light);
+      margin-bottom: 2px;
+    }
+    .contact-item-text .value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .contact-item-text .value a { color: var(--accent); }
+    .contact-item-text .value a:hover { text-decoration: underline; }
+
+    .map-placeholder {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #E0EDE2 0%, #C8DCC9 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(92,138,107,0.15);
+    }
+    .map-placeholder .map-icon { font-size: 28px; }
+
+    .form-headline {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+
+    .wc-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 13px 16px;
+      border: 1.5px solid var(--warm2);
+      border-radius: var(--radius-sm);
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--dark);
+      background: #fff;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(92,138,107,0.10);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--light); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      margin-top: 4px;
+    }
+
+    /* ─────────────────────────────────────────
+       13. FOOTER
+    ───────────────────────────────────────── */
+    #wc-footer {
+      background: var(--dark);
+      padding: 72px 0 32px;
+    }
+
+    .footer-top {
+      text-align: center;
+      margin-bottom: 56px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .footer-logo span { color: var(--accent2); }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: rgba(255,255,255,0.40);
+      font-weight: 300;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-col-title {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul li a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: rgba(255,255,255,0.90); }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.07);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      transition: background var(--transition), color var(--transition);
+    }
+    .social-link:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copyright {
+      font-size: 13px;
+      color: rgba(255,255,255,0.30);
+    }
+
+    .footer-made {
+      font-size: 13px;
+      color: rgba(255,255,255,0.30);
+    }
+    .footer-made a {
+      color: var(--accent2);
+      transition: color var(--transition);
+    }
+    .footer-made a:hover { color: var(--accent); }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE — 768px
+    ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+
+      /* Nav */
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 20px 24px 28px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        gap: 18px;
+        z-index: 998;
+      }
+      .nav-links.open a { font-size: 16px; color: var(--dark); }
+      .nav-links.open .nav-cta {
+        width: fit-content;
+        font-size: 15px !important;
+        padding: 12px 24px;
+      }
+
+      /* Hero */
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      #wc-hero-zone { aspect-ratio: 3/2; max-height: 320px; }
+
+      /* About */
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-photos { height: 340px; }
+      #wc-about-a-zone { right: 40px; bottom: 60px; }
+      #wc-about-b-zone { width: 50%; height: 48%; }
+
+      /* Services */
+      .services-grid { grid-template-columns: 1fr; }
+
+      /* Stats */
+      #wc-stats { padding: 0 20px; }
+      .stats-inner {
+        padding: 40px 24px;
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .stat-item + .stat-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.18); padding-top: 24px; }
+
+      /* Process */
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .process-connector { display: none; }
+      .process-step { padding: 0; }
+
+      /* Testimonials */
+      .testi-grid { grid-template-columns: 1fr; }
+
+      /* Pricing */
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: none; }
+      .pricing-card.featured:hover { transform: translateY(-4px); }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+
+      /* Trust bar */
+      .trust-divider { display: none; }
+      .trust-inner { gap: 20px; justify-content: flex-start; padding: 0 4px; overflow-x: auto; }
+
+      /* Form row */
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE — 480px
+    ───────────────────────────────────────── */
+    @media (max-width: 480px) {
+      #wc-hero { padding: 56px 0 64px; }
+      .hero-ctas { flex-direction: column; align-items: flex-start; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
+
+      .section-title { font-size: 26px; }
+      .hero-headline { font-size: 32px; }
+      .about-headline { font-size: 26px; }
+
+      #wc-about,
+      #wc-services,
+      #wc-process,
+      #wc-testimonials,
+      #wc-pricing,
+      #wc-faq,
+      #wc-cta,
+      #wc-contact { padding: 64px 0; }
+
+      .process-steps { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+
+      .stats-inner { padding: 36px 20px; }
+      .stat-number { font-size: 44px; }
+
+      .pricing-card { padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─────────────────────────────────────────
+       1. NAVIGATION
+  ───────────────────────────────────────── -->
+  <nav id="wc-nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">[Business<span>.</span>]</a>
+        <div class="nav-links" id="navLinks">
+          <a href="#wc-about">About</a>
+          <a href="#wc-services">Services</a>
+          <a href="#wc-pricing">Pricing</a>
+          <a href="#wc-contact">Contact</a>
+          <a href="#wc-contact" class="nav-cta">Book Now</a>
+        </div>
+        <div class="nav-mobile-toggle" id="navToggle" onclick="toggleNav()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─────────────────────────────────────────
+       2. HERO
+  ───────────────────────────────────────── -->
+  <section id="wc-hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Left: Copy -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            ⭐ Trusted by 200+ Clients
+          </div>
+          <h1 class="hero-headline">
+            Feel Better,<br>
+            <span>Live Fully</span><br>
+            Start Today.
+          </h1>
+          <p class="hero-sub">
+            Compassionate, results-driven support tailored to your unique needs. Whether you're starting fresh or ready for the next step — I'm here to help you thrive.
+          </p>
+          <div class="hero-ctas">
+            <a href="#wc-contact" class="btn btn-primary">Book a Free Consultation →</a>
+            <a href="#wc-about" class="btn btn-ghost">Learn More</a>
+          </div>
+        </div>
+        <!-- Right: Photo Zone -->
+        <div id="wc-hero-zone">
+          <div class="zone-placeholder">
+            <div class="zone-icon">📷</div>
+            <p>Add your hero photo</p>
+          </div>
+          <img id="wc-hero-photo" src="" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; inset:0;" alt="[Business owner photo]">
+          <!-- Floating review card -->
+          <div class="hero-review-card">
+            <div class="hero-review-stars">★★★★★</div>
+            <div class="hero-review-quote">"Life changing results!"</div>
+            <div class="hero-review-name">— Maria T., Client</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       3. TRUST BAR
+  ───────────────────────────────────────── -->
+  <section id="wc-trust">
+    <div class="container">
+      <div class="trust-inner">
+        <div class="trust-item">
+          <span class="trust-icon">★</span>
+          Google 5.0 Rating
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <span class="trust-icon">✓</span>
+          Licensed &amp; Insured
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <span class="trust-icon">💬</span>
+          200+ Reviews
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <span class="trust-icon">📍</span>
+          Serving [Your City]
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <span class="trust-icon">🎓</span>
+          Certified Professional
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       4. ABOUT
+  ───────────────────────────────────────── -->
+  <section id="wc-about">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Photo Stack -->
+        <div class="about-photos">
+          <div id="wc-about-a-zone">
+            <div class="zone-placeholder-sm">
+              <div class="zone-icon">📷</div>
+              <p>Main photo</p>
+            </div>
+            <img id="wc-about-a-photo" src="" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; inset:0;" alt="[Business owner]">
+          </div>
+          <div id="wc-about-b-zone">
+            <div class="zone-placeholder-sm">
+              <div class="zone-icon">📷</div>
+              <p>Secondary</p>
+            </div>
+            <img id="wc-about-b-photo" src="" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; inset:0;" alt="[At work]">
+          </div>
+        </div>
+        <!-- Copy -->
+        <div class="about-content">
+          <p class="eyebrow about-eyebrow">A LITTLE ABOUT ME</p>
+          <h2 class="about-headline">Hi, I'm [Name].</h2>
+          <p class="about-bio">
+            I've spent the last six-plus years dedicated to helping people like you find balance, confidence, and lasting change. My approach is always personal — no cookie-cutter plans, no judgment, just genuine support built around your goals and your life.
+          </p>
+          <p class="about-bio" style="margin-top: -10px;">
+            Before I started this practice, I worked in [relevant background], which gave me a deep understanding of [what makes your approach unique]. Today I combine that experience with [your specialty] to create sessions that truly move the needle.
+          </p>
+          <div class="about-quote">
+            <p>"My goal is simple: to show up fully for every single client and help them discover what they're truly capable of. Your progress is my purpose."</p>
+          </div>
+          <a href="#wc-contact" class="about-link">My Story →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       5. SERVICES
+  ───────────────────────────────────────── -->
+  <section id="wc-services">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">HOW I CAN HELP</p>
+        <h2 class="section-title">Services Built Around You.</h2>
+        <p class="section-subtitle">
+          Every offering is thoughtfully designed to meet you where you are — whether you're just getting started or ready to go deeper.
+        </p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-icon">🌱</span>
+          <h3 class="service-name">[Service One]</h3>
+          <p class="service-desc">
+            A personalized one-on-one session focused on your individual goals. We'll build a clear, actionable plan from day one — no overwhelm, just progress at your pace.
+          </p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">🤝</span>
+          <h3 class="service-name">[Service Two]</h3>
+          <p class="service-desc">
+            Small-group sessions that combine community support with personalized attention. Ideal for those who thrive with accountability and shared energy.
+          </p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">✨</span>
+          <h3 class="service-name">[Service Three]</h3>
+          <p class="service-desc">
+            Deep-dive intensive sessions for clients ready to accelerate their results. We cover more ground in less time with a focused, structured approach.
+          </p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">💻</span>
+          <h3 class="service-name">[Service Four]</h3>
+          <p class="service-desc">
+            Flexible virtual sessions so you can get support from anywhere. Same quality, same care — just from the comfort of your own space.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       6. STATS
+  ───────────────────────────────────────── -->
+  <div id="wc-stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">6+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       7. PROCESS
+  ───────────────────────────────────────── -->
+  <section id="wc-process">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2 class="section-title">Simple Steps to Get Started.</h2>
+        <p class="section-subtitle">
+          Getting started is easier than you think. Here's exactly what to expect from your first hello to your breakthrough.
+        </p>
+      </div>
+      <div class="process-steps">
+        <div class="process-connector"></div>
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Book a Free Call</h3>
+          <p class="step-desc">Schedule a no-pressure 20-minute intro call so we can get to know each other and make sure we're a great fit.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Share Your Goals</h3>
+          <p class="step-desc">Tell me where you are, where you want to go, and any challenges you're facing. Every detail helps me serve you better.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Get Your Plan</h3>
+          <p class="step-desc">I'll create a customized roadmap designed specifically around your needs, schedule, and long-term vision.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Start Growing</h3>
+          <p class="step-desc">We begin your journey together — with ongoing support, check-ins, and adjustments to keep you moving forward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       8. TESTIMONIALS
+  ───────────────────────────────────────── -->
+  <section id="wc-testimonials">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">KIND WORDS</p>
+        <h2 class="section-title">What Clients Are Saying.</h2>
+        <p class="section-subtitle">
+          Real stories from real people. Nothing makes me prouder than hearing how our work together has made a difference.
+        </p>
+      </div>
+
+      <div class="testi-grid" id="testiGrid">
+        <!-- Cards generated by JS -->
+      </div>
+
+      <div class="testi-dots" id="testiDots"></div>
+
+      <div class="testi-summary">
+        <div class="testi-summary-stars">★★★★★</div>
+        <div class="testi-summary-text">
+          Rated <strong>5.0 out of 5</strong> based on <strong>200+ verified reviews</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       9. PRICING
+  ───────────────────────────────────────── -->
+  <section id="wc-pricing">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">INVESTMENT</p>
+        <h2 class="section-title">Simple, Transparent Pricing.</h2>
+        <p class="section-subtitle">
+          No hidden fees. No confusing packages. Just honest, value-packed options to fit your needs and your budget.
+        </p>
+      </div>
+      <div class="pricing-grid">
+
+        <!-- Starter -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="pricing-tier">Starter</h3>
+            <p class="pricing-desc">Perfect for getting a feel for the process and seeing what's possible.</p>
+          </div>
+          <div class="pricing-price-row">
+            <span class="pricing-dollar">$</span>
+            <span class="pricing-amount">75</span>
+            <span class="pricing-period">/ session</span>
+          </div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pricing-check">✓</span> 60-minute 1:1 session</li>
+            <li><span class="pricing-check">✓</span> Personalized session notes</li>
+            <li><span class="pricing-check">✓</span> Resource guide included</li>
+            <li><span class="pricing-check">✓</span> Follow-up email support</li>
+            <li><span class="pricing-check">✓</span> Session recording (optional)</li>
+          </ul>
+          <a href="#wc-contact" class="btn btn-ghost pricing-cta">Get Started</a>
+        </div>
+
+        <!-- Growth (Featured) -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Most Popular</div>
+          <div>
+            <h3 class="pricing-tier">Growth</h3>
+            <p class="pricing-desc">Our most popular option — a complete month of focused, supported progress.</p>
+          </div>
+          <div class="pricing-price-row">
+            <span class="pricing-dollar">$</span>
+            <span class="pricing-amount">220</span>
+            <span class="pricing-period">/ month</span>
+          </div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pricing-check">✓</span> 4 sessions per month</li>
+            <li><span class="pricing-check">✓</span> Custom monthly action plan</li>
+            <li><span class="pricing-check">✓</span> Unlimited messaging support</li>
+            <li><span class="pricing-check">✓</span> Progress tracking dashboard</li>
+            <li><span class="pricing-check">✓</span> Priority scheduling</li>
+          </ul>
+          <a href="#wc-contact" class="btn btn-white pricing-cta">Book This Plan</a>
+        </div>
+
+        <!-- Transformation -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="pricing-tier">Transformation</h3>
+            <p class="pricing-desc">Deep, sustained change for clients ready for a full commitment to results.</p>
+          </div>
+          <div class="pricing-price-row">
+            <span class="pricing-dollar">$</span>
+            <span class="pricing-amount">580</span>
+            <span class="pricing-period">/ quarter</span>
+          </div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pricing-check">✓</span> 12 sessions (3 months)</li>
+            <li><span class="pricing-check">✓</span> Full intake + deep assessment</li>
+            <li><span class="pricing-check">✓</span> Bi-weekly strategy reviews</li>
+            <li><span class="pricing-check">✓</span> All Growth features included</li>
+            <li><span class="pricing-check">✓</span> Private community access</li>
+          </ul>
+          <a href="#wc-contact" class="btn btn-primary pricing-cta">Apply Now</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       10. FAQ
+  ───────────────────────────────────────── -->
+  <section id="wc-faq">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">COMMON QUESTIONS</p>
+        <h2 class="section-title">Frequently Asked Questions.</h2>
+        <p class="section-subtitle">
+          Got questions? I've got answers. If something isn't covered here, reach out — I'm always happy to chat.
+        </p>
+      </div>
+      <div class="faq-list" id="faqList">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">
+            <span class="faq-q-text">What can I expect from my first session?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Your first session is all about getting to know you. We'll talk through your goals, where you're at right now, any challenges you're facing, and what success looks like for you. There's no pressure — it's a safe, conversational space. By the end, you'll have a clear sense of direction and feel genuinely excited about what's ahead.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">
+            <span class="faq-q-text">How do I book a session?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Booking is simple! Just fill out the contact form below, send me an email at hello@[business].com, or click any "Book Now" button on this page. I'll respond within one business day to confirm a time that works for you. New clients always start with a complimentary 20-minute intro call.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">
+            <span class="faq-q-text">What is your cancellation policy?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              I understand that life happens. I ask for at least 24 hours' notice if you need to reschedule or cancel. Cancellations with less than 24 hours' notice may be subject to a 50% session fee. In true emergencies, I'll always work something out — just reach out and let me know.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">
+            <span class="faq-q-text">Do you offer virtual or in-person sessions?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Both! In-person sessions are available at my [City] studio, and virtual sessions are available anywhere via Zoom or Google Meet. Many clients find that a mix of both works best for them — we'll figure out what suits your life.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">
+            <span class="faq-q-text">How quickly will I see results?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Most clients notice a meaningful shift within the first two to three sessions — more clarity, better habits, and a renewed sense of momentum. Lasting, deeper change typically takes 4–8 weeks of consistent work. Every person's journey is different, and I'll always be honest with you about what's realistic for your specific goals.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       11. CTA SECTION
+  ───────────────────────────────────────── -->
+  <section id="wc-cta">
+    <div class="container">
+      <div class="cta-inner">
+        <p class="cta-eyebrow">TAKE THE FIRST STEP</p>
+        <h2 class="cta-headline">Ready to Get<br>Started?</h2>
+        <p class="cta-sub">
+          Your next chapter begins with a single conversation. Let's talk about where you are and where you want to go — completely free, completely no-pressure.
+        </p>
+        <a href="#wc-contact" class="btn btn-white" style="border-radius: 100px; padding: 16px 36px; font-size: 16px; font-weight: 600;">
+          Book Your Free Session →
+        </a>
+        <br>
+        <a href="mailto:hello@business.com" class="cta-email">or email hello@[business].com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       12. CONTACT FORM
+  ───────────────────────────────────────── -->
+  <section id="wc-contact">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Info Column -->
+        <div class="contact-info">
+          <h2 class="contact-info-headline">Let's Connect.</h2>
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-item-icon">📍</div>
+              <div class="contact-item-text">
+                <div class="label">Address</div>
+                <div class="value">123 Main Street, Suite 4<br>[City], [State] [ZIP]</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">📞</div>
+              <div class="contact-item-text">
+                <div class="label">Phone</div>
+                <div class="value"><a href="tel:+15555555555">(555) 555-5555</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">✉️</div>
+              <div class="contact-item-text">
+                <div class="label">Email</div>
+                <div class="value"><a href="mailto:hello@business.com">hello@[business].com</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">🕐</div>
+              <div class="contact-item-text">
+                <div class="label">Hours</div>
+                <div class="value">Mon–Fri: 9am – 6pm<br>Sat: 10am – 3pm</div>
+              </div>
+            </div>
+          </div>
+          <!-- Map Placeholder -->
+          <div class="map-placeholder">
+            <div class="map-icon">🗺️</div>
+            <span>Google Maps Embed Goes Here</span>
+          </div>
+        </div>
+        <!-- Form Column -->
+        <div class="contact-form-wrap">
+          <h2 class="form-headline">Send a Message.</h2>
+          <form class="wc-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact">
+            <input name="bot-field" style="display:none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="wc-name">Full Name</label>
+                <input type="text" id="wc-name" name="name" placeholder="Jane Smith" required>
+              </div>
+              <div class="form-group">
+                <label for="wc-email">Email Address</label>
+                <input type="email" id="wc-email" name="email" placeholder="jane@email.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="wc-phone">Phone Number</label>
+              <input type="tel" id="wc-phone" name="phone" placeholder="(555) 555-5555">
+            </div>
+            <div class="form-group">
+              <label for="wc-service">What are you interested in?</label>
+              <select id="wc-service" name="service">
+                <option value="" disabled selected>Select a service...</option>
+                <option value="starter">Starter Session</option>
+                <option value="growth">Growth Plan</option>
+                <option value="transformation">Transformation Package</option>
+                <option value="other">General Inquiry</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="wc-message">Your Message</label>
+              <textarea id="wc-message" name="message" placeholder="Tell me a little about what you're hoping to work on, or just say hi..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary form-submit">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       13. FOOTER
+  ───────────────────────────────────────── -->
+  <footer id="wc-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">[Business<span>.</span>]</div>
+        <div class="footer-tagline">Helping [people/clients/students] thrive in [City] &amp; beyond.</div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-col-title">Services</div>
+          <ul>
+            <li><a href="#wc-services">[Service One]</a></li>
+            <li><a href="#wc-services">[Service Two]</a></li>
+            <li><a href="#wc-services">[Service Three]</a></li>
+            <li><a href="#wc-services">[Service Four]</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Quick Links</div>
+          <ul>
+            <li><a href="#wc-about">About</a></li>
+            <li><a href="#wc-process">How It Works</a></li>
+            <li><a href="#wc-pricing">Pricing</a></li>
+            <li><a href="#wc-faq">FAQs</a></li>
+            <li><a href="#wc-contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Connect</div>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="mailto:hello@business.com">hello@[business].com</a></li>
+          </ul>
+          <div class="footer-social">
+            <a href="#" class="social-link" aria-label="Instagram">📸</a>
+            <a href="#" class="social-link" aria-label="Facebook">📘</a>
+            <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">© 2026 [Business Name]. All rights reserved.</div>
+        <div class="footer-made">Made with <a href="https://builtsy.com" target="_blank" rel="noopener">Builtsy</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─────────────────────────────────────────
+       JAVASCRIPT
+  ───────────────────────────────────────── -->
+  <script>
+    /* ── NAV SCROLL SHADOW ── */
+    var nav = document.getElementById('wc-nav');
+    window.addEventListener('scroll', function() {
+      nav.style.boxShadow = window.scrollY > 20 ? '0 2px 20px rgba(0,0,0,.08)' : 'none';
+    });
+
+    /* ── MOBILE NAV TOGGLE ── */
+    function toggleNav() {
+      var links = document.getElementById('navLinks');
+      var toggle = document.getElementById('navToggle');
+      var isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+    }
+    /* Close nav on link click (mobile) */
+    document.querySelectorAll('#navLinks a').forEach(function(link) {
+      link.onclick = function() {
+        document.getElementById('navLinks').classList.remove('open');
+      };
+    });
+
+    /* ── FAQ ACCORDION ── */
+    function toggleFAQ(btn) {
+      var item = btn.closest('.faq-item');
+      var answer = item.querySelector('.faq-answer');
+      var icon = btn.querySelector('.faq-icon');
+      var isOpen = item.classList.contains('open');
+
+      /* Close all */
+      document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-answer').style.maxHeight = '0';
+        openItem.querySelector('.faq-icon').textContent = '+';
+      });
+
+      /* Open clicked if it was closed */
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        icon.textContent = '×';
+      }
+    }
+
+    /* ── TESTIMONIALS TICKER ── */
+    var testis = [
+      {
+        quote: "Working with [Name] completely changed my relationship with [topic]. Within three weeks I felt more clarity and confidence than I had in years. I can't recommend this enough.",
+        stars: "★★★★★",
+        name: "Sarah K.",
+        detail: "Client since 2024",
+        initials: "SK"
+      },
+      {
+        quote: "I was skeptical at first — I'd tried other approaches without success. But [Name]'s style is different. Warm, direct, and incredibly effective. Best investment I've made in myself.",
+        stars: "★★★★★",
+        name: "James R.",
+        detail: "Growth Plan Client",
+        initials: "JR"
+      },
+      {
+        quote: "The sessions fit perfectly into my busy schedule and the results have been real. My energy, focus, and overall wellbeing have all improved. Truly grateful.",
+        stars: "★★★★★",
+        name: "Priya M.",
+        detail: "Transformation Client",
+        initials: "PM"
+      },
+      {
+        quote: "I was nervous to start but [Name] made me feel at ease from the very first call. Compassionate, knowledgeable, and genuinely invested in my success.",
+        stars: "★★★★★",
+        name: "Alex T.",
+        detail: "Starter Session Client",
+        initials: "AT"
+      },
+      {
+        quote: "Six months in and I feel like a completely different person. The tools and mindset shifts I've gained will serve me for the rest of my life.",
+        stars: "★★★★★",
+        name: "Maria D.",
+        detail: "Long-term Client",
+        initials: "MD"
+      }
+    ];
+
+    var currentTestiGroup = 0;
+
+    function buildTestiDots() {
+      var totalGroups = Math.ceil(testis.length / 3);
+      var dotsEl = document.getElementById('testiDots');
+      dotsEl.innerHTML = '';
+      for (var i = 0; i < totalGroups; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Testimonials group ' + (i + 1));
+        dot.setAttribute('data-index', i);
+        dot.onclick = function() {
+          setTestiGroup(parseInt(this.getAttribute('data-index')));
+        };
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    function setTestiGroup(groupIndex) {
+      currentTestiGroup = groupIndex;
+      var start = groupIndex * 3;
+      var group = testis.slice(start, start + 3);
+      var grid = document.getElementById('testiGrid');
+
+      grid.style.opacity = '0';
+      grid.style.transition = 'opacity 0.3s ease';
+
+      setTimeout(function() {
+        grid.innerHTML = '';
+        for (var i = 0; i < group.length; i++) {
+          var t = group[i];
+          var card = document.createElement('div');
+          card.className = 'testi-card';
+          card.innerHTML =
+            '<div class="testi-stars">' + t.stars + '</div>' +
+            '<p class="testi-quote">"' + t.quote + '"</p>' +
+            '<div class="testi-client">' +
+              '<div class="testi-avatar">' + t.initials + '</div>' +
+              '<div>' +
+                '<div class="testi-name">' + t.name + '</div>' +
+                '<div class="testi-detail">' + t.detail + '</div>' +
+              '</div>' +
+            '</div>';
+          grid.appendChild(card);
+        }
+        grid.style.opacity = '1';
+      }, 200);
+
+      /* Update dots */
+      document.querySelectorAll('.testi-dot').forEach(function(dot) {
+        dot.classList.remove('active');
+        if (parseInt(dot.getAttribute('data-index')) === groupIndex) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    /* Auto-rotate testimonials every 7 seconds */
+    var testiTimer;
+    function startTestiTimer() {
+      testiTimer = setInterval(function() {
+        var totalGroups = Math.ceil(testis.length / 3);
+        var next = (currentTestiGroup + 1) % totalGroups;
+        setTestiGroup(next);
+      }, 7000);
+    }
+
+    /* Pause on hover */
+    document.addEventListener('DOMContentLoaded', function() {
+      buildTestiDots();
+      setTestiGroup(0);
+      startTestiTimer();
+
+      var grid = document.getElementById('testiGrid');
+      grid.onmouseenter = function() { clearInterval(testiTimer); };
+      grid.onmouseleave = function() { startTestiTimer(); };
+    });
+
+    /* ── SMOOTH SCROLL for anchor links ── */
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.onclick = function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      };
+    });
+
+    /* ── CONTACT FORM SUBMIT (Netlify-friendly) ── */
+    var wcForm = document.querySelector('.wc-form');
+    if (wcForm) {
+      wcForm.onsubmit = function(e) {
+        /* Let Netlify handle native POST; this is for UX feedback only */
+        var btn = this.querySelector('.form-submit');
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+      };
+    }
+  </script>
+</body>
+</html>

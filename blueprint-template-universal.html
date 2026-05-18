@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Template Blueprint | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;--builtsy-blue:#4361EE;--cream:#fafaf7;
+}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+
+.topnav{height:52px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.08);}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:.45rem 1.1rem;font-size:.8rem;font-weight:700;cursor:pointer;}
+
+.bp-hero{background:var(--navy);color:white;padding:36px 24px 28px;text-align:center;}
+.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.15;margin-bottom:8px;}
+.bp-hero h1 span{color:var(--lime);}
+.bp-hero p{color:rgba(255,255,255,.55);font-size:.88rem;max-width:460px;margin:0 auto;}
+
+.tpl-preview-strip{background:white;border-bottom:1px solid #e5e7eb;overflow:hidden;height:180px;position:relative;cursor:pointer;}
+.tpl-preview-strip iframe{width:100%;height:720px;border:none;transform:scale(0.25);transform-origin:top left;pointer-events:none;}
+.tpl-preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(18,25,43,.42);}
+.tpl-preview-badge{background:var(--lime);color:var(--navy);font-size:.75rem;font-weight:700;padding:7px 16px;border-radius:100px;font-family:'DM Mono',monospace;}
+
+.step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;max-width:580px;margin:0 auto;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,0,0,.15);background:white;color:#9ca3af;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,.1);min-width:10px;}
+.step-line.done{background:var(--lime);}
+
+.form-wrap{max-width:620px;margin:0 auto;padding:0 16px 100px;}
+.step-panel{display:none;padding-top:26px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);margin-bottom:5px;}
+.step-sub-main{color:#6b7280;font-size:.86rem;margin-bottom:22px;line-height:1.6;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-weight:700;font-size:.7rem;margin-bottom:6px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:#9ca3af;font-size:.72rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--builtsy-blue);}
+.fi::placeholder{color:#9ca3af;}
+textarea.fi{resize:vertical;min-height:86px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.field-grid{grid-template-columns:1fr;}}
+.field-hint{font-size:.7rem;color:#9ca3af;margin-top:4px;line-height:1.5;}
+.sl{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin:24px 0 10px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+
+/* palette cards */
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.palette-card{border:2px solid #e5e7eb;border-radius:14px;padding:14px;cursor:pointer;transition:all .25s;background:white;}
+.palette-card:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.1);}
+.palette-swatches{display:flex;gap:5px;margin-bottom:10px;}
+.palette-swatch{height:26px;border-radius:7px;flex:1;}
+.palette-card-name{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:2px;}
+.palette-card-desc{font-size:.7rem;color:#9ca3af;line-height:1.4;}
+.palette-check{float:right;width:17px;height:17px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.58rem;display:none;align-items:center;justify-content:center;}
+.palette-card.selected .palette-check{display:flex;}
+
+/* service / price / testi blocks */
+.svc-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;}
+.svc-block-title{font-size:.86rem;font-weight:700;color:var(--navy);}
+.svc-block-chevron{font-size:.72rem;color:#9ca3af;transition:transform .2s;}
+.svc-block-chevron.open{transform:rotate(180deg);}
+.svc-block-body{display:none;padding:0 16px 16px;border-top:1px solid #f3f4f6;}
+.svc-block-body.open{display:block;}
+.price-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.price-block.popular{border-color:var(--builtsy-blue);background:rgba(67,97,238,.02);}
+.price-block-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:8px;font-family:'DM Mono',monospace;}
+.testi-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.testi-num{font-size:.63rem;font-weight:700;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:8px;}
+
+/* upload zones */
+.upload-zone-wrap{margin-bottom:14px;}
+.upload-zone-label-top{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
+.upload-zone{border:2px dashed #e5e7eb;border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;}
+.upload-zone:hover{border-color:var(--builtsy-blue);background:#f8f9ff;}
+.upload-zone.has-photo{border-style:solid;padding:0;overflow:hidden;display:block;}
+.upload-zone-icon{font-size:1.3rem;opacity:.4;}
+.upload-zone-text{font-size:.75rem;color:#9ca3af;line-height:1.4;}
+.upload-zone-text strong{display:block;color:#6b7280;font-weight:600;}
+.upload-zone-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:3px;}
+.upload-thumb{width:100%;height:110px;object-fit:cover;display:block;border-radius:10px;}
+.upload-clear{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:.8rem;cursor:pointer;z-index:2;}
+.upload-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* nav buttons */
+.step-nav{display:flex;gap:10px;margin-top:26px;}
+.btn-back{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;color:#6b7280;cursor:pointer;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);}
+.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
+.btn-next:hover{background:#b8d000;}
+.btn-generate{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* overlay */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:46px;height:46px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.3rem;}
+.gen-sub{color:rgba(255,255,255,.5);font-size:.86rem;max-width:280px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.76rem;}
+.gen-bar{width:260px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.gen-bar-fill{height:100%;background:var(--lime);border-radius:2px;width:0%;transition:width .4s;}
+
+/* output */
+#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.output-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;}
+.btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(67,97,238,.1);border-bottom:1px solid rgba(67,97,238,.18);padding:8px 16px;font-size:.74rem;color:rgba(255,255,255,.65);flex-shrink:0;}
+.deploy-bar a{color:var(--lime);font-weight:600;}
+.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.86rem;margin:16px;display:none;}
+.output-error.active{display:block;}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
+#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+#revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
+#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#revise-input::placeholder{color:rgba(255,255,255,.35);}
+.btn-revise-submit{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="dashboard.html" class="logo-text">builtsy</a>
+  <span class="tn-tag" id="un-tpl-tag">✦ Template</span>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <button class="btn-top" onclick="unGoStep(5)">⚡ Generate</button>
+  </div>
+</div>
+
+<div class="bp-hero">
+  <h1 id="un-hero-title">Your <span id="un-hero-span">Template</span> Site</h1>
+  <p id="un-hero-sub">Pre-designed and locked. Fill in your info and it's yours.</p>
+</div>
+
+<div class="tpl-preview-strip" onclick="unGoStep(1)">
+  <iframe id="un-preview-iframe" src="" scrolling="no" tabindex="-1"></iframe>
+  <div class="tpl-preview-overlay">
+    <span class="tpl-preview-badge">👆 Preview the template — click to start</span>
+  </div>
+</div>
+
+<div class="step-progress">
+  <div class="step-dot active" id="un-dot-1">1</div>
+  <div class="step-line" id="un-line-1"></div>
+  <div class="step-dot" id="un-dot-2">2</div>
+  <div class="step-line" id="un-line-2"></div>
+  <div class="step-dot" id="un-dot-3">3</div>
+  <div class="step-line" id="un-line-3"></div>
+  <div class="step-dot" id="un-dot-4">4</div>
+  <div class="step-line" id="un-line-4"></div>
+  <div class="step-dot" id="un-dot-5">5</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- STEP 1 — PALETTE -->
+  <div class="step-panel active" id="un-step-1">
+    <p class="step-label-top">Step 1 of 5</p>
+    <h2 class="step-title-main">Choose Your Palette</h2>
+    <p class="step-sub-main">The layout stays exactly the same — just the accent color shifts.</p>
+    <div class="palette-grid" id="un-palette-grid"></div>
+    <div class="step-nav">
+      <button class="btn-next" onclick="unGoStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 — BASICS -->
+  <div class="step-panel" id="un-step-2">
+    <p class="step-label-top">Step 2 of 5</p>
+    <h2 class="step-title-main">Your Business</h2>
+    <p class="step-sub-main">These basics populate your nav, hero, footer, and contact section.</p>
+    <div class="field-grid">
+      <div class="field"><label>Business Name</label><input class="fi" id="un-biz" type="text" placeholder="Your Business Name"></div>
+      <div class="field"><label>Your Name</label><input class="fi" id="un-owner" type="text" placeholder="Your Name"></div>
+    </div>
+    <div class="field"><label>What You Do <span class="opt">— one-line tagline</span></label><input class="fi" id="un-tagline" type="text" placeholder="e.g. Piano Lessons for All Ages"></div>
+    <div class="field-grid">
+      <div class="field"><label>City / Location</label><input class="fi" id="un-location" type="text" placeholder="Austin, TX"></div>
+      <div class="field"><label>Contact Email</label><input class="fi" id="un-email" type="email" placeholder="hello@yourbiz.com"></div>
+    </div>
+    <div class="field-grid">
+      <div class="field"><label>Phone <span class="opt">(optional)</span></label><input class="fi" id="un-phone" type="text" placeholder="(512) 555-0100"></div>
+      <div class="field"><label>Instagram <span class="opt">(optional)</span></label><input class="fi" id="un-ig" type="text" placeholder="@yourbiz"></div>
+    </div>
+    <span class="sl">Social Proof Numbers</span>
+    <div class="field-grid">
+      <div class="field"><label>Stat 1</label><input class="fi" id="un-stat1" type="text" placeholder="200+ clients served"></div>
+      <div class="field"><label>Stat 2</label><input class="fi" id="un-stat2" type="text" placeholder="10 years experience"></div>
+    </div>
+    <div class="field"><label>Stat 3 <span class="opt">(optional)</span></label><input class="fi" id="un-stat3" type="text" placeholder="4.9★ average rating"></div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="unGoStep(1)">← Back</button>
+      <button class="btn-next" onclick="unGoStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 — STORY, SERVICES, PRICING, TESTIMONIALS -->
+  <div class="step-panel" id="un-step-3">
+    <p class="step-label-top">Step 3 of 5</p>
+    <h2 class="step-title-main">Your Story & Services</h2>
+    <p class="step-sub-main">Fill in your copy — or leave fields blank and Builtsy will write professional defaults for your niche.</p>
+
+    <span class="sl">Hero Copy</span>
+    <div class="field">
+      <label>Hero Headline <span class="opt">— punchy, 5–8 words</span></label>
+      <input class="fi" id="un-headline" type="text" placeholder="e.g. Music Lessons That Actually Stick">
+    </div>
+    <div class="field">
+      <label>Hero Subheading <span class="opt">— 1–2 sentences</span></label>
+      <textarea class="fi" id="un-hero-sub" placeholder="Describe who you help and how you do it differently."></textarea>
+    </div>
+
+    <span class="sl">About / Bio</span>
+    <div class="field">
+      <label>Your Bio <span class="opt">— 3–4 sentences</span></label>
+      <textarea class="fi" id="un-about" style="min-height:100px;" placeholder="Your background, approach, and why clients choose you."></textarea>
+    </div>
+
+    <span class="sl">Services (up to 4)</span>
+    <div id="un-services-wrap">
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="unToggleSvc(this)"><span class="svc-block-title">Service 1</span><span class="svc-block-chevron open">▾</span></div>
+        <div class="svc-block-body open">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="un-svc-name-1" type="text" placeholder="e.g. 60-Minute Private Lesson"></div>
+          <div class="field"><label>Description <span class="opt">1–2 sentences</span></label><textarea class="fi" id="un-svc-desc-1" placeholder="What's included and who it's for."></textarea></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="unToggleSvc(this)"><span class="svc-block-title">Service 2</span><span class="svc-block-chevron">▾</span></div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="un-svc-name-2" type="text" placeholder="Service 2 name"></div>
+          <div class="field"><label>Description</label><textarea class="fi" id="un-svc-desc-2" placeholder="Description"></textarea></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="unToggleSvc(this)"><span class="svc-block-title">Service 3</span><span class="svc-block-chevron">▾</span></div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="un-svc-name-3" type="text" placeholder="Service 3 name"></div>
+          <div class="field"><label>Description</label><textarea class="fi" id="un-svc-desc-3" placeholder="Description"></textarea></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="unToggleSvc(this)"><span class="svc-block-title">Service 4 <span style="font-weight:400;color:#9ca3af;font-size:.78rem;">(optional)</span></span><span class="svc-block-chevron">▾</span></div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="un-svc-name-4" type="text" placeholder="Service 4 name"></div>
+          <div class="field"><label>Description</label><textarea class="fi" id="un-svc-desc-4" placeholder="Description"></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <span class="sl">Pricing (3 tiers)</span>
+    <div class="price-block">
+      <div class="price-block-label">Tier 1</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-tier-name-1" type="text" placeholder="Starter"></div>
+        <div class="field"><label>Price</label><input class="fi" id="un-tier-price-1" type="text" placeholder="$65/session"></div>
+      </div>
+      <div class="field"><label>What's included</label><textarea class="fi" id="un-tier-desc-1" placeholder="1-2 sentences about this tier."></textarea></div>
+    </div>
+    <div class="price-block popular">
+      <div class="price-block-label">★ Most Popular</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-tier-name-2" type="text" placeholder="Growth"></div>
+        <div class="field"><label>Price</label><input class="fi" id="un-tier-price-2" type="text" placeholder="$250/month"></div>
+      </div>
+      <div class="field"><label>What's included</label><textarea class="fi" id="un-tier-desc-2" placeholder="1-2 sentences about this tier."></textarea></div>
+    </div>
+    <div class="price-block">
+      <div class="price-block-label">Tier 3</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-tier-name-3" type="text" placeholder="Premium"></div>
+        <div class="field"><label>Price</label><input class="fi" id="un-tier-price-3" type="text" placeholder="$450/month"></div>
+      </div>
+      <div class="field"><label>What's included</label><textarea class="fi" id="un-tier-desc-3" placeholder="1-2 sentences about this tier."></textarea></div>
+    </div>
+
+    <span class="sl">Testimonials</span>
+    <div class="testi-block">
+      <div class="testi-num">1</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="un-t1-quote" placeholder='"This was the best decision I ever made..."'></textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-t1-name" type="text" placeholder="Sarah M."></div>
+        <div class="field"><label>Detail <span class="opt">job/city</span></label><input class="fi" id="un-t1-detail" type="text" placeholder="Austin, TX"></div>
+      </div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">2</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="un-t2-quote" placeholder='"Exceeded every expectation..."'></textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-t2-name" type="text" placeholder="James K."></div>
+        <div class="field"><label>Detail</label><input class="fi" id="un-t2-detail" type="text" placeholder="Parent of student"></div>
+      </div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">3</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="un-t3-quote" placeholder='"Highly recommend to anyone looking for..."'></textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="un-t3-name" type="text" placeholder="Maria T."></div>
+        <div class="field"><label>Detail</label><input class="fi" id="un-t3-detail" type="text" placeholder="3-year client"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="unGoStep(2)">← Back</button>
+      <button class="btn-next" onclick="unGoStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 — PHOTOS -->
+  <div class="step-panel" id="un-step-4">
+    <p class="step-label-top">Step 4 of 5</p>
+    <h2 class="step-title-main">Your Photos</h2>
+    <p class="step-sub-main">All optional — the template uses styled placeholders if skipped.</p>
+    <div id="un-photo-zones"></div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="unGoStep(3)">← Back</button>
+      <button class="btn-next" onclick="unGoStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 — GENERATE -->
+  <div class="step-panel" id="un-step-5">
+    <p class="step-label-top">Step 5 of 5</p>
+    <h2 class="step-title-main">Ready to Build</h2>
+    <p class="step-sub-main">Builtsy fills your content into the template. Design stays locked. Takes 20–40 seconds.</p>
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 22px;margin-bottom:22px;">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:12px;">What you get</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:.84rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Exact design intact — fonts, colors, animations, layout</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.84rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Your real business name, bio, services, pricing</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.84rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Photos + palette applied automatically</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.84rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Download → drag to Netlify → live in 10 seconds</div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="unGoStep(4)">← Back</button>
+      <button class="btn-generate" onclick="unGenerate()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Fill In My Template
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- OVERLAY -->
+<div class="gen-overlay" id="un-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title">Filling in your template…</div>
+  <div class="gen-sub">Design stays locked. Just your content going in.</div>
+  <div class="gen-msg" id="un-gen-msg">Reading your business info…</div>
+  <div class="gen-bar"><div class="gen-bar-fill" id="un-bar-fill"></div></div>
+</div>
+
+<!-- OUTPUT -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-title" id="un-output-title">Your site</span>
+    <button class="btn-tb" onclick="toggleRevise()">✏️ Revise</button>
+    <button class="btn-tb" onclick="unRebuild()">↺ Rebuild</button>
+    <button class="btn-dl" onclick="unDownload()">⬇ Download</button>
+  </div>
+  <div class="deploy-bar">🚀 <strong style="color:white;">Go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></div>
+  <div class="output-error" id="un-error"></div>
+  <div id="revise-drawer">
+    <textarea id="revise-input" placeholder="Describe what to change…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="unRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──
+var _unTemplate = 'warm'; // warm | vibrant
+var _unNiche = '';
+var _unPalette = 'original';
+var _unPhotos = {};
+var _unHTML = '';
+var _unMsgIdx = 0;
+var _unInterval = null;
+var _unProgress = 0;
+var _unProgressInterval = null;
+var _unMsgs = ['Reading your info…','Swapping in your copy…','Updating services…','Filling pricing & testimonials…','Applying palette…','Finalizing…'];
+
+// ── TEMPLATE CONFIGS ──
+var _tplConfigs = {
+  warm: {
+    name: 'Warm & Clean',
+    tag: '🌿 Template',
+    heroTitle: 'Your Warm & Clean Site',
+    heroSpan: 'Warm & Clean',
+    heroSub: 'Soft, approachable, trustworthy — fill in your info and it\'s yours.',
+    previewSrc: 'warm-clean-site.html',
+    palettes: [
+      { id: 'original', name: 'Sage', desc: 'Warm white + Sage Green — calm & trustworthy', swatches: ['#FAF7F2','#5C8A6B','#A8C5B0'], css: '' },
+      { id: 'terracotta', name: 'Terracotta', desc: 'Warm white + Terracotta — earthy & inviting', swatches: ['#FAF5F0','#B5522A','#D4956B'], css: '--accent:#B5522A;--accent2:#D4956B;--warm:#FAF5F0;--warm2:#F0E8DF;--dark:#2B0F05;' },
+      { id: 'navy', name: 'Navy', desc: 'Cool white + Navy — professional & calm', swatches: ['#F0F4FA','#2B4C8C','#7B9ED9'], css: '--accent:#2B4C8C;--accent2:#7B9ED9;--warm:#F0F4FA;--warm2:#E4ECFA;--dark:#0D1C3D;' },
+      { id: 'plum', name: 'Plum', desc: 'Soft white + Plum — warm & luxurious', swatches: ['#FAF0F8','#7B3B6E','#C98AB5'], css: '--accent:#7B3B6E;--accent2:#C98AB5;--warm:#FAF0F8;--warm2:#F0E0ED;--dark:#2B0D24;' }
+    ],
+    photoZones: [
+      { slot: 'hero',   imgId: 'wc-hero-photo',    label: 'Hero Photo',    desc: 'Right side of hero — portrait or lifestyle', icon: '🖼' },
+      { slot: 'aboutA', imgId: 'wc-about-a-photo',  label: 'About Photo A', desc: 'Main about photo (taller)', icon: '📷' },
+      { slot: 'aboutB', imgId: 'wc-about-b-photo',  label: 'About Photo B', desc: 'Secondary about photo (offset)', icon: '📷' }
+    ]
+  },
+  vibrant: {
+    name: 'Vibrant Pro',
+    tag: '⚡ Template',
+    heroTitle: 'Your Vibrant Pro Site',
+    heroSpan: 'Vibrant Pro',
+    heroSub: 'Bold, energetic, results-driven — fill in your info and it\'s yours.',
+    previewSrc: 'vibrant-pro-site.html',
+    palettes: [
+      { id: 'original', name: 'Electric', desc: 'Dark + Electric Blue + Coral — bold & dynamic', swatches: ['#0F172A','#2563EB','#F97316'], css: '' },
+      { id: 'purple',   name: 'Purple',   desc: 'Dark + Violet + Amber — premium & creative', swatches: ['#0F0F1A','#7C3AED','#F59E0B'], css: '--blue:#7C3AED;--coral:#F59E0B;' },
+      { id: 'red',      name: 'Red Zone', desc: 'Dark + Red + Gold — intense & motivating', swatches: ['#1A0505','#DC2626','#FBBF24'], css: '--blue:#DC2626;--coral:#FBBF24;' },
+      { id: 'teal',     name: 'Teal',     desc: 'Dark + Teal + Coral — fresh & confident', swatches: ['#051A1A','#0D9488','#F97316'], css: '--blue:#0D9488;' }
+    ],
+    photoZones: [
+      { slot: 'hero',  imgId: 'vp-hero-photo',  label: 'Hero Photo',  desc: 'Right side of hero — action or portrait', icon: '🖼' },
+      { slot: 'about', imgId: 'vp-about-photo', label: 'About Photo', desc: 'Your photo in the about section', icon: '📷' }
+    ]
+  }
+};
+
+// ── INIT FROM URL PARAMS ──
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  _unTemplate = params.get('template') || 'warm';
+  _unNiche = params.get('niche') || '';
+  if (!_tplConfigs[_unTemplate]) _unTemplate = 'warm';
+
+  var cfg = _tplConfigs[_unTemplate];
+  document.getElementById('un-tpl-tag').textContent = cfg.tag;
+  document.getElementById('un-hero-title').innerHTML = 'Your <span id="un-hero-span">' + cfg.heroSpan + '</span> Site';
+  document.getElementById('un-hero-sub').textContent = cfg.heroSub;
+  document.getElementById('un-preview-iframe').src = cfg.previewSrc;
+  document.title = cfg.name + ' Template | Builtsy';
+
+  // Build palette cards
+  var grid = document.getElementById('un-palette-grid');
+  for (var i = 0; i < cfg.palettes.length; i++) {
+    (function(pal, idx) {
+      var div = document.createElement('div');
+      div.className = 'palette-card' + (idx === 0 ? ' selected' : '');
+      div.id = 'pal-' + pal.id;
+      var swatchHTML = pal.swatches.map(function(c) {
+        return '<div class="palette-swatch" style="background:' + c + ';' + (c.startsWith('#F') || c === '#FAF7F2' || c === '#FAF5F0' || c === '#F0F4FA' || c === '#FAF0F8' ? 'border:1px solid #e5e7eb;' : '') + '"></div>';
+      }).join('');
+      div.innerHTML = '<div class="palette-check">✓</div>'
+        + '<div class="palette-swatches">' + swatchHTML + '</div>'
+        + '<div class="palette-card-name">' + pal.name + '</div>'
+        + '<div class="palette-card-desc">' + pal.desc + '</div>';
+      div.onclick = function() { unSelectPalette(pal.id); };
+      grid.appendChild(div);
+    })(cfg.palettes[i], i);
+  }
+
+  // Build photo zones
+  buildPhotoZones(cfg.photoZones);
+
+  // Blueprint ID
+  var stored = localStorage.getItem('builtsy_bp_id') || ('un-' + Date.now());
+  localStorage.setItem('builtsy_bp_id', stored);
+  window._blueprintId = stored;
+})();
+
+function unSelectPalette(id) {
+  _unPalette = id;
+  var cfg = _tplConfigs[_unTemplate];
+  for (var i = 0; i < cfg.palettes.length; i++) {
+    var c = document.getElementById('pal-' + cfg.palettes[i].id);
+    if (c) c.className = 'palette-card' + (cfg.palettes[i].id === id ? ' selected' : '');
+  }
+}
+
+function buildPhotoZones(zones) {
+  var wrap = document.getElementById('un-photo-zones');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  for (var i = 0; i < zones.length; i++) {
+    (function(zone) {
+      // hidden file input
+      var input = document.createElement('input');
+      input.type = 'file'; input.accept = 'image/*';
+      input.id = 'un-file-' + zone.slot;
+      input.style.display = 'none';
+      input.onchange = function() { unHandlePhoto(zone.slot, this); };
+      wrap.appendChild(input);
+
+      var zoneWrap = document.createElement('div');
+      zoneWrap.className = 'upload-zone-wrap';
+      zoneWrap.innerHTML = '<span class="upload-zone-label-top">' + zone.label + '</span>';
+
+      var zoneDiv = document.createElement('div');
+      zoneDiv.className = 'upload-zone';
+      zoneDiv.id = 'un-zone-' + zone.slot;
+      zoneDiv.innerHTML = '<div class="upload-zone-icon">' + zone.icon + '</div>'
+        + '<div class="upload-zone-text"><strong>' + zone.label + '</strong>' + zone.desc + '</div>'
+        + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'un-file-' + zone.slot + '\').click()">Upload</button>';
+      zoneDiv.onclick = function() { document.getElementById('un-file-' + zone.slot).click(); };
+      zoneWrap.appendChild(zoneDiv);
+      wrap.appendChild(zoneWrap);
+    })(zones[i]);
+  }
+}
+
+function unHandlePhoto(slot, input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _unPhotos[slot] = e.target.result;
+    var zone = document.getElementById('un-zone-' + slot);
+    if (!zone) return;
+    zone.className = 'upload-zone has-photo';
+    zone.innerHTML = '<img class="upload-thumb" src="' + e.target.result + '" alt=""><button class="upload-clear" onclick="event.stopPropagation();unClearPhoto(\'' + slot + '\')">✕</button>';
+    zone.onclick = null;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function unClearPhoto(slot) {
+  _unPhotos[slot] = null;
+  var fi = document.getElementById('un-file-' + slot);
+  if (fi) fi.value = '';
+  var cfg = _tplConfigs[_unTemplate];
+  var zone = null;
+  for (var i = 0; i < cfg.photoZones.length; i++) {
+    if (cfg.photoZones[i].slot === slot) { zone = cfg.photoZones[i]; break; }
+  }
+  var zoneDiv = document.getElementById('un-zone-' + slot);
+  if (!zoneDiv || !zone) return;
+  zoneDiv.className = 'upload-zone';
+  zoneDiv.innerHTML = '<div class="upload-zone-icon">' + zone.icon + '</div>'
+    + '<div class="upload-zone-text"><strong>' + zone.label + '</strong>' + zone.desc + '</div>'
+    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'un-file-' + slot + '\').click()">Upload</button>';
+  zoneDiv.onclick = function() { document.getElementById('un-file-' + slot).click(); };
+}
+
+function unGoStep(n) {
+  for (var i = 1; i <= 5; i++) {
+    var p = document.getElementById('un-step-' + i);
+    var d = document.getElementById('un-dot-' + i);
+    if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
+    if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    if (i < 5) {
+      var l = document.getElementById('un-line-' + i);
+      if (l) l.className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function unToggleSvc(header) {
+  var body = header.nextElementSibling;
+  var chev = header.querySelector('.svc-block-chevron');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function unCollect() {
+  var v = function(id) { return (document.getElementById(id)||{}).value || ''; };
+  return {
+    niche:       _unNiche,
+    template:    _unTemplate,
+    businessName: v('un-biz'),
+    ownerName:   v('un-owner'),
+    tagline:     v('un-tagline'),
+    location:    v('un-location'),
+    email:       v('un-email'),
+    phone:       v('un-phone'),
+    instagram:   v('un-ig'),
+    stat1:       v('un-stat1'),
+    stat2:       v('un-stat2'),
+    stat3:       v('un-stat3'),
+    heroHeadline: v('un-headline'),
+    heroSub:     v('un-hero-sub'),
+    aboutBio:    v('un-about'),
+    service1Name: v('un-svc-name-1'), service1Desc: v('un-svc-desc-1'),
+    service2Name: v('un-svc-name-2'), service2Desc: v('un-svc-desc-2'),
+    service3Name: v('un-svc-name-3'), service3Desc: v('un-svc-desc-3'),
+    service4Name: v('un-svc-name-4'), service4Desc: v('un-svc-desc-4'),
+    tier1Name: v('un-tier-name-1'), tier1Price: v('un-tier-price-1'), tier1Desc: v('un-tier-desc-1'),
+    tier2Name: v('un-tier-name-2'), tier2Price: v('un-tier-price-2'), tier2Desc: v('un-tier-desc-2'),
+    tier3Name: v('un-tier-name-3'), tier3Price: v('un-tier-price-3'), tier3Desc: v('un-tier-desc-3'),
+    testi1Quote: v('un-t1-quote'), testi1Name: v('un-t1-name'), testi1Detail: v('un-t1-detail'),
+    testi2Quote: v('un-t2-quote'), testi2Name: v('un-t2-name'), testi2Detail: v('un-t2-detail'),
+    testi3Quote: v('un-t3-quote'), testi3Name: v('un-t3-name'), testi3Detail: v('un-t3-detail')
+  };
+}
+
+function unInjectAssets(html) {
+  // Palette
+  var cfg = _tplConfigs[_unTemplate];
+  var palObj = null;
+  for (var i = 0; i < cfg.palettes.length; i++) {
+    if (cfg.palettes[i].id === _unPalette) { palObj = cfg.palettes[i]; break; }
+  }
+  if (palObj && palObj.css) {
+    html = html.replace('</head>', '<style>:root{' + palObj.css + '}</style>\n</head>');
+  }
+  // Photos
+  var hasPhotos = false;
+  for (var k in _unPhotos) { if (_unPhotos[k]) { hasPhotos = true; break; } }
+  if (hasPhotos) {
+    try {
+      var parser = new DOMParser();
+      var doc2 = parser.parseFromString(html, 'text/html');
+      for (var i = 0; i < cfg.photoZones.length; i++) {
+        var zone = cfg.photoZones[i];
+        if (!_unPhotos[zone.slot]) continue;
+        var img = doc2.getElementById(zone.imgId);
+        if (img) {
+          img.src = _unPhotos[zone.slot];
+          img.style.display = 'block';
+          img.style.position = 'absolute';
+          img.style.inset = '0';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+        }
+      }
+      html = '<!DOCTYPE html>\n' + doc2.documentElement.outerHTML;
+    } catch(e) {}
+  }
+  return html;
+}
+
+function unGenerate() {
+  var fields = unCollect();
+  var overlay = document.getElementById('un-overlay');
+  if (overlay) overlay.classList.add('active');
+  _unMsgIdx = 0; _unProgress = 0;
+  document.getElementById('un-gen-msg').textContent = _unMsgs[0];
+  document.getElementById('un-bar-fill').style.width = '0%';
+  _unInterval = setInterval(function() {
+    _unMsgIdx = (_unMsgIdx + 1) % _unMsgs.length;
+    var el = document.getElementById('un-gen-msg');
+    if (el) el.textContent = _unMsgs[_unMsgIdx];
+  }, 5000);
+  _unProgressInterval = setInterval(function() {
+    _unProgress = Math.min(_unProgress + 0.9, 92);
+    var bar = document.getElementById('un-bar-fill');
+    if (bar) bar.style.width = _unProgress + '%';
+  }, 400);
+
+  fetch('https://builtsy-api-production.up.railway.app/generate-template-universal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ templateType: _unTemplate, niche: _unNiche, fields: fields })
+  })
+  .then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              clearInterval(_unInterval); clearInterval(_unProgressInterval);
+              var bar = document.getElementById('un-bar-fill');
+              if (bar) bar.style.width = '100%';
+              setTimeout(function() { if (overlay) overlay.classList.remove('active'); }, 300);
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { unFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
+                if (html.length < 200) { unFinishError('Generation returned empty. Try again.'); return; }
+                html = unInjectAssets(html);
+                _unHTML = html;
+                unShowOutput(html);
+              }
+            } catch(e) {}
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  })
+  .catch(function(err) { unFinishError('Connection error: ' + err.message); });
+}
+
+function unFinishError(msg) {
+  clearInterval(_unInterval); clearInterval(_unProgressInterval);
+  var overlay = document.getElementById('un-overlay');
+  if (overlay) overlay.classList.remove('active');
+  unShowError(msg);
+}
+
+function unShowOutput(html) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.tpl-preview-strip').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var biz = (document.getElementById('un-biz')||{}).value || 'Your Site';
+  var t = document.getElementById('un-output-title');
+  if (t) t.textContent = biz + ' — scroll to preview';
+  var frame = document.getElementById('output-preview-frame');
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      var doc = win.document;
+      // Wire testimonials
+      if (win.testis) {
+        win.setTesti = function(i, dot) {
+          var te = doc.getElementById('testi-text');
+          var tn = doc.getElementById('testi-name');
+          var ta = doc.getElementById('testi-avatar');
+          if (te) te.textContent = win.testis[i].text;
+          if (tn) tn.textContent = win.testis[i].name;
+          if (ta) ta.textContent = win.testis[i].initial;
+          var dots = doc.querySelectorAll('.testi-dot');
+          for (var j = 0; j < dots.length; j++) dots[j].classList.remove('active');
+          dot.classList.add('active');
+        };
+      }
+      // Wire FAQ accordions
+      var accBtns = doc.querySelectorAll('[data-faq],.faq-question,.faq-header');
+      for (var i = 0; i < accBtns.length; i++) {
+        (function(btn) {
+          btn.onclick = function() {
+            var body = btn.nextElementSibling;
+            if (body) body.style.maxHeight = body.style.maxHeight ? '' : body.scrollHeight + 'px';
+          };
+        })(accBtns[i]);
+      }
+      // Wire accordion toggleAcc if present
+      win.toggleAcc = function(btn) {
+        var body = btn.nextElementSibling;
+        if (body) { body.style.maxHeight = body.style.maxHeight ? '' : body.scrollHeight + 'px'; }
+      };
+    } catch(e) {}
+  };
+  frame.srcdoc = html;
+}
+
+function unShowError(msg) {
+  var el = document.getElementById('un-error');
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+  if (!document.getElementById('output-panel').classList.contains('active')) alert(msg);
+}
+
+function unRebuild() {
+  var el = document.getElementById('un-error');
+  if (el) el.classList.remove('active');
+  unGenerate();
+}
+
+function toggleRevise() {
+  document.getElementById('revise-drawer').classList.toggle('active');
+}
+
+function unRevise() {
+  var note = (document.getElementById('revise-input')||{}).value;
+  if (!note || !note.trim()) return;
+  document.getElementById('revise-drawer').classList.remove('active');
+  var overlay = document.getElementById('un-overlay');
+  if (overlay) overlay.classList.add('active');
+  document.getElementById('un-gen-msg').textContent = 'Applying your changes…';
+  var prompt = 'You previously generated this HTML:\n\n' + _unHTML
+    + '\n\n--- REVISION ---\nMake this change: ' + note.trim()
+    + '\nReturn ONLY the complete revised HTML. No markdown, no explanation.';
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (overlay) overlay.classList.remove('active');
+    var html = (data.html || '').replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
+    if (html && html.length > 200) {
+      (document.getElementById('revise-input')||{}).value = '';
+      html = unInjectAssets(html);
+      _unHTML = html;
+      unShowOutput(html);
+    } else { unShowError('Revision returned empty. Try again.'); }
+  })
+  .catch(function(err) {
+    if (overlay) overlay.classList.remove('active');
+    unShowError('Revision error: ' + err.message);
+  });
+}
+
+function unDownload() {
+  if (!_unHTML) return;
+  var biz = (document.getElementById('un-biz')||{}).value || 'my-site';
+  var slug = biz.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').slice(0,30);
+  var blob = new Blob([_unHTML], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = slug + '.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
