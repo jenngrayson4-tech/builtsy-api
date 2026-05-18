@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Creative Agency Template | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;--builtsy-blue:#4361EE;
+  --cream:#fafaf7;--yellow:#E8D400;
+}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--yellow);color:#0D0D0D;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+.welcome-banner{background:#0D0D0D;color:var(--yellow);text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;letter-spacing:.04em;}
+
+.bp-hero{background:var(--navy);color:white;padding:40px 24px 32px;text-align:center;}
+.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.15;margin-bottom:10px;}
+.bp-hero h1 span{color:var(--lime);}
+.bp-hero p{color:rgba(255,255,255,0.6);font-size:.9rem;max-width:480px;margin:0 auto;}
+
+.tpl-preview-strip{background:white;border-bottom:1px solid #e5e7eb;overflow:hidden;height:200px;position:relative;cursor:pointer;}
+.tpl-preview-strip iframe{width:100%;height:800px;border:none;transform:scale(0.25);transform-origin:top left;pointer-events:none;}
+.tpl-preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(13,13,13,0.5);}
+.tpl-preview-badge{background:var(--yellow);color:#0D0D0D;font-size:.75rem;font-weight:700;padding:8px 18px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+
+.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:640px;margin:0 auto;}
+.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:10px;}
+.step-line.done{background:var(--lime);}
+
+.form-wrap{max-width:640px;margin:0 auto;padding:0 16px 100px;}
+.step-panel{display:none;padding-top:28px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
+.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:24px;line-height:1.6;}
+
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--builtsy-blue);}
+.fi::placeholder{color:#9ca3af;}
+textarea.fi{resize:vertical;min-height:88px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.field-grid{grid-template-columns:1fr;}}
+.field-hint{font-size:.72rem;color:#9ca3af;margin-top:5px;line-height:1.5;}
+.sl{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin:28px 0 12px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+
+/* ── PALETTE CARDS ── */
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+@media(max-width:400px){.palette-grid{grid-template-columns:1fr;}}
+.palette-card{border:2px solid #e5e7eb;border-radius:14px;padding:14px 14px 12px;cursor:pointer;transition:all .25s;background:white;user-select:none;}
+.palette-card:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.palette-swatches{display:flex;gap:5px;margin-bottom:10px;}
+.palette-swatch{height:28px;border-radius:7px;flex:1;}
+.palette-card-name{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:2px;}
+.palette-card-desc{font-size:.7rem;color:#9ca3af;line-height:1.4;}
+.palette-check{float:right;width:18px;height:18px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.6rem;display:none;align-items:center;justify-content:center;margin-top:-2px;}
+.palette-card.selected .palette-check{display:flex;}
+
+/* ── SERVICE BLOCKS ── */
+.svc-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;}
+.svc-block-title{font-size:.88rem;font-weight:700;color:var(--navy);}
+.svc-block-chevron{font-size:.75rem;color:#9ca3af;transition:transform .2s;}
+.svc-block-chevron.open{transform:rotate(180deg);}
+.svc-block-body{display:none;padding:0 16px 16px;border-top:1px solid #f3f4f6;}
+.svc-block-body.open{display:block;}
+
+/* ── PRICING ── */
+.price-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.price-block.popular{border-color:#E8D400;background:rgba(232,212,0,0.03);}
+.price-block-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a7900;margin-bottom:8px;font-family:'DM Mono',monospace;}
+
+/* ── TESTI BLOCKS ── */
+.testi-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.testi-num{font-size:.65rem;font-weight:700;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:8px;}
+
+/* ── STAT ROWS ── */
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:4px;}
+.stat-block{background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;}
+.stat-number{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.stat-label-fi{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--navy);background:white;outline:none;margin-top:6px;}
+
+/* ── UPLOAD ZONES ── */
+.upload-zone-wrap{margin-bottom:14px;}
+.upload-zone-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
+.upload-zone{border:2px dashed #e5e7eb;border-radius:12px;padding:18px 16px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;}
+.upload-zone:hover{border-color:var(--builtsy-blue);background:#f8f9ff;}
+.upload-zone.has-photo{border-style:solid;border-color:#e5e7eb;padding:0;overflow:hidden;display:block;}
+.upload-zone-icon{font-size:1.3rem;opacity:.4;}
+.upload-zone-text{font-size:.75rem;color:#9ca3af;line-height:1.4;}
+.upload-zone-text strong{display:block;color:#6b7280;font-weight:600;margin-bottom:1px;}
+.upload-zone-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:2px;}
+.upload-thumb{width:100%;height:110px;object-fit:cover;display:block;border-radius:10px;}
+.upload-clear{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.65);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.upload-photos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.upload-photos-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:500px){.upload-photos-grid{grid-template-columns:1fr;}.upload-photos-grid-3{grid-template-columns:1fr 1fr;}}
+.upload-optional-note{font-size:.7rem;color:#9ca3af;margin-top:4px;text-align:center;}
+
+/* ── NAV / BUTTONS ── */
+.step-nav{display:flex;gap:10px;margin-top:28px;}
+.btn-back{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);}
+.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;}
+.btn-next:hover{background:#b8d000;}
+.btn-generate{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate:hover{background:#1e2d4a;}
+
+/* ── OVERLAY ── */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.95);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:48px;height:48px;border:3px solid rgba(232,212,0,.2);border-top-color:var(--yellow);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
+.gen-sub{color:rgba(255,255,255,.5);font-size:.88rem;max-width:300px;line-height:1.6;}
+.gen-msg{color:var(--yellow);font-family:'DM Mono',monospace;font-size:.78rem;}
+.gen-progress-bar{width:280px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.gen-progress-fill{height:100%;background:var(--yellow);border-radius:2px;width:0%;transition:width .5s;}
+
+/* ── OUTPUT PANEL ── */
+#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-toolbar{background:#0D0D0D;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--yellow);color:#0D0D0D;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.output-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-dl{background:var(--yellow);color:#0D0D0D;border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;}
+.btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(232,212,0,.08);border-bottom:1px solid rgba(232,212,0,.15);padding:9px 16px;font-size:.76rem;color:rgba(255,255,255,.7);flex-shrink:0;}
+.deploy-bar a{color:var(--yellow);font-weight:600;}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;}
+#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-error.active{display:block;}
+#revise-drawer{display:none;background:#0D0D0D;border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
+#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#revise-input::placeholder{color:rgba(255,255,255,.35);}
+.btn-revise-submit{background:var(--yellow);color:#0D0D0D;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="dashboard.html" class="logo-text">builtsy</a>
+  <span class="tn-tag">⚡ Template</span>
+  <div class="tn-right">
+    <button class="btn-top" onclick="caGoStep(5)">⚡ Generate</button>
+  </div>
+</div>
+
+<div class="welcome-banner">
+  ⚡ Bold, editorial design. Just fill in your info — the look is already locked. ⚡
+</div>
+
+<div class="bp-hero">
+  <h1>Creative Agency<br><span>Template Site</span></h1>
+  <p>Anton headlines, yellow marquee, portfolio grid — designed to stop the scroll. Fill in your info and it's yours.</p>
+</div>
+
+<div class="tpl-preview-strip" onclick="caGoStep(1)">
+  <iframe src="creative-agency-site.html" scrolling="no" tabindex="-1"></iframe>
+  <div class="tpl-preview-overlay">
+    <span class="tpl-preview-badge">👆 Preview the template — click to start</span>
+  </div>
+</div>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress">
+  <div class="step-dot active" id="ca-dot-1">1</div>
+  <div class="step-line" id="ca-line-1"></div>
+  <div class="step-dot" id="ca-dot-2">2</div>
+  <div class="step-line" id="ca-line-2"></div>
+  <div class="step-dot" id="ca-dot-3">3</div>
+  <div class="step-line" id="ca-line-3"></div>
+  <div class="step-dot" id="ca-dot-4">4</div>
+  <div class="step-line" id="ca-line-4"></div>
+  <div class="step-dot" id="ca-dot-5">5</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- ══ STEP 1 — PALETTE ══ -->
+  <div class="step-panel active" id="ca-step-1">
+    <p class="step-label-top">Step 1 of 5</p>
+    <h2 class="step-title-main">Choose Your Palette</h2>
+    <p class="step-sub-main">The bold layout stays exactly the same. Just pick your accent color.</p>
+
+    <div class="palette-grid">
+      <div class="palette-card selected" id="pal-original" onclick="caSelectPalette('original')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#0D0D0D;"></div>
+          <div class="palette-swatch" style="background:#E8D400;"></div>
+          <div class="palette-swatch" style="background:#FAF8F0;border:1px solid #e5e7eb;"></div>
+        </div>
+        <div class="palette-card-name">Original</div>
+        <div class="palette-card-desc">Black + Yellow — bold, editorial, high-contrast</div>
+      </div>
+      <div class="palette-card" id="pal-midnight" onclick="caSelectPalette('midnight')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#0A0F1E;"></div>
+          <div class="palette-swatch" style="background:#3B5BDB;"></div>
+          <div class="palette-swatch" style="background:#F0F2FF;border:1px solid #e5e7eb;"></div>
+        </div>
+        <div class="palette-card-name">Midnight</div>
+        <div class="palette-card-desc">Near-black + Electric Blue — sleek tech energy</div>
+      </div>
+      <div class="palette-card" id="pal-terracotta" onclick="caSelectPalette('terracotta')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#1A0F0A;"></div>
+          <div class="palette-swatch" style="background:#C4612A;"></div>
+          <div class="palette-swatch" style="background:#FDF6F0;border:1px solid #e5e7eb;"></div>
+        </div>
+        <div class="palette-card-name">Terracotta</div>
+        <div class="palette-card-desc">Black + Terracotta — warm, earthy, artisan</div>
+      </div>
+      <div class="palette-card" id="pal-sage" onclick="caSelectPalette('sage')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#0F1A10;"></div>
+          <div class="palette-swatch" style="background:#6B8F71;"></div>
+          <div class="palette-swatch" style="background:#F8FAF4;border:1px solid #e5e7eb;"></div>
+        </div>
+        <div class="palette-card-name">Sage</div>
+        <div class="palette-card-desc">Dark + Sage Green — organic, editorial calm</div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-next" onclick="caGoStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2 — BASICS ══ -->
+  <div class="step-panel" id="ca-step-2">
+    <p class="step-label-top">Step 2 of 5</p>
+    <h2 class="step-title-main">Your Business</h2>
+    <p class="step-sub-main">These go into the nav, hero, footer, and contact section.</p>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>Business Name</label>
+        <input class="fi" id="ca-biz" type="text" placeholder="Candyland Studio">
+      </div>
+      <div class="field">
+        <label>Your Name / Team</label>
+        <input class="fi" id="ca-owner" type="text" placeholder="Jordan Ames">
+      </div>
+    </div>
+    <div class="field">
+      <label>What You Do <span class="opt">— one line tagline</span></label>
+      <input class="fi" id="ca-tagline" type="text" placeholder="Brand Strategy &amp; Creative Direction">
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>City / Location</label>
+        <input class="fi" id="ca-location" type="text" placeholder="New York, NY">
+      </div>
+      <div class="field">
+        <label>Contact Email</label>
+        <input class="fi" id="ca-email" type="email" placeholder="hello@yourstudio.com">
+      </div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Instagram <span class="opt">(optional)</span></label>
+        <input class="fi" id="ca-ig" type="text" placeholder="@yourstudio">
+      </div>
+      <div class="field">
+        <label>Website Handle <span class="opt">(optional)</span></label>
+        <input class="fi" id="ca-handle" type="text" placeholder="yourstudio.com">
+      </div>
+    </div>
+
+    <span class="sl">Your Stats (shown in hero + proof section)</span>
+    <div class="field-hint" style="margin-bottom:14px;">These big numbers build instant trust. Use real numbers or professional estimates.</div>
+    <div class="stat-row">
+      <div class="stat-block">
+        <div class="field"><label>Stat 1 Number</label><input class="fi" id="ca-stat1-num" type="text" value="1,000+"></div>
+        <div class="field" style="margin-bottom:0;"><label>Stat 1 Label</label><input class="fi" id="ca-stat1-label" type="text" value="Brands Elevated"></div>
+      </div>
+      <div class="stat-block">
+        <div class="field"><label>Stat 2 Number</label><input class="fi" id="ca-stat2-num" type="text" value="8 in 10"></div>
+        <div class="field" style="margin-bottom:0;"><label>Stat 2 Label</label><input class="fi" id="ca-stat2-label" type="text" value="Clients See Growth in 90 Days"></div>
+      </div>
+      <div class="stat-block">
+        <div class="field"><label>Stat 3 Number</label><input class="fi" id="ca-stat3-num" type="text" value="$42M+"></div>
+        <div class="field" style="margin-bottom:0;"><label>Stat 3 Label</label><input class="fi" id="ca-stat3-label" type="text" value="Revenue Generated for Clients"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="caGoStep(1)">← Back</button>
+      <button class="btn-next" onclick="caGoStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3 — STORY, SERVICES & TESTIMONIALS ══ -->
+  <div class="step-panel" id="ca-step-3">
+    <p class="step-label-top">Step 3 of 5</p>
+    <h2 class="step-title-main">Your Story & Services</h2>
+    <p class="step-sub-main">Pre-filled with creative agency defaults — edit anything you want to change.</p>
+
+    <span class="sl">Hero Copy</span>
+    <div class="field">
+      <label>Hero Headline <span class="opt">— BIG bold all-caps, 2 lines max</span></label>
+      <input class="fi" id="ca-headline" type="text" placeholder="WE DON'T CHASE ATTENTION. WE CREATE ATTRACTION." value="WE DON'T CHASE ATTENTION. WE CREATE ATTRACTION.">
+      <div class="field-hint">This prints in massive Anton type. Short and punchy wins.</div>
+    </div>
+    <div class="field">
+      <label>Hero Subheading <span class="opt">— 1 sentence</span></label>
+      <input class="fi" id="ca-hero-sub" type="text" value="We build brands that stop the scroll and convert the curious into devoted customers.">
+    </div>
+
+    <span class="sl">Strategy Meets Style Section</span>
+    <div class="field">
+      <label>Body paragraph</label>
+      <textarea class="fi" id="ca-strategy-body">At our studio, we translate ambition into clear, compelling brand experiences. From identity systems to full campaigns, we focus on creating work that connects, converts, and lasts. Every project is built with intention — no templates, no shortcuts.</textarea>
+    </div>
+
+    <span class="sl">About / Bio</span>
+    <div class="field">
+      <label>Bio paragraph <span class="opt">— 3-4 sentences</span></label>
+      <textarea class="fi" id="ca-about" style="min-height:100px;">We're a boutique creative studio obsessed with the intersection of strategy and beauty. Founded on the belief that great design is a business tool, not just decoration. We've helped hundreds of brands find their voice, own their market, and build communities that buy.</textarea>
+    </div>
+
+    <span class="sl">Services (4 slots)</span>
+    <div id="ca-services-wrap">
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="caToggleSvc(this)">
+          <span class="svc-block-title">Service 1</span>
+          <span class="svc-block-chevron open">▾</span>
+        </div>
+        <div class="svc-block-body open">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="ca-svc-name-1" type="text" value="Website Building"></div>
+          <div class="field"><label>1-line description</label><input class="fi" id="ca-svc-desc-1" type="text" value="Websites designed to guide, convert, and wow — built for performance and brand alignment."></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="caToggleSvc(this)">
+          <span class="svc-block-title">Service 2</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="ca-svc-name-2" type="text" value="Content Creation"></div>
+          <div class="field"><label>1-line description</label><input class="fi" id="ca-svc-desc-2" type="text" value="Content that fits the brand and feels this specific — not recycled, not generic."></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="caToggleSvc(this)">
+          <span class="svc-block-title">Service 3</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="ca-svc-name-3" type="text" value="SEO &amp; Blogging"></div>
+          <div class="field"><label>1-line description</label><input class="fi" id="ca-svc-desc-3" type="text" value="Content that finds you in the search — written with both Google and humans in mind."></div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="caToggleSvc(this)">
+          <span class="svc-block-title">Service 4</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;"><label>Name</label><input class="fi" id="ca-svc-name-4" type="text" value="Brand Design"></div>
+          <div class="field"><label>1-line description</label><input class="fi" id="ca-svc-desc-4" type="text" value="Visual identity from logo to full system — every touchpoint intentional and cohesive."></div>
+        </div>
+      </div>
+    </div>
+
+    <span class="sl">Pricing (3 tiers)</span>
+    <div class="price-block">
+      <div class="price-block-label">Tier 1</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-tier-name-1" type="text" value="Starter"></div>
+        <div class="field"><label>Price</label><input class="fi" id="ca-tier-price-1" type="text" value="$1,500"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="ca-tier-desc-1">Brand audit, 1-page site, logo suite, and a 30-day content launch plan.</textarea></div>
+      <div class="field"><label>3 Bullet Points <span class="opt">one per line</span></label><textarea class="fi" id="ca-tier-bullets-1" style="min-height:70px;">Brand Audit & Strategy
+Logo Suite
+1-Page Website</textarea></div>
+    </div>
+    <div class="price-block popular">
+      <div class="price-block-label">★ Most Popular</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-tier-name-2" type="text" value="Growth"></div>
+        <div class="field"><label>Price</label><input class="fi" id="ca-tier-price-2" type="text" value="$4,500"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="ca-tier-desc-2">Full brand identity, multi-page website, 3-month content strategy, and monthly check-ins.</textarea></div>
+      <div class="field"><label>3 Bullet Points <span class="opt">one per line</span></label><textarea class="fi" id="ca-tier-bullets-2" style="min-height:70px;">Full Brand Identity
+Multi-Page Website
+3-Month Content Strategy</textarea></div>
+    </div>
+    <div class="price-block">
+      <div class="price-block-label">Tier 3</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-tier-name-3" type="text" value="Full Service"></div>
+        <div class="field"><label>Price</label><input class="fi" id="ca-tier-price-3" type="text" value="$9,500+"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="ca-tier-desc-3">End-to-end brand build, campaign production, PR strategy, and ongoing retainer support.</textarea></div>
+      <div class="field"><label>3 Bullet Points <span class="opt">one per line</span></label><textarea class="fi" id="ca-tier-bullets-3" style="min-height:70px;">Complete Brand Build
+Campaign Production
+Ongoing Retainer</textarea></div>
+    </div>
+
+    <span class="sl">Testimonials</span>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 1</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="ca-testi-quote-1">"They completely transformed how our brand shows up in the world. Within 3 months we doubled our inbound leads."</textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-testi-name-1" type="text" value="Alex Monroe"></div>
+        <div class="field"><label>Company</label><input class="fi" id="ca-testi-co-1" type="text" value="Monroe & Co."></div>
+      </div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 2</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="ca-testi-quote-2">"The strategy session alone was worth 10x the investment. Our team finally has a north star for every decision."</textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-testi-name-2" type="text" value="Priya Sharma"></div>
+        <div class="field"><label>Company</label><input class="fi" id="ca-testi-co-2" type="text" value="Luminary Brands"></div>
+      </div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 3</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="ca-testi-quote-3">"I've worked with three agencies. This is the only one that actually listened and then delivered beyond what I imagined."</textarea></div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="ca-testi-name-3" type="text" value="Cam Douglas"></div>
+        <div class="field"><label>Company</label><input class="fi" id="ca-testi-co-3" type="text" value="The Douglas Group"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="caGoStep(2)">← Back</button>
+      <button class="btn-next" onclick="caGoStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4 — PHOTOS ══ -->
+  <div class="step-panel" id="ca-step-4">
+    <p class="step-label-top">Step 4 of 5</p>
+    <h2 class="step-title-main">Your Photos</h2>
+    <p class="step-sub-main">Upload your own images or skip any — the template will use styled gradient placeholders. All optional.</p>
+
+    <!-- Hidden inputs -->
+    <input type="file" id="ca-file-hero" accept="image/*" style="display:none;" onchange="caHandlePhoto('hero',this)">
+    <input type="file" id="ca-file-about-a" accept="image/*" style="display:none;" onchange="caHandlePhoto('aboutA',this)">
+    <input type="file" id="ca-file-about-b" accept="image/*" style="display:none;" onchange="caHandlePhoto('aboutB',this)">
+    <input type="file" id="ca-file-port1" accept="image/*" style="display:none;" onchange="caHandlePhoto('port1',this)">
+    <input type="file" id="ca-file-port2" accept="image/*" style="display:none;" onchange="caHandlePhoto('port2',this)">
+    <input type="file" id="ca-file-port3" accept="image/*" style="display:none;" onchange="caHandlePhoto('port3',this)">
+    <input type="file" id="ca-file-port4" accept="image/*" style="display:none;" onchange="caHandlePhoto('port4',this)">
+    <input type="file" id="ca-file-port5" accept="image/*" style="display:none;" onchange="caHandlePhoto('port5',this)">
+    <input type="file" id="ca-file-port6" accept="image/*" style="display:none;" onchange="caHandlePhoto('port6',this)">
+
+    <span class="sl">Hero Section</span>
+    <div class="upload-zone-wrap">
+      <span class="upload-zone-label-top">Hero Photo — right side of hero, full height</span>
+      <div class="upload-zone" id="ca-zone-hero" onclick="document.getElementById('ca-file-hero').click()">
+        <div class="upload-zone-icon">🖼</div>
+        <div class="upload-zone-text"><strong>Hero Portrait</strong>Editorial/portrait — 3:4 or 2:3 works best</div>
+        <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-hero').click()">Upload Photo</button>
+      </div>
+      <p class="upload-optional-note">Optional — styled gradient placeholder used if skipped</p>
+    </div>
+
+    <span class="sl">About Section</span>
+    <div class="upload-photos-grid">
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">About Photo A</span>
+        <div class="upload-zone" id="ca-zone-about-a" onclick="document.getElementById('ca-file-about-a').click()">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-text"><strong>About A</strong>Team or studio photo</div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-about-a').click()">Upload</button>
+        </div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">About Photo B</span>
+        <div class="upload-zone" id="ca-zone-about-b" onclick="document.getElementById('ca-file-about-b').click()">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-text"><strong>About B</strong>Behind-the-scenes or workspace</div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-about-b').click()">Upload</button>
+        </div>
+      </div>
+    </div>
+
+    <span class="sl">Portfolio Grid (6 project images)</span>
+    <p style="font-size:.82rem;color:#6b7280;margin-bottom:14px;line-height:1.6;">These fill the 2×3 portfolio grid. Upload your best client work — campaign shots, brand photos, or mockups.</p>
+
+    <div class="upload-photos-grid-3">
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 1</span>
+        <div class="upload-zone" id="ca-zone-port1" onclick="document.getElementById('ca-file-port1').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 1</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port1').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port1-title" type="text" placeholder="Project title" value="Constructed Ease."></div>
+        <div class="field"><input class="fi" id="ca-port1-tag" type="text" placeholder="Tag" value="Brand Identity"></div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 2</span>
+        <div class="upload-zone" id="ca-zone-port2" onclick="document.getElementById('ca-file-port2').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 2</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port2').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port2-title" type="text" placeholder="Project title" value="Modern Repose."></div>
+        <div class="field"><input class="fi" id="ca-port2-tag" type="text" placeholder="Tag" value="Web Design"></div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 3</span>
+        <div class="upload-zone" id="ca-zone-port3" onclick="document.getElementById('ca-file-port3').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 3</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port3').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port3-title" type="text" placeholder="Project title" value="Play as Power."></div>
+        <div class="field"><input class="fi" id="ca-port3-tag" type="text" placeholder="Tag" value="Campaign"></div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 4</span>
+        <div class="upload-zone" id="ca-zone-port4" onclick="document.getElementById('ca-file-port4').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 4</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port4').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port4-title" type="text" placeholder="Project title" value="Composed Disruption."></div>
+        <div class="field"><input class="fi" id="ca-port4-tag" type="text" placeholder="Tag" value="Strategy"></div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 5</span>
+        <div class="upload-zone" id="ca-zone-port5" onclick="document.getElementById('ca-file-port5').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 5</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port5').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port5-title" type="text" placeholder="Project title" value="Bold &amp; Gilded."></div>
+        <div class="field"><input class="fi" id="ca-port5-tag" type="text" placeholder="Tag" value="Content"></div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">Project 6</span>
+        <div class="upload-zone" id="ca-zone-port6" onclick="document.getElementById('ca-file-port6').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Portfolio 6</strong></div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('ca-file-port6').click()">Upload</button>
+        </div>
+        <div class="field" style="margin-top:8px;"><input class="fi" id="ca-port6-title" type="text" placeholder="Project title" value="The Quiet Brand."></div>
+        <div class="field"><input class="fi" id="ca-port6-tag" type="text" placeholder="Tag" value="Brand Design"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="caGoStep(3)">← Back</button>
+      <button class="btn-next" onclick="caGoStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5 — GENERATE ══ -->
+  <div class="step-panel" id="ca-step-5">
+    <p class="step-label-top">Step 5 of 5</p>
+    <h2 class="step-title-main">Ready — Let's Build It</h2>
+    <p class="step-sub-main">Builtsy fills your content into the template. The bold design stays locked. Takes about 30–45 seconds.</p>
+
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 24px;margin-bottom:24px;">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:14px;">What you get</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Anton headlines, marquee ticker, portfolio grid — all intact</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Your real business name, copy, services, and pricing</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Your photos + chosen palette injected automatically</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;"><span style="color:var(--lime);font-size:1rem;">✓</span> Download → drag to Netlify → live in 10 seconds</div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="caGoStep(4)">← Back</button>
+      <button class="btn-generate" onclick="caGenerate()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Fill In My Template
+      </button>
+    </div>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- OVERLAY -->
+<div class="gen-overlay" id="ca-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title">Filling in your template…</div>
+  <div class="gen-sub">This template is large — takes about 30–45 seconds. Hang tight.</div>
+  <div class="gen-msg" id="ca-gen-msg">Reading your business info…</div>
+  <div class="gen-progress-bar"><div class="gen-progress-fill" id="ca-progress-fill"></div></div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-title" id="ca-output-title">Your site — scroll to preview</span>
+    <button class="btn-tb" onclick="toggleRevise()">✏️ Revise</button>
+    <button class="btn-tb" onclick="caRebuild()">↺ Rebuild</button>
+    <button class="btn-dl" onclick="caDownload()">⬇ Download</button>
+  </div>
+  <div class="deploy-bar">
+    🚀 <strong style="color:white;">Go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → live in 10 seconds.
+  </div>
+  <div class="output-error" id="ca-error"></div>
+  <div id="revise-drawer">
+    <textarea id="revise-input" placeholder="Describe what to change…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="caRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+var _caHTML = '';
+var _caPalette = 'original';
+var _caPhotos = {};
+var _caMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Filling in portfolio projects…','Applying your palette…','Rendering final output…'];
+var _caMsgIdx = 0;
+var _caInterval = null;
+var _caProgress = 0;
+var _caProgressInterval = null;
+
+// Palette overrides for CSS variable injection
+var _caPaletteCSS = {
+  original:   '',  // default — no override needed
+  midnight:   '--yellow:#3B5BDB;--yellow2:#A5B8F5;--cream:#F0F2FF;--cream2:#E4E8FF;--dark:#0A0F1E;',
+  terracotta: '--yellow:#C4612A;--yellow2:#EDB898;--cream:#FDF6F0;--cream2:#F5EBE0;--dark:#1A0F0A;',
+  sage:       '--yellow:#6B8F71;--yellow2:#B8D4BB;--cream:#F8FAF4;--cream2:#EBF0E3;--dark:#0F1A10;'
+};
+
+// Photo zone config
+var _caZoneMap = {
+  hero:'ca-zone-hero', aboutA:'ca-zone-about-a', aboutB:'ca-zone-about-b',
+  port1:'ca-zone-port1', port2:'ca-zone-port2', port3:'ca-zone-port3',
+  port4:'ca-zone-port4', port5:'ca-zone-port5', port6:'ca-zone-port6'
+};
+var _caFileMap = {
+  hero:'ca-file-hero', aboutA:'ca-file-about-a', aboutB:'ca-file-about-b',
+  port1:'ca-file-port1', port2:'ca-file-port2', port3:'ca-file-port3',
+  port4:'ca-file-port4', port5:'ca-file-port5', port6:'ca-file-port6'
+};
+var _caPhotoIds = {
+  hero:'ca-hero-photo', aboutA:'ca-about-a-photo', aboutB:'ca-about-b-photo',
+  port1:'ca-port-1-photo', port2:'ca-port-2-photo', port3:'ca-port-3-photo',
+  port4:'ca-port-4-photo', port5:'ca-port-5-photo', port6:'ca-port-6-photo'
+};
+
+function caGoStep(n) {
+  for (var i = 1; i <= 5; i++) {
+    var p = document.getElementById('ca-step-' + i);
+    var d = document.getElementById('ca-dot-' + i);
+    if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
+    if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    if (i < 5) {
+      var l = document.getElementById('ca-line-' + i);
+      if (l) l.className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function caSelectPalette(name) {
+  _caPalette = name;
+  var names = ['original','midnight','terracotta','sage'];
+  for (var i = 0; i < names.length; i++) {
+    var c = document.getElementById('pal-' + names[i]);
+    if (c) c.className = 'palette-card' + (names[i] === name ? ' selected' : '');
+  }
+}
+
+function caToggleSvc(header) {
+  var body = header.nextElementSibling;
+  var chev = header.querySelector('.svc-block-chevron');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+// ── PHOTO UPLOAD ──
+function caHandlePhoto(slot, input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _caPhotos[slot] = e.target.result;
+    caRenderZone(slot);
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function caRenderZone(slot) {
+  var zone = document.getElementById(_caZoneMap[slot]);
+  if (!zone) return;
+  if (_caPhotos[slot]) {
+    zone.className = 'upload-zone has-photo';
+    zone.innerHTML = '<img class="upload-thumb" src="' + _caPhotos[slot] + '" alt=""><button class="upload-clear" onclick="event.stopPropagation();caClearPhoto(\'' + slot + '\')">✕</button>';
+    zone.onclick = null;
+  } else {
+    caResetZone(slot);
+  }
+}
+
+function caClearPhoto(slot) {
+  _caPhotos[slot] = null;
+  var fi = document.getElementById(_caFileMap[slot]);
+  if (fi) fi.value = '';
+  caResetZone(slot);
+}
+
+function caResetZone(slot) {
+  var zone = document.getElementById(_caZoneMap[slot]);
+  if (!zone) return;
+  zone.className = 'upload-zone';
+  var fileId = _caFileMap[slot];
+  var icons = {hero:'🖼',aboutA:'📷',aboutB:'📷',port1:'🗂',port2:'🗂',port3:'🗂',port4:'🗂',port5:'🗂',port6:'🗂'};
+  var titles = {hero:'Hero Portrait',aboutA:'About A',aboutB:'About B',port1:'Portfolio 1',port2:'Portfolio 2',port3:'Portfolio 3',port4:'Portfolio 4',port5:'Portfolio 5',port6:'Portfolio 6'};
+  var icon = icons[slot] || '📷';
+  var title = titles[slot] || 'Photo';
+  zone.innerHTML = '<div class="upload-zone-icon">' + icon + '</div>'
+    + '<div class="upload-zone-text"><strong>' + title + '</strong></div>'
+    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Upload</button>';
+  zone.onclick = function() { document.getElementById(fileId).click(); };
+}
+
+// ── COLLECT FIELDS ──
+function caCollect() {
+  var v = function(id) { return (document.getElementById(id)||{}).value || ''; };
+  return {
+    businessName:    v('ca-biz'),
+    ownerName:       v('ca-owner'),
+    tagline:         v('ca-tagline'),
+    location:        v('ca-location'),
+    email:           v('ca-email'),
+    instagram:       v('ca-ig'),
+    websiteHandle:   v('ca-handle'),
+    stat1Number:     v('ca-stat1-num'), stat1Label: v('ca-stat1-label'),
+    stat2Number:     v('ca-stat2-num'), stat2Label: v('ca-stat2-label'),
+    stat3Number:     v('ca-stat3-num'), stat3Label: v('ca-stat3-label'),
+    heroHeadline:    v('ca-headline'),
+    heroSub:         v('ca-hero-sub'),
+    strategyBody:    v('ca-strategy-body'),
+    aboutBio:        v('ca-about'),
+    service1Name: v('ca-svc-name-1'), service1Desc: v('ca-svc-desc-1'),
+    service2Name: v('ca-svc-name-2'), service2Desc: v('ca-svc-desc-2'),
+    service3Name: v('ca-svc-name-3'), service3Desc: v('ca-svc-desc-3'),
+    service4Name: v('ca-svc-name-4'), service4Desc: v('ca-svc-desc-4'),
+    tier1Name: v('ca-tier-name-1'), tier1Price: v('ca-tier-price-1'), tier1Desc: v('ca-tier-desc-1'), tier1Bullets: v('ca-tier-bullets-1'),
+    tier2Name: v('ca-tier-name-2'), tier2Price: v('ca-tier-price-2'), tier2Desc: v('ca-tier-desc-2'), tier2Bullets: v('ca-tier-bullets-2'),
+    tier3Name: v('ca-tier-name-3'), tier3Price: v('ca-tier-price-3'), tier3Desc: v('ca-tier-desc-3'), tier3Bullets: v('ca-tier-bullets-3'),
+    testi1Quote: v('ca-testi-quote-1'), testi1Name: v('ca-testi-name-1'), testi1Company: v('ca-testi-co-1'),
+    testi2Quote: v('ca-testi-quote-2'), testi2Name: v('ca-testi-name-2'), testi2Company: v('ca-testi-co-2'),
+    testi3Quote: v('ca-testi-quote-3'), testi3Name: v('ca-testi-name-3'), testi3Company: v('ca-testi-co-3'),
+    port1Title: v('ca-port1-title'), port1Tag: v('ca-port1-tag'),
+    port2Title: v('ca-port2-title'), port2Tag: v('ca-port2-tag'),
+    port3Title: v('ca-port3-title'), port3Tag: v('ca-port3-tag'),
+    port4Title: v('ca-port4-title'), port4Tag: v('ca-port4-tag'),
+    port5Title: v('ca-port5-title'), port5Tag: v('ca-port5-tag'),
+    port6Title: v('ca-port6-title'), port6Tag: v('ca-port6-tag')
+  };
+}
+
+// ── INJECT PALETTE + PHOTOS ──
+function caInjectAssets(html) {
+  // Palette CSS override
+  var palCSS = _caPaletteCSS[_caPalette] || '';
+  if (palCSS) {
+    html = html.replace('</head>', '<style>:root{' + palCSS + '}</style>\n</head>');
+  }
+  // Photos via DOMParser
+  var hasPhotos = false;
+  for (var k in _caPhotos) { if (_caPhotos[k]) { hasPhotos = true; break; } }
+  if (hasPhotos) {
+    try {
+      var parser = new DOMParser();
+      var doc2 = parser.parseFromString(html, 'text/html');
+      for (var slot in _caPhotoIds) {
+        if (!_caPhotos[slot]) continue;
+        var img = doc2.getElementById(_caPhotoIds[slot]);
+        if (img) {
+          img.src = _caPhotos[slot];
+          img.style.display = 'block';
+          img.style.position = 'absolute';
+          img.style.inset = '0';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+        }
+      }
+      html = '<!DOCTYPE html>\n' + doc2.documentElement.outerHTML;
+    } catch(e) {
+      // Fallback regex
+      for (var slot in _caPhotoIds) {
+        if (!_caPhotos[slot]) continue;
+        var re = new RegExp('(<img[^>]*id="' + _caPhotoIds[slot] + '"[^>]*src=")[^"]*(")', 'i');
+        html = html.replace(re, '$1' + _caPhotos[slot] + '$2');
+      }
+    }
+  }
+  return html;
+}
+
+// ── GENERATE (SSE streaming) ──
+function caGenerate() {
+  var fields = caCollect();
+  var overlay = document.getElementById('ca-overlay');
+  if (overlay) overlay.classList.add('active');
+  _caMsgIdx = 0;
+  _caProgress = 0;
+  document.getElementById('ca-gen-msg').textContent = _caMsgs[0];
+  document.getElementById('ca-progress-fill').style.width = '0%';
+
+  _caInterval = setInterval(function() {
+    _caMsgIdx = (_caMsgIdx + 1) % _caMsgs.length;
+    var el = document.getElementById('ca-gen-msg');
+    if (el) el.textContent = _caMsgs[_caMsgIdx];
+  }, 5000);
+
+  // Animate progress bar
+  _caProgressInterval = setInterval(function() {
+    _caProgress = Math.min(_caProgress + 0.8, 92);
+    var bar = document.getElementById('ca-progress-fill');
+    if (bar) bar.style.width = _caProgress + '%';
+  }, 400);
+
+  fetch('https://builtsy-api-production.up.railway.app/generate-template-agency', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: fields })
+  })
+  .then(function(response) {
+    // Read SSE stream
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              clearInterval(_caInterval);
+              clearInterval(_caProgressInterval);
+              var bar = document.getElementById('ca-progress-fill');
+              if (bar) bar.style.width = '100%';
+              if (overlay) setTimeout(function() { overlay.classList.remove('active'); }, 300);
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { caFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (html.length < 200) { caFinishError('Generation returned empty. Try again.'); return; }
+                html = caInjectAssets(html);
+                _caHTML = html;
+                caShowOutput(html);
+              }
+            } catch(e) {}
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  })
+  .catch(function(err) {
+    caFinishError('Connection error: ' + err.message);
+  });
+}
+
+function caFinishError(msg) {
+  clearInterval(_caInterval);
+  clearInterval(_caProgressInterval);
+  var overlay = document.getElementById('ca-overlay');
+  if (overlay) overlay.classList.remove('active');
+  caShowError(msg);
+}
+
+function caShowOutput(html) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.welcome-banner').style.display = 'none';
+  document.querySelector('.tpl-preview-strip').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var biz = (document.getElementById('ca-biz')||{}).value || 'Your Site';
+  var t = document.getElementById('ca-output-title');
+  if (t) t.textContent = biz + ' — scroll to preview';
+  var frame = document.getElementById('output-preview-frame');
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      var doc = win.document;
+      if (win.testis) {
+        win.setTesti = function(i, dot) {
+          var te = doc.getElementById('testi-text');
+          var tn = doc.getElementById('testi-name');
+          var ta = doc.getElementById('testi-avatar');
+          if (te) te.textContent = win.testis[i].text;
+          if (tn) tn.textContent = win.testis[i].name;
+          if (ta) ta.textContent = win.testis[i].initial;
+          var dots = doc.querySelectorAll('.testi-dot');
+          for (var j = 0; j < dots.length; j++) dots[j].classList.remove('active');
+          dot.classList.add('active');
+        };
+      }
+    } catch(e) {}
+  };
+  frame.srcdoc = html;
+}
+
+function caShowError(msg) {
+  var el = document.getElementById('ca-error');
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+  if (!document.getElementById('output-panel').classList.contains('active')) alert(msg);
+}
+
+function caRebuild() {
+  var el = document.getElementById('ca-error');
+  if (el) el.classList.remove('active');
+  caGenerate();
+}
+
+function toggleRevise() {
+  document.getElementById('revise-drawer').classList.toggle('active');
+}
+
+function caRevise() {
+  var note = (document.getElementById('revise-input')||{}).value;
+  if (!note || !note.trim()) return;
+  document.getElementById('revise-drawer').classList.remove('active');
+  var overlay = document.getElementById('ca-overlay');
+  if (overlay) overlay.classList.add('active');
+  document.getElementById('ca-gen-msg').textContent = 'Applying your changes…';
+
+  var prompt = 'You previously generated this HTML:\n\n' + _caHTML
+    + '\n\n--- REVISION ---\nMake this change: ' + note.trim()
+    + '\nReturn ONLY the complete revised HTML. No markdown, no explanation.';
+
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (overlay) overlay.classList.remove('active');
+    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    if (html && html.length > 200) {
+      (document.getElementById('revise-input')||{}).value = '';
+      html = caInjectAssets(html);
+      _caHTML = html;
+      caShowOutput(html);
+    } else { caShowError('Revision returned empty. Try again.'); }
+  })
+  .catch(function(err) {
+    if (overlay) overlay.classList.remove('active');
+    caShowError('Revision error: ' + err.message);
+  });
+}
+
+function caDownload() {
+  if (!_caHTML) return;
+  var biz = (document.getElementById('ca-biz')||{}).value || 'my-agency';
+  var slug = biz.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
+  var blob = new Blob([_caHTML], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = slug + '.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+document.addEventListener('DOMContentLoaded', function() { caGoStep(1); });
+</script>
+</body>
+</html>

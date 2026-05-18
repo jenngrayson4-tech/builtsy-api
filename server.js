@@ -12,6 +12,13 @@ try {
   console.warn('social-media-manager-site.html not found:', e.message);
 }
 
+var AGENCY_TEMPLATE = '';
+try {
+  AGENCY_TEMPLATE = fs.readFileSync(path.join(__dirname, 'creative-agency-site.html'), 'utf8');
+} catch(e) {
+  console.warn('creative-agency-site.html not found:', e.message);
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '30mb' }));
@@ -109,6 +116,73 @@ app.post('/generate-template', async function(req, res) {
   } catch(err) {
     console.error('Generate-template error:', err.message);
     res.status(500).json({ error: err.message || 'Generation failed' });
+  }
+});
+
+// Creative Agency Template — streams to handle large template HTML
+app.post('/generate-template-agency', async function(req, res) {
+  try {
+    var fields = req.body.fields || {};
+    if (!AGENCY_TEMPLATE) return res.status(500).json({ error: 'Agency template not loaded on server' });
+
+    var fieldText = Object.keys(fields).map(function(k) {
+      return k + ': ' + fields[k];
+    }).join('\n');
+
+    var prompt = 'You are filling in a pre-designed HTML template with a user\'s real business content.\n\n'
+      + 'CRITICAL RULES — read carefully:\n'
+      + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML whatsoever\n'
+      + '- Do NOT change fonts, spacing, animations, colors, or any visual design\n'
+      + '- ONLY replace text content inside elements — nothing else\n'
+      + '- Preserve all photo zone divs and img tags exactly — especially ids starting with ca-\n'
+      + '- The testimonial JS array (var testis = [...]) — update text, name, initial fields only\n'
+      + '- The marquee text — update to match the user\'s brand voice and services\n'
+      + '- Portfolio card captions — replace project titles and tags with user\'s real work\n'
+      + '- Stats — replace numbers and labels with user\'s real stats (or sensible defaults)\n'
+      + '- If a field was left blank, use a sensible professional default that fits the industry\n'
+      + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
+      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
+      + 'TEMPLATE TO FILL IN:\n' + AGENCY_TEMPLATE;
+
+    // Stream the response — template is large, streaming avoids Railway timeout
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.flushHeaders();
+
+    var stream = await client.messages.stream({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var fullText = '';
+    stream.on('text', function(chunk) {
+      fullText += chunk;
+      res.write(': keep-alive\n\n');
+    });
+
+    stream.on('finalMessage', function() {
+      var html = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+      res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
+      res.write('data: [DONE]\n\n');
+      res.end();
+    });
+
+    stream.on('error', function(err) {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    });
+
+  } catch(err) {
+    console.error('Generate-template-agency error:', err.message);
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message || 'Generation failed' });
+    } else {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    }
   }
 });
 
