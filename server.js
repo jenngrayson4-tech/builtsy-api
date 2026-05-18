@@ -96,9 +96,10 @@ app.post('/generate-template', async function(req, res) {
       + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
       + 'TEMPLATE TO FILL IN:\n' + SOCIAL_TEMPLATE;
 
+    // Template is ~550 lines — 10k tokens is plenty, avoids streaming warning
     var message = await client.messages.create({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: 10000,
       messages: [{ role: 'user', content: prompt }]
     });
 
