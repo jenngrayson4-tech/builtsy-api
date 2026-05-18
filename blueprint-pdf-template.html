@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Template Blueprint | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--navy-mid:#161E30;--navy-deep:#0D1220;
+  --lime:#C8E000;--lime-dim:rgba(200,224,0,0.1);--lime-border:rgba(200,224,0,0.22);
+  --pink:#ee70bc;--iris:#8ba2f0;--builtsy-blue:#4361EE;
+  --text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.3);
+  --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.1);--border-hi:rgba(255,255,255,0.18);
+  --surface:rgba(255,255,255,0.03);--surface-hi:rgba(255,255,255,0.055);
+  --r:0.6rem;--rl:0.875rem;--rxl:1.1rem;
+  --cream:#fafaf7;--white:#ffffff;
+}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+
+/* TOPBAR */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--pink);color:white;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.btn-generate-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.btn-generate-top:hover{opacity:.9;}
+
+/* WELCOME BANNER */
+.welcome-banner{background:var(--pink);color:white;text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;letter-spacing:.03em;}
+
+/* HERO */
+.bp-hero{background:var(--navy);color:white;padding:44px 24px 36px;text-align:center;}
+.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.15;margin-bottom:10px;}
+.bp-hero h1 span{color:var(--lime);}
+.bp-hero p{color:rgba(255,255,255,0.65);font-size:.95rem;max-width:520px;margin:0 auto;}
+
+/* STEP PROGRESS */
+.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:580px;margin:0 auto;}
+.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:16px;}
+.step-line.done{background:var(--lime);}
+
+/* FORM WRAP */
+.form-wrap{max-width:640px;margin:0 auto;padding:0 16px 80px;}
+.step-panel{display:none;padding-top:28px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
+.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:24px;}
+
+/* FIELDS */
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi-light{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.fi-light:focus{border-color:var(--builtsy-blue);}
+.fi-light::placeholder{color:#9ca3af;}
+textarea.fi-light{resize:vertical;min-height:90px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.field-grid{grid-template-columns:1fr;}}
+.field-hint{font-size:.72rem;color:#9ca3af;margin-top:5px;line-height:1.5;}
+
+/* SECTION LABEL */
+.sl-light{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:10px;margin-top:28px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+.sl-light:first-child{margin-top:0;}
+
+/* PDF DROP ZONE */
+.pdf-drop-zone{border:2px dashed #d1d5db;border-radius:16px;padding:48px 24px;text-align:center;cursor:pointer;transition:all .25s;background:white;position:relative;overflow:hidden;}
+.pdf-drop-zone:hover,.pdf-drop-zone.drag-over{border-color:var(--pink);background:rgba(238,112,188,0.03);}
+.pdf-drop-zone.has-file{border-color:var(--lime);background:#f7fde8;}
+.pdf-drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.pdf-drop-icon{font-size:2.8rem;margin-bottom:12px;display:block;}
+.pdf-drop-title{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.pdf-drop-sub{font-size:.82rem;color:#9ca3af;line-height:1.6;}
+.pdf-drop-sub strong{color:var(--navy);}
+.pdf-file-info{display:none;align-items:center;gap:12px;background:white;border:1.5px solid var(--lime);border-radius:12px;padding:14px 18px;margin-top:16px;}
+.pdf-file-info.show{display:flex;}
+.pdf-file-icon{font-size:1.5rem;flex-shrink:0;}
+.pdf-file-name{font-size:.88rem;font-weight:600;color:var(--navy);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pdf-file-size{font-size:.75rem;color:#9ca3af;flex-shrink:0;}
+.pdf-remove{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1.1rem;flex-shrink:0;padding:0 4px;}
+.pdf-remove:hover{color:#ef4444;}
+
+/* WHAT YOU GET CARD */
+.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
+@media(max-width:480px){.info-cards{grid-template-columns:1fr;}}
+.info-card{background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px 16px;}
+.info-card-icon{font-size:1.2rem;margin-bottom:6px;}
+.info-card-title{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.info-card-desc{font-size:.72rem;color:#6b7280;line-height:1.5;}
+
+/* SOURCE CHIPS */
+.source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.source-chip{border:1.5px solid rgba(238,112,188,0.3);border-radius:24px;padding:6px 14px;font-size:.78rem;color:#6b7280;background:white;display:flex;align-items:center;gap:6px;}
+.source-chip svg{width:14px;height:14px;flex-shrink:0;}
+
+/* NAV BUTTONS */
+.step-nav-light{display:flex;gap:10px;margin-top:28px;}
+.btn-back-light{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;transition:all .2s;}
+.btn-back-light:hover{border-color:var(--navy);color:var(--navy);}
+.btn-next-light{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-next-light:hover{background:#b8d000;}
+.btn-generate-big{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate-big:hover{background:#1e2d4a;}
+
+/* GENERATING OVERLAY */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:48px;height:48px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
+.gen-sub{color:rgba(255,255,255,.55);font-size:.88rem;max-width:320px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.78rem;min-height:18px;}
+
+/* OUTPUT PANEL */
+#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
+.output-toolbar-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.btn-dl:hover{background:#b8d000;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;white-space:nowrap;}
+.btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(67,97,238,.12);border-bottom:1px solid rgba(67,97,238,.2);padding:9px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem;font-family:'DM Sans',sans-serif;flex-shrink:0;color:rgba(255,255,255,.7);}
+.deploy-bar a{color:var(--lime);font-weight:600;}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
+#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-error.active{display:block;}
+#revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
+#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#revise-input::placeholder{color:rgba(255,255,255,.35);}
+#revise-input:focus{border-color:rgba(255,255,255,.4);}
+.btn-revise-submit{background:var(--pink);color:white;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- TOPNAV -->
+<div class="topnav">
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">builtsy</a>
+  </div>
+  <span class="tn-tag">✦ Template</span>
+  <div class="tn-right">
+    <button class="btn-generate-top" onclick="tplGoStep(3)">⚡ Generate</button>
+  </div>
+</div>
+
+<!-- WELCOME BANNER -->
+<div class="welcome-banner">
+  ✦ Upload any Canva or Etsy template PDF — Builtsy recreates it as a real website with your content ✦
+</div>
+
+<!-- HERO -->
+<div class="bp-hero">
+  <h1>Turn Any Template Into a <span>Real Website</span></h1>
+  <p>Upload a PDF template you love from Canva or Etsy. Add your business info. Builtsy builds the site.</p>
+</div>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress">
+  <div class="step-dot active" id="tpl-dot-1">1</div>
+  <div class="step-line" id="tpl-line-1"></div>
+  <div class="step-dot" id="tpl-dot-2">2</div>
+  <div class="step-line" id="tpl-line-2"></div>
+  <div class="step-dot" id="tpl-dot-3">3</div>
+</div>
+
+<!-- FORM WRAP -->
+<div class="form-wrap">
+
+  <!-- ═══ STEP 1 — UPLOAD TEMPLATE ═══ -->
+  <div class="step-panel active" id="tpl-step-1">
+    <p class="step-label-top">Step 1 of 3</p>
+    <h2 class="step-title-main">Upload Your Template</h2>
+    <p class="step-sub-main">Drop in a PDF from Canva, Etsy, Creative Market, or anywhere else. Builtsy reads the design and recreates it as a website.</p>
+
+    <!-- DROP ZONE -->
+    <div class="pdf-drop-zone" id="pdf-drop-zone" ondragover="tplDragOver(event)" ondragleave="tplDragLeave(event)" ondrop="tplDrop(event)">
+      <input type="file" accept="application/pdf" onchange="tplHandlePDF(this)" id="pdf-file-input">
+      <span class="pdf-drop-icon">📄</span>
+      <div class="pdf-drop-title">Drop your PDF template here</div>
+      <div class="pdf-drop-sub">or <strong>click to browse</strong> · PDF files only · up to 20MB</div>
+    </div>
+
+    <!-- FILE INFO (shown after upload) -->
+    <div class="pdf-file-info" id="pdf-file-info">
+      <span class="pdf-file-icon">📄</span>
+      <span class="pdf-file-name" id="pdf-file-name">template.pdf</span>
+      <span class="pdf-file-size" id="pdf-file-size"></span>
+      <button class="pdf-remove" onclick="tplRemovePDF()" title="Remove">✕</button>
+    </div>
+
+    <!-- WHERE TO GET TEMPLATES -->
+    <span class="sl-light" style="margin-top:28px;">Where to find templates</span>
+    <div class="source-chips">
+      <div class="source-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+        Canva
+      </div>
+      <div class="source-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+        Etsy
+      </div>
+      <div class="source-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+        Creative Market
+      </div>
+      <div class="source-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+        Your own design
+      </div>
+    </div>
+
+    <!-- WHAT YOU GET -->
+    <span class="sl-light">What Builtsy does with it</span>
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🎨</div>
+        <div class="info-card-title">Reads the design</div>
+        <div class="info-card-desc">Colors, fonts, layout, spacing, sections — all captured from your PDF</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">✍️</div>
+        <div class="info-card-title">Fills with your content</div>
+        <div class="info-card-desc">Your business name, services, and story replace every placeholder</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💻</div>
+        <div class="info-card-title">Builds a real website</div>
+        <div class="info-card-desc">Outputs clean HTML you can download and host in seconds on Netlify</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📱</div>
+        <div class="info-card-title">Mobile-ready</div>
+        <div class="info-card-desc">Fully responsive — looks great on phones, tablets, and desktop</div>
+      </div>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-next-light" onclick="tplNext(1)">Upload &amp; Continue →</button>
+    </div>
+  </div><!-- /step-1 -->
+
+  <!-- ═══ STEP 2 — BUSINESS INFO ═══ -->
+  <div class="step-panel" id="tpl-step-2">
+    <p class="step-label-top">Step 2 of 3</p>
+    <h2 class="step-title-main">Your Business Info</h2>
+    <p class="step-sub-main">This replaces every piece of sample content in your template. Fill in what you have — anything blank gets a smart default.</p>
+
+    <span class="sl-light">The Basics</span>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>Business Name</label>
+        <input class="fi-light" id="tpl-biz-name" type="text" placeholder="Olivia Aster Studio">
+      </div>
+      <div class="field">
+        <label>Your Name</label>
+        <input class="fi-light" id="tpl-owner-name" type="text" placeholder="Olivia Aster">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>What You Do <span class="opt">— one line</span></label>
+      <input class="fi-light" id="tpl-tagline" type="text" placeholder="Social media strategy & brand growth for women-led businesses">
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>City / Location</label>
+        <input class="fi-light" id="tpl-location" type="text" placeholder="Austin, TX">
+      </div>
+      <div class="field">
+        <label>Contact Email</label>
+        <input class="fi-light" id="tpl-email" type="email" placeholder="hello@yourbiz.com">
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>Phone <span class="opt">(optional)</span></label>
+        <input class="fi-light" id="tpl-phone" type="tel" placeholder="(512) 555-0100">
+      </div>
+      <div class="field">
+        <label>Website / Domain <span class="opt">(optional)</span></label>
+        <input class="fi-light" id="tpl-website" type="text" placeholder="yourbiz.com">
+      </div>
+    </div>
+
+    <span class="sl-light">Your Story</span>
+
+    <div class="field">
+      <label>About Your Business</label>
+      <textarea class="fi-light" id="tpl-about" style="min-height:110px;" placeholder="Tell us about what you do, who you help, and what makes you different. 2–5 sentences works great."></textarea>
+      <div class="field-hint">This fills your About section, hero subheading, and any bio copy in the template.</div>
+    </div>
+
+    <span class="sl-light">Services & Pricing <span style="font-weight:400;color:#9ca3af;font-size:.7rem;text-transform:none;letter-spacing:0;">(optional but highly recommended)</span></span>
+
+    <div class="field">
+      <label>Your Main Services</label>
+      <textarea class="fi-light" id="tpl-services" style="min-height:90px;" placeholder="Social Media Management — $1,200/mo&#10;Content Creation — $800/mo&#10;Brand Strategy Call — $350 one-time"></textarea>
+      <div class="field-hint">One service per line. Include price if you have one.</div>
+    </div>
+
+    <span class="sl-light">Social & Online Presence <span style="font-weight:400;color:#9ca3af;font-size:.7rem;text-transform:none;letter-spacing:0;">(optional)</span></span>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>Instagram</label>
+        <input class="fi-light" id="tpl-instagram" type="text" placeholder="@oliviaaster">
+      </div>
+      <div class="field">
+        <label>TikTok</label>
+        <input class="fi-light" id="tpl-tiktok" type="text" placeholder="@oliviaaster">
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>LinkedIn <span class="opt">(optional)</span></label>
+        <input class="fi-light" id="tpl-linkedin" type="text" placeholder="linkedin.com/in/oliviaaster">
+      </div>
+      <div class="field">
+        <label>Years in Business <span class="opt">(optional)</span></label>
+        <input class="fi-light" id="tpl-years" type="text" placeholder="6">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Anything else to include? <span class="opt">(optional)</span></label>
+      <textarea class="fi-light" id="tpl-extra" style="min-height:70px;" placeholder="Testimonials, certifications, press mentions, awards, number of clients served — anything you want on the site."></textarea>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="tplGoStep(1)">← Back</button>
+      <button class="btn-next-light" onclick="tplNext(2)">Continue →</button>
+    </div>
+  </div><!-- /step-2 -->
+
+  <!-- ═══ STEP 3 — GENERATE ═══ -->
+  <div class="step-panel" id="tpl-step-3">
+    <p class="step-label-top">Step 3 of 3</p>
+    <h2 class="step-title-main">Ready to Build</h2>
+    <p class="step-sub-main">Builtsy will read your template PDF and generate a complete website with your content. Takes about 30–60 seconds.</p>
+
+    <!-- SUMMARY CARD -->
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 24px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f3f4f6;">
+        <span style="font-size:1.5rem;">📄</span>
+        <div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--navy);" id="summary-filename">No template uploaded</div>
+          <div style="font-size:.72rem;color:#9ca3af;" id="summary-filesize"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:2px;font-family:'DM Mono',monospace;">Business</div>
+          <div style="font-size:.85rem;font-weight:600;color:var(--navy);" id="summary-bizname">—</div>
+        </div>
+        <div>
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:2px;font-family:'DM Mono',monospace;">Location</div>
+          <div style="font-size:.85rem;color:#6b7280;" id="summary-location">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT HAPPENS NEXT -->
+    <div style="background:rgba(67,97,238,0.05);border:1px solid rgba(67,97,238,0.15);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
+      <div style="font-size:.75rem;font-weight:700;color:var(--builtsy-blue);letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:10px;">What happens next</div>
+      <div style="font-size:.82rem;color:#374151;line-height:1.9;">
+        ① Claude reads your PDF template — colors, fonts, layout, sections<br>
+        ② Fills every placeholder with your real business content<br>
+        ③ Delivers a complete HTML site ready to download &amp; host
+      </div>
+    </div>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="tplGoStep(2)">← Back</button>
+      <button class="btn-generate-big" onclick="tplGenerate()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Generate My Site
+      </button>
+    </div>
+  </div><!-- /step-3 -->
+
+</div><!-- /form-wrap -->
+
+<!-- GENERATING OVERLAY -->
+<div class="gen-overlay" id="tpl-gen-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title" id="tpl-gen-title">Reading your template…</div>
+  <div class="gen-sub">Builtsy is analyzing your design and building your site. This takes about 30–60 seconds.</div>
+  <div class="gen-msg" id="tpl-gen-msg">Analyzing colors and layout…</div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-toolbar-title" id="output-toolbar-title">Your site — scroll to preview</span>
+    <button class="btn-tb" onclick="toggleReviseDrawer()">✏️ Revise</button>
+    <button class="btn-tb" onclick="tplRebuild()">↺ Rebuild</button>
+    <button class="btn-dl" onclick="tplDownload()">⬇ Download</button>
+  </div>
+  <div class="deploy-bar">
+    🚀 <strong style="color:white;">To go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → instant live link. 10 seconds.
+  </div>
+  <div class="output-error" id="tpl-error-msg"></div>
+  <div id="revise-drawer">
+    <textarea id="revise-input" placeholder="Describe what to change — colors, copy, sections, anything…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="tplSubmitRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+var _tplPDFBase64 = null;
+var _tplPDFName = '';
+var _tplPDFSize = 0;
+var _tplGeneratedHTML = '';
+var _tplLastPrompt = '';
+
+var _tplGenMsgs = [
+  'Analyzing colors and layout…',
+  'Reading typography and spacing…',
+  'Identifying sections and structure…',
+  'Filling in your business content…',
+  'Building the navigation and hero…',
+  'Styling cards and sections…',
+  'Adding responsive mobile layout…',
+  'Polishing the final details…',
+  'Almost ready…'
+];
+var _tplGenIdx = 0;
+var _tplGenInterval = null;
+
+// ── NAVIGATION ──────────────────────────────
+function tplGoStep(n) {
+  for (var i = 1; i <= 3; i++) {
+    var panel = document.getElementById('tpl-step-' + i);
+    var dot   = document.getElementById('tpl-dot-' + i);
+    if (panel) panel.className = 'step-panel' + (i === n ? ' active' : '');
+    if (dot) {
+      dot.className = 'step-dot';
+      if (i < n)  dot.className = 'step-dot done';
+      if (i === n) dot.className = 'step-dot active';
+    }
+    if (i < 3) {
+      var line = document.getElementById('tpl-line-' + i);
+      if (line) line.className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function tplNext(from) {
+  if (from === 1) {
+    if (!_tplPDFBase64) {
+      alert('Please upload a PDF template first.');
+      return;
+    }
+  }
+  tplGoStep(from + 1);
+  if (from + 1 === 3) tplUpdateSummary();
+}
+
+function tplUpdateSummary() {
+  var el = document.getElementById('summary-filename');
+  var es = document.getElementById('summary-filesize');
+  var eb = document.getElementById('summary-bizname');
+  var el2 = document.getElementById('summary-location');
+  if (el) el.textContent = _tplPDFName || 'No template uploaded';
+  if (es) es.textContent = _tplPDFSize ? tplFormatSize(_tplPDFSize) : '';
+  if (eb) eb.textContent = (document.getElementById('tpl-biz-name')||{}).value || '—';
+  if (el2) el2.textContent = (document.getElementById('tpl-location')||{}).value || '—';
+}
+
+function tplFormatSize(bytes) {
+  if (bytes > 1048576) return (bytes/1048576).toFixed(1) + ' MB';
+  return (bytes/1024).toFixed(0) + ' KB';
+}
+
+// ── PDF HANDLING ─────────────────────────────
+function tplHandlePDF(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.type !== 'application/pdf') { alert('Please upload a PDF file.'); return; }
+  if (file.size > 20 * 1024 * 1024) { alert('PDF must be under 20MB.'); return; }
+
+  _tplPDFName = file.name;
+  _tplPDFSize = file.size;
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    // Strip the data:application/pdf;base64, prefix — API wants raw base64
+    var result = e.target.result;
+    _tplPDFBase64 = result.split(',')[1];
+
+    // Show file info
+    var zone = document.getElementById('pdf-drop-zone');
+    var info = document.getElementById('pdf-file-info');
+    var nameEl = document.getElementById('pdf-file-name');
+    var sizeEl = document.getElementById('pdf-file-size');
+    if (zone) zone.classList.add('has-file');
+    if (info) info.classList.add('show');
+    if (nameEl) nameEl.textContent = _tplPDFName;
+    if (sizeEl) sizeEl.textContent = tplFormatSize(_tplPDFSize);
+  };
+  reader.readAsDataURL(file);
+}
+
+function tplRemovePDF() {
+  _tplPDFBase64 = null;
+  _tplPDFName = '';
+  _tplPDFSize = 0;
+  var zone = document.getElementById('pdf-drop-zone');
+  var info = document.getElementById('pdf-file-info');
+  var fi   = document.getElementById('pdf-file-input');
+  if (zone) zone.classList.remove('has-file');
+  if (info) info.classList.remove('show');
+  if (fi)   fi.value = '';
+}
+
+function tplDragOver(e) {
+  e.preventDefault();
+  var zone = document.getElementById('pdf-drop-zone');
+  if (zone) zone.classList.add('drag-over');
+}
+function tplDragLeave(e) {
+  var zone = document.getElementById('pdf-drop-zone');
+  if (zone) zone.classList.remove('drag-over');
+}
+function tplDrop(e) {
+  e.preventDefault();
+  var zone = document.getElementById('pdf-drop-zone');
+  if (zone) zone.classList.remove('drag-over');
+  var files = e.dataTransfer.files;
+  if (files && files[0]) {
+    var input = document.getElementById('pdf-file-input');
+    // Trigger handler directly with the dropped file
+    var file = files[0];
+    if (file.type !== 'application/pdf') { alert('Please drop a PDF file.'); return; }
+    if (file.size > 20 * 1024 * 1024) { alert('PDF must be under 20MB.'); return; }
+    _tplPDFName = file.name;
+    _tplPDFSize = file.size;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      _tplPDFBase64 = ev.target.result.split(',')[1];
+      if (zone) zone.classList.add('has-file');
+      var info = document.getElementById('pdf-file-info');
+      var nameEl = document.getElementById('pdf-file-name');
+      var sizeEl = document.getElementById('pdf-file-size');
+      if (info) info.classList.add('show');
+      if (nameEl) nameEl.textContent = _tplPDFName;
+      if (sizeEl) sizeEl.textContent = tplFormatSize(_tplPDFSize);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ── COLLECT FIELDS ────────────────────────────
+function tplCollectFields() {
+  return {
+    businessName:  (document.getElementById('tpl-biz-name')||{}).value   || '',
+    ownerName:     (document.getElementById('tpl-owner-name')||{}).value || '',
+    tagline:       (document.getElementById('tpl-tagline')||{}).value    || '',
+    location:      (document.getElementById('tpl-location')||{}).value   || '',
+    email:         (document.getElementById('tpl-email')||{}).value      || '',
+    phone:         (document.getElementById('tpl-phone')||{}).value      || '',
+    website:       (document.getElementById('tpl-website')||{}).value    || '',
+    about:         (document.getElementById('tpl-about')||{}).value      || '',
+    services:      (document.getElementById('tpl-services')||{}).value   || '',
+    instagram:     (document.getElementById('tpl-instagram')||{}).value  || '',
+    tiktok:        (document.getElementById('tpl-tiktok')||{}).value     || '',
+    linkedin:      (document.getElementById('tpl-linkedin')||{}).value   || '',
+    yearsInBiz:    (document.getElementById('tpl-years')||{}).value      || '',
+    extra:         (document.getElementById('tpl-extra')||{}).value      || ''
+  };
+}
+
+// ── GENERATE ─────────────────────────────────
+function tplGenerate() {
+  if (!_tplPDFBase64) {
+    tplGoStep(1);
+    alert('Please upload a PDF template first.');
+    return;
+  }
+
+  var fields = tplCollectFields();
+  var overlay = document.getElementById('tpl-gen-overlay');
+  if (overlay) overlay.classList.add('active');
+  _tplGenIdx = 0;
+  document.getElementById('tpl-gen-msg').textContent = _tplGenMsgs[0];
+  _tplGenInterval = setInterval(function() {
+    _tplGenIdx = (_tplGenIdx + 1) % _tplGenMsgs.length;
+    var el = document.getElementById('tpl-gen-msg');
+    if (el) el.textContent = _tplGenMsgs[_tplGenIdx];
+  }, 4000);
+
+  // Store for rebuild/revise
+  _tplLastPrompt = JSON.stringify({ fields: fields });
+
+  fetch('https://builtsy-api-production.up.railway.app/generate-from-pdf', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pdf: _tplPDFBase64, fields: fields })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    clearInterval(_tplGenInterval);
+    var overlay = document.getElementById('tpl-gen-overlay');
+    if (overlay) overlay.classList.remove('active');
+    if (data.error) { tplShowError(data.error); return; }
+    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    if (!html || html.length < 200) { tplShowError('Generation returned empty output. Try again.'); return; }
+    _tplGeneratedHTML = html;
+    tplShowOutput(html);
+  })
+  .catch(function(err) {
+    clearInterval(_tplGenInterval);
+    var overlay = document.getElementById('tpl-gen-overlay');
+    if (overlay) overlay.classList.remove('active');
+    tplShowError('Connection error: ' + err.message);
+  });
+}
+
+// ── SHOW OUTPUT ────────────────────────────────
+function tplShowOutput(html) {
+  var fw = document.querySelector('.form-wrap');
+  var sp = document.querySelector('.step-progress');
+  var bh = document.querySelector('.bp-hero');
+  var wb = document.querySelector('.welcome-banner');
+  if (fw) fw.style.display = 'none';
+  if (sp) sp.style.display = 'none';
+  if (bh) bh.style.display = 'none';
+  if (wb) wb.style.display = 'none';
+
+  var op = document.getElementById('output-panel');
+  if (op) op.classList.add('active');
+
+  var biz = (document.getElementById('tpl-biz-name')||{}).value || 'Your Site';
+  var tt  = document.getElementById('output-toolbar-title');
+  if (tt) tt.textContent = biz + ' — scroll to preview';
+
+  var frame = document.getElementById('output-preview-frame');
+  if (!frame) return;
+
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      if (!win) return;
+      // Inject toggleAcc in case template uses it
+      win.toggleAcc = function(btn) {
+        var doc = win.document;
+        var allH = doc.querySelectorAll('.acc-header');
+        var allB = doc.querySelectorAll('.acc-body');
+        var allI = doc.querySelectorAll('.acc-icon');
+        var isOpen = btn.classList.contains('open');
+        for (var i = 0; i < allH.length; i++) allH[i].classList.remove('open');
+        for (var i = 0; i < allB.length; i++) allB[i].classList.remove('open');
+        for (var i = 0; i < allI.length; i++) allI[i].classList.remove('open');
+        if (!isOpen) {
+          btn.classList.add('open');
+          if (btn.nextElementSibling) btn.nextElementSibling.classList.add('open');
+          var ic = btn.querySelector('.acc-icon');
+          if (ic) ic.classList.add('open');
+        }
+      };
+    } catch(e) {}
+  };
+  frame.srcdoc = html;
+}
+
+function tplShowError(msg) {
+  // Show as alert if output panel isn't open yet
+  var op = document.getElementById('output-panel');
+  if (!op || !op.classList.contains('active')) {
+    alert('Error: ' + msg);
+    return;
+  }
+  var el = document.getElementById('tpl-error-msg');
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+}
+
+// ── REBUILD ───────────────────────────────────
+function tplRebuild() {
+  var el = document.getElementById('tpl-error-msg');
+  if (el) el.classList.remove('active');
+  _tplGeneratedHTML = '';
+  tplGenerate();
+}
+
+// ── REVISE ────────────────────────────────────
+function toggleReviseDrawer() {
+  var el = document.getElementById('revise-drawer');
+  if (el) el.classList.toggle('active');
+}
+
+function tplSubmitRevise() {
+  var note = (document.getElementById('revise-input')||{}).value;
+  if (!note || !note.trim()) return;
+
+  var el = document.getElementById('revise-drawer');
+  if (el) el.classList.remove('active');
+
+  var title = document.getElementById('tpl-gen-title');
+  var overlay = document.getElementById('tpl-gen-overlay');
+  if (title) title.textContent = 'Applying your revision…';
+  if (overlay) overlay.classList.add('active');
+  var msgEl = document.getElementById('tpl-gen-msg');
+  if (msgEl) msgEl.textContent = 'Rewriting with your changes…';
+
+  // Build a text-only revision prompt (no PDF re-send needed)
+  var revisePrompt = 'You previously generated this HTML website:\n\n'
+    + _tplGeneratedHTML
+    + '\n\n--- REVISION REQUEST ---\n'
+    + 'Make this specific change: ' + note.trim() + '\n'
+    + 'Return ONLY the complete revised HTML. No explanation, no markdown.';
+
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: revisePrompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (overlay) overlay.classList.remove('active');
+    if (title) title.textContent = 'Reading your template…';
+    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    if (html && html.length > 200) {
+      (document.getElementById('revise-input')||{}).value = '';
+      _tplGeneratedHTML = html;
+      tplShowOutput(html);
+    } else {
+      tplShowError('Revision returned empty. Try again.');
+    }
+  })
+  .catch(function(err) {
+    if (overlay) overlay.classList.remove('active');
+    if (title) title.textContent = 'Reading your template…';
+    tplShowError('Revision error: ' + err.message);
+  });
+}
+
+// ── DOWNLOAD ──────────────────────────────────
+function tplDownload() {
+  if (!_tplGeneratedHTML) return;
+  var biz  = (document.getElementById('tpl-biz-name')||{}).value || 'my-site';
+  var slug = biz.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
+  var blob = new Blob([_tplGeneratedHTML], { type: 'text/html' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href   = url;
+  a.download = slug + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── INIT ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  tplGoStep(1);
+});
+</script>
+</body>
+</html>
