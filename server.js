@@ -1,6 +1,16 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
+
+// Load template HTML once at startup
+var SOCIAL_TEMPLATE = '';
+try {
+  SOCIAL_TEMPLATE = fs.readFileSync(path.join(__dirname, 'social-media-manager-site.html'), 'utf8');
+} catch(e) {
+  console.warn('social-media-manager-site.html not found:', e.message);
+}
 
 const app = express();
 app.use(cors());
@@ -57,6 +67,46 @@ app.post('/grow', async function(req, res) {
 
   } catch (err) {
     console.error('Grow error:', err.message);
+    res.status(500).json({ error: err.message || 'Generation failed' });
+  }
+});
+
+// Template fill — takes social-media-manager-site.html and swaps content with user's real info
+app.post('/generate-template', async function(req, res) {
+  try {
+    var fields = req.body.fields || {};
+    if (!SOCIAL_TEMPLATE) return res.status(500).json({ error: 'Template not loaded on server' });
+
+    var fieldText = Object.keys(fields).map(function(k) {
+      return k + ': ' + fields[k];
+    }).join('\n');
+
+    var prompt = 'You are filling in a pre-designed HTML template with a user\'s real business content.\n\n'
+      + 'CRITICAL RULES — read carefully:\n'
+      + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML whatsoever\n'
+      + '- Do NOT change fonts, spacing, animations, colors, or any visual design\n'
+      + '- ONLY replace text content inside elements — nothing else\n'
+      + '- Preserve ALL <em>, <br>, italic tags and line break structure in headlines exactly as they are\n'
+      + '- Keep every section, accordion item, pricing card, and portfolio card exactly as structured\n'
+      + '- The testimonial JS array (var testis = [...]) — update the text, name, and initial fields only\n'
+      + '- The press bar marquee items — replace publication names with the user\'s press mentions (or keep defaults if none provided)\n'
+      + '- Portfolio cards — replace client names and service lists with the user\'s real clients/services\n'
+      + '- If a field was left blank, use a sensible professional default that fits the industry\n'
+      + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
+      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
+      + 'TEMPLATE TO FILL IN:\n' + SOCIAL_TEMPLATE;
+
+    var message = await client.messages.create({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var html = message.content[0].text;
+    html = html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    res.json({ html: html });
+  } catch(err) {
+    console.error('Generate-template error:', err.message);
     res.status(500).json({ error: err.message || 'Generation failed' });
   }
 });

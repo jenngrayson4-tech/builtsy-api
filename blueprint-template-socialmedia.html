@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Social Media Manager Template | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;--builtsy-blue:#4361EE;
+  --cream:#fafaf7;
+}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--pink);color:white;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+.welcome-banner{background:var(--pink);color:white;text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;}
+
+.bp-hero{background:var(--navy);color:white;padding:40px 24px 32px;text-align:center;}
+.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.15;margin-bottom:10px;}
+.bp-hero h1 span{color:var(--lime);}
+.bp-hero p{color:rgba(255,255,255,0.6);font-size:.9rem;max-width:480px;margin:0 auto;}
+
+/* template preview strip */
+.tpl-preview-strip{background:white;border-bottom:1px solid #e5e7eb;overflow:hidden;height:200px;position:relative;cursor:pointer;}
+.tpl-preview-strip iframe{width:100%;height:800px;border:none;transform:scale(0.25);transform-origin:top left;pointer-events:none;}
+.tpl-preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(18,25,43,0.45);}
+.tpl-preview-badge{background:var(--lime);color:var(--navy);font-size:.75rem;font-weight:700;padding:8px 18px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+
+.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:560px;margin:0 auto;}
+.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:16px;}
+.step-line.done{background:var(--lime);}
+
+.form-wrap{max-width:640px;margin:0 auto;padding:0 16px 100px;}
+.step-panel{display:none;padding-top:28px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
+.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:24px;line-height:1.6;}
+
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--builtsy-blue);}
+.fi::placeholder{color:#9ca3af;}
+textarea.fi{resize:vertical;min-height:88px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.field-grid{grid-template-columns:1fr;}}
+.field-hint{font-size:.72rem;color:#9ca3af;margin-top:5px;line-height:1.5;}
+
+.sl{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin:28px 0 12px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+
+/* service block */
+.svc-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;}
+.svc-block-title{font-size:.88rem;font-weight:700;color:var(--navy);}
+.svc-block-chevron{font-size:.75rem;color:#9ca3af;transition:transform .2s;}
+.svc-block-chevron.open{transform:rotate(180deg);}
+.svc-block-body{display:none;padding:0 16px 16px;border-top:1px solid #f3f4f6;}
+.svc-block-body.open{display:block;}
+
+/* pricing block */
+.price-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.price-block.popular{border-color:var(--pink);background:rgba(238,112,188,0.03);}
+.price-block-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;font-family:'DM Mono',monospace;}
+
+/* testi block */
+.testi-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.testi-num{font-size:.65rem;font-weight:700;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:8px;}
+
+.step-nav{display:flex;gap:10px;margin-top:28px;}
+.btn-back{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;}
+.btn-back:hover{border-color:var(--navy);color:var(--navy);}
+.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;}
+.btn-next:hover{background:#b8d000;}
+.btn-generate{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate:hover{background:#1e2d4a;}
+
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:48px;height:48px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
+.gen-sub{color:rgba(255,255,255,.55);font-size:.88rem;max-width:300px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.78rem;}
+
+#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.output-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;}
+.btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(67,97,238,.12);border-bottom:1px solid rgba(67,97,238,.2);padding:9px 16px;font-size:.76rem;color:rgba(255,255,255,.7);flex-shrink:0;}
+.deploy-bar a{color:var(--lime);font-weight:600;}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
+#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-error.active{display:block;}
+#revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
+#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#revise-input::placeholder{color:rgba(255,255,255,.35);}
+.btn-revise-submit{background:var(--pink);color:white;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="dashboard.html" class="logo-text">builtsy</a>
+  <span class="tn-tag">✦ Template</span>
+  <div class="tn-right">
+    <button class="btn-top" onclick="smGoStep(3)">⚡ Generate</button>
+  </div>
+</div>
+
+<div class="welcome-banner">
+  ✦ This template is already designed. Just fill in your info and download. ✦
+</div>
+
+<div class="bp-hero">
+  <h1>Social Media Manager<br><span>Template Site</span></h1>
+  <p>Elegant, editorial design — fill in your info and it's yours. No design skills needed.</p>
+</div>
+
+<!-- TEMPLATE PREVIEW STRIP -->
+<div class="tpl-preview-strip" onclick="smGoStep(1)">
+  <iframe src="social-media-manager-site.html" scrolling="no" tabindex="-1"></iframe>
+  <div class="tpl-preview-overlay">
+    <span class="tpl-preview-badge">👆 Preview the template — click to start</span>
+  </div>
+</div>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress">
+  <div class="step-dot active" id="sm-dot-1">1</div>
+  <div class="step-line" id="sm-line-1"></div>
+  <div class="step-dot" id="sm-dot-2">2</div>
+  <div class="step-line" id="sm-line-2"></div>
+  <div class="step-dot" id="sm-dot-3">3</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- ══ STEP 1 — BASICS ══ -->
+  <div class="step-panel active" id="sm-step-1">
+    <p class="step-label-top">Step 1 of 3</p>
+    <h2 class="step-title-main">Your Business</h2>
+    <p class="step-sub-main">These basics go everywhere — nav, hero, footer, and contact section.</p>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>Your Name</label>
+        <input class="fi" id="sm-owner" type="text" placeholder="Olivia Aster">
+      </div>
+      <div class="field">
+        <label>Business Name</label>
+        <input class="fi" id="sm-biz" type="text" placeholder="Olivia Aster Studio">
+      </div>
+    </div>
+    <div class="field">
+      <label>What You Do <span class="opt">— one line, shown in hero</span></label>
+      <input class="fi" id="sm-tagline" type="text" placeholder="Social Media Strategy &amp; Brand Growth">
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>City / Location</label>
+        <input class="fi" id="sm-location" type="text" placeholder="Austin, TX">
+      </div>
+      <div class="field">
+        <label>Contact Email</label>
+        <input class="fi" id="sm-email" type="email" placeholder="hello@yourbiz.com">
+      </div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Years of Experience</label>
+        <input class="fi" id="sm-years" type="text" placeholder="6">
+      </div>
+      <div class="field">
+        <label>Clients / Brands Served</label>
+        <input class="fi" id="sm-clients" type="text" placeholder="87+">
+      </div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Instagram <span class="opt">(optional)</span></label>
+        <input class="fi" id="sm-ig" type="text" placeholder="@oliviaaster">
+      </div>
+      <div class="field">
+        <label>TikTok <span class="opt">(optional)</span></label>
+        <input class="fi" id="sm-tk" type="text" placeholder="@oliviaaster">
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-next" onclick="smGoStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2 — STORY, SERVICES & TESTIMONIALS ══ -->
+  <div class="step-panel" id="sm-step-2">
+    <p class="step-label-top">Step 2 of 3</p>
+    <h2 class="step-title-main">Your Story & Services</h2>
+    <p class="step-sub-main">Fill in your copy, services, pricing, and testimonials. Pre-filled with smart defaults — edit what you want to change.</p>
+
+    <span class="sl">Hero Copy</span>
+    <div class="field">
+      <label>Hero Headline <span class="opt">— shown in large serif type</span></label>
+      <input class="fi" id="sm-headline" type="text" placeholder="Your Brand, Amplified Online—">
+      <div class="field-hint">Keep it short and punchy. The template styles it in a 3-line serif layout.</div>
+    </div>
+    <div class="field">
+      <label>Hero Subheading</label>
+      <textarea class="fi" id="sm-hero-sub" placeholder="I help women-led businesses go from invisible to unforgettable through strategic social media management and bold brand storytelling."></textarea>
+    </div>
+
+    <span class="sl">About / Bio</span>
+    <div class="field">
+      <label>About Paragraph</label>
+      <textarea class="fi" id="sm-about" style="min-height:100px;" placeholder="I'm Olivia — a social media strategist obsessed with helping small businesses build an online presence that actually converts. With 6+ years in the industry, I've helped brands go from crickets to community."></textarea>
+    </div>
+    <div class="field">
+      <label>"As Seen In" Press Mentions <span class="opt">— comma separated, up to 6</span></label>
+      <input class="fi" id="sm-press" type="text" placeholder="Forbes, USA Today, BuzzFeed, Entrepreneur, HuffPost, Business Insider">
+    </div>
+
+    <span class="sl">Services (4 slots)</span>
+    <div id="sm-services-wrap">
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="smToggleSvc(this)">
+          <span class="svc-block-title">Service 1</span>
+          <span class="svc-block-chevron open">▾</span>
+        </div>
+        <div class="svc-block-body open">
+          <div class="field" style="margin-top:12px;">
+            <label>Service Name</label>
+            <input class="fi" id="sm-svc-name-1" type="text" value="Social Media Management">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="fi" id="sm-svc-desc-1">Full-service management of your Instagram, TikTok, and Pinterest. Content calendar, caption writing, scheduling, and monthly analytics report — all handled.</textarea>
+          </div>
+          <div class="field">
+            <label>Tags <span class="opt">comma separated</span></label>
+            <input class="fi" id="sm-svc-tags-1" type="text" value="Instagram, TikTok, Pinterest, Monthly Reports">
+          </div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="smToggleSvc(this)">
+          <span class="svc-block-title">Service 2</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;">
+            <label>Service Name</label>
+            <input class="fi" id="sm-svc-name-2" type="text" value="Content Creation">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="fi" id="sm-svc-desc-2">On-brand graphics, Reels scripts, carousel designs, and story templates. Delivered ready-to-post every week.</textarea>
+          </div>
+          <div class="field">
+            <label>Tags <span class="opt">comma separated</span></label>
+            <input class="fi" id="sm-svc-tags-2" type="text" value="Graphics, Reels, Carousels, Stories">
+          </div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="smToggleSvc(this)">
+          <span class="svc-block-title">Service 3</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;">
+            <label>Service Name</label>
+            <input class="fi" id="sm-svc-name-3" type="text" value="Brand Strategy Call">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="fi" id="sm-svc-desc-3">A 90-minute intensive where we audit your current presence, identify gaps, and build a 90-day content roadmap custom to your business goals.</textarea>
+          </div>
+          <div class="field">
+            <label>Tags <span class="opt">comma separated</span></label>
+            <input class="fi" id="sm-svc-tags-3" type="text" value="Audit, 90-Day Plan, 1:1 Call">
+          </div>
+        </div>
+      </div>
+      <div class="svc-block">
+        <div class="svc-block-header" onclick="smToggleSvc(this)">
+          <span class="svc-block-title">Service 4</span>
+          <span class="svc-block-chevron">▾</span>
+        </div>
+        <div class="svc-block-body">
+          <div class="field" style="margin-top:12px;">
+            <label>Service Name</label>
+            <input class="fi" id="sm-svc-name-4" type="text" value="Video &amp; Photo Direction">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="fi" id="sm-svc-desc-4">Creative direction for your brand shoot — shot list, mood board, styling guidance, and post-production art direction so every image is on-brand.</textarea>
+          </div>
+          <div class="field">
+            <label>Tags <span class="opt">comma separated</span></label>
+            <input class="fi" id="sm-svc-tags-4" type="text" value="Mood Boards, Shot Lists, Art Direction">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="sl">Pricing (3 tiers)</span>
+    <div class="price-block">
+      <div class="price-block-label">Tier 1</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-1" type="text" value="Starter"></div>
+        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-1" type="text" value="$697/month"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-1">Perfect for businesses just getting started. 12 posts/month, 2 platforms, monthly analytics call.</textarea></div>
+    </div>
+    <div class="price-block popular">
+      <div class="price-block-label">★ Most Popular</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-2" type="text" value="Growth"></div>
+        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-2" type="text" value="$1,297/month"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-2">20 posts/month, 3 platforms, content creation, weekly check-ins, and full strategy management.</textarea></div>
+    </div>
+    <div class="price-block">
+      <div class="price-block-label">Tier 3</div>
+      <div class="field-grid">
+        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-3" type="text" value="Full Service"></div>
+        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-3" type="text" value="$2,497/month"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-3">Unlimited content, all platforms, video direction, PR outreach, and priority response time.</textarea></div>
+    </div>
+
+    <span class="sl">Testimonials</span>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 1</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-1">"I can't thank you enough for everything you've done for my business. Our engagement tripled in just 60 days."</textarea></div>
+      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-1" type="text" value="Sarah Jane, Madison &amp; Co."></div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 2</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-2">"Working with Olivia completely transformed how we show up online. Worth every penny and then some."</textarea></div>
+      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-2" type="text" value="Emily Ross, Ethereal Clothing"></div>
+    </div>
+    <div class="testi-block">
+      <div class="testi-num">Testimonial 3</div>
+      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-3">"She gets it. She got our brand from day one and the content she creates feels like us, just better."</textarea></div>
+      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-3" type="text" value="Jamie S., Smithson Photography"></div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="smGoStep(1)">← Back</button>
+      <button class="btn-next" onclick="smGoStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3 — GENERATE ══ -->
+  <div class="step-panel" id="sm-step-3">
+    <p class="step-label-top">Step 3 of 3</p>
+    <h2 class="step-title-main">Ready — Let's Build It</h2>
+    <p class="step-sub-main">Builtsy will fill your content into the template. The design stays exactly as you saw it. Takes about 20–30 seconds.</p>
+
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 24px;margin-bottom:24px;">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:14px;">What you get</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
+          <span style="color:var(--lime);font-size:1rem;">✓</span> Exact same design — colors, fonts, layout, artwork all intact
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
+          <span style="color:var(--lime);font-size:1rem;">✓</span> Your real business name, bio, services, and pricing
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
+          <span style="color:var(--lime);font-size:1rem;">✓</span> Download HTML → drag to Netlify → live in 10 seconds
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
+          <span style="color:var(--lime);font-size:1rem;">✓</span> No monthly subscription. Yours forever.
+        </div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="smGoStep(2)">← Back</button>
+      <button class="btn-generate" onclick="smGenerate()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Fill In My Template
+      </button>
+    </div>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- OVERLAY -->
+<div class="gen-overlay" id="sm-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title">Filling in your template…</div>
+  <div class="gen-sub">Swapping in your content. The design stays exactly as you saw it.</div>
+  <div class="gen-msg" id="sm-gen-msg">Reading your business info…</div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">✓ Ready</span>
+    <span class="output-title" id="sm-output-title">Your site — scroll to preview</span>
+    <button class="btn-tb" onclick="toggleRevise()">✏️ Revise</button>
+    <button class="btn-tb" onclick="smRebuild()">↺ Rebuild</button>
+    <button class="btn-dl" onclick="smDownload()">⬇ Download</button>
+  </div>
+  <div class="deploy-bar">
+    🚀 <strong style="color:white;">Go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → live in 10 seconds.
+  </div>
+  <div class="output-error" id="sm-error"></div>
+  <div id="revise-drawer">
+    <textarea id="revise-input" placeholder="Describe what to change…" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="smRevise()">Apply →</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+var _smHTML = '';
+var _smMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Filling in testimonials…','Finalizing…'];
+var _smMsgIdx = 0;
+var _smInterval = null;
+
+function smGoStep(n) {
+  for (var i = 1; i <= 3; i++) {
+    var p = document.getElementById('sm-step-' + i);
+    var d = document.getElementById('sm-dot-' + i);
+    if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
+    if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    if (i < 3) {
+      var l = document.getElementById('sm-line-' + i);
+      if (l) l.className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function smToggleSvc(header) {
+  var body = header.nextElementSibling;
+  var chev = header.querySelector('.svc-block-chevron');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function smCollect() {
+  var v = function(id) { return (document.getElementById(id)||{}).value || ''; };
+  return {
+    ownerName:    v('sm-owner'),
+    businessName: v('sm-biz'),
+    tagline:      v('sm-tagline'),
+    location:     v('sm-location'),
+    email:        v('sm-email'),
+    yearsExperience: v('sm-years'),
+    clientsServed:   v('sm-clients'),
+    instagram:    v('sm-ig'),
+    tiktok:       v('sm-tk'),
+    heroHeadline: v('sm-headline'),
+    heroSub:      v('sm-hero-sub'),
+    aboutBio:     v('sm-about'),
+    pressMentions: v('sm-press'),
+    service1Name: v('sm-svc-name-1'), service1Desc: v('sm-svc-desc-1'), service1Tags: v('sm-svc-tags-1'),
+    service2Name: v('sm-svc-name-2'), service2Desc: v('sm-svc-desc-2'), service2Tags: v('sm-svc-tags-2'),
+    service3Name: v('sm-svc-name-3'), service3Desc: v('sm-svc-desc-3'), service3Tags: v('sm-svc-tags-3'),
+    service4Name: v('sm-svc-name-4'), service4Desc: v('sm-svc-desc-4'), service4Tags: v('sm-svc-tags-4'),
+    tier1Name: v('sm-tier-name-1'), tier1Price: v('sm-tier-price-1'), tier1Desc: v('sm-tier-desc-1'),
+    tier2Name: v('sm-tier-name-2'), tier2Price: v('sm-tier-price-2'), tier2Desc: v('sm-tier-desc-2'),
+    tier3Name: v('sm-tier-name-3'), tier3Price: v('sm-tier-price-3'), tier3Desc: v('sm-tier-desc-3'),
+    testi1Quote: v('sm-testi-quote-1'), testi1Name: v('sm-testi-name-1'),
+    testi2Quote: v('sm-testi-quote-2'), testi2Name: v('sm-testi-name-2'),
+    testi3Quote: v('sm-testi-quote-3'), testi3Name: v('sm-testi-name-3')
+  };
+}
+
+function smGenerate() {
+  var fields = smCollect();
+  var overlay = document.getElementById('sm-overlay');
+  if (overlay) overlay.classList.add('active');
+  _smMsgIdx = 0;
+  document.getElementById('sm-gen-msg').textContent = _smMsgs[0];
+  _smInterval = setInterval(function() {
+    _smMsgIdx = (_smMsgIdx + 1) % _smMsgs.length;
+    var el = document.getElementById('sm-gen-msg');
+    if (el) el.textContent = _smMsgs[_smMsgIdx];
+  }, 3500);
+
+  fetch('https://builtsy-api-production.up.railway.app/generate-template', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: fields })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    clearInterval(_smInterval);
+    if (overlay) overlay.classList.remove('active');
+    if (data.error) { smShowError(data.error); return; }
+    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    if (!html || html.length < 200) { smShowError('Generation returned empty. Try again.'); return; }
+    _smHTML = html;
+    smShowOutput(html);
+  })
+  .catch(function(err) {
+    clearInterval(_smInterval);
+    if (overlay) overlay.classList.remove('active');
+    smShowError('Connection error: ' + err.message);
+  });
+}
+
+function smShowOutput(html) {
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.step-progress').style.display = 'none';
+  document.querySelector('.bp-hero').style.display = 'none';
+  document.querySelector('.welcome-banner').style.display = 'none';
+  document.querySelector('.tpl-preview-strip').style.display = 'none';
+  document.getElementById('output-panel').classList.add('active');
+  var biz = (document.getElementById('sm-biz')||{}).value || 'Your Site';
+  var t = document.getElementById('sm-output-title');
+  if (t) t.textContent = biz + ' — scroll to preview';
+  var frame = document.getElementById('output-preview-frame');
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      var doc = win.document;
+      // Wire accordion
+      win.toggleAcc = function(btn) {
+        var allH = doc.querySelectorAll('.acc-header');
+        var allB = doc.querySelectorAll('.acc-body');
+        var allI = doc.querySelectorAll('.acc-icon');
+        var isOpen = btn.classList.contains('open');
+        for (var i = 0; i < allH.length; i++) allH[i].classList.remove('open');
+        for (var i = 0; i < allB.length; i++) allB[i].classList.remove('open');
+        for (var i = 0; i < allI.length; i++) allI[i].classList.remove('open');
+        if (!isOpen) {
+          btn.classList.add('open');
+          if (btn.nextElementSibling) btn.nextElementSibling.classList.add('open');
+          var ic = btn.querySelector('.acc-icon'); if (ic) ic.classList.add('open');
+        }
+      };
+      // Wire testimonials
+      if (win.testis) {
+        win.setTesti = function(i, dot) {
+          var te = doc.getElementById('testi-text');
+          var tn = doc.getElementById('testi-name');
+          var ta = doc.getElementById('testi-avatar');
+          if (te) te.textContent = win.testis[i].text;
+          if (tn) tn.textContent = win.testis[i].name;
+          if (ta) ta.textContent = win.testis[i].initial;
+          var dots = doc.querySelectorAll('.testi-dot');
+          for (var j = 0; j < dots.length; j++) dots[j].classList.remove('active');
+          dot.classList.add('active');
+        };
+      }
+    } catch(e) {}
+  };
+  frame.srcdoc = html;
+}
+
+function smShowError(msg) {
+  var el = document.getElementById('sm-error');
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+  if (!document.getElementById('output-panel').classList.contains('active')) alert(msg);
+}
+
+function smRebuild() {
+  var el = document.getElementById('sm-error');
+  if (el) el.classList.remove('active');
+  smGenerate();
+}
+
+function toggleRevise() {
+  document.getElementById('revise-drawer').classList.toggle('active');
+}
+
+function smRevise() {
+  var note = (document.getElementById('revise-input')||{}).value;
+  if (!note || !note.trim()) return;
+  document.getElementById('revise-drawer').classList.remove('active');
+  var overlay = document.getElementById('sm-overlay');
+  if (overlay) overlay.classList.add('active');
+  document.getElementById('sm-gen-msg').textContent = 'Applying your changes…';
+
+  var prompt = 'You previously generated this HTML:\n\n' + _smHTML
+    + '\n\n--- REVISION ---\nMake this change: ' + note.trim()
+    + '\nReturn ONLY the complete revised HTML. No markdown, no explanation.';
+
+  fetch('https://builtsy-api-production.up.railway.app/generate', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (overlay) overlay.classList.remove('active');
+    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+    if (html && html.length > 200) {
+      (document.getElementById('revise-input')||{}).value = '';
+      _smHTML = html;
+      smShowOutput(html);
+    } else { smShowError('Revision returned empty. Try again.'); }
+  })
+  .catch(function(err) {
+    if (overlay) overlay.classList.remove('active');
+    smShowError('Revision error: ' + err.message);
+  });
+}
+
+function smDownload() {
+  if (!_smHTML) return;
+  var biz = (document.getElementById('sm-biz')||{}).value || 'my-site';
+  var slug = biz.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
+  var blob = new Blob([_smHTML], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = slug + '.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+document.addEventListener('DOMContentLoaded', function() { smGoStep(1); });
+</script>
+</body>
+</html>
