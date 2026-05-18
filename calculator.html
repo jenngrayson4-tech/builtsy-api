@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Revenue Booster | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--navy-mid:#161E30;
+  --lime:#C8E000;--lime-dim:rgba(200,224,0,0.12);
+  --pink:#ee70bc;--iris:#8ba2f0;
+  --blue:#4361EE;--blue-dim:rgba(67,97,238,0.08);--blue-border:rgba(67,97,238,0.2);
+  --cream:#fafaf7;--white:#fff;
+  --text:#12192B;--dim:#6b7280;--muted:#9ca3af;
+  --border:#e5e7eb;--border-mid:rgba(18,25,43,0.1);
+  --surface:#f3f4f6;
+  --r:10px;--rl:14px;
+}
+html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);}
+
+/* ── TOPNAV ── */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--blue);color:white;font-size:0.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-right{display:flex;align-items:center;gap:1rem;}
+.tn-back{color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;display:flex;align-items:center;gap:0.35rem;transition:color .15s;}
+.tn-back:hover{color:white;}
+.save-indicator{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.08em;color:rgba(255,255,255,0.35);transition:all .3s;}
+.save-indicator.saving{color:rgba(200,224,0,0.6);}
+.save-indicator.saved{color:rgba(200,224,0,0.9);}
+.save-indicator.error{color:rgba(238,112,188,0.8);}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.page-header{margin-bottom:2rem;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;}
+.page-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);margin-bottom:0.4rem;}
+.page-sub{color:var(--dim);font-size:0.92rem;max-width:520px;line-height:1.6;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+@media(max-width:768px){.two-col{grid-template-columns:1fr;}}
+
+/* ── CARD ── */
+.card{background:white;border:1.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;}
+.card-label{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+.card-label span{background:var(--blue);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;flex-shrink:0;}
+
+/* ── SESSION ROWS ── */
+.session-row{display:grid;grid-template-columns:1fr 90px 32px;gap:0.5rem;align-items:center;margin-bottom:0.5rem;}
+.session-row input[type=text]{border:1.5px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:white;outline:none;width:100%;transition:border-color .2s;}
+.session-row input[type=text]:focus{border-color:var(--blue);}
+.session-row input[type=number]{border:1.5px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:white;outline:none;width:100%;transition:border-color .2s;text-align:right;}
+.session-row input[type=number]:focus{border-color:var(--blue);}
+.del-btn{width:32px;height:32px;border:none;background:none;color:var(--muted);cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .15s;flex-shrink:0;}
+.del-btn:hover{background:rgba(238,112,188,0.1);color:var(--pink);}
+.add-btn{display:flex;align-items:center;gap:0.4rem;background:none;border:1.5px dashed var(--blue-border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;color:var(--blue);cursor:pointer;width:100%;margin-top:0.5rem;transition:all .15s;}
+.add-btn:hover{background:var(--blue-dim);border-style:solid;}
+
+/* ── ADDON ROWS ── */
+.addon-row{display:grid;grid-template-columns:1fr 90px 32px;gap:0.5rem;align-items:center;margin-bottom:0.5rem;}
+
+/* ── DIVIDER ── */
+.section-divider{border:none;border-top:1.5px solid var(--border);margin:1.25rem 0;}
+
+/* ── PREVIEW PANEL ── */
+.preview-card{background:white;border:1.5px solid var(--border);border-radius:var(--rl);overflow:hidden;position:sticky;top:72px;}
+.preview-header{background:var(--navy);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.preview-header-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+.preview-header-title{font-size:0.85rem;font-weight:600;color:white;}
+.preview-body{padding:1.5rem;}
+
+/* ── LIVE CALCULATOR ── */
+.calc-total{background:rgba(67,97,238,0.08);border:2px solid rgba(67,97,238,0.18);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.calc-total-left{}
+.calc-total-label{font-size:0.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:0.1rem;font-family:'DM Mono',monospace;}
+.calc-total-note{font-size:0.68rem;color:var(--muted);}
+.calc-total-amount{font-size:2.2rem;font-weight:900;color:var(--blue);line-height:1;}
+
+.calc-section-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;}
+.calc-section-label span{background:var(--blue);color:white;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:900;flex-shrink:0;}
+
+.session-pills{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.1rem;}
+.session-pill{border:2px solid rgba(67,97,238,0.2);border-radius:100px;padding:0.45rem 0.9rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:0.4rem;white-space:nowrap;background:transparent;font-family:'DM Sans',sans-serif;}
+.session-pill:hover{border-color:var(--blue);}
+.session-pill.active{border-color:var(--blue);background:rgba(67,97,238,0.08);}
+.session-pill-name{font-size:0.82rem;font-weight:600;color:var(--navy);}
+.session-pill-price{font-size:0.82rem;font-weight:800;color:var(--blue);}
+
+.addon-rows{margin-bottom:1.1rem;}
+.calc-addon{border:1.5px solid rgba(67,97,238,0.12);border-radius:9px;padding:0.55rem 0.9rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-bottom:0.35rem;}
+.calc-addon:hover{border-color:rgba(67,97,238,0.35);background:rgba(67,97,238,0.03);}
+.calc-addon.active{border-color:var(--blue);background:rgba(67,97,238,0.06);}
+.calc-addon-left{display:flex;align-items:center;gap:0.5rem;}
+.calc-check{width:16px;height:16px;border-radius:4px;border:2px solid rgba(67,97,238,0.25);flex-shrink:0;transition:all .15s;}
+.calc-addon.active .calc-check{background:var(--blue);border-color:var(--blue);}
+.calc-addon-name{font-size:0.82rem;font-weight:600;color:var(--navy);}
+.calc-addon-price{font-size:0.82rem;font-weight:800;color:var(--blue);flex-shrink:0;}
+
+.calc-book-btn{background:var(--blue);color:white;border:none;border-radius:100px;padding:0.8rem 1.5rem;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.calc-book-btn:hover{opacity:0.9;transform:translateY(-1px);}
+
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:0.85rem;line-height:1.6;}
+.empty-icon{font-size:2rem;margin-bottom:0.5rem;opacity:0.4;}
+
+/* ── AI SUGGEST ── */
+.ai-bar{background:white;border:1.5px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.ai-bar-label{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:0.65rem;display:flex;align-items:center;gap:0.4rem;}
+.ai-input-row{display:flex;gap:0.5rem;align-items:stretch;}
+.ai-input-row input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:0.55rem 0.875rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+.ai-input-row input:focus{border-color:var(--blue);}
+.ai-btn{background:linear-gradient(135deg,#4361EE,#7b5ea7);color:white;border:none;border-radius:8px;padding:0.55rem 1.1rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:0.4rem;}
+.ai-btn:hover{opacity:0.88;transform:translateY(-1px);}
+.ai-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.ai-status{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;min-height:1.1em;}
+.ai-status.error{color:#e53e3e;}
+.ai-status.success{color:#38a169;}
+
+/* ── FOOTER NOTE ── */
+.footer-note{margin-top:2rem;text-align:center;font-size:0.75rem;color:var(--muted);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">builtsy</a>
+    <span class="tn-tag">Tool</span>
+  </div>
+  <div class="tn-right">
+    <span class="save-indicator" id="save-indicator"></span>
+    <a href="dashboard.html" class="tn-back">← Back to Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+    <div>
+      <div class="page-eyebrow">Builtsy Tool</div>
+      <h1 class="page-title">Revenue Booster</h1>
+      <p class="page-sub">Build your interactive pricing estimator. Add sessions and add-ons — changes save automatically to your blueprint.</p>
+    </div>
+    <button onclick="clearAll()" style="margin-top:0.35rem;flex-shrink:0;background:none;border:1.5px solid var(--border);border-radius:8px;padding:0.45rem 1rem;font-size:0.78rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.borderColor='#e53e3e';this.style.color='#e53e3e';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">↺ Start Over</button>
+  </div>
+
+  <div class="two-col">
+
+    <!-- LEFT: Configure -->
+    <div>
+
+      <!-- AI Add-on Suggester -->
+      <div class="ai-bar">
+        <div class="ai-bar-label"><span>✦</span> AI Add-on Suggestions</div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-business-input" placeholder="e.g. Private piano lessons for kids ages 5–15 in Denver" />
+          <button class="ai-btn" id="ai-suggest-btn" onclick="suggestAddons()">✨ Suggest Add-ons</button>
+        </div>
+        <div class="ai-status" id="ai-status"></div>
+      </div>
+
+      <div class="card">
+
+        <!-- Sessions -->
+        <div class="card-label"><span>1</span> Your Sessions</div>
+        <div id="session-rows"></div>
+        <button class="add-btn" onclick="addSession()">+ Add session</button>
+
+        <hr class="section-divider">
+
+        <!-- Add-ons -->
+        <div class="card-label" style="margin-top:0;"><span>2</span> Add-ons <span style="background:none;color:var(--muted);font-size:0.72rem;font-weight:400;text-transform:none;letter-spacing:0;width:auto;height:auto;">optional</span></div>
+        <div id="addon-rows"></div>
+        <button class="add-btn" onclick="addAddon()">+ Add add-on</button>
+
+        <hr class="section-divider">
+
+        <!-- Book Button Label -->
+        <div class="card-label" style="margin-top:0;"><span>3</span> Button Label</div>
+        <input type="text" id="btn-label" class="session-row" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:white;outline:none;" value="Book This Session →" oninput="renderPreview();scheduleSave();">
+
+      </div>
+      <p class="footer-note">Changes save automatically to your blueprint.</p>
+    </div>
+
+    <!-- RIGHT: Live Preview -->
+    <div>
+      <div class="preview-card">
+        <div class="preview-header">
+          <div>
+            <div class="preview-header-label">Live Preview</div>
+            <div class="preview-header-title">What visitors will see</div>
+          </div>
+        </div>
+        <div class="preview-body" id="preview-body">
+          <div class="empty-state"><div class="empty-icon">💰</div>Add a session above to see your estimator.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── SUPABASE ───────────────────────────────────────
+var _sb = window.supabase.createClient(
+  'https://nukcbqlxxrfsgchqyxud.supabase.co',
+  'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX'
+);
+
+// ── BLUEPRINT ID ───────────────────────────────────
+// Use URL param if launched from a blueprint, otherwise persist in localStorage
+var blueprintId = (function() {
+  var params = new URLSearchParams(window.location.search);
+  var fromUrl = params.get('blueprint');
+  if (fromUrl) { localStorage.setItem('builtsy_bp_id', fromUrl); return fromUrl; }
+  var stored = localStorage.getItem('builtsy_bp_id');
+  if (stored) return stored;
+  var newId = 'bp_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  localStorage.setItem('builtsy_bp_id', newId);
+  return newId;
+})();
+
+// ── STATE ──────────────────────────────────────────
+var sessions = [
+  {name:'30-Minute Lesson', price:45},
+  {name:'60-Minute Lesson', price:75},
+  {name:'90-Minute Lesson', price:110}
+];
+var addons = [];
+var activeSess = 0;
+var activeAddons = {};
+var saveTimer = null;
+
+// ── SAVE STATUS ────────────────────────────────────
+function setSaveStatus(status, msg) {
+  var el = document.getElementById('save-indicator');
+  if (!el) return;
+  el.className = 'save-indicator ' + (status || '');
+  el.textContent = msg || '';
+}
+
+// ── SUPABASE LOAD ──────────────────────────────────
+async function loadConfig() {
+  try {
+    var res = await _sb
+      .from('tool_configs')
+      .select('config')
+      .eq('blueprint_id', blueprintId)
+      .eq('tool_type', 'revenue_booster')
+      .maybeSingle();
+    if (res.data && res.data.config) {
+      var cfg = res.data.config;
+      if (cfg.sessions && cfg.sessions.length) sessions = cfg.sessions;
+      if (cfg.addons) addons = cfg.addons;
+      if (cfg.button_label) {
+        var bl = document.getElementById('btn-label');
+        if (bl) bl.value = cfg.button_label;
+      }
+      if (cfg.business_desc) {
+        var bi = document.getElementById('ai-business-input');
+        if (bi) bi.value = cfg.business_desc;
+      }
+      setSaveStatus('saved', '✓ Loaded');
+      setTimeout(function(){ setSaveStatus('',''); }, 2000);
+    }
+  } catch(e) {
+    // silent fail — defaults already set
+  }
+  renderRows();
+}
+
+// ── SUPABASE SAVE ──────────────────────────────────
+function scheduleSave() {
+  setSaveStatus('saving', '● Saving…');
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveConfig, 1500);
+}
+
+async function saveConfig() {
+  try {
+    var btnLabel = (document.getElementById('btn-label')||{}).value || 'Book This Session →';
+    var bizDesc = (document.getElementById('ai-business-input')||{}).value || '';
+    var cfg = {
+      sessions: sessions,
+      addons: addons,
+      button_label: btnLabel,
+      business_desc: bizDesc
+    };
+    var res = await _sb.from('tool_configs').upsert({
+      blueprint_id: blueprintId,
+      tool_type: 'revenue_booster',
+      config: cfg,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'blueprint_id,tool_type' });
+    if (res.error) throw res.error;
+    setSaveStatus('saved', '✓ Saved');
+    setTimeout(function(){ setSaveStatus('',''); }, 2500);
+  } catch(e) {
+    setSaveStatus('error', '✕ Save failed');
+  }
+}
+
+// ── RENDER CONFIG ROWS ─────────────────────────────
+function renderRows() {
+  var sr = document.getElementById('session-rows');
+  sr.innerHTML = '';
+  sessions.forEach(function(s, i) {
+    var row = document.createElement('div');
+    row.className = 'session-row';
+    row.innerHTML = '<input type="text" placeholder="Session name" value="'+escHtml(s.name)+'" oninput="sessions['+i+'].name=this.value;renderPreview();scheduleSave();">'
+      + '<input type="number" min="0" placeholder="Price" value="'+s.price+'" oninput="sessions['+i+'].price=parseFloat(this.value)||0;renderPreview();scheduleSave();">'
+      + '<button class="del-btn" onclick="removeSession('+i+')" title="Remove">✕</button>';
+    sr.appendChild(row);
+  });
+
+  var ar = document.getElementById('addon-rows');
+  ar.innerHTML = '';
+  addons.forEach(function(a, i) {
+    var row = document.createElement('div');
+    row.className = 'addon-row';
+    row.innerHTML = '<input type="text" placeholder="Add-on name" value="'+escHtml(a.name)+'" oninput="addons['+i+'].name=this.value;renderPreview();scheduleSave();">'
+      + '<input type="number" min="0" placeholder="Price" value="'+a.price+'" oninput="addons['+i+'].price=parseFloat(this.value)||0;renderPreview();scheduleSave();">'
+      + '<button class="del-btn" onclick="removeAddon('+i+')" title="Remove">✕</button>';
+    ar.appendChild(row);
+  });
+
+  renderPreview();
+}
+
+function addSession() {
+  sessions.push({name:'', price:0});
+  renderRows();
+  var inputs = document.querySelectorAll('#session-rows input[type=text]');
+  if (inputs.length) inputs[inputs.length-1].focus();
+  scheduleSave();
+}
+function removeSession(i) { sessions.splice(i,1); renderRows(); scheduleSave(); }
+function addAddon() {
+  addons.push({name:'', price:0});
+  renderRows();
+  var inputs = document.querySelectorAll('#addon-rows input[type=text]');
+  if (inputs.length) inputs[inputs.length-1].focus();
+  scheduleSave();
+}
+function removeAddon(i) { addons.splice(i,1); renderRows(); scheduleSave(); }
+
+function clearAll() {
+  if (!confirm('Start over? This will clear all sessions, add-ons, and your business description.')) return;
+  sessions = [{name:'', price:0}];
+  addons = [];
+  var input = document.getElementById('ai-business-input');
+  if (input) input.value = '';
+  var lbl = document.getElementById('btn-label-input');
+  if (lbl) lbl.value = 'Book Now';
+  buttonLabel = 'Book Now';
+  var status = document.getElementById('ai-status');
+  if (status) { status.textContent = ''; status.className = 'ai-status'; }
+  renderRows();
+  renderPreview();
+  scheduleSave();
+}
+
+// ── RENDER LIVE PREVIEW ────────────────────────────
+function renderPreview() {
+  var body = document.getElementById('preview-body');
+  var validSessions = sessions.filter(function(s){ return s.name.trim(); });
+  var validAddons = addons.filter(function(a){ return a.name.trim(); });
+
+  if (validSessions.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-icon">💰</div>Add a session above to see your estimator.</div>';
+    return;
+  }
+
+  if (activeSess >= validSessions.length) activeSess = 0;
+
+  var btnLabel = (document.getElementById('btn-label')||{}).value || 'Book This Session →';
+  var defaultPrice = validSessions[activeSess] ? validSessions[activeSess].price : 0;
+  var html = '';
+
+  html += '<div class="calc-total">'
+    + '<div class="calc-total-left"><div class="calc-total-label">Your Estimate</div><div class="calc-total-note">Updates as you select</div></div>'
+    + '<div class="calc-total-amount">$<span id="live-total">'+defaultPrice+'</span></div>'
+    + '</div>';
+
+  html += '<div class="calc-section-label"><span>1</span>Choose your session</div>';
+  html += '<div class="session-pills">';
+  validSessions.forEach(function(s, i) {
+    var cls = (i === activeSess) ? 'session-pill active' : 'session-pill';
+    html += '<div class="'+cls+'" onclick="pickSession(this,'+i+','+s.price+')">'
+      + '<span class="session-pill-name">'+escHtml(s.name)+'</span>'
+      + '<span class="session-pill-price">$'+s.price+'</span>'
+      + '</div>';
+  });
+  html += '</div>';
+
+  if (validAddons.length > 0) {
+    html += '<div class="calc-section-label"><span>2</span>Add-ons <span style="font-size:0.6rem;font-weight:400;letter-spacing:0;text-transform:none;opacity:0.55;">optional</span></div>';
+    html += '<div class="addon-rows">';
+    validAddons.forEach(function(a, i) {
+      var cls = activeAddons[i] ? 'calc-addon active' : 'calc-addon';
+      var sign = a.price < 0 ? '' : '+';
+      html += '<div class="'+cls+'" onclick="toggleCalcAddon(this,'+i+','+a.price+')">'
+        + '<div class="calc-addon-left"><div class="calc-check"></div><span class="calc-addon-name">'+escHtml(a.name)+'</span></div>'
+        + '<span class="calc-addon-price">'+sign+'$'+Math.abs(a.price)+'</span>'
+        + '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<button class="calc-book-btn">'+escHtml(btnLabel)+'</button>';
+  body.innerHTML = html;
+  recalc(defaultPrice);
+}
+
+function pickSession(el, idx, price) {
+  activeSess = idx;
+  document.querySelectorAll('.session-pill').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  recalc(price);
+}
+
+function toggleCalcAddon(el, idx, price) {
+  if (activeAddons[idx]) {
+    delete activeAddons[idx];
+    el.classList.remove('active');
+  } else {
+    activeAddons[idx] = price;
+    el.classList.add('active');
+  }
+  var basePrice = sessions[activeSess] ? sessions[activeSess].price : 0;
+  recalc(basePrice);
+}
+
+function recalc(base) {
+  var total = base || 0;
+  for (var k in activeAddons) total += activeAddons[k];
+  var el = document.getElementById('live-total');
+  if (el) el.textContent = total;
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── AI ADD-ON SUGGESTIONS ──────────────────────────
+async function suggestAddons() {
+  var input = document.getElementById('ai-business-input');
+  var btn = document.getElementById('ai-suggest-btn');
+  var status = document.getElementById('ai-status');
+  var desc = (input ? input.value : '').trim();
+  if (!desc) {
+    status.textContent = 'Please describe your business first.';
+    status.className = 'ai-status error';
+    input && input.focus();
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '✦ Thinking…';
+  status.textContent = 'Finding revenue-boosting add-ons for your business…';
+  status.className = 'ai-status';
+  // AI suggest only works when deployed — show friendly message locally
+  if (window.location.protocol === 'file:') {
+    status.textContent = 'AI suggestions require the deployed app. Add your sessions & add-ons manually above — it works great!';
+    status.className = 'ai-status';
+    btn.disabled = false;
+    btn.textContent = '✨ Suggest Add-ons';
+    return;
+  }
+  try {
+    var res = await fetch('/.netlify/functions/suggest-addons', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({businessDescription: desc})
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    var hasExisting = sessions.some(function(s){ return s.name.trim(); }) || addons.some(function(a){ return a.name.trim(); });
+    if (hasExisting && !confirm('Replace your current sessions and add-ons with new AI suggestions?')) {
+      status.textContent = 'Kept your existing setup.';
+      status.className = 'ai-status';
+      return;
+    }
+    if (data.sessions && data.sessions.length) {
+      sessions = data.sessions.map(function(s) {
+        return {name: s.name || '', price: parseFloat(s.price) || 0};
+      });
+    }
+    if (data.suggestions && data.suggestions.length) {
+      addons = data.suggestions.map(function(s) {
+        return {name: s.name || '', price: parseFloat(s.price) || 0};
+      });
+    }
+    renderRows();
+    renderPreview();
+    scheduleSave();
+    var total = (data.sessions||[]).length + (data.suggestions||[]).length;
+    status.textContent = '✓ ' + (data.sessions||[]).length + ' sessions + ' + (data.suggestions||[]).length + ' add-ons generated — edit any you don\'t need.';
+    status.className = 'ai-status success';
+  } catch(e) {
+    status.textContent = 'Something went wrong. Try again or add add-ons manually.';
+    status.className = 'ai-status error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ Suggest Add-ons';
+  }
+}
+
+// ── URL PARAMS (from blueprint) ────────────────────
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var biz = params.get('business') || '';
+  var cat = params.get('category') || '';
+  var subject = params.get('subject') || '';
+  var parts = [biz, subject || cat].filter(Boolean);
+  if (parts.length) {
+    var desc = parts.join(' — ');
+    var input = document.getElementById('ai-business-input');
+    if (input) input.value = desc;
+    setTimeout(suggestAddons, 600);
+  }
+})();
+
+// ── INIT ───────────────────────────────────────────
+loadConfig();
+</script>
+
+</body>
+</html>
