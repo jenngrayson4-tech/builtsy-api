@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -448,6 +449,29 @@ Ongoing Retainer</textarea></div>
       </div>
     </div>
 
+    <!-- ── REVENUE BOOSTER ── -->
+    <div style="margin-top:28px;padding:16px;background:rgba(232,212,0,0.06);border:1.5px solid rgba(232,212,0,0.25);border-radius:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:700;color:var(--navy);">💰 Revenue Booster</div>
+          <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Add an interactive pricing calculator to your site</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">OFF</span>
+          <div style="position:relative;width:40px;height:22px;">
+            <input type="checkbox" id="ca-t-revenue" onchange="caToggleRevBooster()" style="opacity:0;width:0;height:0;position:absolute;">
+            <div id="ca-rb-track" style="position:absolute;inset:0;background:#e5e7eb;border-radius:11px;transition:background .2s;cursor:pointer;" onclick="document.getElementById('ca-t-revenue').click()"></div>
+            <div id="ca-rb-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none;"></div>
+          </div>
+          <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">ON</span>
+        </label>
+      </div>
+      <div id="ca-rb-wrap" style="display:none;margin-top:12px;">
+        <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your packages and add-ons in the Revenue Booster tool — it saves automatically and gets embedded in your site.</div>
+        <button onclick="caOpenRevBooster()" style="background:linear-gradient(135deg,#E8D400,#b8a800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">⚡ Open Revenue Booster</button>
+      </div>
+    </div>
+
     <div class="step-nav">
       <button class="btn-back" onclick="caGoStep(2)">← Back</button>
       <button class="btn-next" onclick="caGoStep(4)">Continue →</button>
@@ -638,6 +662,85 @@ Ongoing Retainer</textarea></div>
 var _caHTML = '';
 var _caPalette = 'original';
 var _caPhotos = {};
+
+// ── Supabase + Revenue Booster ──
+var _sbClient = null;
+function getSupabase() {
+  if (!_sbClient && window.supabase) {
+    _sbClient = window.supabase.createClient(
+      'https://nukcbqlxxrfsgchqyxud.supabase.co',
+      'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX'
+    );
+  }
+  return _sbClient;
+}
+window._revBoosterConfig = null;
+
+async function caFetchRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  if (!bpId) return;
+  var sb = getSupabase();
+  if (!sb) return;
+  try {
+    var res = await sb.from('tool_configs')
+      .select('config')
+      .eq('blueprint_id', bpId)
+      .eq('tool_type', 'revenue_booster')
+      .maybeSingle();
+    if (res.data && res.data.config) window._revBoosterConfig = res.data.config;
+  } catch(e) {}
+}
+
+function caToggleRevBooster() {
+  var on = (document.getElementById('ca-t-revenue')||{}).checked;
+  var wrap = document.getElementById('ca-rb-wrap');
+  var track = document.getElementById('ca-rb-track');
+  var thumb = document.getElementById('ca-rb-thumb');
+  if (wrap) wrap.style.display = on ? 'block' : 'none';
+  if (track) track.style.background = on ? '#E8D400' : '#e5e7eb';
+  if (thumb) thumb.style.left = on ? '21px' : '3px';
+  if (on) caFetchRevBooster();
+}
+
+function caOpenRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  var url = 'calculator.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : '');
+  window.open(url, '_blank');
+}
+
+function caBuildRBSection(config) {
+  if (!config || !config.sessions || !config.sessions.length) return '';
+  var sessions = config.sessions;
+  var addons = config.addons || [];
+  var btnLabel = config.bookingLabel || 'Book Now';
+  var html = '<section style="background:#0D0D0D;padding:80px 60px;"><div style="max-width:700px;margin:0 auto;">'
+    + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#E8D400;margin-bottom:16px;">Interactive Pricing</div>'
+    + '<h2 style="font-family:\'Anton\',sans-serif;font-size:42px;color:white;margin-bottom:8px;">BUILD YOUR PACKAGE.</h2>'
+    + '<p style="color:#9A9A9A;margin-bottom:40px;font-size:15px;">Select a package and add the services you need.</p>';
+  sessions.forEach(function(s) {
+    html += '<div class="rb-session-card" data-rb-price="' + (s.price||0) + '" onclick="_rbPick(this,' + (s.price||0) + ')" style="cursor:pointer;padding:1.25rem 1.5rem;border:2px solid rgba(255,255,255,0.12);border-radius:12px;margin-bottom:0.75rem;transition:all .2s;background:rgba(255,255,255,0.03);">'
+      + '<div style="font-weight:700;color:white;margin-bottom:4px;">' + (s.name||'Package') + '</div>'
+      + (s.description ? '<div style="font-size:13px;color:#9A9A9A;margin-bottom:8px;">' + s.description + '</div>' : '')
+      + '<div style="font-size:1.75rem;font-weight:900;color:#E8D400;">$' + (s.price||0) + '</div>'
+      + '</div>';
+  });
+  if (addons.length) {
+    html += '<div style="margin-top:24px;margin-bottom:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#9A9A9A;">Add-Ons</div>';
+    addons.forEach(function(a, i) {
+      html += '<div onclick="_rbToggle(\'' + i + '\',' + (a.price||0) + ')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;margin-bottom:0.5rem;background:rgba(255,255,255,0.02);">'
+        + '<div style="display:flex;align-items:center;gap:0.75rem;">'
+        + '<div id="rb-check-' + i + '" style="width:18px;height:18px;border-radius:4px;border:2px solid #E8D400;background:transparent;flex-shrink:0;"></div>'
+        + '<span style="color:white;">' + (a.name||'Add-on') + '</span></div>'
+        + '<span style="font-weight:700;color:#E8D400;">+$' + (a.price||0) + '</span></div>';
+    });
+  }
+  html += '<div style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid rgba(255,255,255,0.1);">'
+    + '<div><div style="font-size:12px;color:#9A9A9A;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Total</div>'
+    + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:white;">$0</div></div>'
+    + '<a href="#contact" style="background:#E8D400;color:#0D0D0D;border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;">' + btnLabel + '</a></div>'
+    + '</div></section>';
+  return html;
+}
 var _caMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Filling in portfolio projects…','Applying your palette…','Rendering final output…'];
 var _caMsgIdx = 0;
 var _caInterval = null;
@@ -819,6 +922,13 @@ function caInjectAssets(html) {
       }
     }
   }
+  // Revenue Booster section injection
+  var rbOn = (document.getElementById('ca-t-revenue')||{}).checked;
+  if (rbOn && window._revBoosterConfig) {
+    var rbSection = caBuildRBSection(window._revBoosterConfig);
+    if (rbSection) html = html.replace('</body>', rbSection + '\n</body>');
+  }
+
   return html;
 }
 
@@ -935,9 +1045,66 @@ function caShowOutput(html) {
         };
       }
     } catch(e) {}
+
+    // ── Revenue Booster JS ──
+    try {
+      var _rbSession = 0, _rbAddons = {};
+      win._rbCalc = function() {
+        var total = _rbSession;
+        for (var k in _rbAddons) total += _rbAddons[k];
+        var el = doc.getElementById('rb-total');
+        if (el) el.textContent = '$' + total;
+      };
+      win._rbPick = function(el, price) {
+        var cards = doc.querySelectorAll('.rb-session-card');
+        for (var i = 0; i < cards.length; i++) cards[i].style.borderColor = 'rgba(255,255,255,0.12)';
+        el.style.borderColor = '#E8D400';
+        _rbSession = parseFloat(price) || 0;
+        win._rbCalc();
+      };
+      win._rbToggle = function(key, price) {
+        _rbAddons[key] = _rbAddons[key] ? 0 : (parseFloat(price) || 0);
+        var box = doc.getElementById('rb-check-' + key);
+        if (box) box.style.background = _rbAddons[key] ? '#E8D400' : 'transparent';
+        win._rbCalc();
+      };
+      // Programmatically wire session cards
+      var rbCards = doc.querySelectorAll('.rb-session-card');
+      for (var rbi = 0; rbi < rbCards.length; rbi++) {
+        (function(card) {
+          var p = parseFloat(card.getAttribute('data-rb-price')) || 0;
+          if (!p) { var mx = card.textContent.match(/\$(\d[\d,]*)/); if (mx) p = parseFloat(mx[1].replace(/,/g,'')); }
+          card.onclick = function() { win._rbPick(card, p); };
+        })(rbCards[rbi]);
+      }
+      // Auto-select first card
+      if (rbCards.length) {
+        rbCards[0].style.borderColor = '#E8D400';
+        var mp0 = rbCards[0].getAttribute('data-rb-price');
+        _rbSession = mp0 ? parseFloat(mp0) : 0;
+        win._rbCalc();
+      }
+      // Wire addon rows
+      var rbRows = doc.querySelectorAll('[id^="rb-check-"]');
+      for (var rbj = 0; rbj < rbRows.length; rbj++) {
+        (function(chk, idx) {
+          var row = chk.parentElement && chk.parentElement.parentElement;
+          var p = 0;
+          if (row) { var mp = row.textContent.match(/\+\$(\d[\d,]*)/); if (mp) p = parseFloat(mp[1].replace(/,/g,'')); }
+          if (row) row.onclick = function() { win._rbToggle(String(idx), p); };
+        })(rbRows[rbj], rbj);
+      }
+    } catch(e) {}
   };
   frame.srcdoc = html;
 }
+
+// Init blueprint ID from localStorage
+(function() {
+  var stored = localStorage.getItem('builtsy_bp_id');
+  if (!stored) { stored = 'ca-' + Date.now(); localStorage.setItem('builtsy_bp_id', stored); }
+  window._blueprintId = stored;
+})();
 
 function caShowError(msg) {
   var el = document.getElementById('ca-error');
