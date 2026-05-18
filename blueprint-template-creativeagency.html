@@ -456,15 +456,14 @@ Ongoing Retainer</textarea></div>
           <div style="font-size:.8rem;font-weight:700;color:var(--navy);">💰 Revenue Booster</div>
           <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Add an interactive pricing calculator to your site</div>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="caToggleRevBooster()">
           <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">OFF</span>
           <div style="position:relative;width:40px;height:22px;">
-            <input type="checkbox" id="ca-t-revenue" onchange="caToggleRevBooster()" style="opacity:0;width:0;height:0;position:absolute;">
-            <div id="ca-rb-track" style="position:absolute;inset:0;background:#e5e7eb;border-radius:11px;transition:background .2s;cursor:pointer;" onclick="document.getElementById('ca-t-revenue').click()"></div>
-            <div id="ca-rb-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none;"></div>
+            <div id="ca-rb-track" style="position:absolute;inset:0;background:#e5e7eb;border-radius:11px;transition:background .2s;"></div>
+            <div id="ca-rb-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);"></div>
           </div>
           <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">ON</span>
-        </label>
+        </div>
       </div>
       <div id="ca-rb-wrap" style="display:none;margin-top:12px;">
         <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your packages and add-ons in the Revenue Booster tool — it saves automatically and gets embedded in your site.</div>
@@ -691,15 +690,16 @@ async function caFetchRevBooster() {
   } catch(e) {}
 }
 
+var _caRBOn = false;
 function caToggleRevBooster() {
-  var on = (document.getElementById('ca-t-revenue')||{}).checked;
+  _caRBOn = !_caRBOn;
   var wrap = document.getElementById('ca-rb-wrap');
   var track = document.getElementById('ca-rb-track');
   var thumb = document.getElementById('ca-rb-thumb');
-  if (wrap) wrap.style.display = on ? 'block' : 'none';
-  if (track) track.style.background = on ? '#E8D400' : '#e5e7eb';
-  if (thumb) thumb.style.left = on ? '21px' : '3px';
-  if (on) caFetchRevBooster();
+  if (wrap) wrap.style.display = _caRBOn ? 'block' : 'none';
+  if (track) track.style.background = _caRBOn ? '#E8D400' : '#e5e7eb';
+  if (thumb) thumb.style.left = _caRBOn ? '21px' : '3px';
+  if (_caRBOn) caFetchRevBooster();
 }
 
 function caOpenRevBooster() {
@@ -923,7 +923,7 @@ function caInjectAssets(html) {
     }
   }
   // Revenue Booster section injection
-  var rbOn = (document.getElementById('ca-t-revenue')||{}).checked;
+  var rbOn = _caRBOn;
   if (rbOn && window._revBoosterConfig) {
     var rbSection = caBuildRBSection(window._revBoosterConfig);
     if (rbSection) html = html.replace('</body>', rbSection + '\n</body>');
