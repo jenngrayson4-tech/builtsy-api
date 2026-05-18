@@ -621,16 +621,54 @@ function tplGenerate() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ pdf: _tplPDFBase64, fields: fields })
   })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    clearInterval(_tplGenInterval);
-    var overlay = document.getElementById('tpl-gen-overlay');
-    if (overlay) overlay.classList.remove('active');
-    if (data.error) { tplShowError(data.error); return; }
-    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-    if (!html || html.length < 200) { tplShowError('Generation returned empty output. Try again.'); return; }
-    _tplGeneratedHTML = html;
-    tplShowOutput(html);
+  .then(function(r) {
+    if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || r.statusText); });
+    var reader = r.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop(); // keep incomplete line
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.indexOf(':') === 0) continue; // skip keep-alive comments
+          if (line.indexOf('data: ') === 0) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              clearInterval(_tplGenInterval);
+              var overlay = document.getElementById('tpl-gen-overlay');
+              if (overlay) overlay.classList.remove('active');
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { throw new Error(data.error); }
+              if (data.html) {
+                clearInterval(_tplGenInterval);
+                var overlay = document.getElementById('tpl-gen-overlay');
+                if (overlay) overlay.classList.remove('active');
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (!html || html.length < 200) { tplShowError('Generation returned empty output. Try again.'); return; }
+                _tplGeneratedHTML = html;
+                tplShowOutput(html);
+                return;
+              }
+            } catch(e) {
+              clearInterval(_tplGenInterval);
+              var overlay = document.getElementById('tpl-gen-overlay');
+              if (overlay) overlay.classList.remove('active');
+              tplShowError(e.message || 'Generation error');
+              return;
+            }
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
   })
   .catch(function(err) {
     clearInterval(_tplGenInterval);

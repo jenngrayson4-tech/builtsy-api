@@ -61,12 +61,10 @@ app.post('/grow', async function(req, res) {
   }
 });
 
-// PDF Template Blueprint — user uploads a PDF template (from Etsy/Canva),
-// Claude reads the design and generates a full HTML site matching that aesthetic
-// with the user's real business content.
+// PDF Template Blueprint — streams response to avoid Railway timeout on large PDFs
 app.post('/generate-from-pdf', async function(req, res) {
   try {
-    var pdfBase64 = req.body.pdf;      // base64 string, no data: prefix
+    var pdfBase64 = req.body.pdf;
     var fields    = req.body.fields || {};
 
     if (!pdfBase64) {
@@ -77,7 +75,14 @@ app.post('/generate-from-pdf', async function(req, res) {
       return k + ': ' + fields[k];
     }).join('\n');
 
-    var message = await client.messages.create({
+    // Use SSE so the connection stays open while Claude processes the PDF
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.flushHeaders();
+
+    var stream = await client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
       messages: [{
@@ -120,14 +125,33 @@ app.post('/generate-from-pdf', async function(req, res) {
       }]
     });
 
-    var html = message.content[0].text;
-    // Strip any accidental markdown fences
-    html = html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-    res.json({ html: html });
+    var fullText = '';
+    stream.on('text', function(chunk) {
+      fullText += chunk;
+      // Send a keep-alive comment every chunk so Railway doesn't timeout
+      res.write(': keep-alive\n\n');
+    });
+
+    stream.on('finalMessage', function() {
+      var html = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+      res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
+      res.write('data: [DONE]\n\n');
+      res.end();
+    });
+
+    stream.on('error', function(err) {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    });
 
   } catch (err) {
     console.error('Generate-from-pdf error:', err.message);
-    res.status(500).json({ error: err.message || 'Generation failed' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message || 'Generation failed' });
+    } else {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    }
   }
 });
 
