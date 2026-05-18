@@ -309,9 +309,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
       <span class="nav-icon">✦</span>Boost
     </div>
 
+    <div class="nav-section">Blueprints</div>
+    <div class="nav-item" onclick="location.href='blueprint-collab-booking.html'">
+      <span class="nav-icon">🤝</span>Collab Booking
+    </div>
+
     <div class="nav-section">Tools</div>
     <div class="nav-item" onclick="showSection('tools')">
       <span class="nav-icon">◎</span>Audit Tools
+    </div>
+    <div class="nav-item" onclick="location.href='calculator.html'">
+      <span class="nav-icon">💰</span>Revenue Booster
     </div>
 
     <div class="leftnav-footer">
@@ -340,7 +348,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
         </div>
         <div class="hero-stat-div"></div>
         <div class="hero-stat">
-          <div class="hs-num">11</div>
+          <div class="hs-num">12</div>
           <div class="hs-label">Blueprints</div>
         </div>
         <div class="hero-stat-div"></div>
@@ -383,7 +391,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
           <span style="font-size:1.1rem;color:#4361EE;">⊞</span>
           <span style="font-size:0.95rem;font-weight:600;color:white;letter-spacing:.01em;">Start a New Blueprint</span>
         </div>
-        <span style="font-size:0.68rem;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">13 blueprints available</span>
+        <span style="font-size:0.68rem;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">14 blueprints available</span>
       </div>
       <div class="bp-grid">
         <div class="bp-card bp-refresh" onclick="launchBP('site-refresh','blueprint-site-refresh.html')">
@@ -451,6 +459,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
           <div class="bp-card-name">Event Invite</div>
           <div class="bp-card-desc">Birthdays, showers &amp; more</div>
         </div>
+        <div class="bp-card" style="background:rgba(200,224,0,0.07);border-color:rgba(200,224,0,0.22);" onclick="location.href='blueprint-collab-booking.html'">
+          <span class="bp-card-icon">🤝</span>
+          <div class="bp-card-name">Collab Booking</div>
+          <div class="bp-card-desc">Creators &amp; influencers</div>
+        </div>
+        <div class="bp-card" style="background:rgba(232,69,138,0.1);border-color:rgba(232,69,138,0.3);" onclick="location.href='blueprint-pdf-template.html'">
+          <span class="bp-card-icon">📄</span>
+          <div class="bp-card-name">PDF Template</div>
+          <div class="bp-card-desc">Upload Canva/Etsy template → site</div>
+        </div>
       </div>
 
       <!-- TOOLS -->
@@ -483,12 +501,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
             </div>
           </div>
         </div>
-        <div class="tool-card" style="border-style:dashed;opacity:0.55;cursor:default;">
-          <div class="tool-icon-wrap ti-soon">+</div>
+        <div class="tool-card" onclick="window.location.href='calculator.html'">
+          <div class="tool-icon-wrap ti-lime">💰</div>
           <div>
-            <div class="tool-name">More tools coming</div>
-            <div class="tool-desc">New tools added every sprint. Suggest one via the feedback button.</div>
-            <span class="soon-badge">Coming soon</span>
+            <div class="tool-name">Revenue Booster</div>
+            <div class="tool-desc">Build a live pricing tool for any client. Add sessions, add-ons, and a custom book button — auto-saved to your blueprint.</div>
           </div>
         </div>
       </div>
