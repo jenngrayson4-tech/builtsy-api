@@ -19,20 +19,6 @@ try {
   console.warn('creative-agency-site.html not found:', e.message);
 }
 
-var WARM_TEMPLATE = '';
-try {
-  WARM_TEMPLATE = fs.readFileSync(path.join(__dirname, 'warm-clean-site.html'), 'utf8');
-} catch(e) {
-  console.warn('warm-clean-site.html not found:', e.message);
-}
-
-var VIBRANT_TEMPLATE = '';
-try {
-  VIBRANT_TEMPLATE = fs.readFileSync(path.join(__dirname, 'vibrant-pro-site.html'), 'utf8');
-} catch(e) {
-  console.warn('vibrant-pro-site.html not found:', e.message);
-}
-
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '30mb' }));
@@ -130,81 +116,6 @@ app.post('/generate-template', async function(req, res) {
   } catch(err) {
     console.error('Generate-template error:', err.message);
     res.status(500).json({ error: err.message || 'Generation failed' });
-  }
-});
-
-// Universal template fill — picks the right template based on templateType field, streams response
-app.post('/generate-template-universal', async function(req, res) {
-  try {
-    var fields = req.body.fields || {};
-    var templateType = req.body.templateType || 'warm';
-    var niche = req.body.niche || '';
-
-    var templateMap = {
-      social:   SOCIAL_TEMPLATE,
-      agency:   AGENCY_TEMPLATE,
-      warm:     WARM_TEMPLATE,
-      vibrant:  VIBRANT_TEMPLATE
-    };
-    var template = templateMap[templateType];
-    if (!template) return res.status(500).json({ error: 'Template "' + templateType + '" not loaded on server' });
-
-    var fieldText = Object.keys(fields).map(function(k) {
-      return k + ': ' + fields[k];
-    }).join('\n');
-
-    var prompt = 'You are filling in a pre-designed HTML template with a user\'s real business content.\n\n'
-      + 'BUSINESS NICHE: ' + (niche || 'service business') + '\n\n'
-      + 'CRITICAL RULES:\n'
-      + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML\n'
-      + '- Do NOT change fonts, spacing, animations, colors, or visual design\n'
-      + '- ONLY replace text content inside elements — nothing else\n'
-      + '- Preserve all photo zone divs and img tags exactly as-is\n'
-      + '- The testimonial JS array (var testis = [...]) — update text, name, initial fields only\n'
-      + '- Marquee text — update to match the user\'s brand voice and niche\n'
-      + '- If a field was left blank, use a sensible professional default for their niche\n'
-      + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
-      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
-      + 'TEMPLATE TO FILL IN:\n' + template;
-
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.flushHeaders();
-
-    var stream = await client.messages.stream({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    var fullText = '';
-    stream.on('text', function(chunk) {
-      fullText += chunk;
-      res.write(': keep-alive\n\n');
-    });
-
-    stream.on('finalMessage', function() {
-      var html = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-      res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
-      res.write('data: [DONE]\n\n');
-      res.end();
-    });
-
-    stream.on('error', function(err) {
-      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
-      res.end();
-    });
-
-  } catch(err) {
-    console.error('Generate-template-universal error:', err.message);
-    if (!res.headersSent) {
-      res.status(500).json({ error: err.message || 'Generation failed' });
-    } else {
-      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
-      res.end();
-    }
   }
 });
 
