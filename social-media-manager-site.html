@@ -169,6 +169,46 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
 .footer-links a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
 .footer-links a:hover{color:white}
 .footer-copy{font-size:12px;color:rgba(255,255,255,0.3)}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-left{padding:60px 24px 40px}
+  .hero-title{font-size:42px}
+  .hero-right{min-height:56vw}
+  .hero-badge{bottom:24px}
+  .hero-badge-num{font-size:36px}
+  .about{grid-template-columns:1fr}
+  .about-photos{min-height:320px}
+  .about-content{padding:48px 24px}
+  .about-title{font-size:34px}
+  .services{padding:64px 24px}
+  .services-title{font-size:36px}
+  .portfolio{padding:64px 24px}
+  .portfolio-title{font-size:36px}
+  .portfolio-grid{grid-template-columns:1fr}
+  .testi-main{padding:48px 24px}
+  .testi-text{font-size:20px}
+  .pricing{padding:64px 24px}
+  .pricing-inner{grid-template-columns:1fr;gap:40px}
+  .pricing-heading{font-size:38px}
+  .process{padding:64px 24px}
+  .process-title{font-size:36px}
+  .process-steps{grid-template-columns:1fr 1fr;gap:32px}
+  .step-connector{display:none}
+  .contact{padding:64px 24px}
+  .contact-inner{grid-template-columns:1fr;gap:40px}
+  .contact-title{font-size:36px}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:40px 24px;flex-direction:column;align-items:flex-start;gap:20px}
+  .footer-links{flex-wrap:wrap;gap:16px}
+}
+@media(max-width:480px){
+  .hero-title{font-size:34px}
+  .process-steps{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -196,9 +236,10 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
       <button class="btn-ghost" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"><span></span> See My Work</button>
     </div>
   </div>
-  <div class="hero-right">
+  <div class="hero-right" id="sm-hero-zone">
     <div class="aura"></div>
-    Hero Photo
+    <img id="sm-hero-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <span id="sm-hero-placeholder">Hero Photo</span>
     <div class="hero-badge">
       <div class="hero-badge-num">87+</div>
       <div class="hero-badge-text">Brands Transformed</div>
@@ -229,8 +270,14 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
 <!-- ABOUT -->
 <section class="about" id="about">
   <div class="about-photos">
-    <div class="about-photo-a">Photo A</div>
-    <div class="about-photo-b">Photo B</div>
+    <div class="about-photo-a" id="sm-about-a-zone">
+      <img id="sm-about-a-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      <span id="sm-about-a-placeholder">Photo A</span>
+    </div>
+    <div class="about-photo-b" id="sm-about-b-zone">
+      <img id="sm-about-b-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      <span id="sm-about-b-placeholder">Photo B</span>
+    </div>
   </div>
   <div class="about-content">
     <p class="section-label">About Me</p>
@@ -319,7 +366,10 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
   </div>
   <div class="portfolio-grid">
     <div class="port-card">
-      <div class="port-img">Madison &amp; Co.</div>
+      <div class="port-img" id="sm-port-1-zone" style="position:relative;">
+        <img id="sm-port-1-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <span id="sm-port-1-placeholder">Madison &amp; Co.</span>
+      </div>
       <div class="port-info">
         <div class="port-client">Madison &amp; Co.</div>
         <ul class="port-services">
@@ -331,7 +381,10 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
       </div>
     </div>
     <div class="port-card">
-      <div class="port-img">Ethereal Clothing</div>
+      <div class="port-img" id="sm-port-2-zone" style="position:relative;">
+        <img id="sm-port-2-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <span id="sm-port-2-placeholder">Ethereal Clothing</span>
+      </div>
       <div class="port-info">
         <div class="port-client">Ethereal Clothing</div>
         <ul class="port-services">
@@ -343,7 +396,10 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
       </div>
     </div>
     <div class="port-card">
-      <div class="port-img">Jamie Smithson Photography</div>
+      <div class="port-img" id="sm-port-3-zone" style="position:relative;">
+        <img id="sm-port-3-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <span id="sm-port-3-placeholder">Jamie Smithson Photography</span>
+      </div>
       <div class="port-info">
         <div class="port-client">Jamie Smithson Photography</div>
         <ul class="port-services">

@@ -33,11 +33,11 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 .tpl-preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(18,25,43,0.45);}
 .tpl-preview-badge{background:var(--lime);color:var(--navy);font-size:.75rem;font-weight:700;padding:8px 18px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:.05em;}
 
-.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:560px;margin:0 auto;}
+.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:640px;margin:0 auto;}
 .step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
 .step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
 .step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
-.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:16px;}
+.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:10px;}
 .step-line.done{background:var(--lime);}
 
 .form-wrap{max-width:640px;margin:0 auto;padding:0 16px 100px;}
@@ -59,6 +59,35 @@ textarea.fi{resize:vertical;min-height:88px;}
 .field-hint{font-size:.72rem;color:#9ca3af;margin-top:5px;line-height:1.5;}
 
 .sl{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin:28px 0 12px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+
+/* ── PALETTE CARDS ── */
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+@media(max-width:400px){.palette-grid{grid-template-columns:1fr;}}
+.palette-card{border:2px solid #e5e7eb;border-radius:14px;padding:14px 14px 12px;cursor:pointer;transition:all .25s;background:white;user-select:none;}
+.palette-card:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.palette-swatches{display:flex;gap:5px;margin-bottom:10px;}
+.palette-swatch{height:28px;border-radius:7px;flex:1;}
+.palette-card-name{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:2px;}
+.palette-card-desc{font-size:.7rem;color:#9ca3af;line-height:1.4;}
+.palette-check{float:right;width:18px;height:18px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.6rem;display:none;align-items:center;justify-content:center;margin-top:-2px;}
+.palette-card.selected .palette-check{display:flex;}
+
+/* ── UPLOAD ZONES ── */
+.upload-zone-wrap{margin-bottom:14px;}
+.upload-zone-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
+.upload-zone{border:2px dashed #e5e7eb;border-radius:12px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+.upload-zone:hover{border-color:var(--builtsy-blue);background:#f8f9ff;}
+.upload-zone.has-photo{border-style:solid;border-color:#e5e7eb;padding:0;overflow:hidden;display:block;}
+.upload-zone-icon{font-size:1.4rem;opacity:.4;}
+.upload-zone-text{font-size:.78rem;color:#9ca3af;line-height:1.4;}
+.upload-zone-text strong{display:block;color:#6b7280;font-weight:600;margin-bottom:2px;}
+.upload-zone-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px;}
+.upload-thumb{width:100%;height:130px;object-fit:cover;display:block;border-radius:10px;}
+.upload-clear{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.65);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.upload-photos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.upload-photos-grid{grid-template-columns:1fr;}}
+.upload-optional-note{font-size:.7rem;color:#9ca3af;margin-top:4px;text-align:center;}
 
 /* service block */
 .svc-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
@@ -122,7 +151,7 @@ textarea.fi{resize:vertical;min-height:88px;}
   <a href="dashboard.html" class="logo-text">builtsy</a>
   <span class="tn-tag">✦ Template</span>
   <div class="tn-right">
-    <button class="btn-top" onclick="smGoStep(3)">⚡ Generate</button>
+    <button class="btn-top" onclick="smGoStep(5)">⚡ Generate</button>
   </div>
 </div>
 
@@ -150,13 +179,71 @@ textarea.fi{resize:vertical;min-height:88px;}
   <div class="step-dot" id="sm-dot-2">2</div>
   <div class="step-line" id="sm-line-2"></div>
   <div class="step-dot" id="sm-dot-3">3</div>
+  <div class="step-line" id="sm-line-3"></div>
+  <div class="step-dot" id="sm-dot-4">4</div>
+  <div class="step-line" id="sm-line-4"></div>
+  <div class="step-dot" id="sm-dot-5">5</div>
 </div>
 
 <div class="form-wrap">
 
-  <!-- ══ STEP 1 — BASICS ══ -->
+  <!-- ══ STEP 1 — PALETTE ══ -->
   <div class="step-panel active" id="sm-step-1">
-    <p class="step-label-top">Step 1 of 3</p>
+    <p class="step-label-top">Step 1 of 5</p>
+    <h2 class="step-title-main">Choose Your Palette</h2>
+    <p class="step-sub-main">Pick a color scheme. The editorial layout stays exactly the same — just the accent color and background shift.</p>
+
+    <div class="palette-grid">
+      <div class="palette-card selected" id="pal-original" onclick="smSelectPalette('original')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#FAF8F4;border:1px solid #e5e7eb;"></div>
+          <div class="palette-swatch" style="background:#E8458A;"></div>
+          <div class="palette-swatch" style="background:#F7D0E3;"></div>
+        </div>
+        <div class="palette-card-name">Original</div>
+        <div class="palette-card-desc">Cream + Hot Pink — the default editorial look</div>
+      </div>
+      <div class="palette-card" id="pal-rose" onclick="smSelectPalette('rose')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#FDF6F0;border:1px solid #e5e7eb;"></div>
+          <div class="palette-swatch" style="background:#C94070;"></div>
+          <div class="palette-swatch" style="background:#EDBECE;"></div>
+        </div>
+        <div class="palette-card-name">Rose</div>
+        <div class="palette-card-desc">Warm white + Deep Rose — soft, romantic luxury</div>
+      </div>
+      <div class="palette-card" id="pal-noir" onclick="smSelectPalette('noir')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#F5F5F0;border:1px solid #e5e7eb;"></div>
+          <div class="palette-swatch" style="background:#1A1A1A;"></div>
+          <div class="palette-swatch" style="background:#9A9A9A;"></div>
+        </div>
+        <div class="palette-card-name">Noir</div>
+        <div class="palette-card-desc">Off-white + Black — sleek, high-fashion minimal</div>
+      </div>
+      <div class="palette-card" id="pal-sage" onclick="smSelectPalette('sage')">
+        <div class="palette-check">✓</div>
+        <div class="palette-swatches">
+          <div class="palette-swatch" style="background:#F8FAF4;border:1px solid #e5e7eb;"></div>
+          <div class="palette-swatch" style="background:#6B8F71;"></div>
+          <div class="palette-swatch" style="background:#B8D4BB;"></div>
+        </div>
+        <div class="palette-card-name">Sage</div>
+        <div class="palette-card-desc">Cream + Sage Green — fresh, organic elegance</div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-next" onclick="smGoStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2 — BASICS ══ -->
+  <div class="step-panel" id="sm-step-2">
+    <p class="step-label-top">Step 2 of 5</p>
     <h2 class="step-title-main">Your Business</h2>
     <p class="step-sub-main">These basics go everywhere — nav, hero, footer, and contact section.</p>
 
@@ -206,13 +293,14 @@ textarea.fi{resize:vertical;min-height:88px;}
     </div>
 
     <div class="step-nav">
-      <button class="btn-next" onclick="smGoStep(2)">Continue →</button>
+      <button class="btn-back" onclick="smGoStep(1)">← Back</button>
+      <button class="btn-next" onclick="smGoStep(3)">Continue →</button>
     </div>
   </div>
 
-  <!-- ══ STEP 2 — STORY, SERVICES & TESTIMONIALS ══ -->
-  <div class="step-panel" id="sm-step-2">
-    <p class="step-label-top">Step 2 of 3</p>
+  <!-- ══ STEP 3 — STORY, SERVICES & TESTIMONIALS ══ -->
+  <div class="step-panel" id="sm-step-3">
+    <p class="step-label-top">Step 3 of 5</p>
     <h2 class="step-title-main">Your Story & Services</h2>
     <p class="step-sub-main">Fill in your copy, services, pricing, and testimonials. Pre-filled with smart defaults — edit what you want to change.</p>
 
@@ -365,14 +453,130 @@ textarea.fi{resize:vertical;min-height:88px;}
     </div>
 
     <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(1)">← Back</button>
-      <button class="btn-next" onclick="smGoStep(3)">Continue →</button>
+      <button class="btn-back" onclick="smGoStep(2)">← Back</button>
+      <button class="btn-next" onclick="smGoStep(4)">Continue →</button>
     </div>
   </div>
 
-  <!-- ══ STEP 3 — GENERATE ══ -->
-  <div class="step-panel" id="sm-step-3">
-    <p class="step-label-top">Step 3 of 3</p>
+  <!-- ══ STEP 4 — PHOTOS ══ -->
+  <div class="step-panel" id="sm-step-4">
+    <p class="step-label-top">Step 4 of 5</p>
+    <h2 class="step-title-main">Your Photos</h2>
+    <p class="step-sub-main">Upload your own images or skip — the template will use styled placeholders. All photos are optional.</p>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="sm-file-hero" accept="image/*" style="display:none;" onchange="smHandlePhoto('hero',this)">
+    <input type="file" id="sm-file-about-a" accept="image/*" style="display:none;" onchange="smHandlePhoto('aboutA',this)">
+    <input type="file" id="sm-file-about-b" accept="image/*" style="display:none;" onchange="smHandlePhoto('aboutB',this)">
+    <input type="file" id="sm-file-port1" accept="image/*" style="display:none;" onchange="smHandlePhoto('port1',this)">
+    <input type="file" id="sm-file-port2" accept="image/*" style="display:none;" onchange="smHandlePhoto('port2',this)">
+    <input type="file" id="sm-file-port3" accept="image/*" style="display:none;" onchange="smHandlePhoto('port3',this)">
+
+    <span class="sl">Hero Section</span>
+
+    <div class="upload-zone-wrap">
+      <span class="upload-zone-label-top">Hero Photo — full-height portrait, right side of hero</span>
+      <div class="upload-zone" id="sm-zone-hero" onclick="document.getElementById('sm-file-hero').click()">
+        <div class="upload-zone-icon">🖼</div>
+        <div class="upload-zone-text">
+          <strong>Hero Portrait</strong>
+          Tall editorial photo — best: 3:4 or 2:3 portrait
+        </div>
+        <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-hero').click()">Upload Photo</button>
+      </div>
+      <p class="upload-optional-note">Optional — leave blank for a styled gradient placeholder</p>
+    </div>
+
+    <span class="sl">About Section</span>
+    <div class="upload-photos-grid">
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">About Photo A — upper left</span>
+        <div class="upload-zone" id="sm-zone-about-a" onclick="document.getElementById('sm-file-about-a').click()">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-text">
+            <strong>About A</strong>
+            Portrait or lifestyle shot
+          </div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-about-a').click()">Upload</button>
+        </div>
+      </div>
+      <div class="upload-zone-wrap">
+        <span class="upload-zone-label-top">About Photo B — lower right</span>
+        <div class="upload-zone" id="sm-zone-about-b" onclick="document.getElementById('sm-file-about-b').click()">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-text">
+            <strong>About B</strong>
+            Behind-the-scenes or detail
+          </div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-about-b').click()">Upload</button>
+        </div>
+      </div>
+    </div>
+    <p class="upload-optional-note" style="margin-top:-6px;margin-bottom:16px;">Optional — both can be skipped</p>
+
+    <span class="sl">Portfolio Cards</span>
+    <p style="font-size:.82rem;color:#6b7280;margin-bottom:16px;line-height:1.6;">Each card shows a client project. Upload a photo and fill in the client name and what you did for them.</p>
+
+    <!-- Portfolio 1 -->
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 1</div>
+      <div class="upload-zone-wrap" style="margin-bottom:12px;">
+        <span class="upload-zone-label-top">Portfolio Image 1</span>
+        <div class="upload-zone" id="sm-zone-port1" onclick="document.getElementById('sm-file-port1').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port1').click()">Upload</button>
+        </div>
+      </div>
+      <div class="field"><label>Client Name</label><input class="fi" id="sm-port1-client" type="text" placeholder="The Bloom Co." value="The Bloom Co."></div>
+      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port1-services" style="min-height:70px;">Instagram Management
+Content Creation
+Brand Strategy</textarea></div>
+    </div>
+
+    <!-- Portfolio 2 -->
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 2</div>
+      <div class="upload-zone-wrap" style="margin-bottom:12px;">
+        <span class="upload-zone-label-top">Portfolio Image 2</span>
+        <div class="upload-zone" id="sm-zone-port2" onclick="document.getElementById('sm-file-port2').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port2').click()">Upload</button>
+        </div>
+      </div>
+      <div class="field"><label>Client Name</label><input class="fi" id="sm-port2-client" type="text" placeholder="Maison Lumière" value="Maison Lumière"></div>
+      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port2-services" style="min-height:70px;">TikTok Growth
+Reels Production
+Influencer Outreach</textarea></div>
+    </div>
+
+    <!-- Portfolio 3 -->
+    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 3</div>
+      <div class="upload-zone-wrap" style="margin-bottom:12px;">
+        <span class="upload-zone-label-top">Portfolio Image 3</span>
+        <div class="upload-zone" id="sm-zone-port3" onclick="document.getElementById('sm-file-port3').click()">
+          <div class="upload-zone-icon">🗂</div>
+          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
+          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port3').click()">Upload</button>
+        </div>
+      </div>
+      <div class="field"><label>Client Name</label><input class="fi" id="sm-port3-client" type="text" placeholder="Soleil Studio" value="Soleil Studio"></div>
+      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port3-services" style="min-height:70px;">Pinterest Strategy
+Email Marketing
+Brand Voice Guide</textarea></div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="smGoStep(3)">← Back</button>
+      <button class="btn-next" onclick="smGoStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5 — GENERATE ══ -->
+  <div class="step-panel" id="sm-step-5">
+    <p class="step-label-top">Step 5 of 5</p>
     <h2 class="step-title-main">Ready — Let's Build It</h2>
     <p class="step-sub-main">Builtsy will fill your content into the template. The design stays exactly as you saw it. Takes about 20–30 seconds.</p>
 
@@ -386,16 +590,16 @@ textarea.fi{resize:vertical;min-height:88px;}
           <span style="color:var(--lime);font-size:1rem;">✓</span> Your real business name, bio, services, and pricing
         </div>
         <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> Download HTML → drag to Netlify → live in 10 seconds
+          <span style="color:var(--lime);font-size:1rem;">✓</span> Your photos + chosen palette applied automatically
         </div>
         <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> No monthly subscription. Yours forever.
+          <span style="color:var(--lime);font-size:1rem;">✓</span> Download HTML → drag to Netlify → live in 10 seconds
         </div>
       </div>
     </div>
 
     <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(2)">← Back</button>
+      <button class="btn-back" onclick="smGoStep(4)">← Back</button>
       <button class="btn-generate" onclick="smGenerate()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         Fill In My Template
@@ -439,22 +643,41 @@ textarea.fi{resize:vertical;min-height:88px;}
 
 <script>
 var _smHTML = '';
-var _smMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Filling in testimonials…','Finalizing…'];
+var _smPalette = 'original';
+var _smPhotos = {};
+var _smMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Applying your palette…','Injecting photos…','Finalizing…'];
 var _smMsgIdx = 0;
 var _smInterval = null;
 
+// Palette CSS variable overrides for each theme
+var _smPaletteCSS = {
+  original: '',  // default, no override needed
+  rose: '--cream:#FDF6F0;--cream2:#F5ECE3;--pink:#C94070;--pink-light:#EDBECE;--pink-pale:#FCF0F5;',
+  noir: '--cream:#F5F5F0;--cream2:#EAEAE5;--pink:#1A1A1A;--pink-light:#9A9A9A;--pink-pale:#F0F0F0;',
+  sage: '--cream:#F8FAF4;--cream2:#EBF0E3;--pink:#6B8F71;--pink-light:#B8D4BB;--pink-pale:#EFF5F0;'
+};
+
 function smGoStep(n) {
-  for (var i = 1; i <= 3; i++) {
+  for (var i = 1; i <= 5; i++) {
     var p = document.getElementById('sm-step-' + i);
     var d = document.getElementById('sm-dot-' + i);
     if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
     if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
-    if (i < 3) {
+    if (i < 5) {
       var l = document.getElementById('sm-line-' + i);
       if (l) l.className = 'step-line' + (i < n ? ' done' : '');
     }
   }
   window.scrollTo(0, 0);
+}
+
+function smSelectPalette(name) {
+  _smPalette = name;
+  var cards = ['original','rose','noir','sage'];
+  for (var i = 0; i < cards.length; i++) {
+    var c = document.getElementById('pal-' + cards[i]);
+    if (c) c.className = 'palette-card' + (cards[i] === name ? ' selected' : '');
+  }
 }
 
 function smToggleSvc(header) {
@@ -465,35 +688,165 @@ function smToggleSvc(header) {
   if (chev) chev.classList.toggle('open', !isOpen);
 }
 
+// ── PHOTO UPLOAD ──
+function smHandlePhoto(slot, input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _smPhotos[slot] = e.target.result; // base64 data URL
+    smRenderPhotoZone(slot);
+  };
+  reader.readAsDataURL(file);
+}
+
+var _smZoneMap = {
+  hero:   'sm-zone-hero',
+  aboutA: 'sm-zone-about-a',
+  aboutB: 'sm-zone-about-b',
+  port1:  'sm-zone-port1',
+  port2:  'sm-zone-port2',
+  port3:  'sm-zone-port3'
+};
+var _smFileMap = {
+  hero:   'sm-file-hero',
+  aboutA: 'sm-file-about-a',
+  aboutB: 'sm-file-about-b',
+  port1:  'sm-file-port1',
+  port2:  'sm-file-port2',
+  port3:  'sm-file-port3'
+};
+
+function smRenderPhotoZone(slot) {
+  var zoneId = _smZoneMap[slot];
+  var zone = document.getElementById(zoneId);
+  if (!zone) return;
+  var data = _smPhotos[slot];
+  if (data) {
+    zone.className = 'upload-zone has-photo';
+    zone.innerHTML = '<img class="upload-thumb" src="' + data + '" alt=""><button class="upload-clear" onclick="event.stopPropagation();smClearPhoto(\'' + slot + '\')">✕</button>';
+    zone.onclick = null;
+  } else {
+    // Reset to default — re-render based on slot
+    smResetZone(slot);
+  }
+}
+
+function smClearPhoto(slot) {
+  _smPhotos[slot] = null;
+  var fileInput = document.getElementById(_smFileMap[slot]);
+  if (fileInput) fileInput.value = '';
+  smResetZone(slot);
+}
+
+function smResetZone(slot) {
+  var zoneId = _smZoneMap[slot];
+  var zone = document.getElementById(zoneId);
+  if (!zone) return;
+  zone.className = 'upload-zone';
+  var fileId = _smFileMap[slot];
+  var labels = {
+    hero:   {icon:'🖼', title:'Hero Portrait', desc:'Tall editorial photo — best: 3:4 or 2:3 portrait'},
+    aboutA: {icon:'📷', title:'About A', desc:'Portrait or lifestyle shot'},
+    aboutB: {icon:'📷', title:'About B', desc:'Behind-the-scenes or detail'},
+    port1:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'},
+    port2:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'},
+    port3:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'}
+  };
+  var lbl = labels[slot] || {icon:'📷',title:'Upload Photo',desc:''};
+  zone.innerHTML = '<div class="upload-zone-icon">' + lbl.icon + '</div>'
+    + '<div class="upload-zone-text"><strong>' + lbl.title + '</strong>' + lbl.desc + '</div>'
+    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Upload</button>';
+  zone.onclick = function() { document.getElementById(fileId).click(); };
+}
+
+// ── COLLECT FIELDS ──
 function smCollect() {
   var v = function(id) { return (document.getElementById(id)||{}).value || ''; };
   return {
-    ownerName:    v('sm-owner'),
-    businessName: v('sm-biz'),
-    tagline:      v('sm-tagline'),
-    location:     v('sm-location'),
-    email:        v('sm-email'),
+    ownerName:       v('sm-owner'),
+    businessName:    v('sm-biz'),
+    tagline:         v('sm-tagline'),
+    location:        v('sm-location'),
+    email:           v('sm-email'),
     yearsExperience: v('sm-years'),
     clientsServed:   v('sm-clients'),
-    instagram:    v('sm-ig'),
-    tiktok:       v('sm-tk'),
-    heroHeadline: v('sm-headline'),
-    heroSub:      v('sm-hero-sub'),
-    aboutBio:     v('sm-about'),
-    pressMentions: v('sm-press'),
-    service1Name: v('sm-svc-name-1'), service1Desc: v('sm-svc-desc-1'), service1Tags: v('sm-svc-tags-1'),
-    service2Name: v('sm-svc-name-2'), service2Desc: v('sm-svc-desc-2'), service2Tags: v('sm-svc-tags-2'),
-    service3Name: v('sm-svc-name-3'), service3Desc: v('sm-svc-desc-3'), service3Tags: v('sm-svc-tags-3'),
-    service4Name: v('sm-svc-name-4'), service4Desc: v('sm-svc-desc-4'), service4Tags: v('sm-svc-tags-4'),
-    tier1Name: v('sm-tier-name-1'), tier1Price: v('sm-tier-price-1'), tier1Desc: v('sm-tier-desc-1'),
-    tier2Name: v('sm-tier-name-2'), tier2Price: v('sm-tier-price-2'), tier2Desc: v('sm-tier-desc-2'),
-    tier3Name: v('sm-tier-name-3'), tier3Price: v('sm-tier-price-3'), tier3Desc: v('sm-tier-desc-3'),
-    testi1Quote: v('sm-testi-quote-1'), testi1Name: v('sm-testi-name-1'),
-    testi2Quote: v('sm-testi-quote-2'), testi2Name: v('sm-testi-name-2'),
-    testi3Quote: v('sm-testi-quote-3'), testi3Name: v('sm-testi-name-3')
+    instagram:       v('sm-ig'),
+    tiktok:          v('sm-tk'),
+    heroHeadline:    v('sm-headline'),
+    heroSub:         v('sm-hero-sub'),
+    aboutBio:        v('sm-about'),
+    pressMentions:   v('sm-press'),
+    service1Name:    v('sm-svc-name-1'), service1Desc: v('sm-svc-desc-1'), service1Tags: v('sm-svc-tags-1'),
+    service2Name:    v('sm-svc-name-2'), service2Desc: v('sm-svc-desc-2'), service2Tags: v('sm-svc-tags-2'),
+    service3Name:    v('sm-svc-name-3'), service3Desc: v('sm-svc-desc-3'), service3Tags: v('sm-svc-tags-3'),
+    service4Name:    v('sm-svc-name-4'), service4Desc: v('sm-svc-desc-4'), service4Tags: v('sm-svc-tags-4'),
+    tier1Name:       v('sm-tier-name-1'), tier1Price: v('sm-tier-price-1'), tier1Desc: v('sm-tier-desc-1'),
+    tier2Name:       v('sm-tier-name-2'), tier2Price: v('sm-tier-price-2'), tier2Desc: v('sm-tier-desc-2'),
+    tier3Name:       v('sm-tier-name-3'), tier3Price: v('sm-tier-price-3'), tier3Desc: v('sm-tier-desc-3'),
+    portfolio1Client:   v('sm-port1-client'), portfolio1Services: v('sm-port1-services'),
+    portfolio2Client:   v('sm-port2-client'), portfolio2Services: v('sm-port2-services'),
+    portfolio3Client:   v('sm-port3-client'), portfolio3Services: v('sm-port3-services'),
+    testi1Quote:     v('sm-testi-quote-1'), testi1Name: v('sm-testi-name-1'),
+    testi2Quote:     v('sm-testi-quote-2'), testi2Name: v('sm-testi-name-2'),
+    testi3Quote:     v('sm-testi-quote-3'), testi3Name: v('sm-testi-name-3')
   };
 }
 
+// ── INJECT PALETTE + PHOTOS INTO HTML ──
+function smInjectAssets(html) {
+  // 1. Palette: inject CSS variable overrides into </head>
+  var palCSS = _smPaletteCSS[_smPalette] || '';
+  if (palCSS) {
+    html = html.replace('</head>', '<style>:root{' + palCSS + '}</style>\n</head>');
+  }
+
+  // 2. Photos: use DOMParser for reliable injection
+  var photoMap = {
+    'sm-hero-photo':    _smPhotos.hero,
+    'sm-about-a-photo': _smPhotos.aboutA,
+    'sm-about-b-photo': _smPhotos.aboutB,
+    'sm-port-1-photo':  _smPhotos.port1,
+    'sm-port-2-photo':  _smPhotos.port2,
+    'sm-port-3-photo':  _smPhotos.port3
+  };
+
+  var hasPhotos = false;
+  for (var k in photoMap) { if (photoMap[k]) { hasPhotos = true; break; } }
+
+  if (hasPhotos) {
+    try {
+      var parser = new DOMParser();
+      var doc2 = parser.parseFromString(html, 'text/html');
+      for (var pid in photoMap) {
+        if (!photoMap[pid]) continue;
+        var img = doc2.getElementById(pid);
+        if (img) {
+          img.src = photoMap[pid];
+          img.style.display = 'block';
+          img.style.position = 'absolute';
+          img.style.inset = '0';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+        }
+      }
+      html = '<!DOCTYPE html>\n' + doc2.documentElement.outerHTML;
+    } catch(e) {
+      console.warn('DOMParser injection failed, falling back to regex:', e);
+      // Fallback: regex-based src swap
+      for (var pid in photoMap) {
+        if (!photoMap[pid]) continue;
+        var re = new RegExp('(<img[^>]*id="' + pid + '"[^>]*src=")[^"]*(")', 'i');
+        html = html.replace(re, '$1' + photoMap[pid] + '$2');
+      }
+    }
+  }
+
+  return html;
+}
+
+// ── GENERATE ──
 function smGenerate() {
   var fields = smCollect();
   var overlay = document.getElementById('sm-overlay');
@@ -518,6 +871,8 @@ function smGenerate() {
     if (data.error) { smShowError(data.error); return; }
     var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
     if (!html || html.length < 200) { smShowError('Generation returned empty. Try again.'); return; }
+    // Inject palette and photos client-side
+    html = smInjectAssets(html);
     _smHTML = html;
     smShowOutput(html);
   })
@@ -615,6 +970,8 @@ function smRevise() {
     var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
     if (html && html.length > 200) {
       (document.getElementById('revise-input')||{}).value = '';
+      // Re-inject palette + photos after revision
+      html = smInjectAssets(html);
       _smHTML = html;
       smShowOutput(html);
     } else { smShowError('Revision returned empty. Try again.'); }
