@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Build Your Site | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#08080f;--lime:#a3e635;--blue:#4361ee;
+  --text:rgba(255,255,255,0.92);--muted:rgba(255,255,255,0.4);
+  --border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.13);
+  --selected:#4361ee;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;}
+
+/* ── PROGRESS BAR ── */
+#ms-progress{position:fixed;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,0.06);z-index:1000;}
+#ms-progress-fill{height:100%;background:var(--lime);width:0%;transition:width 0.4s ease;}
+
+/* ── FULL-SCREEN STEP ── */
+.fs-step{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:40px 24px;}
+.fs-step.active{display:flex;}
+
+/* ── STEP EYEBROW ── */
+.ms-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px;}
+
+/* ── BIG QUESTION ── */
+.fs-question{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);color:white;text-align:center;margin-bottom:14px;line-height:1.15;max-width:700px;}
+
+/* ── SUB TEXT ── */
+.fs-sub{font-family:'Inter',sans-serif;font-size:1rem;color:rgba(255,255,255,0.42);text-align:center;margin-bottom:36px;max-width:520px;line-height:1.6;}
+
+/* ── FULL-SCREEN TEXTAREA ── */
+.fs-textarea{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px 24px;font-family:'Inter',sans-serif;font-size:1.05rem;color:white;width:100%;max-width:580px;min-height:120px;resize:none;outline:none;transition:border-color .2s;line-height:1.6;}
+.fs-textarea:focus{border-color:rgba(163,230,53,0.5);}
+.fs-textarea::placeholder{color:rgba(255,255,255,0.25);}
+
+/* ── FULL-SCREEN SINGLE INPUT ── */
+.fs-input-single{background:rgba(255,255,255,0.05);border:none;border-bottom:2px solid rgba(255,255,255,0.15);padding:16px 4px;font-family:'Playfair Display',serif;font-size:1.8rem;color:white;width:100%;max-width:500px;outline:none;transition:border-color .2s;text-align:center;}
+.fs-input-single:focus{border-color:var(--lime);}
+.fs-input-single::placeholder{color:rgba(255,255,255,0.2);}
+
+/* ── NEXT BUTTON ── */
+.fs-btn{margin-top:28px;background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.95rem;padding:15px 40px;border-radius:50px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;}
+.fs-btn:hover{opacity:.9;transform:translateY(-1px);}
+.fs-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+
+/* ── BACK LINK ── */
+.fs-back{margin-top:16px;font-family:'Inter',sans-serif;font-size:.82rem;color:rgba(255,255,255,0.3);cursor:pointer;background:none;border:none;transition:color .2s;}
+.fs-back:hover{color:rgba(255,255,255,0.6);}
+
+/* ── AI LOADING STATE ── */
+.fs-detecting{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:20px;}
+.fs-detecting .spinner{width:28px;height:28px;border:2px solid rgba(163,230,53,0.2);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;}
+.fs-detecting p{font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,0.4);letter-spacing:.08em;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── TEMPLATE GALLERY ── */
+.tpl-gallery{width:100%;max-width:1100px;margin:0 auto;}
+.tpl-filters{display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;}
+.tpl-filter{font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .2s;}
+.tpl-filter.active,.tpl-filter:hover{border-color:rgba(163,230,53,0.5);color:var(--lime);background:rgba(163,230,53,0.06);}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-height:60vh;overflow-y:auto;padding:4px;}
+.tpl-card{border:2px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.03);}
+.tpl-card:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);}
+.tpl-card.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
+.tpl-preview-box{width:100%;height:170px;overflow:hidden;position:relative;background:#1a1a2e;}
+.tpl-preview-iframe{width:1200px;height:850px;transform:scale(0.258);transform-origin:top left;pointer-events:none;border:none;}
+.tpl-card-body{padding:14px 16px 16px;}
+.tpl-card-name{font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;color:white;margin-bottom:3px;}
+.tpl-card-desc{font-size:.72rem;color:rgba(255,255,255,0.38);line-height:1.4;}
+.tpl-rec-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:rgba(163,230,53,0.12);color:var(--lime);border:1px solid rgba(163,230,53,0.25);padding:3px 9px;border-radius:50px;margin-bottom:8px;}
+
+/* ── SPLIT LAYOUT ── */
+#ms-phase2{display:flex;height:100vh;overflow:hidden;}
+#ms-left{width:420px;flex-shrink:0;background:var(--bg);overflow-y:auto;border-right:1px solid rgba(255,255,255,0.06);padding:32px 28px;}
+#ms-right{flex:1;background:#0d0d18;position:relative;}
+#ms-preview-iframe{width:100%;height:100%;border:none;}
+
+/* ── SPLIT STEP ── */
+.split-step{display:none;animation:fadeUp .3s ease;}
+.split-step.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SPLIT STEP QUESTION ── */
+.split-q{font-family:'Playfair Display',serif;font-size:1.65rem;color:white;margin-bottom:6px;line-height:1.25;}
+.split-sub{font-family:'Inter',sans-serif;font-size:.82rem;color:rgba(255,255,255,0.38);margin-bottom:24px;line-height:1.55;}
+
+/* ── FIELD INPUTS ── */
+.ms-field{margin-bottom:16px;}
+.ms-label{font-family:'DM Mono',monospace;font-size:.63rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:7px;display:block;}
+.ms-input{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:.95rem;color:white;outline:none;transition:border-color .2s;}
+.ms-input:focus{border-color:rgba(163,230,53,0.45);}
+.ms-input::placeholder{color:rgba(255,255,255,0.2);}
+textarea.ms-input{resize:none;min-height:90px;line-height:1.6;}
+
+/* ── SPLIT NAV ── */
+.split-nav{display:flex;gap:10px;margin-top:24px;}
+.split-next{flex:1;background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:opacity .15s;}
+.split-next:hover{opacity:.9;}
+.split-back{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-weight:600;font-size:.88rem;padding:13px 18px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;}
+.split-back:hover{background:rgba(255,255,255,0.1);}
+
+/* ── PALETTE ── */
+.ms-pal-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.ms-pal-tab{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;transition:all .2s;}
+.ms-pal-tab.active{border-color:rgba(163,230,53,0.5);color:var(--lime);}
+.ms-pal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ms-pal-card{border:2px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);}
+.ms-pal-card:hover{border-color:rgba(255,255,255,0.2);}
+.ms-pal-card.selected{border-color:var(--blue);}
+.ms-pal-swatches{display:flex;gap:4px;margin-bottom:7px;}
+.ms-pal-swatch{height:20px;border-radius:5px;flex:1;}
+.ms-pal-name{font-weight:700;font-size:.72rem;color:white;}
+.ms-pal-desc{font-size:.65rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+
+/* ── CHIPS ── */
+.ms-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.ms-chip{font-family:'Inter',sans-serif;font-size:.72rem;padding:6px 12px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);cursor:pointer;transition:all .2s;background:transparent;}
+.ms-chip:hover{border-color:rgba(163,230,53,0.4);color:var(--lime);}
+.ms-chip.used{background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.5);color:var(--lime);}
+
+/* ── INCOME CALCULATOR ── */
+.ms-calc{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;}
+.ms-calc-title{font-family:'DM Mono',monospace;font-size:.63rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;}
+.ms-calc-row{display:flex;gap:10px;margin-bottom:10px;}
+.ms-calc-result{font-family:'Inter',sans-serif;font-size:.82rem;color:var(--lime);margin-top:8px;}
+.ms-calc-apply{margin-top:8px;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;}
+
+/* ── ANIMATION PICKER ── */
+.ms-anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
+.ms-anim-card{border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px 8px;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);text-align:center;}
+.ms-anim-card:hover{border-color:rgba(255,255,255,0.2);}
+.ms-anim-card.selected{border-color:var(--blue);background:rgba(67,97,238,0.08);}
+.ms-anim-icon{font-size:1.2rem;margin-bottom:4px;}
+.ms-anim-name{font-family:'Inter',sans-serif;font-weight:700;font-size:.68rem;color:white;display:block;}
+.ms-anim-desc{font-size:.6rem;color:rgba(255,255,255,0.3);display:block;}
+
+/* ── SECTION LABEL ── */
+.ms-sl{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin:18px 0 8px;display:block;}
+
+/* ── GENERATE SCREEN ── */
+#ms-phase3{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:40px 24px;background:var(--bg);}
+.gen-summary{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px;max-width:560px;width:100%;margin-bottom:32px;}
+.gen-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Inter',sans-serif;font-size:.85rem;}
+.gen-row:last-child{border-bottom:none;}
+.gen-row-label{color:rgba(255,255,255,0.38);}
+.gen-row-val{color:white;font-weight:500;text-align:right;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gen-btn{background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:800;font-size:1.05rem;padding:18px 56px;border-radius:50px;border:none;cursor:pointer;transition:transform .15s,opacity .15s;}
+.gen-btn:hover{transform:translateY(-2px);}
+.gen-progress-wrap{width:100%;max-width:480px;margin-top:20px;display:none;}
+.gen-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;margin-bottom:10px;}
+.gen-bar-fill{height:100%;background:var(--lime);width:0%;transition:width 0.4s;}
+.gen-status{font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,0.4);text-align:center;}
+
+/* ── BUILTSY AI BANNER ── */
+.ms-ai-banner{background:rgba(163,230,53,0.07);border:1px solid rgba(163,230,53,0.18);border-radius:10px;padding:10px 14px;margin-bottom:20px;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.55);line-height:1.5;}
+.ms-ai-banner strong{color:var(--lime);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .tpl-grid{grid-template-columns:repeat(2,1fr);}
+  #ms-phase2{flex-direction:column;height:auto;}
+  #ms-left{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,0.06);}
+  #ms-right{height:50vh;}
+}
+@media(max-width:600px){
+  .tpl-grid{grid-template-columns:1fr;}
+  .fs-question{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="ms-progress"><div id="ms-progress-fill"></div></div>
+
+<!-- ══════════════════════════════════
+     PHASE 1: Full-screen steps 1-3
+     ══════════════════════════════════ -->
+<div id="ms-phase1">
+
+  <!-- STEP 1: What do you do -->
+  <div class="fs-step active" id="ms-step-1">
+    <div class="ms-eyebrow">Step 1 of 15</div>
+    <h1 class="fs-question">What do you do?</h1>
+    <p class="fs-sub">Tell us about your work. The more you share, the better we tailor your site.</p>
+    <textarea class="fs-textarea" id="ms-what-you-do" placeholder="I help families find reliable childcare — I specialize in newborns and toddlers, and I work in the Chicago area..." rows="4"></textarea>
+    <button class="fs-btn" id="ms-step1-btn" onclick="msStep1Next()">Continue &rarr;</button>
+    <div class="fs-detecting" id="ms-detecting">
+      <div class="spinner"></div>
+      <p>Builtsy is personalizing your experience...</p>
+    </div>
+  </div>
+
+  <!-- STEP 2: Template gallery -->
+  <div class="fs-step" id="ms-step-2">
+    <div class="ms-eyebrow" id="ms-step2-eyebrow">Step 2 of 15</div>
+    <h1 class="fs-question">Pick your vibe.</h1>
+    <p class="fs-sub" id="ms-step2-sub">Your best matches are highlighted. Browse freely — they're all yours.</p>
+    <div class="tpl-gallery">
+      <div class="tpl-filters" id="ms-tpl-filters">
+        <button class="tpl-filter active" onclick="msTplFilter('all')">All</button>
+        <button class="tpl-filter" onclick="msTplFilter('recommended')">&#10022; For You</button>
+      </div>
+      <div class="tpl-grid" id="ms-tpl-grid"></div>
+    </div>
+    <button class="fs-btn" id="ms-step2-btn" onclick="msGoStep(3)" disabled style="margin-top:24px;">Continue &rarr;</button>
+    <button class="fs-back" onclick="msGoStep(1)">&larr; Back</button>
+  </div>
+
+  <!-- STEP 3: Color palette -->
+  <div class="fs-step" id="ms-step-3">
+    <div class="ms-eyebrow">Step 3 of 15</div>
+    <h1 class="fs-question">Choose your colors.</h1>
+    <p class="fs-sub">Pick a palette — you'll see it live on your site in a moment.</p>
+    <div style="width:100%;max-width:560px;">
+      <div class="ms-pal-tabs">
+        <button class="ms-pal-tab active" onclick="msPalTab('light')">Light</button>
+        <button class="ms-pal-tab" onclick="msPalTab('dark')">Dark</button>
+        <button class="ms-pal-tab" onclick="msPalTab('mono')">Mono</button>
+      </div>
+      <div class="ms-pal-grid" id="ms-pal-grid"></div>
+    </div>
+    <button class="fs-btn" id="ms-step3-btn" onclick="msRevealSplit()" disabled>Continue &rarr;</button>
+    <button class="fs-back" onclick="msGoStep(2)">&larr; Back</button>
+  </div>
+
+</div><!-- /ms-phase1 -->
+
+
+<!-- ══════════════════════════════════
+     PHASE 2: Split layout steps 4-15
+     ══════════════════════════════════ -->
+<div id="ms-phase2" style="display:none;">
+
+  <!-- LEFT PANEL -->
+  <div id="ms-left">
+
+    <!-- Step counter + industry badge -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+      <span id="ms-split-eyebrow" style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Step 4 of 15</span>
+      <span id="ms-industry-badge" style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(163,230,53,0.1);color:#a3e635;border:1px solid rgba(163,230,53,0.2);padding:3px 10px;border-radius:50px;"></span>
+    </div>
+
+    <!-- STEP 4: Your name -->
+    <div class="split-step active" id="ms-split-4">
+      <h2 class="split-q">Your name.</h2>
+      <p class="split-sub">As it appears on your site — first name or full name, your call.</p>
+      <div class="ms-field">
+        <input class="ms-input" id="ms-owner-name" type="text" placeholder="Olivia Martinez">
+      </div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(3)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(5)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Business name -->
+    <div class="split-step" id="ms-split-5">
+      <h2 class="split-q">Your business name.</h2>
+      <p class="split-sub">What appears in your nav and footer. Can be your own name.</p>
+      <div class="ms-field">
+        <input class="ms-input" id="ms-biz-name" type="text" placeholder="Olivia Cares">
+      </div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(4)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(6)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Location + tagline -->
+    <div class="split-step" id="ms-split-6">
+      <h2 class="split-q">Where you're based &amp; your tagline.</h2>
+      <p class="split-sub">Your city shows in trust signals. Your tagline goes in the footer and hero.</p>
+      <div class="ms-field">
+        <label class="ms-label">Location</label>
+        <input class="ms-input" id="ms-location" type="text" placeholder="Chicago, IL">
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">Tagline</label>
+        <input class="ms-input" id="ms-tagline" type="text" placeholder="">
+      </div>
+      <div class="ms-chips" id="ms-tagline-chips"></div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(5)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(7)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Hero headline -->
+    <div class="split-step" id="ms-split-7">
+      <h2 class="split-q">Your headline.</h2>
+      <p class="split-sub">The big statement at the top of your site. Make it count.</p>
+      <div class="ms-field">
+        <input class="ms-input" id="ms-headline" type="text" placeholder="">
+      </div>
+      <div class="ms-chips" id="ms-headline-chips"></div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(6)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(8)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 8: Bio -->
+    <div class="split-step" id="ms-split-8">
+      <h2 class="split-q">Your story.</h2>
+      <p class="split-sub">2&ndash;3 sentences about who you are and why you're great at what you do. Builtsy writes the rest.</p>
+      <div class="ms-field">
+        <textarea class="ms-input" id="ms-bio" placeholder="Share a little about yourself and your background..."></textarea>
+      </div>
+      <div class="ms-ai-banner"><strong>Builtsy writes the rest.</strong> Anything you leave blank gets filled in by our AI when you generate.</div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(7)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(9)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 9: Services -->
+    <div class="split-step" id="ms-split-9">
+      <h2 class="split-q">Your services.</h2>
+      <p class="split-sub">Name your top 3 offerings and what you charge. Builtsy writes the descriptions.</p>
+      <div id="ms-services-wrap"></div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(8)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(10)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 10: Credentials -->
+    <div class="split-step" id="ms-split-10">
+      <h2 class="split-q">Your credentials.</h2>
+      <p class="split-sub">Certifications, experience, trust signals. Click to add or type your own.</p>
+      <div class="ms-chips" id="ms-cred-chips"></div>
+      <div class="ms-field">
+        <input class="ms-input" id="ms-credentials" type="text" placeholder="e.g. CPR Certified, 8 years experience">
+      </div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(9)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(11)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 11: Income calculator + pricing -->
+    <div class="split-step" id="ms-split-11">
+      <h2 class="split-q">Your pricing.</h2>
+      <p class="split-sub">Set your rates for 3 tiers. Use the calculator if you need a starting point.</p>
+      <div class="ms-calc" id="ms-calc-wrap">
+        <div class="ms-calc-title">&#128161; INCOME CALCULATOR</div>
+        <div class="ms-calc-row">
+          <div class="ms-field" style="flex:1;margin:0;">
+            <label class="ms-label">Monthly goal ($)</label>
+            <input class="ms-input" id="ms-calc-goal" type="number" placeholder="4000" oninput="msCalcIncome()">
+          </div>
+          <div class="ms-field" style="flex:1;margin:0;">
+            <label class="ms-label" id="ms-calc-unit-label">Clients / mo</label>
+            <input class="ms-input" id="ms-calc-units" type="number" placeholder="8" oninput="msCalcIncome()">
+          </div>
+        </div>
+        <div class="ms-calc-result" id="ms-calc-result"></div>
+        <button class="ms-calc-apply" onclick="msCalcApply()">Apply to tiers &rarr;</button>
+      </div>
+      <div id="ms-tiers-wrap"></div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(10)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(12)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 12: Contact info -->
+    <div class="split-step" id="ms-split-12">
+      <h2 class="split-q">How to reach you.</h2>
+      <p class="split-sub">Your contact email and phone for the contact section.</p>
+      <div class="ms-field">
+        <label class="ms-label">Email</label>
+        <input class="ms-input" id="ms-email" type="email" placeholder="hello@yourbusiness.com">
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">Phone <span style="opacity:.4;font-size:.85em;">(optional)</span></label>
+        <input class="ms-input" id="ms-phone" type="tel" placeholder="(312) 555-0100">
+      </div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(11)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(13)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 13: Social links -->
+    <div class="split-step" id="ms-split-13">
+      <h2 class="split-q">Your socials.</h2>
+      <p class="split-sub">Add whichever apply. All optional.</p>
+      <div class="ms-field">
+        <label class="ms-label">Instagram</label>
+        <input class="ms-input" id="ms-instagram" type="url" placeholder="https://instagram.com/yourhandle">
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">TikTok</label>
+        <input class="ms-input" id="ms-tiktok" type="url" placeholder="https://tiktok.com/@yourhandle">
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">LinkedIn</label>
+        <input class="ms-input" id="ms-linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile">
+      </div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(12)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(14)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 14: Photos -->
+    <div class="split-step" id="ms-split-14">
+      <h2 class="split-q">Your photos.</h2>
+      <p class="split-sub">Upload yours or skip — we use styled placeholders until you're ready.</p>
+      <div id="ms-photo-zones"></div>
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(13)">&larr;</button>
+        <button class="split-next" onclick="msGoStep(15)">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 15: Celebration effects -->
+    <div class="split-step" id="ms-split-15">
+      <h2 class="split-q">Celebration effects.</h2>
+      <p class="split-sub">Background animation and celebration bursts. Default is none.</p>
+
+      <span class="ms-sl">BACKGROUND ANIMATION</span>
+      <div class="ms-anim-grid" id="ms-anim-grid">
+        <div class="ms-anim-card selected" id="ms-anim-none" onclick="msSelectAnim('none')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">None</span><span class="ms-anim-desc">Clean &amp; still</span></div>
+        <div class="ms-anim-card" id="ms-anim-sparkles" onclick="msSelectAnim('sparkles')"><div class="ms-anim-icon">&#10022;</div><span class="ms-anim-name">Sparkles</span><span class="ms-anim-desc">Floating particles</span></div>
+        <div class="ms-anim-card" id="ms-anim-stars" onclick="msSelectAnim('stars')"><div class="ms-anim-icon">&#11088;</div><span class="ms-anim-name">Stars</span><span class="ms-anim-desc">Twinkling stars</span></div>
+        <div class="ms-anim-card" id="ms-anim-bubbles" onclick="msSelectAnim('bubbles')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">Bubbles</span><span class="ms-anim-desc">Rising circles</span></div>
+        <div class="ms-anim-card" id="ms-anim-petals" onclick="msSelectAnim('petals')"><div class="ms-anim-icon">&#127800;</div><span class="ms-anim-name">Petals</span><span class="ms-anim-desc">Falling petals</span></div>
+        <div class="ms-anim-card" id="ms-anim-confetti" onclick="msSelectAnim('confetti')"><div class="ms-anim-icon">&#127882;</div><span class="ms-anim-name">Confetti</span><span class="ms-anim-desc">Classic confetti</span></div>
+      </div>
+
+      <div id="ms-anim-mode-wrap" style="display:none;margin-bottom:16px;">
+        <span class="ms-sl">PLAYS</span>
+        <div class="ms-anim-grid">
+          <div class="ms-anim-card selected" id="ms-mode-ambient" onclick="msSelectAnimMode('ambient')"><span class="ms-anim-name">Ambient</span><span class="ms-anim-desc">Always running</span></div>
+          <div class="ms-anim-card" id="ms-mode-load" onclick="msSelectAnimMode('load')"><span class="ms-anim-name">On Load</span><span class="ms-anim-desc">Once on open</span></div>
+          <div class="ms-anim-card" id="ms-mode-scroll" onclick="msSelectAnimMode('scroll')"><span class="ms-anim-name">On Scroll</span><span class="ms-anim-desc">As they scroll</span></div>
+        </div>
+      </div>
+
+      <span class="ms-sl">CELEBRATION BURST</span>
+      <div class="ms-anim-grid" id="ms-burst-grid">
+        <div class="ms-anim-card selected" id="ms-burst-none" onclick="msSelectBurst('none')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">None</span></div>
+        <div class="ms-anim-card" id="ms-burst-confetti" onclick="msSelectBurst('confetti')"><div class="ms-anim-icon">&#127881;</div><span class="ms-anim-name">Confetti</span></div>
+        <div class="ms-anim-card" id="ms-burst-sparkles" onclick="msSelectBurst('sparkles')"><div class="ms-anim-icon">&#10024;</div><span class="ms-anim-name">Sparkles</span></div>
+        <div class="ms-anim-card" id="ms-burst-stars" onclick="msSelectBurst('stars')"><div class="ms-anim-icon">&#11088;</div><span class="ms-anim-name">Stars</span></div>
+        <div class="ms-anim-card" id="ms-burst-fireworks" onclick="msSelectBurst('fireworks')"><div class="ms-anim-icon">&#127878;</div><span class="ms-anim-name">Fireworks</span></div>
+      </div>
+
+      <div id="ms-burst-trigger-wrap" style="display:none;margin-bottom:12px;">
+        <span class="ms-sl">TRIGGER ON</span>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;flex:1;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.6);">
+            <input type="checkbox" id="ms-burst-on-form" checked style="accent-color:#4361ee;"> Form Submit
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;flex:1;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.6);">
+            <input type="checkbox" id="ms-burst-on-cta" style="accent-color:#4361ee;"> CTA Clicks
+          </label>
+        </div>
+      </div>
+
+      <div class="split-nav">
+        <button class="split-back" onclick="msGoStep(14)">&larr;</button>
+        <button class="split-next" onclick="msShowGenerate()">Review &amp; Generate &rarr;</button>
+      </div>
+    </div>
+
+  </div><!-- /ms-left -->
+
+  <!-- RIGHT PANEL: Live preview -->
+  <div id="ms-right">
+    <iframe id="ms-preview-iframe" src="" title="Site preview"></iframe>
+  </div>
+
+</div><!-- /ms-phase2 -->
+
+
+<!-- ══════════════════════════════════
+     PHASE 3: Generate screen
+     ══════════════════════════════════ -->
+<div id="ms-phase3" style="display:none;">
+  <div class="ms-eyebrow" style="text-align:center;margin-bottom:20px;">Step 15 of 15</div>
+  <h1 class="fs-question" style="margin-bottom:8px;">You're ready.</h1>
+  <p class="fs-sub" style="margin-bottom:28px;">Builtsy writes everything you left blank. Here's what you gave us:</p>
+  <div class="gen-summary" id="ms-gen-summary"></div>
+  <button class="gen-btn" onclick="msGenerate()">Generate My Site &rarr;</button>
+  <div class="gen-progress-wrap" id="ms-gen-progress">
+    <div class="gen-bar"><div class="gen-bar-fill" id="ms-gen-bar-fill"></div></div>
+    <p class="gen-status" id="ms-gen-status">Builtsy is building your site...</p>
+  </div>
+  <button class="fs-back" onclick="msGoStep(15)" style="margin-top:16px;">&larr; Edit answers</button>
+</div>
+
+
+<script>
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+var MS_STEP = 1;
+var MS_INDUSTRY = null;
+var MS_SELECTED_TPL = null;
+var MS_SELECTED_PAL = null;
+var MS_PAL_CSS = '';
+var MS_PAL_NAME = '';
+var _msAnim = 'none', _msAnimMode = 'ambient', _msBurst = 'none';
+var MS_PHOTOS = {};
+var _msPalTab = 'light';
+var _msLastFields = {};
+var _msHTML = '';
+var _msGenProgress = 0;
+var _msGenInterval = null;
+var _msGenMsgs = [
+  'Reading your business info…',
+  'Crafting your copy…',
+  'Swapping in your services…',
+  'Applying your palette…',
+  'Polishing the final touches…',
+  'Almost there…'
+];
+var _msGenMsgIdx = 0;
+var _msGenMsgInterval = null;
+
+var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
+
+// ══════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════
+var _sbClientMS = null;
+function msGetSupabase() {
+  if (!_sbClientMS && window.supabase) {
+    _sbClientMS = window.supabase.createClient(
+      'https://nukcbqlxxrfsgchqyxud.supabase.co',
+      'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX'
+    );
+  }
+  return _sbClientMS;
+}
+
+// ══════════════════════════════════════════════
+// TEMPLATE DEFINITIONS
+// ══════════════════════════════════════════════
+var MS_TEMPLATES = [
+  { id:'social-media-bubbly',       file:'social-media-bubbly.html',       name:'Bubbly',  desc:'Bold &amp; playful. Great for bold brands.',       category:'social-media' },
+  { id:'social-media-cherry',       file:'social-media-cherry.html',       name:'Cherry',  desc:'Sleek &amp; dark. Modern and editorial.',          category:'social-media' },
+  { id:'social-media-manager-site', file:'social-media-manager-site.html', name:'Studio',  desc:'Clean &amp; minimal. Professional and polished.',  category:'social-media' },
+  { id:'caretaker-warm',            file:'caretaker-warm.html',            name:'Warm',    desc:'Soft &amp; inviting. Builds trust instantly.',     category:'caretaker' },
+  { id:'caretaker-bright',          file:'caretaker-bright.html',          name:'Bright',  desc:'Vibrant &amp; energetic. Full of personality.',   category:'caretaker' },
+  { id:'caretaker-clean',           file:'caretaker-clean.html',           name:'Clean',   desc:'Crisp &amp; professional. Calm and credible.',    category:'caretaker' }
+];
+
+// ══════════════════════════════════════════════
+// PALETTE DEFINITIONS
+// ══════════════════════════════════════════════
+var MS_PALETTES = {
+  light: [
+    { name:'Rose',     desc:'Warm cream + deep rose',   swatches:['#FDF6F0','#C94070','#F7D5E3'], css:'--cream:#FDF6F0;--cream2:#F5ECE3;--pink:#C94070;--pink-light:#F7D5E3;--pink-pale:#FEF0F6;' },
+    { name:'Peach',    desc:'Cream + terracotta',        swatches:['#FAF6F2','#C4612A','#F5D5C5'], css:'--cream:#FAF6F2;--cream2:#F0E8DF;--pink:#C4612A;--pink-light:#F5D5C5;--pink-pale:#FEF5F0;' },
+    { name:'Lilac',    desc:'White + soft purple',       swatches:['#F9F7FF','#8B5CF6','#E0D0F5'], css:'--cream:#F9F7FF;--cream2:#F0EBFF;--pink:#8B5CF6;--pink-light:#DDD6FE;--pink-pale:#F5F0FF;' },
+    { name:'Ocean',    desc:'Cool white + teal',         swatches:['#F0F8FF','#0E7490','#A5D8E8'], css:'--cream:#F0F8FF;--cream2:#E0F2F8;--pink:#0E7490;--pink-light:#A5D8E8;--pink-pale:#E0F7FA;' },
+    { name:'Sage',     desc:'Warm white + sage green',   swatches:['#F4F7F0','#4A7C59','#B8D8C5'], css:'--cream:#F4F7F0;--cream2:#E8F0E0;--pink:#4A7C59;--pink-light:#B8D8C5;--pink-pale:#E8F4EC;' },
+    { name:'Marigold', desc:'Cream + amber yellow',      swatches:['#FFFBF0','#D97706','#FDE68A'], css:'--cream:#FFFBF0;--cream2:#FFF3D0;--pink:#D97706;--pink-light:#FDE68A;--pink-pale:#FFFAED;' }
+  ],
+  dark: [
+    { name:'Noir',     desc:'Cream + pure black',        swatches:['#FAF8F4','#1A1A1A','#555555'], css:'--pink:#1A1A1A;--pink-light:#404040;--pink-pale:#888888;' },
+    { name:'Navy',     desc:'Cream + deep navy',         swatches:['#FAF8F4','#1B3A5C','#3A6F9F'], css:'--pink:#1B3A5C;--pink-light:#3A6F9F;--pink-pale:#7AAFD0;' },
+    { name:'Forest',   desc:'Cream + deep green',        swatches:['#FAF8F4','#2D5A3D','#5A9070'], css:'--pink:#2D5A3D;--pink-light:#5A9070;--pink-pale:#90C0A0;' },
+    { name:'Plum',     desc:'Cream + rich plum',         swatches:['#FAF8F4','#5B2D8E','#9D6CC0'], css:'--pink:#5B2D8E;--pink-light:#9D6CC0;--pink-pale:#D4B8E8;' }
+  ],
+  mono: [
+    { name:'Pink',     desc:'All pink, tonal',           swatches:['#FFF0F6','#E8458A','#F8D0E8'], css:'--cream:#FFF0F6;--cream2:#FFE0EF;--pink:#E8458A;--pink-light:#F5A0C8;--pink-pale:#FFDDF0;' },
+    { name:'Rose',     desc:'Deep rose tones',           swatches:['#FFF0F3','#C04060','#F0A0B8'], css:'--cream:#FFF0F3;--cream2:#FFE0E8;--pink:#C04060;--pink-light:#E07090;--pink-pale:#F8D0DC;' },
+    { name:'Nude',     desc:'Warm nude tones',           swatches:['#FBF6F0','#B08060','#D0A888'], css:'--cream:#FBF6F0;--cream2:#F5EDE3;--pink:#B08060;--pink-light:#D0A888;--pink-pale:#F0DDD0;' },
+    { name:'Slate',    desc:'Cool grey spectrum',        swatches:['#F5F5F7','#374151','#9CA3AF'], css:'--cream:#F5F5F7;--cream2:#EBEBED;--pink:#374151;--pink-light:#9CA3AF;--pink-pale:#E5E7EB;' }
+  ]
+};
+
+// ══════════════════════════════════════════════
+// HELPER
+// ══════════════════════════════════════════════
+function v(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+// ══════════════════════════════════════════════
+// PROGRESS BAR
+// ══════════════════════════════════════════════
+function msUpdateProgress(n) {
+  var step = n || MS_STEP;
+  var fill = document.getElementById('ms-progress-fill');
+  if (fill) fill.style.width = (step / 15 * 100) + '%';
+}
+
+// ══════════════════════════════════════════════
+// STEP NAVIGATION
+// ══════════════════════════════════════════════
+function msGoStep(n) {
+  MS_STEP = n;
+  msUpdateProgress(n);
+
+  if (n <= 3) {
+    // Phase 1
+    document.getElementById('ms-phase2').style.display = 'none';
+    document.getElementById('ms-phase3').style.display = 'none';
+    var phase1 = document.getElementById('ms-phase1');
+    phase1.style.display = 'block';
+    for (var i = 1; i <= 3; i++) {
+      var el = document.getElementById('ms-step-' + i);
+      if (el) el.className = 'fs-step' + (i === n ? ' active' : '');
+    }
+    // Scroll to top
+    window.scrollTo(0, 0);
+  } else if (n >= 4 && n <= 15) {
+    // Phase 2
+    document.getElementById('ms-phase1').style.display = 'none';
+    document.getElementById('ms-phase3').style.display = 'none';
+    var phase2 = document.getElementById('ms-phase2');
+    phase2.style.display = 'flex';
+    // Show correct split step
+    for (var j = 4; j <= 15; j++) {
+      var sp = document.getElementById('ms-split-' + j);
+      if (sp) sp.className = 'split-step' + (j === n ? ' active' : '');
+    }
+    // Update eyebrow
+    var eyebrow = document.getElementById('ms-split-eyebrow');
+    if (eyebrow) eyebrow.textContent = 'Step ' + n + ' of 15';
+    // Scroll left panel to top
+    var leftPanel = document.getElementById('ms-left');
+    if (leftPanel) leftPanel.scrollTop = 0;
+  }
+}
+
+// ══════════════════════════════════════════════
+// STEP 1: DETECT INDUSTRY
+// ══════════════════════════════════════════════
+function msStep1Next() {
+  var desc = document.getElementById('ms-what-you-do').value.trim();
+  if (!desc) {
+    document.getElementById('ms-what-you-do').focus();
+    return;
+  }
+  // Show detecting state
+  var btn = document.getElementById('ms-step1-btn');
+  var detecting = document.getElementById('ms-detecting');
+  if (btn) btn.style.display = 'none';
+  if (detecting) detecting.style.display = 'flex';
+
+  fetch('/.netlify/functions/detect-industry', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ description: desc })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(config) {
+    MS_INDUSTRY = config;
+    msOnIndustryDetected(config);
+    msGoStep(2);
+  })
+  .catch(function() {
+    // Graceful degradation — still move to step 2
+    msGoStep(2);
+  })
+  .finally(function() {
+    if (btn) btn.style.display = '';
+    if (detecting) detecting.style.display = 'none';
+  });
+}
+
+// ══════════════════════════════════════════════
+// ON INDUSTRY DETECTED
+// ══════════════════════════════════════════════
+function msOnIndustryDetected(config) {
+  if (!config) return;
+  // Set industry badge
+  var badge = document.getElementById('ms-industry-badge');
+  if (badge && config.industryLabel) badge.textContent = config.industryLabel;
+  // Update step 2 sub-text
+  var sub = document.getElementById('ms-step2-sub');
+  if (sub) sub.textContent = 'Your Builtsy picks are highlighted. Browse all — they\'re all yours.';
+  // Set income calc label
+  if (config.incomeCalcLabel) {
+    var lbl = document.getElementById('ms-calc-unit-label');
+    if (lbl) lbl.textContent = config.incomeCalcLabel.charAt(0).toUpperCase() + config.incomeCalcLabel.slice(1) + 's / mo';
+  }
+}
+
+// ══════════════════════════════════════════════
+// TEMPLATE GRID
+// ══════════════════════════════════════════════
+function msRenderTemplateGrid(filter) {
+  var grid = document.getElementById('ms-tpl-grid');
+  if (!grid) return;
+  var html = '';
+  var recIds = (MS_INDUSTRY && MS_INDUSTRY.recommendedTemplates) ? MS_INDUSTRY.recommendedTemplates : [];
+  for (var i = 0; i < MS_TEMPLATES.length; i++) {
+    var tpl = MS_TEMPLATES[i];
+    if (filter === 'recommended' && recIds.length && recIds.indexOf(tpl.id) === -1) continue;
+    var isRec = recIds.indexOf(tpl.id) !== -1;
+    var isSel = MS_SELECTED_TPL && MS_SELECTED_TPL.id === tpl.id;
+    html += '<div class="tpl-card' + (isSel ? ' selected' : '') + '" id="ms-tpl-card-' + tpl.id + '" onclick="msSelectTemplate(\'' + tpl.id + '\')">'
+      + '<div class="tpl-preview-box">'
+      + '<iframe class="tpl-preview-iframe" src="' + tpl.file + '" scrolling="no" tabindex="-1"></iframe>'
+      + '</div>'
+      + '<div class="tpl-card-body">'
+      + (isRec ? '<div class="tpl-rec-badge">&#10022; Recommended</div>' : '')
+      + '<div class="tpl-card-name">' + tpl.name + '</div>'
+      + '<div class="tpl-card-desc">' + tpl.desc + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function msTplFilter(filter) {
+  // Toggle filter button states
+  var btns = document.querySelectorAll('.tpl-filter');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].className = 'tpl-filter' + (btns[i].textContent.trim().indexOf(filter === 'all' ? 'All' : 'You') !== -1 ? ' active' : '');
+  }
+  msRenderTemplateGrid(filter);
+}
+
+function msSelectTemplate(id) {
+  for (var i = 0; i < MS_TEMPLATES.length; i++) {
+    if (MS_TEMPLATES[i].id === id) {
+      MS_SELECTED_TPL = MS_TEMPLATES[i];
+      break;
+    }
+  }
+  // Update card selected states
+  var cards = document.querySelectorAll('.tpl-card');
+  for (var j = 0; j < cards.length; j++) {
+    cards[j].className = 'tpl-card';
+  }
+  var sel = document.getElementById('ms-tpl-card-' + id);
+  if (sel) sel.className = 'tpl-card selected';
+  // Enable continue button
+  var btn = document.getElementById('ms-step2-btn');
+  if (btn) btn.disabled = false;
+  // If in split layout, update preview
+  if (MS_STEP >= 4) {
+    var iframe = document.getElementById('ms-preview-iframe');
+    if (iframe && MS_SELECTED_TPL) iframe.src = MS_SELECTED_TPL.file;
+  }
+}
+
+// ══════════════════════════════════════════════
+// PALETTE
+// ══════════════════════════════════════════════
+function msPalTab(tab) {
+  _msPalTab = tab;
+  var tabs = ['light', 'dark', 'mono'];
+  for (var i = 0; i < tabs.length; i++) {
+    var btns = document.querySelectorAll('.ms-pal-tab');
+    for (var j = 0; j < btns.length; j++) {
+      if (btns[j].textContent.trim().toLowerCase() === tabs[i]) {
+        btns[j].className = 'ms-pal-tab' + (tabs[i] === tab ? ' active' : '');
+      }
+    }
+  }
+  msRenderPalGrid(tab);
+}
+
+function msRenderPalGrid(tab) {
+  var grid = document.getElementById('ms-pal-grid');
+  if (!grid) return;
+  var palettes = MS_PALETTES[tab] || [];
+  var html = '';
+  for (var i = 0; i < palettes.length; i++) {
+    var pal = palettes[i];
+    var isSel = MS_PAL_NAME === pal.name && MS_PAL_CSS === pal.css;
+    var swatchesHtml = '';
+    for (var k = 0; k < pal.swatches.length; k++) {
+      swatchesHtml += '<div class="ms-pal-swatch" style="background:' + pal.swatches[k] + ';"></div>';
+    }
+    var cssEsc = pal.css.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    var nameEsc = pal.name.replace(/'/g,"\\'");
+    html += '<div class="ms-pal-card' + (isSel ? ' selected' : '') + '" onclick="msSelectPalette(\'' + cssEsc + '\',\'' + nameEsc + '\')">'
+      + '<div class="ms-pal-swatches">' + swatchesHtml + '</div>'
+      + '<div class="ms-pal-name">' + pal.name + '</div>'
+      + '<div class="ms-pal-desc">' + pal.desc + '</div>'
+      + '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function msSelectPalette(cssStr, name) {
+  MS_PAL_CSS = cssStr;
+  MS_PAL_NAME = name;
+  MS_SELECTED_PAL = cssStr;
+  // Enable continue
+  var btn = document.getElementById('ms-step3-btn');
+  if (btn) btn.disabled = false;
+  // Re-render to show selected state
+  msRenderPalGrid(_msPalTab);
+  // If preview is open, inject palette
+  msInjectPaletteIntoPreview(cssStr);
+}
+
+function msInjectPaletteIntoPreview(css) {
+  var iframe = document.getElementById('ms-preview-iframe');
+  if (!iframe) return;
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    var existing = doc.getElementById('builtsy-palette-override');
+    if (existing) existing.parentNode.removeChild(existing);
+    if (css) {
+      var style = doc.createElement('style');
+      style.id = 'builtsy-palette-override';
+      style.textContent = ':root{' + css + '}';
+      doc.head.appendChild(style);
+    }
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+// REVEAL SPLIT LAYOUT
+// ══════════════════════════════════════════════
+function msRevealSplit() {
+  msGoStep(4);
+  // Load template into preview iframe
+  var iframe = document.getElementById('ms-preview-iframe');
+  if (iframe && MS_SELECTED_TPL) {
+    iframe.src = MS_SELECTED_TPL.file;
+    iframe.addEventListener('load', function() {
+      setTimeout(function() { msInjectPaletteIntoPreview(MS_PAL_CSS); }, 80);
+      setTimeout(msApplyAllLive, 120);
+    });
+  }
+  msSetupLivePreview();
+}
+
+// ══════════════════════════════════════════════
+// SERVICES
+// ══════════════════════════════════════════════
+function msRenderServices() {
+  var wrap = document.getElementById('ms-services-wrap');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 1; i <= 3; i++) {
+    html += '<div style="margin-bottom:12px;">'
+      + '<label class="ms-label">Service ' + i + '</label>'
+      + '<div style="display:flex;gap:8px;margin-bottom:6px;">'
+      + '<input class="ms-input" id="ms-svc' + i + '-name" style="flex:2;" placeholder="Service name" type="text">'
+      + '<input class="ms-input" id="ms-svc' + i + '-price" style="flex:1;" placeholder="$150" type="text">'
+      + '</div>'
+      + '</div>';
+  }
+  wrap.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// PRICING TIERS
+// ══════════════════════════════════════════════
+function msRenderTiers() {
+  var wrap = document.getElementById('ms-tiers-wrap');
+  if (!wrap) return;
+  var labels = ['Starter', 'Standard', 'Premium'];
+  var html = '';
+  for (var i = 1; i <= 3; i++) {
+    html += '<div style="margin-bottom:10px;">'
+      + '<label class="ms-label">Tier ' + i + ' — ' + labels[i-1] + '</label>'
+      + '<div style="display:flex;gap:8px;">'
+      + '<input class="ms-input" id="ms-tier' + i + '-name" style="flex:2;" placeholder="' + labels[i-1] + ' Package" type="text">'
+      + '<input class="ms-input" id="ms-tier' + i + '-price" style="flex:1;" placeholder="$' + (99 * i) + '/mo" type="text">'
+      + '</div>'
+      + '</div>';
+  }
+  wrap.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// INCOME CALCULATOR
+// ══════════════════════════════════════════════
+function msCalcIncome() {
+  var goal = parseFloat(document.getElementById('ms-calc-goal').value) || 0;
+  var units = parseFloat(document.getElementById('ms-calc-units').value) || 1;
+  if (!goal || !units) { document.getElementById('ms-calc-result').textContent = ''; return; }
+  var rate = Math.ceil(goal / units / 5) * 5;
+  var t1 = Math.round(rate * 0.65 / 5) * 5;
+  var t2 = rate;
+  var t3 = Math.round(rate * 1.85 / 5) * 5;
+  document.getElementById('ms-calc-result').textContent = 'Suggested: $' + t1 + ' / $' + t2 + ' / $' + t3;
+}
+
+function msCalcApply() {
+  var goal = parseFloat(document.getElementById('ms-calc-goal').value) || 0;
+  var units = parseFloat(document.getElementById('ms-calc-units').value) || 1;
+  if (!goal || !units) return;
+  var rate = Math.ceil(goal / units / 5) * 5;
+  var t1 = Math.round(rate * 0.65 / 5) * 5;
+  var t2 = rate;
+  var t3 = Math.round(rate * 1.85 / 5) * 5;
+  var u1 = document.getElementById('ms-tier1-price'); if (u1) u1.value = '$' + t1;
+  var u2 = document.getElementById('ms-tier2-price'); if (u2) u2.value = '$' + t2;
+  var u3 = document.getElementById('ms-tier3-price'); if (u3) u3.value = '$' + t3;
+}
+
+// ══════════════════════════════════════════════
+// CHIPS
+// ══════════════════════════════════════════════
+function msRenderChips(containerId, chips, fieldId, mode) {
+  var container = document.getElementById(containerId);
+  if (!container || !chips || !chips.length) return;
+  container.innerHTML = '';
+  for (var i = 0; i < chips.length; i++) {
+    (function(text) {
+      var chip = document.createElement('span');
+      chip.className = 'ms-chip';
+      chip.textContent = text;
+      chip.onclick = function() {
+        var inp = document.getElementById(fieldId);
+        if (!inp) return;
+        if (mode === 'append') {
+          // Toggle in comma-separated list
+          var current = inp.value.trim();
+          var parts = current ? current.split(',').map(function(p){ return p.trim(); }) : [];
+          var idx = parts.indexOf(text);
+          if (idx !== -1) {
+            parts.splice(idx, 1);
+            chip.classList.remove('used');
+          } else {
+            parts.push(text);
+            chip.classList.add('used');
+          }
+          inp.value = parts.join(', ');
+        } else {
+          // Replace mode
+          inp.value = text;
+          var siblings = container.querySelectorAll('.ms-chip');
+          for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('used');
+          chip.classList.add('used');
+        }
+      };
+      container.appendChild(chip);
+    })(chips[i]);
+  }
+}
+
+function msPopulateChips() {
+  if (!MS_INDUSTRY) return;
+  if (MS_INDUSTRY.taglineChips) {
+    msRenderChips('ms-tagline-chips', MS_INDUSTRY.taglineChips, 'ms-tagline', 'replace');
+  }
+  if (MS_INDUSTRY.headlineChips) {
+    msRenderChips('ms-headline-chips', MS_INDUSTRY.headlineChips, 'ms-headline', 'replace');
+  }
+  if (MS_INDUSTRY.credentialChips) {
+    msRenderChips('ms-cred-chips', MS_INDUSTRY.credentialChips, 'ms-credentials', 'append');
+  }
+}
+
+// ══════════════════════════════════════════════
+// ANIMATION PICKERS
+// ══════════════════════════════════════════════
+function msSelectAnim(val) {
+  _msAnim = val;
+  var cards = document.querySelectorAll('#ms-anim-grid .ms-anim-card');
+  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+  var el = document.getElementById('ms-anim-' + val);
+  if (el) el.classList.add('selected');
+  var modeWrap = document.getElementById('ms-anim-mode-wrap');
+  if (modeWrap) modeWrap.style.display = val === 'none' ? 'none' : 'block';
+  msPushAnimToPreview();
+}
+
+function msSelectAnimMode(val) {
+  _msAnimMode = val;
+  var cards = document.querySelectorAll('#ms-anim-mode-wrap .ms-anim-card');
+  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+  var el = document.getElementById('ms-mode-' + val);
+  if (el) el.classList.add('selected');
+  msPushAnimToPreview();
+}
+
+function msSelectBurst(val) {
+  _msBurst = val;
+  var cards = document.querySelectorAll('#ms-burst-grid .ms-anim-card');
+  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+  var el = document.getElementById('ms-burst-' + val);
+  if (el) el.classList.add('selected');
+  var triggerWrap = document.getElementById('ms-burst-trigger-wrap');
+  if (triggerWrap) triggerWrap.style.display = val === 'none' ? 'none' : 'block';
+  msPushAnimToPreview();
+}
+
+function msPushAnimToPreview() {
+  var iframe = document.getElementById('ms-preview-iframe');
+  if (!iframe) return;
+  var doc;
+  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+  if (!doc || !doc.body) return;
+  doc.body.setAttribute('data-anim', _msAnim);
+  doc.body.setAttribute('data-anim-mode', _msAnimMode);
+  doc.body.setAttribute('data-burst', _msBurst);
+  var burstOn = [];
+  var onForm = document.getElementById('ms-burst-on-form');
+  var onCta = document.getElementById('ms-burst-on-cta');
+  if (onForm && onForm.checked) burstOn.push('form');
+  if (onCta && onCta.checked) burstOn.push('cta');
+  doc.body.setAttribute('data-burst-on', burstOn.join(','));
+  try {
+    if (iframe.contentWindow && iframe.contentWindow.builtsy_initAnim) {
+      iframe.contentWindow.builtsy_initAnim();
+    }
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+// PHOTO ZONES
+// ══════════════════════════════════════════════
+function msInitPhotoZones() {
+  var wrap = document.getElementById('ms-photo-zones');
+  if (!wrap) return;
+  var zones = [
+    { slot: 'hero',    label: 'Hero photo',    desc: 'Your main portrait' },
+    { slot: 'about',   label: 'About photo',   desc: 'Photo in your about section' },
+    { slot: 'gallery', label: 'Gallery photo',  desc: 'Extra photo for your site' }
+  ];
+  var html = '';
+  for (var i = 0; i < zones.length; i++) {
+    var z = zones[i];
+    var fileId = 'ms-file-' + z.slot;
+    if (MS_PHOTOS[z.slot]) {
+      html += '<div style="border:2px dashed rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:10px;position:relative;">'
+        + '<img src="' + MS_PHOTOS[z.slot] + '" style="width:100%;height:100px;object-fit:cover;display:block;" alt="">'
+        + '<button onclick="msClearPhoto(\'' + z.slot + '\')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:.75rem;cursor:pointer;">&#10005;</button>'
+        + '</div>';
+    } else {
+      html += '<div style="border:2px dashed rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;margin-bottom:10px;" onclick="document.getElementById(\'' + fileId + '\').click()">'
+        + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="msHandlePhoto(event,\'' + z.slot + '\')">'
+        + '<p style="font-size:.8rem;color:rgba(255,255,255,0.3);margin-bottom:4px;">' + z.label + '</p>'
+        + '<p style="font-size:.7rem;color:rgba(255,255,255,0.18);">' + z.desc + ' (optional)</p>'
+        + '</div>';
+    }
+  }
+  wrap.innerHTML = html;
+}
+
+function msHandlePhoto(event, slot) {
+  var input = event.target;
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    MS_PHOTOS[slot] = e.target.result;
+    msInitPhotoZones();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function msClearPhoto(slot) {
+  delete MS_PHOTOS[slot];
+  msInitPhotoZones();
+}
+
+// ══════════════════════════════════════════════
+// LIVE PREVIEW
+// ══════════════════════════════════════════════
+var MS_LIVE_MAP = [
+  { id: 'ms-biz-name', key: 'biz-name' },
+  { id: 'ms-headline', key: 'headline' },
+  { id: 'ms-tagline',  key: 'tagline' }
+];
+
+function msPushToPreview(key, value) {
+  var iframe = document.getElementById('ms-preview-iframe');
+  if (!iframe) return;
+  var doc;
+  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+  if (!doc || !doc.body) return;
+  var els = doc.querySelectorAll('[data-live="' + key + '"]');
+  for (var i = 0; i < els.length; i++) {
+    if (value) els[i].textContent = value;
+  }
+}
+
+function msApplyAllLive() {
+  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
+    var el = document.getElementById(MS_LIVE_MAP[i].id);
+    if (el && el.value && el.value.trim()) {
+      msPushToPreview(MS_LIVE_MAP[i].key, el.value.trim());
+    }
+  }
+}
+
+function msSetupLivePreview() {
+  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
+    (function(m) {
+      var el = document.getElementById(m.id);
+      if (!el) return;
+      el.addEventListener('input', function() {
+        msPushToPreview(m.key, this.value.trim());
+      });
+    })(MS_LIVE_MAP[i]);
+  }
+  var iframe = document.getElementById('ms-preview-iframe');
+  if (iframe) {
+    iframe.addEventListener('load', function() {
+      setTimeout(msApplyAllLive, 80);
+      setTimeout(function() { msInjectPaletteIntoPreview(MS_PAL_CSS); }, 100);
+      setTimeout(msPushAnimToPreview, 120);
+    });
+  }
+}
+
+// ══════════════════════════════════════════════
+// COLLECT FIELDS
+// ══════════════════════════════════════════════
+function msCollect() {
+  return {
+    ownerName:     v('ms-owner-name'),
+    bizName:       v('ms-biz-name'),
+    location:      v('ms-location'),
+    tagline:       v('ms-tagline'),
+    headline:      v('ms-headline'),
+    bio:           v('ms-bio'),
+    svc1Name:      v('ms-svc1-name'),  svc1Price: v('ms-svc1-price'),
+    svc2Name:      v('ms-svc2-name'),  svc2Price: v('ms-svc2-price'),
+    svc3Name:      v('ms-svc3-name'),  svc3Price: v('ms-svc3-price'),
+    tier1Name:     v('ms-tier1-name'), tier1Price: v('ms-tier1-price'),
+    tier2Name:     v('ms-tier2-name'), tier2Price: v('ms-tier2-price'),
+    tier3Name:     v('ms-tier3-name'), tier3Price: v('ms-tier3-price'),
+    credentials:   v('ms-credentials'),
+    email:         v('ms-email'),
+    phone:         v('ms-phone'),
+    instagram:     v('ms-instagram'),
+    tiktok:        v('ms-tiktok'),
+    linkedin:      v('ms-linkedin'),
+    industry:      MS_INDUSTRY ? MS_INDUSTRY.industry : 'general',
+    industryLabel: MS_INDUSTRY ? MS_INDUSTRY.industryLabel : 'Professional',
+    templateFile:  MS_SELECTED_TPL ? MS_SELECTED_TPL.file : '',
+    templateName:  MS_SELECTED_TPL ? MS_SELECTED_TPL.name : '',
+    palette:       MS_PAL_CSS,
+    paletteName:   MS_PAL_NAME,
+    animType:      _msAnim,
+    animMode:      _msAnimMode,
+    burstType:     _msBurst,
+    burstOnForm:   document.getElementById('ms-burst-on-form') ? document.getElementById('ms-burst-on-form').checked : false,
+    burstOnCta:    document.getElementById('ms-burst-on-cta') ? document.getElementById('ms-burst-on-cta').checked : false,
+    _smLastFields: null,
+    _revisionNote: ''
+  };
+}
+
+// ══════════════════════════════════════════════
+// SHOW GENERATE SCREEN
+// ══════════════════════════════════════════════
+function msShowGenerate() {
+  // Hide phase 2, show phase 3
+  document.getElementById('ms-phase1').style.display = 'none';
+  document.getElementById('ms-phase2').style.display = 'none';
+  document.getElementById('ms-phase3').style.display = 'flex';
+  MS_STEP = 15;
+  msUpdateProgress(15);
+
+  // Build summary
+  var fields = msCollect();
+  var rows = [
+    { label: 'Template',     val: fields.templateName || '—' },
+    { label: 'Palette',      val: fields.paletteName  || '—' },
+    { label: 'Your name',    val: fields.ownerName    || '—' },
+    { label: 'Business',     val: fields.bizName      || '—' },
+    { label: 'Location',     val: fields.location     || '—' },
+    { label: 'Tagline',      val: fields.tagline      || '—' },
+    { label: 'Headline',     val: fields.headline     || '—' },
+    { label: 'Industry',     val: fields.industryLabel || '—' },
+    { label: 'Email',        val: fields.email        || '—' },
+    { label: 'Service 1',    val: fields.svc1Name ? (fields.svc1Name + (fields.svc1Price ? ' — ' + fields.svc1Price : '')) : '—' },
+    { label: 'Service 2',    val: fields.svc2Name ? (fields.svc2Name + (fields.svc2Price ? ' — ' + fields.svc2Price : '')) : '—' },
+    { label: 'Service 3',    val: fields.svc3Name ? (fields.svc3Name + (fields.svc3Price ? ' — ' + fields.svc3Price : '')) : '—' }
+  ];
+  var summaryEl = document.getElementById('ms-gen-summary');
+  if (summaryEl) {
+    var html = '';
+    for (var i = 0; i < rows.length; i++) {
+      html += '<div class="gen-row">'
+        + '<span class="gen-row-label">' + rows[i].label + '</span>'
+        + '<span class="gen-row-val">' + rows[i].val + '</span>'
+        + '</div>';
+    }
+    summaryEl.innerHTML = html;
+  }
+}
+
+// ══════════════════════════════════════════════
+// INJECT ASSETS INTO GENERATED HTML
+// ══════════════════════════════════════════════
+function msInjectAssets(html) {
+  // Inject palette
+  if (MS_PAL_CSS) {
+    html = html.replace('</head>', '<style id="builtsy-palette">:root{' + MS_PAL_CSS + '}</style>\n</head>');
+  }
+  // Inject photos
+  for (var photoId in MS_PHOTOS) {
+    if (!MS_PHOTOS[photoId]) continue;
+    try {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+      var img = doc.getElementById(photoId);
+      if (img) {
+        img.src = MS_PHOTOS[photoId];
+        html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+      }
+    } catch(e) {}
+  }
+  // Credit bar
+  var bizName = (msCollect().bizName || msCollect().ownerName || 'You').trim();
+  var creditBar = '<div id="builtsy-credit" style="text-align:center;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#999;letter-spacing:0.02em;background:transparent;">'
+    + 'Made with love for ' + bizName + ' &nbsp;&middot;&nbsp; '
+    + 'Built<span style="color:#ee70bc;font-weight:700;">sy</span>'
+    + '<span style="color:#C8E000;font-weight:700;">.</span>'
+    + '</div>';
+  html = html.replace('</body>', creditBar + '\n</body>');
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// GENERATE
+// ══════════════════════════════════════════════
+function msGenerate() {
+  var fields = msCollect();
+  _msLastFields = fields;
+
+  // Show progress
+  var progressWrap = document.getElementById('ms-gen-progress');
+  var barFill = document.getElementById('ms-gen-bar-fill');
+  var statusEl = document.getElementById('ms-gen-status');
+  var genBtn = document.querySelector('.gen-btn');
+  if (progressWrap) progressWrap.style.display = 'block';
+  if (genBtn) genBtn.disabled = true;
+  if (barFill) barFill.style.width = '0%';
+  if (statusEl) statusEl.textContent = _msGenMsgs[0];
+
+  _msGenProgress = 0;
+  _msGenMsgIdx = 0;
+
+  _msGenInterval = setInterval(function() {
+    _msGenProgress = Math.min(_msGenProgress + 0.8, 92);
+    if (barFill) barFill.style.width = _msGenProgress + '%';
+  }, 400);
+
+  _msGenMsgInterval = setInterval(function() {
+    _msGenMsgIdx = (_msGenMsgIdx + 1) % _msGenMsgs.length;
+    if (statusEl) statusEl.textContent = _msGenMsgs[_msGenMsgIdx];
+  }, 5000);
+
+  fetch(RAILWAY_URL + '/generate-template-universal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      templateType: MS_SELECTED_TPL ? MS_SELECTED_TPL.id : 'social-media-manager-site',
+      niche: fields.industryLabel || 'professional',
+      fields: fields
+    })
+  })
+  .then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              msFinishGenerate();
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { msFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (html.length < 200) { msFinishError('Generation returned empty content. Please try again.'); return; }
+                html = msInjectAssets(html);
+                _msHTML = html;
+                msFinishGenerate();
+                msShowOutput(html);
+                return;
+              }
+            } catch(e) {}
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  })
+  .catch(function(err) {
+    msFinishError('Connection error: ' + err.message);
+  });
+}
+
+function msFinishGenerate() {
+  clearInterval(_msGenInterval);
+  clearInterval(_msGenMsgInterval);
+  var barFill = document.getElementById('ms-gen-bar-fill');
+  if (barFill) barFill.style.width = '100%';
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.disabled = false;
+}
+
+function msFinishError(msg) {
+  msFinishGenerate();
+  var statusEl = document.getElementById('ms-gen-status');
+  if (statusEl) {
+    statusEl.textContent = 'Error: ' + msg;
+    statusEl.style.color = '#fca5a5';
+  }
+}
+
+function msShowOutput(html) {
+  // Open in a new tab
+  var blob = new Blob([html], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  // Also offer download
+  var bizName = v('ms-biz-name') || v('ms-owner-name') || 'my-site';
+  var slug = bizName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
+  a.download = slug + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
+  // Update status
+  var statusEl = document.getElementById('ms-gen-status');
+  if (statusEl) {
+    statusEl.textContent = 'Your site is ready! Download started.';
+    statusEl.style.color = '#a3e635';
+  }
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+function msInit() {
+  msRenderTemplateGrid('all');
+  msPalTab('light');
+  msRenderServices();
+  msRenderTiers();
+  msInitPhotoZones();
+  msUpdateProgress(1);
+}
+
+document.addEventListener('DOMContentLoaded', msInit);
+</script>
+</body>
+</html>
