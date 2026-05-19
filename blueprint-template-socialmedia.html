@@ -10,991 +10,1311 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;--builtsy-blue:#4361EE;
-  --cream:#fafaf7;
+  --cream:#fafaf7;--yellow:#E8D400;
 }
-html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--navy);}
 
-.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+/* ── TOP NAV ── */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:200;}
 .logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
-.tn-tag{background:var(--pink);color:white;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-tag{background:var(--yellow);color:#0D0D0D;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
 .tn-right{display:flex;align-items:center;gap:0.75rem;}
 .btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 
-.welcome-banner{background:var(--pink);color:white;text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;}
+/* ── TWO-COLUMN SHELL ── */
+.app-shell{display:flex;height:calc(100vh - 52px);overflow:hidden;}
 
-.bp-hero{background:var(--navy);color:white;padding:40px 24px 32px;text-align:center;}
-.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.15;margin-bottom:10px;}
-.bp-hero h1 span{color:var(--lime);}
-.bp-hero p{color:rgba(255,255,255,0.6);font-size:.9rem;max-width:480px;margin:0 auto;}
+/* ── LEFT PANEL ── */
+.left-panel{width:440px;flex-shrink:0;background:var(--navy);color:white;overflow-y:auto;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.08);}
+.left-inner{padding:0 24px 100px;flex:1;}
 
-/* template preview strip */
-.tpl-preview-strip{background:white;border-bottom:1px solid #e5e7eb;overflow:hidden;height:200px;position:relative;cursor:pointer;}
-.tpl-preview-strip iframe{width:100%;height:800px;border:none;transform:scale(0.25);transform-origin:top left;pointer-events:none;}
-.tpl-preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(18,25,43,0.45);}
-.tpl-preview-badge{background:var(--lime);color:var(--navy);font-size:.75rem;font-weight:700;padding:8px 18px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+/* ── RIGHT PANEL ── */
+.right-panel{flex:1;background:#1A2135;display:flex;flex-direction:column;min-width:0;}
+.preview-toolbar{height:40px;background:rgba(0,0,0,0.3);display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.preview-url{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);flex:1;background:rgba(255,255,255,0.06);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.preview-dot{width:10px;height:10px;border-radius:50%;}
+.preview-frame-wrap{flex:1;overflow:hidden;position:relative;}
+#preview-iframe{width:100%;height:100%;border:none;background:#fff;}
 
-.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:640px;margin:0 auto;}
-.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+/* ── STEP PROGRESS ── */
+.step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;cursor:pointer;}
 .step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
 .step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
-.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:10px;}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,0.1);min-width:4px;}
 .step-line.done{background:var(--lime);}
 
-.form-wrap{max-width:640px;margin:0 auto;padding:0 16px 100px;}
-.step-panel{display:none;padding-top:28px;}
+/* ── STEP PANELS ── */
+.step-panel{display:none;padding-top:24px;}
 .step-panel.active{display:block;}
-.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;font-family:'DM Mono',monospace;}
-.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
-.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:24px;line-height:1.6;}
+.step-label-top{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.35rem;color:white;margin-bottom:5px;}
+.step-sub-main{color:rgba(255,255,255,0.5);font-size:.85rem;margin-bottom:22px;line-height:1.6;}
 
-.field{margin-bottom:18px;}
-.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
-.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
-.fi{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:16px;}
+.field label{display:block;font-weight:700;font-size:.68rem;margin-bottom:6px;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:rgba(255,255,255,0.35);font-size:.7rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s;}
 .fi:focus{border-color:var(--builtsy-blue);}
-.fi::placeholder{color:#9ca3af;}
-textarea.fi{resize:vertical;min-height:88px;}
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:500px){.field-grid{grid-template-columns:1fr;}}
-.field-hint{font-size:.72rem;color:#9ca3af;margin-top:5px;line-height:1.5;}
+.fi::placeholder{color:rgba(255,255,255,0.25);}
+textarea.fi{resize:vertical;min-height:80px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field-hint{font-size:.7rem;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;}
+.sl{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:24px 0 11px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);}
 
-.sl{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin:28px 0 12px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+/* ── TEMPLATE CARDS ── */
+.tpl-card{border:2px solid rgba(255,255,255,0.1);border-radius:14px;margin-bottom:12px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);overflow:hidden;user-select:none;}
+.tpl-card:hover{border-color:rgba(255,255,255,0.25);}
+.tpl-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
+.tpl-card-preview{height:148px;overflow:hidden;position:relative;background:#f5f5f5;}
+.tpl-card-preview iframe{width:357%;height:536px;border:none;transform:scale(0.28);transform-origin:top left;pointer-events:none;}
+.tpl-card-info{padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.tpl-card-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);background:transparent;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;transition:all .2s;color:transparent;}
+.tpl-card.selected .tpl-card-check{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.tpl-card-meta{flex:1;}
+.tpl-card-name{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
+.tpl-card-vibe{font-size:.72rem;color:rgba(255,255,255,0.4);}
 
-/* ── PALETTE CARDS ── */
-.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
-@media(max-width:400px){.palette-grid{grid-template-columns:1fr;}}
-.palette-card{border:2px solid #e5e7eb;border-radius:14px;padding:14px 14px 12px;cursor:pointer;transition:all .25s;background:white;user-select:none;}
-.palette-card:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
-.palette-swatches{display:flex;gap:5px;margin-bottom:10px;}
-.palette-swatch{height:28px;border-radius:7px;flex:1;}
-.palette-card-name{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:2px;}
-.palette-card-desc{font-size:.7rem;color:#9ca3af;line-height:1.4;}
-.palette-check{float:right;width:18px;height:18px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.6rem;display:none;align-items:center;justify-content:center;margin-top:-2px;}
+/* ── PALETTE TABS ── */
+.pal-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.pal-tab{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 13px;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .2s;}
+.pal-tab.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.palette-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 12px 10px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);user-select:none;}
+.palette-card:hover{border-color:rgba(255,255,255,0.22);}
+.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
+.palette-swatches{display:flex;gap:5px;margin-bottom:9px;}
+.palette-swatch{height:24px;border-radius:6px;flex:1;}
+.palette-card-name{font-weight:700;font-size:.78rem;color:white;margin-bottom:2px;}
+.palette-card-desc{font-size:.67rem;color:rgba(255,255,255,0.35);line-height:1.4;}
+.palette-check{float:right;width:16px;height:16px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.55rem;display:none;align-items:center;justify-content:center;margin-top:-1px;}
 .palette-card.selected .palette-check{display:flex;}
 
-/* ── UPLOAD ZONES ── */
-.upload-zone-wrap{margin-bottom:14px;}
-.upload-zone-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
-.upload-zone{border:2px dashed #e5e7eb;border-radius:12px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
-.upload-zone:hover{border-color:var(--builtsy-blue);background:#f8f9ff;}
-.upload-zone.has-photo{border-style:solid;border-color:#e5e7eb;padding:0;overflow:hidden;display:block;}
-.upload-zone-icon{font-size:1.4rem;opacity:.4;}
-.upload-zone-text{font-size:.78rem;color:#9ca3af;line-height:1.4;}
-.upload-zone-text strong{display:block;color:#6b7280;font-weight:600;margin-bottom:2px;}
-.upload-zone-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px;}
-.upload-thumb{width:100%;height:130px;object-fit:cover;display:block;border-radius:10px;}
-.upload-clear{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.65);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-.upload-photos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:500px){.upload-photos-grid{grid-template-columns:1fr;}}
-.upload-optional-note{font-size:.7rem;color:#9ca3af;margin-top:4px;text-align:center;}
+/* Custom palette */
+.custom-pal-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;}
+.custom-pal-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.custom-pal-swatch{width:52px;height:52px;border-radius:10px;cursor:pointer;border:2.5px solid rgba(255,255,255,0.15);transition:border-color .2s;}
+.custom-pal-swatch:hover{border-color:rgba(255,255,255,0.4);}
+.custom-pal-label{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(255,255,255,0.4);text-align:center;}
+.btn-apply-custom{width:100%;margin-top:12px;background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
 
-/* service block */
-.svc-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
-.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;}
-.svc-block-title{font-size:.88rem;font-weight:700;color:var(--navy);}
-.svc-block-chevron{font-size:.75rem;color:#9ca3af;transition:transform .2s;}
+/* ── SERVICE BLOCKS ── */
+.svc-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;}
+.svc-block-title{font-size:.85rem;font-weight:700;color:white;}
+.svc-block-chevron{font-size:.7rem;color:rgba(255,255,255,0.35);transition:transform .2s;}
 .svc-block-chevron.open{transform:rotate(180deg);}
-.svc-block-body{display:none;padding:0 16px 16px;border-top:1px solid #f3f4f6;}
+.svc-block-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,0.08);}
 .svc-block-body.open{display:block;}
 
-/* pricing block */
-.price-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
-.price-block.popular{border-color:var(--pink);background:rgba(238,112,188,0.03);}
-.price-block-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;font-family:'DM Mono',monospace;}
+/* ── PRICING BLOCKS ── */
+.price-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.price-block.popular{border-color:var(--yellow);background:rgba(232,212,0,0.06);}
+.price-block-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px;font-family:'DM Mono',monospace;}
+.popular-toggle{display:flex;align-items:center;gap:6px;margin-bottom:8px;cursor:pointer;}
+.popular-toggle input[type=radio]{accent-color:var(--yellow);width:14px;height:14px;cursor:pointer;}
+.popular-toggle span{font-size:.72rem;color:rgba(255,255,255,0.45);font-family:'DM Mono',monospace;}
 
-/* testi block */
-.testi-block{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
-.testi-num{font-size:.65rem;font-weight:700;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:8px;}
+/* ── TESTIMONIAL BLOCKS ── */
+.testi-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.testi-num{font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;}
 
-.step-nav{display:flex;gap:10px;margin-top:28px;}
-.btn-back{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;}
-.btn-back:hover{border-color:var(--navy);color:var(--navy);}
-.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;}
+/* ── UPLOAD ZONES ── */
+.upload-zone-wrap{margin-bottom:12px;}
+.upload-zone-label-top{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-family:'DM Mono',monospace;margin-bottom:5px;display:block;}
+.upload-zone{border:2px dashed rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.04);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;min-height:90px;}
+.upload-zone:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.06);}
+.upload-zone.has-photo{border-style:solid;border-color:rgba(255,255,255,0.15);padding:0;overflow:hidden;display:block;min-height:0;}
+.upload-zone-icon{font-size:1.1rem;opacity:.5;}
+.upload-zone-text{font-size:.72rem;color:rgba(255,255,255,0.35);line-height:1.4;}
+.upload-zone-text strong{display:block;color:rgba(255,255,255,0.6);font-weight:600;margin-bottom:1px;}
+.upload-zone-btn{background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);border-radius:7px;padding:6px 12px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:2px;}
+.upload-thumb{width:100%;height:100px;object-fit:cover;display:block;}
+.upload-clear{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.upload-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.upload-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.upload-optional{font-size:.67rem;color:rgba(255,255,255,0.25);margin-top:3px;text-align:center;}
+.port-meta{margin-top:5px;}
+.port-meta .fi{font-size:.78rem;padding:7px 10px;margin-bottom:4px;}
+
+/* ── PROCESS BLOCKS ── */
+.process-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.process-num{font-size:.6rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;margin-bottom:6px;}
+
+/* ── NAV BUTTONS ── */
+.step-nav{display:flex;gap:10px;margin-top:24px;}
+.btn-back{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;}
+.btn-back:hover{border-color:rgba(255,255,255,0.4);color:white;}
+.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
 .btn-next:hover{background:#b8d000;}
-.btn-generate{flex:1;background:var(--navy);color:var(--lime);border:none;border-radius:10px;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-generate:hover{background:#1e2d4a;}
+.btn-generate{flex:1;background:linear-gradient(135deg,var(--lime),#a8c000);color:var(--navy);border:none;border-radius:10px;padding:13px 20px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate:hover{filter:brightness(1.07);}
 
-.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+/* ── OVERLAY ── */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.96);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
 .gen-overlay.active{display:flex;}
-.gen-spinner{width:48px;height:48px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+.gen-spinner{width:44px;height:44px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
-.gen-sub{color:rgba(255,255,255,.55);font-size:.88rem;max-width:300px;line-height:1.6;}
-.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.78rem;}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.25rem;}
+.gen-sub{color:rgba(255,255,255,.45);font-size:.85rem;max-width:300px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.75rem;}
+.gen-progress-bar{width:260px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.gen-progress-fill{height:100%;background:var(--lime);border-radius:2px;width:0%;transition:width .5s;}
 
-#output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
-#output-panel.active{display:flex;}
-.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
-.output-badge{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
-.output-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* ── OUTPUT PANEL ── */
+#sm-output-panel{display:none;position:fixed;inset:0;z-index:300;background:#e8e8e0;flex-direction:column;}
+#sm-output-panel.active{display:flex;}
+.output-toolbar{background:#0D0D0D;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.output-title{color:rgba(255,255,255,.6);font-size:.78rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
-.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;}
 .btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
-.deploy-bar{background:rgba(67,97,238,.12);border-bottom:1px solid rgba(67,97,238,.2);padding:9px 16px;font-size:.76rem;color:rgba(255,255,255,.7);flex-shrink:0;}
+.deploy-bar{background:rgba(200,224,0,.08);border-bottom:1px solid rgba(200,224,0,.15);padding:8px 16px;font-size:.74rem;color:rgba(255,255,255,.65);flex-shrink:0;}
 .deploy-bar a{color:var(--lime);font-weight:600;}
 .output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
-.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
-#output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
-.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;}
+#sm-output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:13px;color:#fca5a5;font-size:.85rem;margin:14px;display:none;}
 .output-error.active{display:block;}
-#revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
-#revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
-#revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
-#revise-input::placeholder{color:rgba(255,255,255,.35);}
-.btn-revise-submit{background:var(--pink);color:white;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
+#sm-revise-drawer{display:none;background:#0D0D0D;border-top:1px solid rgba(255,255,255,.08);padding:11px 14px;flex-shrink:0;}
+#sm-revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#sm-revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#sm-revise-input::placeholder{color:rgba(255,255,255,.3);}
+.btn-revise-submit{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px 13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;flex-shrink:0;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .app-shell{flex-direction:column;}
+  .left-panel{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .right-panel{display:none;}
+}
+@media(max-width:500px){
+  .field-grid{grid-template-columns:1fr;}
+  .upload-grid-2{grid-template-columns:1fr;}
+  .upload-grid-3{grid-template-columns:1fr 1fr;}
+  .palette-grid{grid-template-columns:1fr;}
+  .pal-tabs{flex-wrap:wrap;}
+}
+.left-panel::-webkit-scrollbar{width:4px;}
+.left-panel::-webkit-scrollbar-track{background:transparent;}
+.left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 </style>
 </head>
 <body>
 
 <div class="topnav">
   <a href="dashboard.html" class="logo-text">builtsy</a>
-  <span class="tn-tag">✦ Template</span>
+  <span class="tn-tag">&#9889; Template</span>
   <div class="tn-right">
-    <button class="btn-top" onclick="smGoStep(5)">⚡ Generate</button>
+    <button class="btn-top" onclick="smGoStep(7)">&#9889; Generate</button>
   </div>
 </div>
 
-<div class="welcome-banner">
-  ✦ This template is already designed. Just fill in your info and download. ✦
-</div>
+<div class="app-shell">
 
-<div class="bp-hero">
-  <h1>Social Media Manager<br><span>Template Site</span></h1>
-  <p>Elegant, editorial design — fill in your info and it's yours. No design skills needed.</p>
-</div>
+  <!-- ══ LEFT PANEL ══ -->
+  <div class="left-panel">
 
-<!-- TEMPLATE PREVIEW STRIP -->
-<div class="tpl-preview-strip" onclick="smGoStep(1)">
-  <iframe src="social-media-manager-site.html" scrolling="no" tabindex="-1"></iframe>
-  <div class="tpl-preview-overlay">
-    <span class="tpl-preview-badge">👆 Preview the template — click to start</span>
-  </div>
-</div>
+    <div class="step-progress">
+      <div class="step-dot active" id="sm-dot-1" onclick="smGoStep(1)">1</div>
+      <div class="step-line" id="sm-line-1"></div>
+      <div class="step-dot" id="sm-dot-2" onclick="smGoStep(2)">2</div>
+      <div class="step-line" id="sm-line-2"></div>
+      <div class="step-dot" id="sm-dot-3" onclick="smGoStep(3)">3</div>
+      <div class="step-line" id="sm-line-3"></div>
+      <div class="step-dot" id="sm-dot-4" onclick="smGoStep(4)">4</div>
+      <div class="step-line" id="sm-line-4"></div>
+      <div class="step-dot" id="sm-dot-5" onclick="smGoStep(5)">5</div>
+      <div class="step-line" id="sm-line-5"></div>
+      <div class="step-dot" id="sm-dot-6" onclick="smGoStep(6)">6</div>
+      <div class="step-line" id="sm-line-6"></div>
+      <div class="step-dot" id="sm-dot-7" onclick="smGoStep(7)">7</div>
+    </div>
 
-<!-- STEP PROGRESS -->
-<div class="step-progress">
-  <div class="step-dot active" id="sm-dot-1">1</div>
-  <div class="step-line" id="sm-line-1"></div>
-  <div class="step-dot" id="sm-dot-2">2</div>
-  <div class="step-line" id="sm-line-2"></div>
-  <div class="step-dot" id="sm-dot-3">3</div>
-  <div class="step-line" id="sm-line-3"></div>
-  <div class="step-dot" id="sm-dot-4">4</div>
-  <div class="step-line" id="sm-line-4"></div>
-  <div class="step-dot" id="sm-dot-5">5</div>
-</div>
+    <div class="left-inner">
 
-<div class="form-wrap">
-
-  <!-- ══ STEP 1 — PALETTE ══ -->
-  <div class="step-panel active" id="sm-step-1">
-    <p class="step-label-top">Step 1 of 5</p>
-    <h2 class="step-title-main">Choose Your Palette</h2>
-    <p class="step-sub-main">Pick a color scheme. The editorial layout stays exactly the same — just the accent color and background shift.</p>
-
-    <div class="palette-grid">
-      <div class="palette-card selected" id="pal-original" onclick="smSelectPalette('original')">
-        <div class="palette-check">✓</div>
-        <div class="palette-swatches">
-          <div class="palette-swatch" style="background:#FAF8F4;border:1px solid #e5e7eb;"></div>
-          <div class="palette-swatch" style="background:#E8458A;"></div>
-          <div class="palette-swatch" style="background:#F7D0E3;"></div>
+      <!-- ══ STEP 1 ══ -->
+      <div class="step-panel active" id="sm-step-1">
+        <p class="step-label-top">Step 1 of 7</p>
+        <h2 class="step-title-main">Choose Your Template</h2>
+        <p class="step-sub-main">Three social media manager designs. Pick your vibe — we'll fill it with your content.</p>
+        <div id="sm-tpl-cards"></div>
+        <div class="step-nav">
+          <button class="btn-next" onclick="smGoStep(2)">Continue &#8594;</button>
         </div>
-        <div class="palette-card-name">Original</div>
-        <div class="palette-card-desc">Cream + Hot Pink — the default editorial look</div>
       </div>
-      <div class="palette-card" id="pal-rose" onclick="smSelectPalette('rose')">
-        <div class="palette-check">✓</div>
-        <div class="palette-swatches">
-          <div class="palette-swatch" style="background:#FDF6F0;border:1px solid #e5e7eb;"></div>
-          <div class="palette-swatch" style="background:#C94070;"></div>
-          <div class="palette-swatch" style="background:#EDBECE;"></div>
+
+      <!-- ══ STEP 2 ══ -->
+      <div class="step-panel" id="sm-step-2">
+        <p class="step-label-top">Step 2 of 7</p>
+        <h2 class="step-title-main">Choose Your Colors</h2>
+        <p class="step-sub-main">Pick a palette or mix your own. Changes show in the preview live.</p>
+        <div class="pal-tabs">
+          <button class="pal-tab active" id="sm-tab-light" onclick="smSelectPaletteTab('light')">Light</button>
+          <button class="pal-tab" id="sm-tab-dark" onclick="smSelectPaletteTab('dark')">Dark</button>
+          <button class="pal-tab" id="sm-tab-mono" onclick="smSelectPaletteTab('mono')">Mono</button>
+          <button class="pal-tab" id="sm-tab-custom" onclick="smSelectPaletteTab('custom')">Custom</button>
         </div>
-        <div class="palette-card-name">Rose</div>
-        <div class="palette-card-desc">Warm white + Deep Rose — soft, romantic luxury</div>
-      </div>
-      <div class="palette-card" id="pal-noir" onclick="smSelectPalette('noir')">
-        <div class="palette-check">✓</div>
-        <div class="palette-swatches">
-          <div class="palette-swatch" style="background:#F5F5F0;border:1px solid #e5e7eb;"></div>
-          <div class="palette-swatch" style="background:#1A1A1A;"></div>
-          <div class="palette-swatch" style="background:#9A9A9A;"></div>
+        <div id="sm-palette-grid-wrap"></div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(1)">&#8592; Back</button>
+          <button class="btn-next" onclick="smGoStep(3)">Continue &#8594;</button>
         </div>
-        <div class="palette-card-name">Noir</div>
-        <div class="palette-card-desc">Off-white + Black — sleek, high-fashion minimal</div>
       </div>
-      <div class="palette-card" id="pal-sage" onclick="smSelectPalette('sage')">
-        <div class="palette-check">✓</div>
-        <div class="palette-swatches">
-          <div class="palette-swatch" style="background:#F8FAF4;border:1px solid #e5e7eb;"></div>
-          <div class="palette-swatch" style="background:#6B8F71;"></div>
-          <div class="palette-swatch" style="background:#B8D4BB;"></div>
+
+      <!-- ══ STEP 3 ══ -->
+      <div class="step-panel" id="sm-step-3">
+        <p class="step-label-top">Step 3 of 7</p>
+        <h2 class="step-title-main">Business Basics</h2>
+        <p class="step-sub-main">These go in your nav, hero, and footer. Keep them sharp.</p>
+        <div class="field">
+          <label>Your Name</label>
+          <input class="fi" id="sm-owner-name" type="text" placeholder="Olivia Aster">
         </div>
-        <div class="palette-card-name">Sage</div>
-        <div class="palette-card-desc">Cream + Sage Green — fresh, organic elegance</div>
-      </div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn-next" onclick="smGoStep(2)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 2 — BASICS ══ -->
-  <div class="step-panel" id="sm-step-2">
-    <p class="step-label-top">Step 2 of 5</p>
-    <h2 class="step-title-main">Your Business</h2>
-    <p class="step-sub-main">These basics go everywhere — nav, hero, footer, and contact section.</p>
-
-    <div class="field-grid">
-      <div class="field">
-        <label>Your Name</label>
-        <input class="fi" id="sm-owner" type="text" placeholder="Olivia Aster">
-      </div>
-      <div class="field">
-        <label>Business Name</label>
-        <input class="fi" id="sm-biz" type="text" placeholder="Olivia Aster Studio">
-      </div>
-    </div>
-    <div class="field">
-      <label>What You Do <span class="opt">— one line, shown in hero</span></label>
-      <input class="fi" id="sm-tagline" type="text" placeholder="Social Media Strategy &amp; Brand Growth">
-    </div>
-    <div class="field-grid">
-      <div class="field">
-        <label>City / Location</label>
-        <input class="fi" id="sm-location" type="text" placeholder="Austin, TX">
-      </div>
-      <div class="field">
-        <label>Contact Email</label>
-        <input class="fi" id="sm-email" type="email" placeholder="hello@yourbiz.com">
-      </div>
-    </div>
-    <div class="field-grid">
-      <div class="field">
-        <label>Years of Experience</label>
-        <input class="fi" id="sm-years" type="text" placeholder="6">
-      </div>
-      <div class="field">
-        <label>Clients / Brands Served</label>
-        <input class="fi" id="sm-clients" type="text" placeholder="87+">
-      </div>
-    </div>
-    <div class="field-grid">
-      <div class="field">
-        <label>Instagram <span class="opt">(optional)</span></label>
-        <input class="fi" id="sm-ig" type="text" placeholder="@oliviaaster">
-      </div>
-      <div class="field">
-        <label>TikTok <span class="opt">(optional)</span></label>
-        <input class="fi" id="sm-tk" type="text" placeholder="@oliviaaster">
-      </div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(1)">← Back</button>
-      <button class="btn-next" onclick="smGoStep(3)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 3 — STORY, SERVICES & TESTIMONIALS ══ -->
-  <div class="step-panel" id="sm-step-3">
-    <p class="step-label-top">Step 3 of 5</p>
-    <h2 class="step-title-main">Your Story & Services</h2>
-    <p class="step-sub-main">Fill in your copy, services, pricing, and testimonials. Pre-filled with smart defaults — edit what you want to change.</p>
-
-    <span class="sl">Hero Copy</span>
-    <div class="field">
-      <label>Hero Headline <span class="opt">— shown in large serif type</span></label>
-      <input class="fi" id="sm-headline" type="text" placeholder="Your Brand, Amplified Online—">
-      <div class="field-hint">Keep it short and punchy. The template styles it in a 3-line serif layout.</div>
-    </div>
-    <div class="field">
-      <label>Hero Subheading</label>
-      <textarea class="fi" id="sm-hero-sub" placeholder="I help women-led businesses go from invisible to unforgettable through strategic social media management and bold brand storytelling."></textarea>
-    </div>
-
-    <span class="sl">About / Bio</span>
-    <div class="field">
-      <label>About Paragraph</label>
-      <textarea class="fi" id="sm-about" style="min-height:100px;" placeholder="I'm Olivia — a social media strategist obsessed with helping small businesses build an online presence that actually converts. With 6+ years in the industry, I've helped brands go from crickets to community."></textarea>
-    </div>
-    <div class="field">
-      <label>"As Seen In" Press Mentions <span class="opt">— comma separated, up to 6</span></label>
-      <input class="fi" id="sm-press" type="text" placeholder="Forbes, USA Today, BuzzFeed, Entrepreneur, HuffPost, Business Insider">
-    </div>
-
-    <span class="sl">Services (4 slots)</span>
-    <div id="sm-services-wrap">
-      <div class="svc-block">
-        <div class="svc-block-header" onclick="smToggleSvc(this)">
-          <span class="svc-block-title">Service 1</span>
-          <span class="svc-block-chevron open">▾</span>
+        <div class="field">
+          <label>Business Name</label>
+          <input class="fi" id="sm-biz-name" type="text" placeholder="Olivia Aster Studio">
         </div>
-        <div class="svc-block-body open">
-          <div class="field" style="margin-top:12px;">
-            <label>Service Name</label>
-            <input class="fi" id="sm-svc-name-1" type="text" value="Social Media Management">
+        <div class="field">
+          <label>Tagline</label>
+          <input class="fi" id="sm-tagline" type="text" placeholder="Social Media Strategy &amp; Brand Growth">
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>City / Location</label>
+            <input class="fi" id="sm-location" type="text" placeholder="Los Angeles, CA">
           </div>
           <div class="field">
-            <label>Description</label>
-            <textarea class="fi" id="sm-svc-desc-1">Full-service management of your Instagram, TikTok, and Pinterest. Content calendar, caption writing, scheduling, and monthly analytics report — all handled.</textarea>
+            <label>Social Handle</label>
+            <input class="fi" id="sm-handle" type="text" placeholder="@oliviaaster">
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Years of Experience</label>
+            <input class="fi" id="sm-years-exp" type="text" placeholder="6">
           </div>
           <div class="field">
-            <label>Tags <span class="opt">comma separated</span></label>
-            <input class="fi" id="sm-svc-tags-1" type="text" value="Instagram, TikTok, Pinterest, Monthly Reports">
+            <label>Clients / Brands Served</label>
+            <input class="fi" id="sm-client-count" type="text" placeholder="80+">
           </div>
         </div>
-      </div>
-      <div class="svc-block">
-        <div class="svc-block-header" onclick="smToggleSvc(this)">
-          <span class="svc-block-title">Service 2</span>
-          <span class="svc-block-chevron">▾</span>
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(2)">&#8592; Back</button>
+          <button class="btn-next" onclick="smGoStep(4)">Continue &#8594;</button>
         </div>
-        <div class="svc-block-body">
-          <div class="field" style="margin-top:12px;">
-            <label>Service Name</label>
-            <input class="fi" id="sm-svc-name-2" type="text" value="Content Creation">
+      </div>
+
+      <!-- ══ STEP 4 ══ -->
+      <div class="step-panel" id="sm-step-4">
+        <p class="step-label-top">Step 4 of 7</p>
+        <h2 class="step-title-main">Your Story</h2>
+        <p class="step-sub-main">The copy that sells you. Short, punchy, and true.</p>
+        <div class="field">
+          <label>Hero Headline <span class="opt">short &amp; punchy</span></label>
+          <input class="fi" id="sm-hero-headline" type="text" value="Your Brand, Amplified Online">
+          <div class="field-hint">This is the first thing visitors read. Make it count.</div>
+        </div>
+        <div class="field">
+          <label>Hero Subheading <span class="opt">2&#8211;3 sentences</span></label>
+          <textarea class="fi" id="sm-hero-sub">I help ambitious brands turn social media into their most powerful growth channel. From strategy to scroll-stopping content — I handle it all so you can focus on running your business.</textarea>
+        </div>
+        <div class="field">
+          <label>About / Bio <span class="opt">3&#8211;5 sentences</span></label>
+          <textarea class="fi" id="sm-bio" style="min-height:100px;">Hi, I'm Olivia — a social media strategist who's spent the last 6 years obsessing over what actually makes brands grow online. I've managed accounts from solo entrepreneurs to 7-figure brands, and the through-line is always the same: strategy-first, content second, ego never. I believe your social presence should work as hard as you do.</textarea>
+        </div>
+        <div class="field">
+          <label>Value Prop Line <span class="opt">one punchy sentence</span></label>
+          <input class="fi" id="sm-value-prop" type="text" value="We do the hard work for you.">
+        </div>
+        <div class="field">
+          <label>"As Seen In" Press <span class="opt">comma-separated, up to 6</span></label>
+          <input class="fi" id="sm-press-items" type="text" value="Forbes, Business Insider, Social Media Today, Later, Sprout Social, HubSpot">
+          <div class="field-hint">Shown in the marquee press bar. Leave blank to use defaults.</div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(3)">&#8592; Back</button>
+          <button class="btn-next" onclick="smGoStep(5)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 5 ══ -->
+      <div class="step-panel" id="sm-step-5">
+        <p class="step-label-top">Step 5 of 7</p>
+        <h2 class="step-title-main">Services &amp; Pricing</h2>
+        <p class="step-sub-main">What you offer and what it costs. Pre-filled with social media defaults.</p>
+
+        <span class="sl">Services (4 offerings)</span>
+        <div id="sm-services-wrap">
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="smToggleSvc(this)">
+              <span class="svc-block-title">Service 1</span>
+              <span class="svc-block-chevron open">&#9662;</span>
+            </div>
+            <div class="svc-block-body open">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="sm-svc1-name" type="text" value="Social Media Management"></div>
+              <div class="field"><label>Description <span class="opt">1&#8211;2 sentences</span></label><input class="fi" id="sm-svc1-desc" type="text" value="Full-service management across Instagram, TikTok, and Pinterest — content, scheduling, and community."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags <span class="opt">comma-separated</span></label><input class="fi" id="sm-svc1-tags" type="text" value="Instagram, TikTok, Pinterest"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="smToggleSvc(this)">
+              <span class="svc-block-title">Service 2</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="sm-svc2-name" type="text" value="Content Strategy"></div>
+              <div class="field"><label>Description</label><input class="fi" id="sm-svc2-desc" type="text" value="Monthly content calendars, caption frameworks, and trend research tailored to your brand."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="sm-svc2-tags" type="text" value="Strategy, Calendars, Captions"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="smToggleSvc(this)">
+              <span class="svc-block-title">Service 3</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="sm-svc3-name" type="text" value="Paid Ads Management"></div>
+              <div class="field"><label>Description</label><input class="fi" id="sm-svc3-desc" type="text" value="Meta and TikTok ad campaigns built to convert — from creative to targeting to optimization."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="sm-svc3-tags" type="text" value="Meta Ads, TikTok Ads, ROAS"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="smToggleSvc(this)">
+              <span class="svc-block-title">Service 4</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="sm-svc4-name" type="text" value="Brand Audit &amp; Consulting"></div>
+              <div class="field"><label>Description</label><input class="fi" id="sm-svc4-desc" type="text" value="A deep-dive review of your current social presence with a custom action plan to grow."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="sm-svc4-tags" type="text" value="Audit, Consulting, Growth Plan"></div>
+            </div>
+          </div>
+        </div>
+
+        <span class="sl">Pricing (3 tiers)</span>
+
+        <div class="price-block" id="sm-price-block-1">
+          <div class="price-block-label">Tier 1</div>
+          <label class="popular-toggle"><input type="radio" name="sm-popular-tier" value="1" onchange="smUpdatePopular()"><span>Mark as Most Popular</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="sm-tier1-name" type="text" value="Starter"></div>
+            <div class="field"><label>Price + Cadence</label><input class="fi" id="sm-tier1-price" type="text" value="$497/month"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description <span class="opt">1&#8211;2 sentences</span></label><textarea class="fi" id="sm-tier1-desc">3 posts per week on 1 platform, monthly strategy call, and analytics report.</textarea></div>
+        </div>
+
+        <div class="price-block popular" id="sm-price-block-2">
+          <div class="price-block-label">&#9733; Most Popular</div>
+          <label class="popular-toggle"><input type="radio" name="sm-popular-tier" value="2" checked onchange="smUpdatePopular()"><span>Mark as Most Popular</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="sm-tier2-name" type="text" value="Growth"></div>
+            <div class="field"><label>Price + Cadence</label><input class="fi" id="sm-tier2-price" type="text" value="$997/month"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="sm-tier2-desc">5 posts per week across 2 platforms, story content, community management, and full analytics dashboard.</textarea></div>
+        </div>
+
+        <div class="price-block" id="sm-price-block-3">
+          <div class="price-block-label">Tier 3</div>
+          <label class="popular-toggle"><input type="radio" name="sm-popular-tier" value="3" onchange="smUpdatePopular()"><span>Mark as Most Popular</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="sm-tier3-name" type="text" value="Full Service"></div>
+            <div class="field"><label>Price + Cadence</label><input class="fi" id="sm-tier3-price" type="text" value="$1,997/month"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="sm-tier3-desc">Daily content across all platforms, paid ads management, influencer outreach, and weekly strategy calls.</textarea></div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(4)">&#8592; Back</button>
+          <button class="btn-next" onclick="smGoStep(6)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 6 ══ -->
+      <div class="step-panel" id="sm-step-6">
+        <p class="step-label-top">Step 6 of 7</p>
+        <h2 class="step-title-main">Your Photos</h2>
+        <p class="step-sub-main">Upload images for your template. All optional — styled placeholders used if skipped.</p>
+        <div id="sm-photo-zones-container"></div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(5)">&#8592; Back</button>
+          <button class="btn-next" onclick="smGoStep(7)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 7 ══ -->
+      <div class="step-panel" id="sm-step-7">
+        <p class="step-label-top">Step 7 of 7</p>
+        <h2 class="step-title-main">Final Details</h2>
+        <p class="step-sub-main">Testimonials, contact info, and your process — the finishing touches.</p>
+
+        <span class="sl">Testimonials (3)</span>
+        <div class="testi-block">
+          <div class="testi-num">Testimonial 1</div>
+          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi1-quote">"Working with her transformed our Instagram from 800 to 12K followers in 4 months — and sales followed."</textarea></div>
+          <div class="field-grid">
+            <div class="field"><label>Name</label><input class="fi" id="sm-testi1-name" type="text" value="Jess Hartley"></div>
+            <div class="field"><label>Company</label><input class="fi" id="sm-testi1-company" type="text" value="Hartley Botanicals"></div>
+          </div>
+        </div>
+        <div class="testi-block">
+          <div class="testi-num">Testimonial 2</div>
+          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi2-quote">"The strategy session alone was worth 10x the investment. Our engagement rate tripled in 6 weeks."</textarea></div>
+          <div class="field-grid">
+            <div class="field"><label>Name</label><input class="fi" id="sm-testi2-name" type="text" value="Marcus Bell"></div>
+            <div class="field"><label>Company</label><input class="fi" id="sm-testi2-company" type="text" value="Bell Creative Co."></div>
+          </div>
+        </div>
+        <div class="testi-block">
+          <div class="testi-num">Testimonial 3</div>
+          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi3-quote">"I finally have a social presence I'm proud of. She gets my brand better than I do sometimes."</textarea></div>
+          <div class="field-grid">
+            <div class="field"><label>Name</label><input class="fi" id="sm-testi3-name" type="text" value="Priya Sundaram"></div>
+            <div class="field"><label>Company</label><input class="fi" id="sm-testi3-company" type="text" value="Sundaram Studio"></div>
+          </div>
+        </div>
+
+        <span class="sl">Contact &amp; Social</span>
+        <div class="field">
+          <label>Contact Email</label>
+          <input class="fi" id="sm-contact-email" type="email" placeholder="hello@yourstudio.com">
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Instagram URL</label>
+            <input class="fi" id="sm-instagram-url" type="text" placeholder="https://instagram.com/yourhandle">
           </div>
           <div class="field">
-            <label>Description</label>
-            <textarea class="fi" id="sm-svc-desc-2">On-brand graphics, Reels scripts, carousel designs, and story templates. Delivered ready-to-post every week.</textarea>
-          </div>
-          <div class="field">
-            <label>Tags <span class="opt">comma separated</span></label>
-            <input class="fi" id="sm-svc-tags-2" type="text" value="Graphics, Reels, Carousels, Stories">
+            <label>TikTok URL</label>
+            <input class="fi" id="sm-tiktok-url" type="text" placeholder="https://tiktok.com/@yourhandle">
           </div>
         </div>
-      </div>
-      <div class="svc-block">
-        <div class="svc-block-header" onclick="smToggleSvc(this)">
-          <span class="svc-block-title">Service 3</span>
-          <span class="svc-block-chevron">▾</span>
+        <div class="field">
+          <label>LinkedIn URL <span class="opt">optional</span></label>
+          <input class="fi" id="sm-linkedin-url" type="text" placeholder="https://linkedin.com/in/yourprofile">
         </div>
-        <div class="svc-block-body">
-          <div class="field" style="margin-top:12px;">
-            <label>Service Name</label>
-            <input class="fi" id="sm-svc-name-3" type="text" value="Brand Strategy Call">
-          </div>
-          <div class="field">
-            <label>Description</label>
-            <textarea class="fi" id="sm-svc-desc-3">A 90-minute intensive where we audit your current presence, identify gaps, and build a 90-day content roadmap custom to your business goals.</textarea>
-          </div>
-          <div class="field">
-            <label>Tags <span class="opt">comma separated</span></label>
-            <input class="fi" id="sm-svc-tags-3" type="text" value="Audit, 90-Day Plan, 1:1 Call">
-          </div>
+
+        <span class="sl">Your Process (4 steps)</span>
+        <div class="process-block">
+          <div class="process-num">Step 01</div>
+          <div class="field"><label>Title</label><input class="fi" id="sm-step1-title" type="text" value="Reach Out"></div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step1-desc" type="text" value="Book a free discovery call so we can get to know your brand and goals."></div>
         </div>
-      </div>
-      <div class="svc-block">
-        <div class="svc-block-header" onclick="smToggleSvc(this)">
-          <span class="svc-block-title">Service 4</span>
-          <span class="svc-block-chevron">▾</span>
+        <div class="process-block">
+          <div class="process-num">Step 02</div>
+          <div class="field"><label>Title</label><input class="fi" id="sm-step2-title" type="text" value="Strategy Session"></div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step2-desc" type="text" value="We build your custom social media roadmap — platforms, content pillars, and KPIs."></div>
         </div>
-        <div class="svc-block-body">
-          <div class="field" style="margin-top:12px;">
-            <label>Service Name</label>
-            <input class="fi" id="sm-svc-name-4" type="text" value="Video &amp; Photo Direction">
-          </div>
-          <div class="field">
-            <label>Description</label>
-            <textarea class="fi" id="sm-svc-desc-4">Creative direction for your brand shoot — shot list, mood board, styling guidance, and post-production art direction so every image is on-brand.</textarea>
-          </div>
-          <div class="field">
-            <label>Tags <span class="opt">comma separated</span></label>
-            <input class="fi" id="sm-svc-tags-4" type="text" value="Mood Boards, Shot Lists, Art Direction">
-          </div>
+        <div class="process-block">
+          <div class="process-num">Step 03</div>
+          <div class="field"><label>Title</label><input class="fi" id="sm-step3-title" type="text" value="Content Creation"></div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step3-desc" type="text" value="We create, schedule, and publish content that looks and sounds like you — only better."></div>
+        </div>
+        <div class="process-block">
+          <div class="process-num">Step 04</div>
+          <div class="field"><label>Title</label><input class="fi" id="sm-step4-title" type="text" value="Grow &amp; Scale"></div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step4-desc" type="text" value="Monthly reporting, optimization, and scaling your results month over month."></div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="smGoStep(6)">&#8592; Back</button>
+          <button class="btn-generate" onclick="smGenerate()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Build My Site
+          </button>
         </div>
       </div>
-    </div>
 
-    <span class="sl">Pricing (3 tiers)</span>
-    <div class="price-block">
-      <div class="price-block-label">Tier 1</div>
-      <div class="field-grid">
-        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-1" type="text" value="Starter"></div>
-        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-1" type="text" value="$697/month"></div>
-      </div>
-      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-1">Perfect for businesses just getting started. 12 posts/month, 2 platforms, monthly analytics call.</textarea></div>
-    </div>
-    <div class="price-block popular">
-      <div class="price-block-label">★ Most Popular</div>
-      <div class="field-grid">
-        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-2" type="text" value="Growth"></div>
-        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-2" type="text" value="$1,297/month"></div>
-      </div>
-      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-2">20 posts/month, 3 platforms, content creation, weekly check-ins, and full strategy management.</textarea></div>
-    </div>
-    <div class="price-block">
-      <div class="price-block-label">Tier 3</div>
-      <div class="field-grid">
-        <div class="field"><label>Name</label><input class="fi" id="sm-tier-name-3" type="text" value="Full Service"></div>
-        <div class="field"><label>Price</label><input class="fi" id="sm-tier-price-3" type="text" value="$2,497/month"></div>
-      </div>
-      <div class="field"><label>Description</label><textarea class="fi" id="sm-tier-desc-3">Unlimited content, all platforms, video direction, PR outreach, and priority response time.</textarea></div>
-    </div>
+    </div><!-- /left-inner -->
+  </div><!-- /left-panel -->
 
-    <span class="sl">Testimonials</span>
-    <div class="testi-block">
-      <div class="testi-num">Testimonial 1</div>
-      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-1">"I can't thank you enough for everything you've done for my business. Our engagement tripled in just 60 days."</textarea></div>
-      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-1" type="text" value="Sarah Jane, Madison &amp; Co."></div>
+  <!-- ══ RIGHT PANEL ══ -->
+  <div class="right-panel">
+    <div class="preview-toolbar">
+      <div class="preview-dot" style="background:#FF5F57;"></div>
+      <div class="preview-dot" style="background:#FEBC2E;margin-left:4px;"></div>
+      <div class="preview-dot" style="background:#28C840;margin-left:4px;"></div>
+      <div class="preview-url" id="sm-preview-url">social-media-manager-site.html</div>
     </div>
-    <div class="testi-block">
-      <div class="testi-num">Testimonial 2</div>
-      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-2">"Working with Olivia completely transformed how we show up online. Worth every penny and then some."</textarea></div>
-      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-2" type="text" value="Emily Ross, Ethereal Clothing"></div>
-    </div>
-    <div class="testi-block">
-      <div class="testi-num">Testimonial 3</div>
-      <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi-quote-3">"She gets it. She got our brand from day one and the content she creates feels like us, just better."</textarea></div>
-      <div class="field"><label>Name &amp; Company</label><input class="fi" id="sm-testi-name-3" type="text" value="Jamie S., Smithson Photography"></div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(2)">← Back</button>
-      <button class="btn-next" onclick="smGoStep(4)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 4 — PHOTOS ══ -->
-  <div class="step-panel" id="sm-step-4">
-    <p class="step-label-top">Step 4 of 5</p>
-    <h2 class="step-title-main">Your Photos</h2>
-    <p class="step-sub-main">Upload your own images or skip — the template will use styled placeholders. All photos are optional.</p>
-
-    <!-- Hidden file inputs -->
-    <input type="file" id="sm-file-hero" accept="image/*" style="display:none;" onchange="smHandlePhoto('hero',this)">
-    <input type="file" id="sm-file-about-a" accept="image/*" style="display:none;" onchange="smHandlePhoto('aboutA',this)">
-    <input type="file" id="sm-file-about-b" accept="image/*" style="display:none;" onchange="smHandlePhoto('aboutB',this)">
-    <input type="file" id="sm-file-port1" accept="image/*" style="display:none;" onchange="smHandlePhoto('port1',this)">
-    <input type="file" id="sm-file-port2" accept="image/*" style="display:none;" onchange="smHandlePhoto('port2',this)">
-    <input type="file" id="sm-file-port3" accept="image/*" style="display:none;" onchange="smHandlePhoto('port3',this)">
-
-    <span class="sl">Hero Section</span>
-
-    <div class="upload-zone-wrap">
-      <span class="upload-zone-label-top">Hero Photo — full-height portrait, right side of hero</span>
-      <div class="upload-zone" id="sm-zone-hero" onclick="document.getElementById('sm-file-hero').click()">
-        <div class="upload-zone-icon">🖼</div>
-        <div class="upload-zone-text">
-          <strong>Hero Portrait</strong>
-          Tall editorial photo — best: 3:4 or 2:3 portrait
-        </div>
-        <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-hero').click()">Upload Photo</button>
-      </div>
-      <p class="upload-optional-note">Optional — leave blank for a styled gradient placeholder</p>
-    </div>
-
-    <span class="sl">About Section</span>
-    <div class="upload-photos-grid">
-      <div class="upload-zone-wrap">
-        <span class="upload-zone-label-top">About Photo A — upper left</span>
-        <div class="upload-zone" id="sm-zone-about-a" onclick="document.getElementById('sm-file-about-a').click()">
-          <div class="upload-zone-icon">📷</div>
-          <div class="upload-zone-text">
-            <strong>About A</strong>
-            Portrait or lifestyle shot
-          </div>
-          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-about-a').click()">Upload</button>
-        </div>
-      </div>
-      <div class="upload-zone-wrap">
-        <span class="upload-zone-label-top">About Photo B — lower right</span>
-        <div class="upload-zone" id="sm-zone-about-b" onclick="document.getElementById('sm-file-about-b').click()">
-          <div class="upload-zone-icon">📷</div>
-          <div class="upload-zone-text">
-            <strong>About B</strong>
-            Behind-the-scenes or detail
-          </div>
-          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-about-b').click()">Upload</button>
-        </div>
-      </div>
-    </div>
-    <p class="upload-optional-note" style="margin-top:-6px;margin-bottom:16px;">Optional — both can be skipped</p>
-
-    <span class="sl">Portfolio Cards</span>
-    <p style="font-size:.82rem;color:#6b7280;margin-bottom:16px;line-height:1.6;">Each card shows a client project. Upload a photo and fill in the client name and what you did for them.</p>
-
-    <!-- Portfolio 1 -->
-    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
-      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 1</div>
-      <div class="upload-zone-wrap" style="margin-bottom:12px;">
-        <span class="upload-zone-label-top">Portfolio Image 1</span>
-        <div class="upload-zone" id="sm-zone-port1" onclick="document.getElementById('sm-file-port1').click()">
-          <div class="upload-zone-icon">🗂</div>
-          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
-          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port1').click()">Upload</button>
-        </div>
-      </div>
-      <div class="field"><label>Client Name</label><input class="fi" id="sm-port1-client" type="text" placeholder="The Bloom Co." value="The Bloom Co."></div>
-      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port1-services" style="min-height:70px;">Instagram Management
-Content Creation
-Brand Strategy</textarea></div>
-    </div>
-
-    <!-- Portfolio 2 -->
-    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
-      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 2</div>
-      <div class="upload-zone-wrap" style="margin-bottom:12px;">
-        <span class="upload-zone-label-top">Portfolio Image 2</span>
-        <div class="upload-zone" id="sm-zone-port2" onclick="document.getElementById('sm-file-port2').click()">
-          <div class="upload-zone-icon">🗂</div>
-          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
-          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port2').click()">Upload</button>
-        </div>
-      </div>
-      <div class="field"><label>Client Name</label><input class="fi" id="sm-port2-client" type="text" placeholder="Maison Lumière" value="Maison Lumière"></div>
-      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port2-services" style="min-height:70px;">TikTok Growth
-Reels Production
-Influencer Outreach</textarea></div>
-    </div>
-
-    <!-- Portfolio 3 -->
-    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:12px;">
-      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);font-family:'DM Mono',monospace;margin-bottom:12px;">Portfolio Card 3</div>
-      <div class="upload-zone-wrap" style="margin-bottom:12px;">
-        <span class="upload-zone-label-top">Portfolio Image 3</span>
-        <div class="upload-zone" id="sm-zone-port3" onclick="document.getElementById('sm-file-port3').click()">
-          <div class="upload-zone-icon">🗂</div>
-          <div class="upload-zone-text"><strong>Client Project Photo</strong>Campaign image, result screenshot, or brand shot</div>
-          <button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById('sm-file-port3').click()">Upload</button>
-        </div>
-      </div>
-      <div class="field"><label>Client Name</label><input class="fi" id="sm-port3-client" type="text" placeholder="Soleil Studio" value="Soleil Studio"></div>
-      <div class="field" style="margin-bottom:0;"><label>Services Provided <span class="opt">one per line</span></label><textarea class="fi" id="sm-port3-services" style="min-height:70px;">Pinterest Strategy
-Email Marketing
-Brand Voice Guide</textarea></div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(3)">← Back</button>
-      <button class="btn-next" onclick="smGoStep(5)">Continue →</button>
+    <div class="preview-frame-wrap">
+      <iframe id="preview-iframe" src="social-media-manager-site.html" scrolling="yes"></iframe>
     </div>
   </div>
 
-  <!-- ══ STEP 5 — GENERATE ══ -->
-  <div class="step-panel" id="sm-step-5">
-    <p class="step-label-top">Step 5 of 5</p>
-    <h2 class="step-title-main">Ready — Let's Build It</h2>
-    <p class="step-sub-main">Builtsy will fill your content into the template. The design stays exactly as you saw it. Takes about 20–30 seconds.</p>
+</div><!-- /app-shell -->
 
-    <div style="background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 24px;margin-bottom:24px;">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;font-family:'DM Mono',monospace;margin-bottom:14px;">What you get</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> Exact same design — colors, fonts, layout, artwork all intact
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> Your real business name, bio, services, and pricing
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> Your photos + chosen palette applied automatically
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:.85rem;">
-          <span style="color:var(--lime);font-size:1rem;">✓</span> Download HTML → drag to Netlify → live in 10 seconds
-        </div>
-      </div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="smGoStep(4)">← Back</button>
-      <button class="btn-generate" onclick="smGenerate()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        Fill In My Template
-      </button>
-    </div>
-  </div>
-
-</div><!-- /form-wrap -->
-
-<!-- OVERLAY -->
+<!-- GENERATION OVERLAY -->
 <div class="gen-overlay" id="sm-overlay">
   <div class="gen-spinner"></div>
-  <div class="gen-title">Filling in your template…</div>
-  <div class="gen-sub">Swapping in your content. The design stays exactly as you saw it.</div>
-  <div class="gen-msg" id="sm-gen-msg">Reading your business info…</div>
+  <div class="gen-title">Building your site&#8230;</div>
+  <div class="gen-sub">Filling your content into the template. Takes about 30&#8211;45 seconds.</div>
+  <div class="gen-msg" id="sm-gen-msg">Reading your business info&#8230;</div>
+  <div class="gen-progress-bar"><div class="gen-progress-fill" id="sm-progress-fill"></div></div>
 </div>
 
 <!-- OUTPUT PANEL -->
-<div id="output-panel">
+<div id="sm-output-panel">
   <div class="output-toolbar">
-    <span class="output-badge">✓ Ready</span>
-    <span class="output-title" id="sm-output-title">Your site — scroll to preview</span>
-    <button class="btn-tb" onclick="toggleRevise()">✏️ Revise</button>
-    <button class="btn-tb" onclick="smRebuild()">↺ Rebuild</button>
-    <button class="btn-dl" onclick="smDownload()">⬇ Download</button>
+    <span class="output-badge">&#10003; Ready</span>
+    <span class="output-title" id="sm-output-title">Your site &#8212; scroll to preview</span>
+    <button class="btn-tb" onclick="smToggleRevise()">&#9998; Revise</button>
+    <button class="btn-tb" onclick="smRebuild()">&#8635; Rebuild</button>
+    <button class="btn-dl" onclick="smDownload()">&#8595; Download</button>
+    <button class="btn-tb" onclick="smStartOver()">&#8592; Start Over</button>
   </div>
   <div class="deploy-bar">
-    🚀 <strong style="color:white;">Go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → live in 10 seconds.
+    &#128640; <strong style="color:white;">Go live:</strong> Download &#8594; drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> &#8594; live in 10 seconds.
   </div>
   <div class="output-error" id="sm-error"></div>
-  <div id="revise-drawer">
-    <textarea id="revise-input" placeholder="Describe what to change…" rows="2"></textarea>
-    <button class="btn-revise-submit" onclick="smRevise()">Apply →</button>
+  <div id="sm-revise-drawer">
+    <textarea id="sm-revise-input" placeholder="Describe what to change&#8230; e.g. Make the hero headline more casual" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="smRevise()">Apply &#8594;</button>
   </div>
   <div class="output-preview-wrap">
     <div class="output-preview-card">
-      <iframe id="output-preview-frame" scrolling="yes"></iframe>
+      <iframe id="sm-output-preview-frame" scrolling="yes"></iframe>
     </div>
   </div>
 </div>
 
 <script>
-var _smHTML = '';
-var _smPalette = 'original';
-var _smPhotos = {};
-var _smMsgs = ['Reading your business info…','Swapping in your copy…','Updating services and pricing…','Applying your palette…','Injecting photos…','Finalizing…'];
-var _smMsgIdx = 0;
-var _smInterval = null;
+// ══════════════════════════════════════════════
+// TEMPLATES
+// ══════════════════════════════════════════════
+var _smTemplates = [
+  { key: 'social',     name: 'Luxury Feminine',  vibe: 'Cream & pink — editorial, high-end feel',          file: 'social-media-manager-site.html' },
+  { key: 'cherry_sm', name: 'Dark Editorial',    vibe: 'Bold & dramatic — dark teal with hot pink accents', file: 'social-media-cherry.html' },
+  { key: 'bubbly_sm', name: 'Bright & Bubbly',  vibe: 'Hot pink energy — fun, Gen Z, unapologetic',        file: 'social-media-bubbly.html' }
+];
+var _smSelectedTemplate = 'social';
 
-// Palette CSS variable overrides for each theme
-var _smPaletteCSS = {
-  original: '',  // default, no override needed
-  rose: '--cream:#FDF6F0;--cream2:#F5ECE3;--pink:#C94070;--pink-light:#EDBECE;--pink-pale:#FCF0F5;',
-  noir: '--cream:#F5F5F0;--cream2:#EAEAE5;--pink:#1A1A1A;--pink-light:#9A9A9A;--pink-pale:#F0F0F0;',
-  sage: '--cream:#F8FAF4;--cream2:#EBF0E3;--pink:#6B8F71;--pink-light:#B8D4BB;--pink-pale:#EFF5F0;'
+// ══════════════════════════════════════════════
+// PALETTES
+// ══════════════════════════════════════════════
+var _smSelectedPalette = '';
+var _smSelectedPaletteName = 'Original';
+var _smActivePaletteTab = 'light';
+var _smCustomVars = {};
+
+var _smPalettes = {
+  social: {
+    light: [
+      { name: 'Original', desc: 'Cream + hot pink',       swatches: ['#FAF8F4','#E8458A','#F7D0E3'], css: '' },
+      { name: 'Blush',    desc: 'Warm white + deep rose', swatches: ['#FDF6F0','#C94070','#F7D5E3'], css: '--cream:#FDF6F0;--cream2:#F5ECE3;--pink:#C94070;--pink-light:#F7D5E3;--pink-pale:#FEF0F6;' },
+      { name: 'Peach',    desc: 'Cream + terracotta',     swatches: ['#FAF6F2','#C4612A','#F5D5C5'], css: '--cream:#FAF6F2;--cream2:#F0E8DF;--pink:#C4612A;--pink-light:#F5D5C5;--pink-pale:#FEF5F0;' },
+      { name: 'Lilac',    desc: 'White + soft purple',    swatches: ['#F9F7FF','#8B5CF6','#E0D0F5'], css: '--cream:#F9F7FF;--cream2:#F0EBFF;--pink:#8B5CF6;--pink-light:#DDD6FE;--pink-pale:#F5F0FF;' }
+    ],
+    dark: [
+      { name: 'Noir',   desc: 'Cream + black',      swatches: ['#FAF8F4','#1A1A1A','#555555'], css: '--pink:#1A1A1A;--pink-light:#404040;--pink-pale:#888888;' },
+      { name: 'Navy',   desc: 'Cream + deep navy',  swatches: ['#FAF8F4','#1B3A5C','#3A6F9F'], css: '--pink:#1B3A5C;--pink-light:#3A6F9F;--pink-pale:#7AAFD0;' },
+      { name: 'Forest', desc: 'Cream + deep green', swatches: ['#FAF8F4','#2D5A3D','#5A9070'], css: '--pink:#2D5A3D;--pink-light:#5A9070;--pink-pale:#90C0A0;' }
+    ],
+    mono: [
+      { name: 'Pink Mono', desc: 'All pink, tonal',  swatches: ['#FFF0F6','#E8458A','#F8D0E8'], css: '--cream:#FFF0F6;--cream2:#FFE0EF;--pink:#E8458A;--pink-light:#F5A0C8;--pink-pale:#FFDDF0;' },
+      { name: 'Rose Mono', desc: 'Deep rose tones',  swatches: ['#FFF0F3','#C04060','#F0A0B8'], css: '--cream:#FFF0F3;--cream2:#FFE0E8;--pink:#C04060;--pink-light:#E07090;--pink-pale:#F8D0DC;' },
+      { name: 'Nude Mono', desc: 'Warm nude tones',  swatches: ['#FBF6F0','#B08060','#D0A888'], css: '--cream:#FBF6F0;--cream2:#F5EDE3;--pink:#B08060;--pink-light:#D0A888;--pink-pale:#F0DDD0;' }
+    ],
+    customVars: ['--pink','--cream','--dark']
+  },
+  cherry_sm: {
+    light: [
+      { name: 'Original', desc: 'Teal + hot pink',            swatches: ['#1A3A3A','#E8458A','#FAF8F4'], css: '' },
+      { name: 'Midnight', desc: 'Deep navy + coral',          swatches: ['#1A2A4A','#E85040','#FAF8F4'], css: '--dark:#1A2A4A;--dark2:#0F1A30;--accent:#E85040;--accent2:#FF7060;' },
+      { name: 'Plum',     desc: 'Deep plum + gold',           swatches: ['#2A1A3A','#C9A84C','#FAF8F4'], css: '--dark:#2A1A3A;--dark2:#1A0A28;--accent:#C9A84C;--accent2:#E8C86A;' },
+      { name: 'Slate',    desc: 'Dark slate + electric blue', swatches: ['#1A2030','#3B82F6','#FAF8F4'], css: '--dark:#1A2030;--dark2:#0F1520;--accent:#3B82F6;--accent2:#60A5FA;' }
+    ],
+    dark: [
+      { name: 'Void', desc: 'Near black + magenta', swatches: ['#0A0A0A','#FF1D8C','#FAF8F4'], css: '--dark:#0A0A0A;--dark2:#000000;--accent:#FF1D8C;--accent2:#FF6BB5;--bg:#111111;--cream:#F5F0F0;' },
+      { name: 'Onyx', desc: 'Charcoal + gold',      swatches: ['#1A1A1A','#C9A84C','#F5F0E8'], css: '--dark:#1A1A1A;--dark2:#0A0A0A;--accent:#C9A84C;--accent2:#E8C86A;--bg:#1A1A1A;--cream:#F5F0E8;' }
+    ],
+    mono: [
+      { name: 'Teal Mono', desc: 'All teal, deep tones', swatches: ['#0A2020','#1A5050','#5A9090'], css: '--dark:#0A2020;--dark2:#051010;--accent:#5A9090;--accent2:#7AB0B0;--bg:#0A2020;' },
+      { name: 'Crimson',   desc: 'Red editorial',        swatches: ['#200A0A','#8B1A1A','#E85050'], css: '--dark:#200A0A;--dark2:#100505;--accent:#E85050;--accent2:#FF7070;--bg:#200A0A;' }
+    ],
+    customVars: ['--accent','--dark','--cream']
+  },
+  bubbly_sm: {
+    light: [
+      { name: 'Original', desc: 'White + hot magenta',     swatches: ['#FFFAFA','#FF1D8C','#FFE566'], css: '' },
+      { name: 'Coral',    desc: 'Cream + vibrant coral',   swatches: ['#FFFAF8','#FF5A3C','#FFE566'], css: '--pink:#FF5A3C;--pink2:#FF8060;--pink-light:#FFE0D8;--bg:#FFFAF8;--cream:#FFF5F0;' },
+      { name: 'Purple',   desc: 'White + electric violet', swatches: ['#FAFAFF','#8B3CF7','#FFE566'], css: '--pink:#8B3CF7;--pink2:#A970FF;--pink-light:#E8D8FF;--bg:#FAFAFF;--cream:#F5F0FF;' },
+      { name: 'Teal',     desc: 'Cream + bright teal',     swatches: ['#F8FFFF','#00B4B4','#FFE566'], css: '--pink:#00B4B4;--pink2:#00D0D0;--pink-light:#C0F0F0;--bg:#F8FFFF;--cream:#EEFAFA;' }
+    ],
+    dark: [
+      { name: 'Dark Mode',     desc: 'Dark + neon pink',       swatches: ['#1A0A12','#FF1D8C','#FFE566'], css: '--bg:#1A0A12;--dark:#F5F0F5;--dark2:#E0D5E0;--cream:#2D1020;' },
+      { name: 'Midnight Pink', desc: 'Near-black + hot pink',  swatches: ['#0A0008','#FF1D8C','#FFE566'], css: '--bg:#0A0008;--dark:#FFFFFF;--dark2:#E0E0E0;--cream:#1A0012;' }
+    ],
+    mono: [
+      { name: 'Pink Mono', desc: 'All pink spectrum',  swatches: ['#FFF0F8','#FF1D8C','#FFB0D8'], css: '--bg:#FFF0F8;--cream:#FFE0F2;--pink:#FF1D8C;--pink2:#FF60B0;--pink-light:#FFCCE8;--yellow:#FF80C0;' },
+      { name: 'Fuchsia',   desc: 'Deep fuchsia tones', swatches: ['#FFF0FF','#CC00CC','#FF60FF'], css: '--bg:#FFF0FF;--cream:#FFE0FF;--pink:#CC00CC;--pink2:#EE40EE;--pink-light:#F8C0F8;--yellow:#FF80FF;' }
+    ],
+    customVars: ['--pink','--bg','--yellow']
+  }
 };
 
+// ══════════════════════════════════════════════
+// PHOTO ZONES
+// ══════════════════════════════════════════════
+var _smPhotoZones = {
+  social: [
+    { id: 'sm-hero-photo',    label: 'Hero Photo',    desc: 'Full-height portrait in the hero section',  isHero: true },
+    { id: 'sm-about-a-photo', label: 'About Photo A', desc: 'Upper photo in the about section' },
+    { id: 'sm-about-b-photo', label: 'About Photo B', desc: 'Lower photo in the about section' },
+    { id: 'sm-port-1-photo',  label: 'Portfolio 1',   desc: 'First client project card',  hasPortMeta: true, portIdx: 1 },
+    { id: 'sm-port-2-photo',  label: 'Portfolio 2',   desc: 'Second client project card', hasPortMeta: true, portIdx: 2 },
+    { id: 'sm-port-3-photo',  label: 'Portfolio 3',   desc: 'Third client project card',  hasPortMeta: true, portIdx: 3 }
+  ],
+  cherry_sm: [
+    { id: 'cb-hero-photo',   label: 'Hero Photo',  desc: 'Large editorial portrait in the hero',     isHero: true },
+    { id: 'cb-about-photo',  label: 'About Photo', desc: 'Postage stamp photo in the about section' },
+    { id: 'cb-port-1-photo', label: 'Portfolio 1', desc: 'First client project card',  hasPortMeta: true, portIdx: 1 },
+    { id: 'cb-port-2-photo', label: 'Portfolio 2', desc: 'Second client project card', hasPortMeta: true, portIdx: 2 },
+    { id: 'cb-port-3-photo', label: 'Portfolio 3', desc: 'Third client project card',  hasPortMeta: true, portIdx: 3 }
+  ],
+  bubbly_sm: [
+    { id: 'bp-hero-photo',   label: 'Hero Photo',  desc: 'Circular portrait in the hero section',    isHero: true },
+    { id: 'bp-about-photo',  label: 'About Photo', desc: 'Circular photo in the about section' },
+    { id: 'bp-port-1-photo', label: 'Portfolio 1', desc: 'First client project card',  hasPortMeta: true, portIdx: 1 },
+    { id: 'bp-port-2-photo', label: 'Portfolio 2', desc: 'Second client project card', hasPortMeta: true, portIdx: 2 },
+    { id: 'bp-port-3-photo', label: 'Portfolio 3', desc: 'Third client project card',  hasPortMeta: true, portIdx: 3 }
+  ]
+};
+var _smPhotos = {};
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+var _smHTML = '';
+var _smPopularTier = 2;
+var _smGenMsgs = [
+  'Reading your business info…',
+  'Swapping in your copy…',
+  'Updating services and pricing…',
+  'Filling in portfolio projects…',
+  'Applying your palette…',
+  'Injecting your photos…',
+  'Rendering final output…'
+];
+var _smMsgIdx = 0;
+var _smMsgInterval = null;
+var _smProgress = 0;
+var _smProgressInterval = null;
+
+var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
+
+// ══════════════════════════════════════════════
+// STEP NAV
+// ══════════════════════════════════════════════
 function smGoStep(n) {
-  for (var i = 1; i <= 5; i++) {
+  for (var i = 1; i <= 7; i++) {
     var p = document.getElementById('sm-step-' + i);
     var d = document.getElementById('sm-dot-' + i);
     if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
     if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
-    if (i < 5) {
+    if (i < 7) {
       var l = document.getElementById('sm-line-' + i);
       if (l) l.className = 'step-line' + (i < n ? ' done' : '');
     }
   }
-  window.scrollTo(0, 0);
+  var leftPanel = document.querySelector('.left-panel');
+  if (leftPanel) leftPanel.scrollTop = 0;
+  if (n === 6) smBuildPhotoZones();
 }
 
-function smSelectPalette(name) {
-  _smPalette = name;
-  var cards = ['original','rose','noir','sage'];
-  for (var i = 0; i < cards.length; i++) {
-    var c = document.getElementById('pal-' + cards[i]);
-    if (c) c.className = 'palette-card' + (cards[i] === name ? ' selected' : '');
+// ══════════════════════════════════════════════
+// TEMPLATE SELECTION
+// ══════════════════════════════════════════════
+function smRenderTemplateCards() {
+  var wrap = document.getElementById('sm-tpl-cards');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 0; i < _smTemplates.length; i++) {
+    var t = _smTemplates[i];
+    var isSel = t.key === _smSelectedTemplate;
+    var selClass = isSel ? ' selected' : '';
+    var chk = isSel ? '✓' : '';
+    html += '<div class="tpl-card' + selClass + '" id="sm-tpl-' + t.key + '" onclick="smSelectTemplate(\'' + t.key + '\')">'
+      + '<div class="tpl-card-preview"><iframe src="' + t.file + '" scrolling="no" tabindex="-1"></iframe></div>'
+      + '<div class="tpl-card-info">'
+      + '<div class="tpl-card-check">' + chk + '</div>'
+      + '<div class="tpl-card-meta"><div class="tpl-card-name">' + t.name + '</div><div class="tpl-card-vibe">' + t.vibe + '</div></div>'
+      + '</div></div>';
   }
+  wrap.innerHTML = html;
 }
 
+function smSelectTemplate(key) {
+  _smSelectedTemplate = key;
+  for (var i = 0; i < _smTemplates.length; i++) {
+    var card = document.getElementById('sm-tpl-' + _smTemplates[i].key);
+    if (!card) continue;
+    var chkEl = card.querySelector('.tpl-card-check');
+    if (_smTemplates[i].key === key) {
+      card.className = 'tpl-card selected';
+      if (chkEl) chkEl.textContent = '✓';
+    } else {
+      card.className = 'tpl-card';
+      if (chkEl) chkEl.textContent = '';
+    }
+  }
+  for (var j = 0; j < _smTemplates.length; j++) {
+    if (_smTemplates[j].key === key) {
+      var iframe = document.getElementById('preview-iframe');
+      var urlEl = document.getElementById('sm-preview-url');
+      if (iframe) iframe.src = _smTemplates[j].file;
+      if (urlEl) urlEl.textContent = _smTemplates[j].file;
+      break;
+    }
+  }
+  // Reset palette when template changes
+  _smSelectedPalette = '';
+  _smSelectedPaletteName = 'Original';
+  smRenderPaletteGrid(_smActivePaletteTab);
+}
+
+// ══════════════════════════════════════════════
+// PALETTE
+// ══════════════════════════════════════════════
+function smSelectPaletteTab(tab) {
+  _smActivePaletteTab = tab;
+  var tabs = ['light','dark','mono','custom'];
+  for (var i = 0; i < tabs.length; i++) {
+    var el = document.getElementById('sm-tab-' + tabs[i]);
+    if (el) el.className = 'pal-tab' + (tabs[i] === tab ? ' active' : '');
+  }
+  smRenderPaletteGrid(tab);
+}
+
+function smRenderPaletteGrid(tab) {
+  var wrap = document.getElementById('sm-palette-grid-wrap');
+  if (!wrap) return;
+  var tplPalettes = _smPalettes[_smSelectedTemplate];
+  if (!tplPalettes) { wrap.innerHTML = ''; return; }
+
+  if (tab === 'custom') {
+    var vars = tplPalettes.customVars || [];
+    var html = '<div class="custom-pal-wrap">';
+    for (var i = 0; i < vars.length; i++) {
+      var varName = vars[i];
+      var inputId = 'sm-cc-input-' + i;
+      var swatchId = 'sm-cc-swatch-' + i;
+      var defColor = _smCustomVars[varName] || '#ee70bc';
+      html += '<div class="custom-pal-item">'
+        + '<div class="custom-pal-swatch" id="' + swatchId + '" style="background:' + defColor + ';" onclick="document.getElementById(\'' + inputId + '\').click()"></div>'
+        + '<input type="color" id="' + inputId + '" value="' + defColor + '" style="position:absolute;opacity:0;pointer-events:none;" onchange="smCustomColorChange(\'' + varName + '\',this.value,\'' + swatchId + '\')">'
+        + '<div class="custom-pal-label">' + varName + '</div>'
+        + '</div>';
+    }
+    html += '</div><button class="btn-apply-custom" onclick="smApplyCustom()">Apply Custom Colors</button>';
+    wrap.innerHTML = html;
+    return;
+  }
+
+  var palettes = tplPalettes[tab] || [];
+  var html = '<div class="palette-grid">';
+  for (var j = 0; j < palettes.length; j++) {
+    var pal = palettes[j];
+    var isSel = (pal.name === _smSelectedPaletteName && pal.css === _smSelectedPalette);
+    var selClass = isSel ? ' selected' : '';
+    var checkDisplay = isSel ? 'flex' : 'none';
+    var cssEsc = pal.css.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    html += '<div class="palette-card' + selClass + '" onclick="smSelectPalette(\'' + cssEsc + '\',\'' + pal.name.replace(/'/g,"\\'") + '\')">'
+      + '<div class="palette-check" style="display:' + checkDisplay + '">✓</div>'
+      + '<div class="palette-swatches">';
+    for (var k = 0; k < pal.swatches.length; k++) {
+      html += '<div class="palette-swatch" style="background:' + pal.swatches[k] + ';"></div>';
+    }
+    html += '</div>'
+      + '<div class="palette-card-name">' + pal.name + '</div>'
+      + '<div class="palette-card-desc">' + pal.desc + '</div>'
+      + '</div>';
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function smSelectPalette(cssStr, paletteName) {
+  _smSelectedPalette = cssStr;
+  _smSelectedPaletteName = paletteName;
+  smRenderPaletteGrid(_smActivePaletteTab);
+  smInjectPaletteIntoIframe(cssStr);
+}
+
+function smCustomColorChange(varName, value, swatchId) {
+  _smCustomVars[varName] = value;
+  var swatch = document.getElementById(swatchId);
+  if (swatch) swatch.style.background = value;
+}
+
+function smApplyCustom() {
+  var tplPalettes = _smPalettes[_smSelectedTemplate];
+  if (!tplPalettes) return;
+  var vars = tplPalettes.customVars || [];
+  var css = '';
+  for (var i = 0; i < vars.length; i++) {
+    if (_smCustomVars[vars[i]]) css += vars[i] + ':' + _smCustomVars[vars[i]] + ';';
+  }
+  _smSelectedPalette = css;
+  _smSelectedPaletteName = 'Custom';
+  smInjectPaletteIntoIframe(css);
+}
+
+function smInjectPaletteIntoIframe(cssOverride) {
+  var iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    var existing = doc.getElementById('builtsy-palette-override');
+    if (existing) existing.parentNode.removeChild(existing);
+    if (cssOverride) {
+      var style = doc.createElement('style');
+      style.id = 'builtsy-palette-override';
+      style.textContent = ':root{' + cssOverride + '}';
+      doc.head.appendChild(style);
+    }
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+// SERVICE BLOCKS
+// ══════════════════════════════════════════════
 function smToggleSvc(header) {
   var body = header.nextElementSibling;
   var chev = header.querySelector('.svc-block-chevron');
-  var isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  if (chev) chev.classList.toggle('open', !isOpen);
+  var isOpen = body.className.indexOf('open') >= 0;
+  body.className = 'svc-block-body' + (isOpen ? '' : ' open');
+  if (chev) chev.className = 'svc-block-chevron' + (isOpen ? '' : ' open');
 }
 
-// ── PHOTO UPLOAD ──
-function smHandlePhoto(slot, input) {
-  if (!input.files || !input.files[0]) return;
-  var file = input.files[0];
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    _smPhotos[slot] = e.target.result; // base64 data URL
-    smRenderPhotoZone(slot);
-  };
-  reader.readAsDataURL(file);
-}
-
-var _smZoneMap = {
-  hero:   'sm-zone-hero',
-  aboutA: 'sm-zone-about-a',
-  aboutB: 'sm-zone-about-b',
-  port1:  'sm-zone-port1',
-  port2:  'sm-zone-port2',
-  port3:  'sm-zone-port3'
-};
-var _smFileMap = {
-  hero:   'sm-file-hero',
-  aboutA: 'sm-file-about-a',
-  aboutB: 'sm-file-about-b',
-  port1:  'sm-file-port1',
-  port2:  'sm-file-port2',
-  port3:  'sm-file-port3'
-};
-
-function smRenderPhotoZone(slot) {
-  var zoneId = _smZoneMap[slot];
-  var zone = document.getElementById(zoneId);
-  if (!zone) return;
-  var data = _smPhotos[slot];
-  if (data) {
-    zone.className = 'upload-zone has-photo';
-    zone.innerHTML = '<img class="upload-thumb" src="' + data + '" alt=""><button class="upload-clear" onclick="event.stopPropagation();smClearPhoto(\'' + slot + '\')">✕</button>';
-    zone.onclick = null;
-  } else {
-    // Reset to default — re-render based on slot
-    smResetZone(slot);
+// ══════════════════════════════════════════════
+// POPULAR TIER
+// ══════════════════════════════════════════════
+function smUpdatePopular() {
+  var radios = document.querySelectorAll('input[name="sm-popular-tier"]');
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      _smPopularTier = parseInt(radios[i].value, 10);
+      break;
+    }
+  }
+  for (var j = 1; j <= 3; j++) {
+    var block = document.getElementById('sm-price-block-' + j);
+    if (!block) continue;
+    var label = block.querySelector('.price-block-label');
+    if (j === _smPopularTier) {
+      block.className = 'price-block popular';
+      if (label) label.textContent = '★ Most Popular';
+    } else {
+      block.className = 'price-block';
+      if (label) label.textContent = 'Tier ' + j;
+    }
   }
 }
 
-function smClearPhoto(slot) {
-  _smPhotos[slot] = null;
-  var fileInput = document.getElementById(_smFileMap[slot]);
-  if (fileInput) fileInput.value = '';
-  smResetZone(slot);
-}
+// ══════════════════════════════════════════════
+// PHOTO ZONES
+// ══════════════════════════════════════════════
+function smBuildPhotoZones() {
+  var container = document.getElementById('sm-photo-zones-container');
+  if (!container) return;
+  var zones = _smPhotoZones[_smSelectedTemplate] || [];
+  var heroZones = [];
+  var aboutZones = [];
+  var portZones = [];
 
-function smResetZone(slot) {
-  var zoneId = _smZoneMap[slot];
-  var zone = document.getElementById(zoneId);
-  if (!zone) return;
-  zone.className = 'upload-zone';
-  var fileId = _smFileMap[slot];
-  var labels = {
-    hero:   {icon:'🖼', title:'Hero Portrait', desc:'Tall editorial photo — best: 3:4 or 2:3 portrait'},
-    aboutA: {icon:'📷', title:'About A', desc:'Portrait or lifestyle shot'},
-    aboutB: {icon:'📷', title:'About B', desc:'Behind-the-scenes or detail'},
-    port1:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'},
-    port2:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'},
-    port3:  {icon:'🗂', title:'Client Project Photo', desc:'Campaign image, result screenshot, or brand shot'}
-  };
-  var lbl = labels[slot] || {icon:'📷',title:'Upload Photo',desc:''};
-  zone.innerHTML = '<div class="upload-zone-icon">' + lbl.icon + '</div>'
-    + '<div class="upload-zone-text"><strong>' + lbl.title + '</strong>' + lbl.desc + '</div>'
-    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Upload</button>';
-  zone.onclick = function() { document.getElementById(fileId).click(); };
-}
-
-// ── COLLECT FIELDS ──
-function smCollect() {
-  var v = function(id) { return (document.getElementById(id)||{}).value || ''; };
-  return {
-    ownerName:       v('sm-owner'),
-    businessName:    v('sm-biz'),
-    tagline:         v('sm-tagline'),
-    location:        v('sm-location'),
-    email:           v('sm-email'),
-    yearsExperience: v('sm-years'),
-    clientsServed:   v('sm-clients'),
-    instagram:       v('sm-ig'),
-    tiktok:          v('sm-tk'),
-    heroHeadline:    v('sm-headline'),
-    heroSub:         v('sm-hero-sub'),
-    aboutBio:        v('sm-about'),
-    pressMentions:   v('sm-press'),
-    service1Name:    v('sm-svc-name-1'), service1Desc: v('sm-svc-desc-1'), service1Tags: v('sm-svc-tags-1'),
-    service2Name:    v('sm-svc-name-2'), service2Desc: v('sm-svc-desc-2'), service2Tags: v('sm-svc-tags-2'),
-    service3Name:    v('sm-svc-name-3'), service3Desc: v('sm-svc-desc-3'), service3Tags: v('sm-svc-tags-3'),
-    service4Name:    v('sm-svc-name-4'), service4Desc: v('sm-svc-desc-4'), service4Tags: v('sm-svc-tags-4'),
-    tier1Name:       v('sm-tier-name-1'), tier1Price: v('sm-tier-price-1'), tier1Desc: v('sm-tier-desc-1'),
-    tier2Name:       v('sm-tier-name-2'), tier2Price: v('sm-tier-price-2'), tier2Desc: v('sm-tier-desc-2'),
-    tier3Name:       v('sm-tier-name-3'), tier3Price: v('sm-tier-price-3'), tier3Desc: v('sm-tier-desc-3'),
-    portfolio1Client:   v('sm-port1-client'), portfolio1Services: v('sm-port1-services'),
-    portfolio2Client:   v('sm-port2-client'), portfolio2Services: v('sm-port2-services'),
-    portfolio3Client:   v('sm-port3-client'), portfolio3Services: v('sm-port3-services'),
-    testi1Quote:     v('sm-testi-quote-1'), testi1Name: v('sm-testi-name-1'),
-    testi2Quote:     v('sm-testi-quote-2'), testi2Name: v('sm-testi-name-2'),
-    testi3Quote:     v('sm-testi-quote-3'), testi3Name: v('sm-testi-name-3')
-  };
-}
-
-// ── INJECT PALETTE + PHOTOS INTO HTML ──
-function smInjectAssets(html) {
-  // 1. Palette: inject CSS variable overrides into </head>
-  var palCSS = _smPaletteCSS[_smPalette] || '';
-  if (palCSS) {
-    html = html.replace('</head>', '<style>:root{' + palCSS + '}</style>\n</head>');
-  }
-
-  // 2. Photos: use DOMParser for reliable injection
-  var photoMap = {
-    'sm-hero-photo':    _smPhotos.hero,
-    'sm-about-a-photo': _smPhotos.aboutA,
-    'sm-about-b-photo': _smPhotos.aboutB,
-    'sm-port-1-photo':  _smPhotos.port1,
-    'sm-port-2-photo':  _smPhotos.port2,
-    'sm-port-3-photo':  _smPhotos.port3
-  };
-
-  var hasPhotos = false;
-  for (var k in photoMap) { if (photoMap[k]) { hasPhotos = true; break; } }
-
-  if (hasPhotos) {
-    try {
-      var parser = new DOMParser();
-      var doc2 = parser.parseFromString(html, 'text/html');
-      for (var pid in photoMap) {
-        if (!photoMap[pid]) continue;
-        var img = doc2.getElementById(pid);
-        if (img) {
-          img.src = photoMap[pid];
-          img.style.display = 'block';
-          img.style.position = 'absolute';
-          img.style.inset = '0';
-          img.style.width = '100%';
-          img.style.height = '100%';
-          img.style.objectFit = 'cover';
-        }
-      }
-      html = '<!DOCTYPE html>\n' + doc2.documentElement.outerHTML;
-    } catch(e) {
-      console.warn('DOMParser injection failed, falling back to regex:', e);
-      // Fallback: regex-based src swap
-      for (var pid in photoMap) {
-        if (!photoMap[pid]) continue;
-        var re = new RegExp('(<img[^>]*id="' + pid + '"[^>]*src=")[^"]*(")', 'i');
-        html = html.replace(re, '$1' + photoMap[pid] + '$2');
-      }
+  for (var i = 0; i < zones.length; i++) {
+    if (zones[i].hasPortMeta) {
+      portZones.push(zones[i]);
+    } else if (zones[i].isHero) {
+      heroZones.push(zones[i]);
+    } else {
+      aboutZones.push(zones[i]);
     }
   }
 
+  var html = '';
+
+  // Hero
+  if (heroZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>';
+    for (var hi = 0; hi < heroZones.length; hi++) {
+      html += smZoneHTML(heroZones[hi]);
+    }
+  }
+
+  // About / other
+  if (aboutZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">About Section</span>';
+    if (aboutZones.length === 1) {
+      html += smZoneHTML(aboutZones[0]);
+    } else {
+      html += '<div class="upload-grid-2">';
+      for (var ai = 0; ai < aboutZones.length; ai++) {
+        html += '<div>' + smZoneHTML(aboutZones[ai]) + '</div>';
+      }
+      html += '</div>';
+    }
+  }
+
+  // Portfolio
+  if (portZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 8px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Portfolio Cards</span>';
+    html += '<p style="font-size:.76rem;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.5;">Upload your best client work and add the client name and services for each card.</p>';
+    html += '<div class="upload-grid-3">';
+    for (var pi = 0; pi < portZones.length; pi++) {
+      var pz = portZones[pi];
+      var pIdx = pz.portIdx || (pi + 1);
+      html += '<div>'
+        + smZoneHTML(pz)
+        + '<div class="port-meta">'
+        + '<input class="fi" id="sm-port' + pIdx + '-client" type="text" placeholder="Client name">'
+        + '<input class="fi" id="sm-port' + pIdx + '-services" type="text" placeholder="Services (comma-sep.)">'
+        + '</div></div>';
+    }
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+}
+
+function smZoneHTML(zone) {
+  var photoData = _smPhotos[zone.id];
+  var fileId = 'sm-file-' + zone.id;
+  if (photoData) {
+    return '<div class="upload-zone-wrap">'
+      + '<span class="upload-zone-label-top">' + zone.label + '</span>'
+      + '<div class="upload-zone has-photo" id="sm-zone-' + zone.id + '">'
+      + '<img class="upload-thumb" src="' + photoData + '" alt="">'
+      + '<button class="upload-clear" onclick="event.stopPropagation();smClearPhoto(\'' + zone.id + '\')">×</button>'
+      + '</div>'
+      + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="smHandlePhoto(\'' + zone.id + '\',this)">'
+      + '</div>';
+  }
+  return '<div class="upload-zone-wrap">'
+    + '<span class="upload-zone-label-top">' + zone.label + '</span>'
+    + '<div class="upload-zone" id="sm-zone-' + zone.id + '" onclick="document.getElementById(\'' + fileId + '\').click()">'
+    + '<div class="upload-zone-icon">📷</div>'
+    + '<div class="upload-zone-text"><strong>' + zone.label + '</strong>' + zone.desc + '</div>'
+    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Upload Photo</button>'
+    + '</div>'
+    + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="smHandlePhoto(\'' + zone.id + '\',this)">'
+    + '<p class="upload-optional">Optional — placeholder shown if skipped</p>'
+    + '</div>';
+}
+
+function smHandlePhoto(zoneId, input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _smPhotos[zoneId] = e.target.result;
+    smBuildPhotoZones();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function smClearPhoto(zoneId) {
+  _smPhotos[zoneId] = null;
+  smBuildPhotoZones();
+}
+
+// ══════════════════════════════════════════════
+// COLLECT FIELDS
+// ══════════════════════════════════════════════
+function smCollect() {
+  var v = function(id) { return (document.getElementById(id) || {}).value || ''; };
+  return {
+    ownerName:    v('sm-owner-name'),
+    businessName: v('sm-biz-name'),
+    tagline:      v('sm-tagline'),
+    location:     v('sm-location'),
+    handle:       v('sm-handle'),
+    yearsExp:     v('sm-years-exp'),
+    clientCount:  v('sm-client-count'),
+    heroHeadline: v('sm-hero-headline'),
+    heroSub:      v('sm-hero-sub'),
+    bio:          v('sm-bio'),
+    valueProp:    v('sm-value-prop'),
+    pressItems:   v('sm-press-items'),
+    svc1Name: v('sm-svc1-name'), svc1Desc: v('sm-svc1-desc'), svc1Tags: v('sm-svc1-tags'),
+    svc2Name: v('sm-svc2-name'), svc2Desc: v('sm-svc2-desc'), svc2Tags: v('sm-svc2-tags'),
+    svc3Name: v('sm-svc3-name'), svc3Desc: v('sm-svc3-desc'), svc3Tags: v('sm-svc3-tags'),
+    svc4Name: v('sm-svc4-name'), svc4Desc: v('sm-svc4-desc'), svc4Tags: v('sm-svc4-tags'),
+    tier1Name: v('sm-tier1-name'), tier1Price: v('sm-tier1-price'), tier1Desc: v('sm-tier1-desc'),
+    tier2Name: v('sm-tier2-name'), tier2Price: v('sm-tier2-price'), tier2Desc: v('sm-tier2-desc'),
+    tier3Name: v('sm-tier3-name'), tier3Price: v('sm-tier3-price'), tier3Desc: v('sm-tier3-desc'),
+    popularTier:  String(_smPopularTier),
+    port1Client: v('sm-port1-client'), port1Services: v('sm-port1-services'),
+    port2Client: v('sm-port2-client'), port2Services: v('sm-port2-services'),
+    port3Client: v('sm-port3-client'), port3Services: v('sm-port3-services'),
+    testi1Quote: v('sm-testi1-quote'), testi1Name: v('sm-testi1-name'), testi1Company: v('sm-testi1-company'),
+    testi2Quote: v('sm-testi2-quote'), testi2Name: v('sm-testi2-name'), testi2Company: v('sm-testi2-company'),
+    testi3Quote: v('sm-testi3-quote'), testi3Name: v('sm-testi3-name'), testi3Company: v('sm-testi3-company'),
+    contactEmail: v('sm-contact-email'),
+    instagramUrl: v('sm-instagram-url'),
+    tiktokUrl:    v('sm-tiktok-url'),
+    linkedinUrl:  v('sm-linkedin-url'),
+    step1Title: v('sm-step1-title'), step1Desc: v('sm-step1-desc'),
+    step2Title: v('sm-step2-title'), step2Desc: v('sm-step2-desc'),
+    step3Title: v('sm-step3-title'), step3Desc: v('sm-step3-desc'),
+    step4Title: v('sm-step4-title'), step4Desc: v('sm-step4-desc'),
+    paletteCSS:   _smSelectedPalette,
+    paletteName:  _smSelectedPaletteName
+  };
+}
+
+// ══════════════════════════════════════════════
+// INJECT ASSETS
+// ══════════════════════════════════════════════
+function smInjectAssets(html) {
+  if (_smSelectedPalette) {
+    html = html.replace('</head>', '<style id="builtsy-palette">:root{' + _smSelectedPalette + '}</style>\n</head>');
+  }
+  var hasPhotos = false;
+  for (var k in _smPhotos) {
+    if (_smPhotos[k]) { hasPhotos = true; break; }
+  }
+  if (hasPhotos) {
+    try {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+      for (var photoId in _smPhotos) {
+        if (!_smPhotos[photoId]) continue;
+        var img = doc.getElementById(photoId);
+        if (img) {
+          img.src = _smPhotos[photoId];
+          img.style.display = 'block';
+          var zone = img.parentElement;
+          if (zone) {
+            var ph = zone.querySelector('.photo-placeholder');
+            if (ph) ph.style.display = 'none';
+          }
+        }
+      }
+      html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+    } catch(e) {
+      for (var pId in _smPhotos) {
+        if (!_smPhotos[pId]) continue;
+        var re = new RegExp('(<img[^>]*id="' + pId + '"[^>]*src=")[^"]*(")', 'i');
+        html = html.replace(re, '$1' + _smPhotos[pId] + '$2');
+      }
+    }
+  }
   return html;
 }
 
-// ── GENERATE ──
+// ══════════════════════════════════════════════
+// GENERATE
+// ══════════════════════════════════════════════
 function smGenerate() {
   var fields = smCollect();
   var overlay = document.getElementById('sm-overlay');
-  if (overlay) overlay.classList.add('active');
+  if (overlay) overlay.className = 'gen-overlay active';
   _smMsgIdx = 0;
-  document.getElementById('sm-gen-msg').textContent = _smMsgs[0];
-  _smInterval = setInterval(function() {
-    _smMsgIdx = (_smMsgIdx + 1) % _smMsgs.length;
-    var el = document.getElementById('sm-gen-msg');
-    if (el) el.textContent = _smMsgs[_smMsgIdx];
-  }, 3500);
+  _smProgress = 0;
+  var msgEl = document.getElementById('sm-gen-msg');
+  var barEl = document.getElementById('sm-progress-fill');
+  if (msgEl) msgEl.textContent = _smGenMsgs[0];
+  if (barEl) barEl.style.width = '0%';
 
-  fetch('https://builtsy-api-production.up.railway.app/generate-template', {
+  _smMsgInterval = setInterval(function() {
+    _smMsgIdx = (_smMsgIdx + 1) % _smGenMsgs.length;
+    var el = document.getElementById('sm-gen-msg');
+    if (el) el.textContent = _smGenMsgs[_smMsgIdx];
+  }, 5000);
+
+  _smProgressInterval = setInterval(function() {
+    _smProgress = Math.min(_smProgress + 0.8, 92);
+    var bar = document.getElementById('sm-progress-fill');
+    if (bar) bar.style.width = _smProgress + '%';
+  }, 400);
+
+  fetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: fields })
+    body: JSON.stringify({
+      templateType: _smSelectedTemplate,
+      niche: 'social media manager',
+      fields: fields
+    })
   })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    clearInterval(_smInterval);
-    if (overlay) overlay.classList.remove('active');
-    if (data.error) { smShowError(data.error); return; }
-    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-    if (!html || html.length < 200) { smShowError('Generation returned empty. Try again.'); return; }
-    // Inject palette and photos client-side
-    html = smInjectAssets(html);
-    _smHTML = html;
-    smShowOutput(html);
+  .then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              smFinishGenerate();
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { smFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (html.length < 200) { smFinishError('Generation returned empty content. Please try again.'); return; }
+                html = smInjectAssets(html);
+                _smHTML = html;
+                smFinishGenerate();
+                smShowOutput(html);
+                return;
+              }
+            } catch(e) {}
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
   })
   .catch(function(err) {
-    clearInterval(_smInterval);
-    if (overlay) overlay.classList.remove('active');
-    smShowError('Connection error: ' + err.message);
+    smFinishError('Connection error: ' + err.message);
   });
 }
 
+function smFinishGenerate() {
+  clearInterval(_smMsgInterval);
+  clearInterval(_smProgressInterval);
+  var bar = document.getElementById('sm-progress-fill');
+  if (bar) bar.style.width = '100%';
+  setTimeout(function() {
+    var overlay = document.getElementById('sm-overlay');
+    if (overlay) overlay.className = 'gen-overlay';
+  }, 300);
+}
+
+function smFinishError(msg) {
+  clearInterval(_smMsgInterval);
+  clearInterval(_smProgressInterval);
+  var overlay = document.getElementById('sm-overlay');
+  if (overlay) overlay.className = 'gen-overlay';
+  // Show output panel so the error bar is visible
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'none';
+  var outputPanel = document.getElementById('sm-output-panel');
+  if (outputPanel) { outputPanel.className = 'active'; outputPanel.style.display = 'flex'; }
+  smShowError(msg);
+}
+
+// ══════════════════════════════════════════════
+// OUTPUT
+// ══════════════════════════════════════════════
 function smShowOutput(html) {
-  document.querySelector('.form-wrap').style.display = 'none';
-  document.querySelector('.step-progress').style.display = 'none';
-  document.querySelector('.bp-hero').style.display = 'none';
-  document.querySelector('.welcome-banner').style.display = 'none';
-  document.querySelector('.tpl-preview-strip').style.display = 'none';
-  document.getElementById('output-panel').classList.add('active');
-  var biz = (document.getElementById('sm-biz')||{}).value || 'Your Site';
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'none';
+  var outputPanel = document.getElementById('sm-output-panel');
+  outputPanel.className = 'active';
+  outputPanel.style.display = 'flex';
+
+  var bizName = (document.getElementById('sm-biz-name') || {}).value || 'Your Site';
   var t = document.getElementById('sm-output-title');
-  if (t) t.textContent = biz + ' — scroll to preview';
-  var frame = document.getElementById('output-preview-frame');
-  frame.onload = function() {
-    try {
-      var win = frame.contentWindow;
-      var doc = win.document;
-      // Wire accordion
-      win.toggleAcc = function(btn) {
-        var allH = doc.querySelectorAll('.acc-header');
-        var allB = doc.querySelectorAll('.acc-body');
-        var allI = doc.querySelectorAll('.acc-icon');
-        var isOpen = btn.classList.contains('open');
-        for (var i = 0; i < allH.length; i++) allH[i].classList.remove('open');
-        for (var i = 0; i < allB.length; i++) allB[i].classList.remove('open');
-        for (var i = 0; i < allI.length; i++) allI[i].classList.remove('open');
-        if (!isOpen) {
-          btn.classList.add('open');
-          if (btn.nextElementSibling) btn.nextElementSibling.classList.add('open');
-          var ic = btn.querySelector('.acc-icon'); if (ic) ic.classList.add('open');
-        }
-      };
-      // Wire testimonials
-      if (win.testis) {
-        win.setTesti = function(i, dot) {
-          var te = doc.getElementById('testi-text');
-          var tn = doc.getElementById('testi-name');
-          var ta = doc.getElementById('testi-avatar');
-          if (te) te.textContent = win.testis[i].text;
-          if (tn) tn.textContent = win.testis[i].name;
-          if (ta) ta.textContent = win.testis[i].initial;
-          var dots = doc.querySelectorAll('.testi-dot');
-          for (var j = 0; j < dots.length; j++) dots[j].classList.remove('active');
-          dot.classList.add('active');
-        };
-      }
-    } catch(e) {}
-  };
+  if (t) t.textContent = bizName + ' — ' + _smSelectedPaletteName + ' — scroll to preview';
+
+  var frame = document.getElementById('sm-output-preview-frame');
   frame.srcdoc = html;
 }
 
 function smShowError(msg) {
   var el = document.getElementById('sm-error');
-  if (el) { el.textContent = msg; el.classList.add('active'); }
-  if (!document.getElementById('output-panel').classList.contains('active')) alert(msg);
+  if (el) { el.textContent = msg; el.className = 'output-error active'; }
 }
 
 function smRebuild() {
   var el = document.getElementById('sm-error');
-  if (el) el.classList.remove('active');
+  if (el) el.className = 'output-error';
   smGenerate();
 }
 
-function toggleRevise() {
-  document.getElementById('revise-drawer').classList.toggle('active');
+function smStartOver() {
+  var outputPanel = document.getElementById('sm-output-panel');
+  if (outputPanel) { outputPanel.style.display = 'none'; outputPanel.className = ''; }
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'flex';
+  smGoStep(1);
+}
+
+function smToggleRevise() {
+  var drawer = document.getElementById('sm-revise-drawer');
+  if (!drawer) return;
+  drawer.className = (drawer.className === 'active' ? '' : 'active');
 }
 
 function smRevise() {
-  var note = (document.getElementById('revise-input')||{}).value;
+  var note = (document.getElementById('sm-revise-input') || {}).value;
   if (!note || !note.trim()) return;
-  document.getElementById('revise-drawer').classList.remove('active');
+  var drawer = document.getElementById('sm-revise-drawer');
+  if (drawer) drawer.className = '';
   var overlay = document.getElementById('sm-overlay');
-  if (overlay) overlay.classList.add('active');
-  document.getElementById('sm-gen-msg').textContent = 'Applying your changes…';
+  if (overlay) overlay.className = 'gen-overlay active';
+  var msgEl = document.getElementById('sm-gen-msg');
+  if (msgEl) msgEl.textContent = 'Applying your changes…';
 
   var prompt = 'You previously generated this HTML:\n\n' + _smHTML
     + '\n\n--- REVISION ---\nMake this change: ' + note.trim()
     + '\nReturn ONLY the complete revised HTML. No markdown, no explanation.';
 
-  fetch('https://builtsy-api-production.up.railway.app/generate', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
+  fetch(RAILWAY_URL + '/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    if (overlay) overlay.classList.remove('active');
+    var overlay2 = document.getElementById('sm-overlay');
+    if (overlay2) overlay2.className = 'gen-overlay';
     var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
     if (html && html.length > 200) {
-      (document.getElementById('revise-input')||{}).value = '';
-      // Re-inject palette + photos after revision
+      var inp = document.getElementById('sm-revise-input');
+      if (inp) inp.value = '';
       html = smInjectAssets(html);
       _smHTML = html;
       smShowOutput(html);
-    } else { smShowError('Revision returned empty. Try again.'); }
+    } else {
+      smShowError('Revision returned empty. Please try again.');
+    }
   })
   .catch(function(err) {
-    if (overlay) overlay.classList.remove('active');
+    var overlay3 = document.getElementById('sm-overlay');
+    if (overlay3) overlay3.className = 'gen-overlay';
     smShowError('Revision error: ' + err.message);
   });
 }
 
 function smDownload() {
   if (!_smHTML) return;
-  var biz = (document.getElementById('sm-biz')||{}).value || 'my-site';
+  var biz = (document.getElementById('sm-biz-name') || {}).value || 'my-site';
   var slug = biz.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
   var blob = new Blob([_smHTML], { type: 'text/html' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url; a.download = slug + '.html';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
+  a.href = url;
+  a.download = slug + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
-document.addEventListener('DOMContentLoaded', function() { smGoStep(1); });
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  smRenderTemplateCards();
+  smRenderPaletteGrid('light');
+  smGoStep(1);
+});
 </script>
 </body>
 </html>

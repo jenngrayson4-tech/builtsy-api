@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Pink Social — Your Social Media Hype Girl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Caveat:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --pink: #FF1D8C;
+      --pink2: #FF6BB5;
+      --pink-light: #FFE8F4;
+      --bg: #FFFAFA;
+      --cream: #FFF0F7;
+      --dark: #1A0A12;
+      --dark2: #2D1020;
+      --yellow: #FFE566;
+      --text: #1A0A12;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===== TYPOGRAPHY HELPERS ===== */
+    .nunito { font-family: 'Nunito', sans-serif; font-weight: 900; }
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .pink-text { color: var(--pink); }
+    .yellow-highlight {
+      background: var(--yellow);
+      padding: 0 4px;
+      border-radius: 4px;
+      color: var(--dark);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-pink {
+      display: inline-block;
+      background: var(--pink);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 30px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 4px 18px rgba(255,29,140,0.28);
+      letter-spacing: 0.01em;
+    }
+    .btn-pink:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,29,140,0.38); }
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: var(--pink);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 13px 30px;
+      border-radius: 50px;
+      border: 2.5px solid var(--pink);
+      cursor: pointer;
+      transition: transform 0.18s, background 0.18s, color 0.18s;
+      letter-spacing: 0.01em;
+    }
+    .btn-outline:hover { background: var(--pink); color: #fff; transform: translateY(-2px); }
+
+    /* ===== WAVY DIVIDERS ===== */
+    .wave-wrap { overflow: hidden; line-height: 0; display: block; }
+    .wave-wrap svg { display: block; width: 100%; }
+
+    /* ========================================
+       1. STICKY NAV
+    ======================================== */
+    #main-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 3px solid var(--pink);
+      padding: 0 5vw;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.45rem;
+      color: var(--pink);
+      letter-spacing: -0.01em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--dark);
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+    .nav-cta { margin-left: 16px; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: var(--pink);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: #fff;
+      border-bottom: 3px solid var(--pink);
+      z-index: 999;
+      padding: 24px 5vw;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    /* ========================================
+       2. HERO
+    ======================================== */
+    #hero {
+      min-height: 100vh;
+      background: var(--cream);
+      padding-top: 68px;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-inner {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 48px;
+      padding: 60px 8vw 40px;
+    }
+    .hero-text {}
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 2px solid var(--pink);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--pink);
+      margin-bottom: 22px;
+      box-shadow: 0 2px 12px rgba(255,29,140,0.12);
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--pink);
+      border-radius: 50%;
+      animation: pulse 1.4s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+    .hero-h1 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.12;
+      color: var(--dark);
+      margin-bottom: 22px;
+      letter-spacing: -0.02em;
+    }
+    .hero-h1 .caveat {
+      font-size: 1.18em;
+      color: var(--pink);
+      display: inline-block;
+    }
+    .hero-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1.08rem;
+      color: #5a3046;
+      margin-bottom: 36px;
+      max-width: 460px;
+      line-height: 1.65;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--dark);
+      color: #fff;
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
+    }
+    .stat-badge .stat-num {
+      font-size: 1.25rem;
+      color: var(--yellow);
+    }
+    /* Hero photo zone */
+    .hero-photo-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #bp-hero-zone {
+      width: min(420px, 90%);
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      border: 6px solid var(--pink);
+      box-shadow: 0 0 0 12px var(--pink-light), 0 20px 60px rgba(255,29,140,0.22);
+      overflow: hidden;
+      position: relative;
+    }
+    #bp-hero-photo { display: none; width: 100%; height: 100%; object-fit: cover; }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--pink-light) 0%, #ffd0eb 60%, var(--pink2) 100%);
+      gap: 12px;
+      color: var(--pink);
+    }
+    .photo-placeholder .ph-icon { font-size: 3rem; }
+    .photo-placeholder .ph-label {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--dark2);
+    }
+
+    /* ========================================
+       3. MARQUEE BAR
+    ======================================== */
+    .marquee-bar {
+      background: var(--pink);
+      padding: 16px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-text {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #fff;
+      letter-spacing: 0.04em;
+      padding-right: 60px;
+    }
+    .marquee-text .dot { color: var(--yellow); margin: 0 10px; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ========================================
+       4. RIGHT PLACE SECTION
+    ======================================== */
+    #right-place {
+      background: var(--cream);
+      padding: 90px 8vw 60px;
+      text-align: center;
+    }
+    .section-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: var(--pink);
+      margin-bottom: 10px;
+    }
+    .section-h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--dark);
+      line-height: 1.15;
+      margin-bottom: 50px;
+      letter-spacing: -0.02em;
+    }
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 640px;
+      margin: 0 auto 56px;
+      text-align: left;
+    }
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 14px rgba(255,29,140,0.08);
+      border-left: 5px solid var(--pink);
+    }
+    .pain-check {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .pain-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.02rem;
+      color: var(--dark);
+      line-height: 1.55;
+    }
+    .pain-text strong {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      color: var(--pink);
+    }
+    .right-place-bridge {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--dark);
+      margin-bottom: 0;
+    }
+    .right-place-bridge .caveat {
+      font-size: 1.25em;
+      color: var(--pink);
+    }
+
+    /* ========================================
+       5. ABOUT SECTION
+    ======================================== */
+    #about {
+      background: #fff;
+      padding: 90px 8vw;
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .about-photo-col { display: flex; justify-content: center; }
+    #bp-about-zone {
+      width: min(320px, 90%);
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      border: 5px solid var(--pink);
+      box-shadow: 0 0 0 10px var(--pink-light);
+      overflow: hidden;
+      position: relative;
+    }
+    #bp-about-photo { display: none; width: 100%; height: 100%; object-fit: cover; }
+    #bp-about-zone .photo-placeholder {
+      background: linear-gradient(160deg, #ffd0eb 0%, var(--pink-light) 100%);
+    }
+    .about-text {}
+    .about-h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: var(--dark);
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+    .about-bio {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.02rem;
+      color: #4a2535;
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+    .credential-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    .pill {
+      background: var(--pink-light);
+      color: var(--pink);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 50px;
+      padding: 6px 16px;
+      border: 1.5px solid var(--pink2);
+    }
+    .fun-bar {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--dark2);
+      border-left: 4px solid var(--yellow);
+    }
+    .fun-bar span { color: var(--pink); }
+
+    /* ========================================
+       6. SERVICES
+    ======================================== */
+    #services {
+      background: var(--pink);
+      padding: 80px 8vw 60px;
+    }
+    #services .section-eyebrow { color: var(--yellow); }
+    #services .section-h2 { color: #fff; margin-bottom: 48px; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .service-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 6px 30px rgba(80,0,40,0.13);
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(80,0,40,0.2); }
+    .service-icon { font-size: 2.2rem; margin-bottom: 14px; }
+    .service-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--pink);
+      margin-bottom: 10px;
+    }
+    .service-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: #5a3046;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: var(--pink-light);
+      color: var(--pink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.78rem;
+      border-radius: 50px;
+      padding: 4px 12px;
+    }
+
+    /* ========================================
+       7. PORTFOLIO
+    ======================================== */
+    #portfolio {
+      background: var(--cream);
+      padding: 90px 8vw;
+      text-align: center;
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+      margin-top: 50px;
+    }
+    .port-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(255,29,140,0.08);
+      transition: transform 0.22s, box-shadow 0.22s;
+      cursor: default;
+    }
+    .port-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(255,29,140,0.22);
+    }
+    .port-photo-zone {
+      width: 100%;
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+    }
+    .port-photo-zone img { display: none; width: 100%; height: 100%; object-fit: cover; }
+    .port-photo-zone .photo-placeholder {
+      background: linear-gradient(135deg, var(--pink-light), #ffd0eb);
+      border-radius: 0;
+    }
+    .port-body { padding: 22px 22px 26px; text-align: left; }
+    .port-client {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .port-niche {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+    .port-services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    /* ========================================
+       8. TESTIMONIALS
+    ======================================== */
+    #testimonials {
+      background: var(--dark);
+      padding: 90px 8vw;
+      text-align: center;
+      position: relative;
+    }
+    #testimonials .section-eyebrow { color: var(--pink2); }
+    #testimonials .section-h2 { color: #fff; margin-bottom: 50px; }
+    .testi-carousel { position: relative; max-width: 720px; margin: 0 auto; }
+    .testi-slide { display: none; }
+    .testi-slide.active { display: block; }
+    .testi-quote-icon {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 5rem;
+      color: var(--pink);
+      line-height: 0.6;
+      margin-bottom: 30px;
+    }
+    .testi-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.12rem;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.72;
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+    .testi-author {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--pink2);
+    }
+    .testi-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .testi-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 36px;
+    }
+    .testi-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+    }
+    .testi-dot.active { background: var(--pink); transform: scale(1.3); }
+
+    /* ========================================
+       9. PRICING
+    ======================================== */
+    #pricing {
+      background: var(--cream);
+      padding: 90px 8vw;
+      text-align: center;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr 1fr;
+      gap: 24px;
+      max-width: 1020px;
+      margin: 50px auto 0;
+      align-items: start;
+    }
+    .pricing-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      border: 2px solid var(--pink-light);
+      text-align: left;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(255,29,140,0.07);
+    }
+    .pricing-card.popular {
+      background: var(--pink);
+      border-color: var(--pink);
+      box-shadow: 0 16px 50px rgba(255,29,140,0.32);
+      transform: scale(1.04);
+    }
+    .popular-badge {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--yellow);
+      color: var(--dark);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 5px 18px;
+      border-radius: 50px;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .pricing-tier {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--pink);
+      margin-bottom: 8px;
+    }
+    .pricing-card.popular .pricing-tier { color: var(--yellow); }
+    .pricing-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .pricing-card.popular .pricing-name { color: #fff; }
+    .pricing-price {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 2.6rem;
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 4px;
+      letter-spacing: -0.03em;
+    }
+    .pricing-card.popular .pricing-price { color: #fff; }
+    .pricing-freq {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: #a06080;
+      margin-bottom: 26px;
+    }
+    .pricing-card.popular .pricing-freq { color: rgba(255,255,255,0.7); }
+    .pricing-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .pricing-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.93rem;
+      color: #4a2535;
+    }
+    .pricing-card.popular .pricing-feature { color: rgba(255,255,255,0.9); }
+    .pricing-feature .check { color: var(--pink); font-size: 1.05rem; }
+    .pricing-card.popular .pricing-feature .check { color: var(--yellow); }
+    .btn-pink-pricing {
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+    .pricing-card.popular .btn-outline {
+      color: #fff;
+      border-color: #fff;
+    }
+    .pricing-card.popular .btn-outline:hover { background: #fff; color: var(--pink); }
+
+    /* ========================================
+       10. PROCESS
+    ======================================== */
+    #process {
+      background: var(--pink);
+      padding: 90px 8vw;
+      text-align: center;
+    }
+    #process .section-eyebrow { color: var(--yellow); }
+    #process .section-h2 { color: #fff; margin-bottom: 60px; }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .process-step {
+      background: rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 32px 22px 28px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      text-align: center;
+    }
+    .step-num {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 4.5rem;
+      color: var(--yellow);
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .step-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.18rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .step-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.6;
+    }
+
+    /* ========================================
+       11. CONTACT / CTA
+    ======================================== */
+    #contact {
+      background: #fff;
+      padding: 90px 8vw;
+      text-align: center;
+    }
+    .contact-h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--dark);
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .contact-h2 em {
+      font-style: normal;
+      font-family: 'Caveat', cursive;
+      font-size: 1.18em;
+      color: var(--pink);
+    }
+    .contact-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.02rem;
+      color: #5a3046;
+      margin-bottom: 48px;
+    }
+    .contact-form {
+      max-width: 580px;
+      margin: 0 auto 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.97rem;
+      color: var(--dark);
+      background: var(--cream);
+      border: 2px solid var(--pink-light);
+      border-radius: 12px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.18s;
+      appearance: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus,
+    .contact-form select:focus { border-color: var(--pink); }
+    .contact-form textarea { min-height: 130px; resize: vertical; }
+    .form-submit-wrap { text-align: center; }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 36px;
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--pink-light);
+      color: var(--pink);
+      font-size: 1.3rem;
+      font-weight: 900;
+      font-family: 'Nunito', sans-serif;
+      transition: background 0.18s, color 0.18s, transform 0.18s;
+      border: 2px solid var(--pink2);
+    }
+    .social-link:hover { background: var(--pink); color: #fff; transform: translateY(-3px); }
+
+    /* ========================================
+       12. FOOTER
+    ======================================== */
+    footer {
+      background: var(--dark);
+      padding: 50px 8vw 32px;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+    .footer-brand {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--pink);
+      margin-bottom: 10px;
+    }
+    .footer-tagline {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-links-col h4 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--pink2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+    .footer-links-col a {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+      transition: color 0.18s;
+    }
+    .footer-links-col a:hover { color: var(--pink); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-copy a { color: var(--pink2); }
+    .footer-socials { display: flex; gap: 14px; }
+    .footer-socials a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.18s;
+    }
+    .footer-socials a:hover { color: var(--pink); }
+
+    /* ========================================
+       RESPONSIVE
+    ======================================== */
+    @media (max-width: 900px) {
+      .process-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 40px 6vw 30px;
+        text-align: center;
+      }
+      .hero-text { order: 2; }
+      .hero-photo-col { order: 1; }
+      #bp-hero-zone { width: min(280px, 80%); }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-btns { justify-content: center; }
+      .stat-badge { justify-content: center; }
+      .about-inner { grid-template-columns: 1fr; text-align: center; }
+      .about-photo-col { order: 1; }
+      .about-text { order: 2; }
+      .credential-pills { justify-content: center; }
+      .services-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .portfolio-grid { grid-template-columns: 1fr; max-width: 420px; margin: 50px auto 0; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+      .pricing-card.popular { transform: scale(1); }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .hero-h1 { font-size: 2rem; }
+      .section-h2 { font-size: 1.7rem; }
+      .process-grid { grid-template-columns: 1fr; }
+      #bp-hero-zone { width: min(240px, 85%); }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-pink, .btn-outline { width: 100%; text-align: center; max-width: 300px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================
+     1. STICKY NAV
+============================= -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-brand">✦ Pixel Pink Social</div>
+  <ul class="nav-links">
+    <li><a href="#right-place">Why Me</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="btn-pink nav-cta">Book a Call</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="#right-place" onclick="closeMenu()">Why Me</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#portfolio" onclick="closeMenu()">Work</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#contact" onclick="closeMenu()" class="btn-pink" style="text-align:center;margin-top:8px;">Book a Call</a>
+</div>
+
+<!-- ============================
+     2. HERO
+============================= -->
+<section id="hero">
+  <div class="hero-inner">
+    <!-- Left: Text -->
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Currently booking for Summer 2026
+      </div>
+      <h1 class="hero-h1">
+        Your social media<br>
+        <span class="caveat pink-text">deserves</span> to actually<br>
+        <span class="yellow-highlight">work.</span>
+      </h1>
+      <p class="hero-sub">
+        I'm your hype girl, strategist, and content bestie all rolled into one. Let's turn your feed from "meh" into an audience-building, money-making machine — for real this time.
+      </p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-pink">Let's Work Together ✦</a>
+        <a href="#services" class="btn-outline">See What I Do</a>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-num">500K+</span>
+        reach generated for clients
+      </div>
+    </div>
+    <!-- Right: Hero Photo -->
+    <div class="hero-photo-col">
+      <div id="bp-hero-zone">
+        <img id="bp-hero-photo" src="" alt="Hero photo" style="display:none;width:100%;height:100%;object-fit:cover;" />
+        <div class="photo-placeholder">
+          <span class="ph-icon">📸</span>
+          <span class="ph-label">Your energetic portrait here</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: cream → pink -->
+  <div class="wave-wrap" style="margin-top:auto;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,20 C150,50 350,0 600,28 C850,56 1050,4 1200,24 L1200,60 L0,60 Z" fill="var(--pink)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     3. MARQUEE BAR
+============================= -->
+<div class="marquee-bar" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-text">Content Strategy <span class="dot">✦</span> Brand Growth <span class="dot">✦</span> Instagram <span class="dot">✦</span> TikTok <span class="dot">✦</span> Reels <span class="dot">✦</span> Engagement <span class="dot">✦</span> Pinterest <span class="dot">✦</span> Community Building <span class="dot">✦</span> Analytics <span class="dot">✦</span> Paid Ads <span class="dot">✦</span></span>
+    <span class="marquee-text">Content Strategy <span class="dot">✦</span> Brand Growth <span class="dot">✦</span> Instagram <span class="dot">✦</span> TikTok <span class="dot">✦</span> Reels <span class="dot">✦</span> Engagement <span class="dot">✦</span> Pinterest <span class="dot">✦</span> Community Building <span class="dot">✦</span> Analytics <span class="dot">✦</span> Paid Ads <span class="dot">✦</span></span>
+  </div>
+</div>
+
+<!-- Wavy Divider: pink → cream -->
+<div class="wave-wrap" style="background:var(--pink);">
+  <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+    <path d="M0,30 C200,60 400,0 600,30 C800,60 1000,0 1200,30 L1200,60 L0,60 Z" fill="var(--cream)"/>
+  </svg>
+</div>
+
+<!-- ============================
+     4. RIGHT PLACE SECTION
+============================= -->
+<section id="right-place">
+  <p class="section-eyebrow">psst — listen up</p>
+  <h2 class="section-h2 nunito">You're in the <span class="caveat pink-text">right place</span> if...</h2>
+  <ul class="pain-list">
+    <li class="pain-item">
+      <span class="pain-check">💅</span>
+      <p class="pain-text">You're posting consistently but <strong>your engagement is basically a ghost town</strong> and you have no idea why.</p>
+    </li>
+    <li class="pain-item">
+      <span class="pain-check">😩</span>
+      <p class="pain-text">You're <strong>spending hours on content</strong> that barely gets seen — and it's eating into time you could spend on literally anything else.</p>
+    </li>
+    <li class="pain-item">
+      <span class="pain-check">🤯</span>
+      <p class="pain-text">Every time you open Instagram you feel overwhelmed by <strong>trends, algorithms, and the constant pressure</strong> to keep up.</p>
+    </li>
+    <li class="pain-item">
+      <span class="pain-check">✨</span>
+      <p class="pain-text">You <em>know</em> your brand is amazing but your social media <strong>doesn't show it</strong> — and it's costing you dream clients.</p>
+    </li>
+  </ul>
+  <p class="right-place-bridge nunito">
+    That's exactly where <span class="caveat">I come in.</span>
+  </p>
+
+  <!-- Wavy Divider: cream → white -->
+  <div class="wave-wrap" style="margin-top:60px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,10 C250,55 450,0 700,35 C900,60 1100,5 1200,22 L1200,60 L0,60 Z" fill="#fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     5. ABOUT
+============================= -->
+<section id="about">
+  <div class="about-inner">
+    <!-- Left: Photo -->
+    <div class="about-photo-col">
+      <div id="bp-about-zone">
+        <img id="bp-about-photo" src="" alt="About photo" style="display:none;width:100%;height:100%;object-fit:cover;" />
+        <div class="photo-placeholder">
+          <span class="ph-icon">🌸</span>
+          <span class="ph-label">Your photo here</span>
+        </div>
+      </div>
+    </div>
+    <!-- Right: Text -->
+    <div class="about-text">
+      <p class="section-eyebrow">the person behind the pixels</p>
+      <h2 class="about-h2">
+        Hey, I'm <span class="caveat pink-text">Mia!</span> Your<br>social media bestie.
+      </h2>
+      <p class="about-bio">
+        I'm a social media strategist and content creator who helps service-based businesses and personal brands build a presence that actually converts. I've managed accounts from zero to 100K+ followers — and I'm obsessed with making the internet work <em>for</em> you, not against you.
+      </p>
+      <p class="about-bio">
+        Before going solo, I spent 4 years agency-side running social for brands in fashion, wellness, and lifestyle. Now I bring that big-brand energy to small businesses and solopreneurs who deserve to shine online.
+      </p>
+      <div class="credential-pills">
+        <span class="pill">📈 4+ Years Experience</span>
+        <span class="pill">🎓 Meta Certified</span>
+        <span class="pill">🏆 100K+ Followers Grown</span>
+        <span class="pill">💌 Former Agency Lead</span>
+        <span class="pill">🎨 Canva Pro</span>
+        <span class="pill">📊 Analytics Nerd</span>
+      </div>
+      <div class="fun-bar">
+        currently obsessed with: <span>iced matcha</span> ☕ · <span>trending audios</span> 🎵 · <span>your engagement rate</span> 📱
+      </div>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: white → pink -->
+  <div class="wave-wrap" style="margin-top:70px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,25 C300,60 500,0 800,32 C1000,55 1100,8 1200,20 L1200,60 L0,60 Z" fill="var(--pink)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     6. SERVICES
+============================= -->
+<section id="services">
+  <p class="section-eyebrow" style="text-align:center;">what I actually do</p>
+  <h2 class="section-h2 nunito" style="text-align:center;">Services that <span class="caveat" style="color:var(--yellow);">slap</span></h2>
+  <div class="services-grid">
+    <!-- Card 1 -->
+    <div class="service-card">
+      <div class="service-icon">📱</div>
+      <h3 class="service-name">Social Media Management</h3>
+      <p class="service-desc">Full-service management of your Instagram, TikTok, and Pinterest. I handle content creation, scheduling, community management, and monthly reporting so you can stay in your zone of genius.</p>
+      <div class="service-tags">
+        <span class="tag">Instagram</span>
+        <span class="tag">TikTok</span>
+        <span class="tag">Pinterest</span>
+        <span class="tag">Monthly Reports</span>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="service-card">
+      <div class="service-icon">🎬</div>
+      <h3 class="service-name">Reels & Short-Form Video</h3>
+      <p class="service-desc">Scroll-stopping Reels and TikToks scripted, filmed-directed (or guided if you film), edited, and optimized for maximum reach. Trending audios, hooks that hook, and CTAs that convert.</p>
+      <div class="service-tags">
+        <span class="tag">Video Editing</span>
+        <span class="tag">Trending Audio</span>
+        <span class="tag">Hook Writing</span>
+        <span class="tag">Captions</span>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="service-card">
+      <div class="service-icon">🗺️</div>
+      <h3 class="service-name">Content Strategy & Audit</h3>
+      <p class="service-desc">A deep-dive into your current presence, your audience, your competitors, and your goals — resulting in a custom 90-day content roadmap you (or I) can execute right away.</p>
+      <div class="service-tags">
+        <span class="tag">90-Day Roadmap</span>
+        <span class="tag">Competitor Analysis</span>
+        <span class="tag">Content Pillars</span>
+        <span class="tag">Audit Report</span>
+      </div>
+    </div>
+    <!-- Card 4 -->
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <h3 class="service-name">Brand & Feed Aesthetic</h3>
+      <p class="service-desc">Cohesive visual identity for your feed — custom templates, color palette, typography guide, and a look that's instantly recognizable in a crowded scroll. Your brand, but make it iconic.</p>
+      <div class="service-tags">
+        <span class="tag">Canva Templates</span>
+        <span class="tag">Color Palette</span>
+        <span class="tag">Feed Planning</span>
+        <span class="tag">Brand Guide</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: pink → cream -->
+  <div class="wave-wrap" style="margin-top:70px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,38 C200,5 400,55 600,28 C800,0 1000,50 1200,20 L1200,60 L0,60 Z" fill="var(--cream)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     7. PORTFOLIO
+============================= -->
+<section id="portfolio">
+  <p class="section-eyebrow">the receipts</p>
+  <h2 class="section-h2 nunito">Work I'm <span class="caveat pink-text">obsessed</span> with</h2>
+  <div class="portfolio-grid">
+    <!-- Card 1 -->
+    <div class="port-card">
+      <div class="port-photo-zone" id="bp-port-1-zone">
+        <img id="bp-port-1-photo" src="" alt="Portfolio 1" style="display:none;width:100%;height:100%;object-fit:cover;" />
+        <div class="photo-placeholder">
+          <span class="ph-icon">🌿</span>
+          <span class="ph-label">Client work photo</span>
+        </div>
+      </div>
+      <div class="port-body">
+        <p class="port-niche">Wellness &amp; Lifestyle</p>
+        <h3 class="port-client">Bloom Wellness Co.</h3>
+        <p style="font-family:'Inter';font-size:0.88rem;color:#a06080;margin-bottom:12px;">0 → 42K followers in 8 months · 340% engagement increase</p>
+        <div class="port-services">
+          <span class="tag">Full Management</span>
+          <span class="tag">Reels</span>
+          <span class="tag">Strategy</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="port-card">
+      <div class="port-photo-zone" id="bp-port-2-zone">
+        <img id="bp-port-2-photo" src="" alt="Portfolio 2" style="display:none;width:100%;height:100%;object-fit:cover;" />
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#ffe8f4,#ffd0eb);">
+          <span class="ph-icon">✨</span>
+          <span class="ph-label">Client work photo</span>
+        </div>
+      </div>
+      <div class="port-body">
+        <p class="port-niche">Fashion &amp; Beauty</p>
+        <h3 class="port-client">Lumi Beauty Studio</h3>
+        <p style="font-family:'Inter';font-size:0.88rem;color:#a06080;margin-bottom:12px;">12K → 88K followers · 2 viral Reels (1M+ views each)</p>
+        <div class="port-services">
+          <span class="tag">Reels</span>
+          <span class="tag">Feed Aesthetic</span>
+          <span class="tag">Ads</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="port-card">
+      <div class="port-photo-zone" id="bp-port-3-zone">
+        <img id="bp-port-3-photo" src="" alt="Portfolio 3" style="display:none;width:100%;height:100%;object-fit:cover;" />
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#fff3e0,#ffd0eb);">
+          <span class="ph-icon">🍋</span>
+          <span class="ph-label">Client work photo</span>
+        </div>
+      </div>
+      <div class="port-body">
+        <p class="port-niche">Food &amp; Hospitality</p>
+        <h3 class="port-client">Zest Kitchen</h3>
+        <p style="font-family:'Inter';font-size:0.88rem;color:#a06080;margin-bottom:12px;">$0 ad spend → 28K local followers · sold-out events</p>
+        <div class="port-services">
+          <span class="tag">Instagram</span>
+          <span class="tag">TikTok</span>
+          <span class="tag">Strategy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: cream → dark -->
+  <div class="wave-wrap" style="margin-top:70px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,15 C200,55 500,0 750,35 C950,62 1100,10 1200,28 L1200,60 L0,60 Z" fill="var(--dark)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     8. TESTIMONIALS
+============================= -->
+<section id="testimonials">
+  <p class="section-eyebrow">don't take my word for it</p>
+  <h2 class="section-h2 nunito" style="color:#fff;">
+    My clients are <span class="caveat" style="color:var(--pink);">obsessed</span>
+  </h2>
+  <div class="testi-carousel">
+    <!-- Slide 1 -->
+    <div class="testi-slide active" id="testi-0">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">
+        Working with Mia completely transformed our Instagram. In just 3 months our engagement went from 1% to 8.4% — and we're now booking out 6 weeks in advance from clients who found us through social. She genuinely cares about your brand and it shows in every single post.
+      </p>
+      <p class="testi-author">Sara Bloom</p>
+      <p class="testi-role">Founder, Bloom Wellness Co.</p>
+    </div>
+    <!-- Slide 2 -->
+    <div class="testi-slide" id="testi-1">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">
+        I handed over my TikTok and Instagram and within two months one of our Reels hit 1.2 million views. Mia knows the algorithm better than the algorithm knows itself. She's not just a social media manager — she's a full-on business asset.
+      </p>
+      <p class="testi-author">Leila Nakamura</p>
+      <p class="testi-role">Creative Director, Lumi Beauty Studio</p>
+    </div>
+    <!-- Slide 3 -->
+    <div class="testi-slide" id="testi-2">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">
+        Before Mia I was posting randomly and hoping for the best. She gave us a strategy that actually made sense for our restaurant — local community content, behind-the-scenes, trending sounds — and our events have sold out every single month since.
+      </p>
+      <p class="testi-author">Marco Reyes</p>
+      <p class="testi-role">Owner, Zest Kitchen</p>
+    </div>
+    <!-- Slide 4 -->
+    <div class="testi-slide" id="testi-3">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">
+        Mia's energy is infectious and her strategy is bulletproof. She completely redesigned our brand aesthetic, built a content system, and then trained my in-house team to keep it going. Best investment we made in our marketing all year — hands down.
+      </p>
+      <p class="testi-author">Priya Sharma</p>
+      <p class="testi-role">CEO, The Daily Edit</p>
+    </div>
+    <!-- Dots -->
+    <div class="testi-dots" role="tablist" aria-label="Testimonial navigation">
+      <button class="testi-dot active" onclick="goToSlide(0)" aria-label="Testimonial 1" role="tab"></button>
+      <button class="testi-dot" onclick="goToSlide(1)" aria-label="Testimonial 2" role="tab"></button>
+      <button class="testi-dot" onclick="goToSlide(2)" aria-label="Testimonial 3" role="tab"></button>
+      <button class="testi-dot" onclick="goToSlide(3)" aria-label="Testimonial 4" role="tab"></button>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: dark → cream -->
+  <div class="wave-wrap" style="margin-top:70px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,35 C180,5 400,58 650,25 C880,0 1050,50 1200,18 L1200,60 L0,60 Z" fill="var(--cream)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     9. PRICING
+============================= -->
+<section id="pricing">
+  <p class="section-eyebrow">invest in your feed</p>
+  <h2 class="section-h2 nunito">Pick your <span class="caveat pink-text">vibe</span></h2>
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="pricing-card">
+      <p class="pricing-tier">✦ Starter</p>
+      <h3 class="pricing-name">The Glow Up</h3>
+      <div class="pricing-price">$797</div>
+      <p class="pricing-freq">/ month</p>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><span class="check">✓</span> 12 posts/month (feed + stories)</li>
+        <li class="pricing-feature"><span class="check">✓</span> 4 Reels/month</li>
+        <li class="pricing-feature"><span class="check">✓</span> Caption copywriting</li>
+        <li class="pricing-feature"><span class="check">✓</span> Hashtag strategy</li>
+        <li class="pricing-feature"><span class="check">✓</span> 1 platform (IG or TikTok)</li>
+        <li class="pricing-feature"><span class="check">✓</span> Monthly analytics report</li>
+      </ul>
+      <a href="#contact" class="btn-outline btn-pink-pricing">Get Started</a>
+    </div>
+    <!-- Popular -->
+    <div class="pricing-card popular">
+      <span class="popular-badge">★ Most Popular</span>
+      <p class="pricing-tier">✦ Growth</p>
+      <h3 class="pricing-name">The Main Character</h3>
+      <div class="pricing-price">$1,497</div>
+      <p class="pricing-freq">/ month</p>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><span class="check">✓</span> 20 posts/month (feed + stories)</li>
+        <li class="pricing-feature"><span class="check">✓</span> 8 Reels/month</li>
+        <li class="pricing-feature"><span class="check">✓</span> Full caption suite + CTAs</li>
+        <li class="pricing-feature"><span class="check">✓</span> 2 platforms (IG + TikTok)</li>
+        <li class="pricing-feature"><span class="check">✓</span> Community management (1hr/day)</li>
+        <li class="pricing-feature"><span class="check">✓</span> Bi-weekly strategy calls</li>
+        <li class="pricing-feature"><span class="check">✓</span> Monthly deep-dive report</li>
+      </ul>
+      <a href="#contact" class="btn-pink btn-pink-pricing" style="background:#fff;color:var(--pink);">I Want This One ✦</a>
+    </div>
+    <!-- VIP -->
+    <div class="pricing-card">
+      <p class="pricing-tier">✦ VIP</p>
+      <h3 class="pricing-name">The Icon Era</h3>
+      <div class="pricing-price">$2,997</div>
+      <p class="pricing-freq">/ month</p>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><span class="check">✓</span> Unlimited posts + stories</li>
+        <li class="pricing-feature"><span class="check">✓</span> 12+ Reels/month</li>
+        <li class="pricing-feature"><span class="check">✓</span> Pinterest + IG + TikTok</li>
+        <li class="pricing-feature"><span class="check">✓</span> Full community management</li>
+        <li class="pricing-feature"><span class="check">✓</span> Paid ads management (up to $1K/mo spend)</li>
+        <li class="pricing-feature"><span class="check">✓</span> Weekly 1:1 strategy calls</li>
+        <li class="pricing-feature"><span class="check">✓</span> Priority Slack access</li>
+      </ul>
+      <a href="#contact" class="btn-outline btn-pink-pricing">Apply Now</a>
+    </div>
+  </div>
+  <p style="font-family:'Caveat',cursive;font-size:1.1rem;color:var(--pink);text-align:center;margin-top:36px;">Not sure which one? Book a free discovery call and we'll figure it out together ✦</p>
+
+  <!-- Wavy Divider: cream → pink -->
+  <div class="wave-wrap" style="margin-top:60px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,20 C250,60 500,0 750,35 C950,62 1100,5 1200,25 L1200,60 L0,60 Z" fill="var(--pink)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     10. PROCESS
+============================= -->
+<section id="process">
+  <p class="section-eyebrow">how we do it</p>
+  <h2 class="section-h2 nunito" style="color:#fff;">The <span class="caveat" style="color:var(--yellow);">glow up</span> process</h2>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Discovery Call</h3>
+      <p class="step-desc">We hop on a 30-min vibe check to talk about your brand, goals, and current social situation. Zero pressure, all good energy.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Strategy & Audit</h3>
+      <p class="step-desc">I deep-dive into your existing accounts, audience, competitors, and niche — then build a custom strategy document just for you.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Content Creation</h3>
+      <p class="step-desc">I create and schedule all content — graphics, captions, Reels, stories — and send you a preview batch for approval before anything goes live.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <h3 class="step-title">Grow & Optimize</h3>
+      <p class="step-desc">We monitor performance weekly, tweak what's not working, double down on what is, and celebrate every milestone together. Let's go!</p>
+    </div>
+  </div>
+
+  <!-- Wavy Divider: pink → white -->
+  <div class="wave-wrap" style="margin-top:70px;">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;">
+      <path d="M0,28 C300,60 500,0 800,30 C1000,52 1100,8 1200,22 L1200,60 L0,60 Z" fill="#fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================
+     11. CONTACT / CTA
+============================= -->
+<section id="contact">
+  <h2 class="contact-h2">Let's make your feed <em>iconic</em></h2>
+  <p class="contact-sub">Fill out the form below and I'll be back in your DMs within 24 hours. ✦</p>
+
+  <form class="contact-form" onsubmit="handleFormSubmit(event)">
+    <div class="form-row">
+      <input type="text" name="name" placeholder="Your Name *" required aria-label="Your name" />
+      <input type="email" name="email" placeholder="Email Address *" required aria-label="Your email" />
+    </div>
+    <input type="text" name="business" placeholder="Business / Brand Name" aria-label="Business name" />
+    <select name="service" aria-label="Service you're interested in">
+      <option value="" disabled selected>Which service are you interested in?</option>
+      <option value="management">Social Media Management</option>
+      <option value="reels">Reels &amp; Short-Form Video</option>
+      <option value="strategy">Content Strategy &amp; Audit</option>
+      <option value="brand">Brand &amp; Feed Aesthetic</option>
+      <option value="unsure">Not Sure — Let's Chat!</option>
+    </select>
+    <input type="text" name="platforms" placeholder="Which platforms are you on? (Instagram, TikTok, etc.)" aria-label="Your social platforms" />
+    <textarea name="message" placeholder="Tell me a little about your brand and your goals ✨" aria-label="Your message"></textarea>
+    <div class="form-submit-wrap">
+      <button type="submit" class="btn-pink" style="font-size:1.05rem;padding:16px 40px;">Send It! ✦</button>
+    </div>
+    <div id="form-success" style="display:none;text-align:center;padding:18px;background:var(--pink-light);border-radius:12px;border:2px solid var(--pink2);">
+      <p style="font-family:'Nunito',sans-serif;font-weight:800;color:var(--pink);font-size:1.1rem;">Yay! Message received! 🎉</p>
+      <p style="font-family:'Inter';font-size:0.95rem;color:var(--dark2);margin-top:6px;">I'll be back in your inbox within 24 hours. Get excited!</p>
+    </div>
+  </form>
+
+  <!-- Social Links -->
+  <div class="social-links" aria-label="Social media links">
+    <a href="#" class="social-link" aria-label="Instagram">IG</a>
+    <a href="#" class="social-link" aria-label="TikTok">TT</a>
+    <a href="#" class="social-link" aria-label="Pinterest">PT</a>
+    <a href="#" class="social-link" aria-label="LinkedIn">LI</a>
+  </div>
+</section>
+
+<!-- ============================
+     12. FOOTER
+============================= -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">✦ Pixel Pink Social</div>
+      <div class="footer-tagline">Your hype girl for social media.</div>
+    </div>
+    <div class="footer-links-col">
+      <h4>Navigate</h4>
+      <a href="#right-place">Why Me</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#portfolio">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-links-col">
+      <h4>Services</h4>
+      <a href="#services">Social Media Management</a>
+      <a href="#services">Reels &amp; Short-Form</a>
+      <a href="#services">Content Strategy</a>
+      <a href="#services">Brand &amp; Feed Aesthetic</a>
+    </div>
+    <div class="footer-links-col">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">Pinterest</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">
+      © 2026 Pixel Pink Social. Made with 💗 &amp; strategy. |
+      <a href="#">Privacy Policy</a> · <a href="#">Terms</a>
+    </p>
+    <div class="footer-socials">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">Pinterest</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================
+     JAVASCRIPT
+============================= -->
+<script>
+  /* ===== NAV / HAMBURGER ===== */
+  function toggleMenu() {
+    var menu = document.getElementById('mobile-menu');
+    var btn = document.querySelector('.hamburger');
+    var isOpen = menu.classList.contains('open');
+    if (isOpen) {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    } else {
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function closeMenu() {
+    var menu = document.getElementById('mobile-menu');
+    menu.classList.remove('open');
+    document.querySelector('.hamburger').setAttribute('aria-expanded', 'false');
+  }
+
+  /* Close menu when clicking outside */
+  document.addEventListener('click', function(e) {
+    var menu = document.getElementById('mobile-menu');
+    var nav = document.getElementById('main-nav');
+    if (menu.classList.contains('open') && !nav.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  /* ===== TESTIMONIAL CAROUSEL ===== */
+  var currentSlide = 0;
+  var totalSlides = 4;
+  var autoAdvanceTimer = null;
+
+  function goToSlide(index) {
+    var slides = document.querySelectorAll('.testi-slide');
+    var dots = document.querySelectorAll('.testi-dot');
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].classList.remove('active');
+      dots[i].classList.remove('active');
+    }
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentSlide = index;
+  }
+
+  function nextSlide() {
+    var next = (currentSlide + 1) % totalSlides;
+    goToSlide(next);
+  }
+
+  function startAutoAdvance() {
+    autoAdvanceTimer = setInterval(function() {
+      nextSlide();
+    }, 5000);
+  }
+
+  function resetAutoAdvance() {
+    clearInterval(autoAdvanceTimer);
+    startAutoAdvance();
+  }
+
+  /* Override dot clicks to also reset timer */
+  var dots = document.querySelectorAll('.testi-dot');
+  for (var d = 0; d < dots.length; d++) {
+    (function(idx) {
+      dots[idx].addEventListener('click', function() {
+        goToSlide(idx);
+        resetAutoAdvance();
+      });
+    })(d);
+  }
+
+  startAutoAdvance();
+
+  /* ===== FORM SUBMIT ===== */
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    var form = e.target;
+    var successMsg = document.getElementById('form-success');
+    form.querySelector('button[type="submit"]').style.display = 'none';
+    successMsg.style.display = 'block';
+    form.reset();
+  }
+
+  /* ===== STICKY NAV SHADOW ON SCROLL ===== */
+  window.onscroll = function() {
+    var nav = document.getElementById('main-nav');
+    if (window.scrollY > 10) {
+      nav.style.boxShadow = '0 4px 24px rgba(255,29,140,0.1)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
+  };
+
+  /* ===== SMOOTH SCROLL FOR ANCHOR LINKS (fallback) ===== */
+  var anchorLinks = document.querySelectorAll('a[href^="#"]');
+  for (var a = 0; a < anchorLinks.length; a++) {
+    anchorLinks[a].addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var top = target.getBoundingClientRect().top + window.scrollY - 76;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    });
+  }
+</script>
+</body>
+</html>

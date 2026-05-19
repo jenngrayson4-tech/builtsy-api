@@ -19,6 +19,20 @@ try {
   console.warn('creative-agency-site.html not found:', e.message);
 }
 
+var CHERRY_SM_TEMPLATE = '';
+try {
+  CHERRY_SM_TEMPLATE = fs.readFileSync(path.join(__dirname, 'social-media-cherry.html'), 'utf8');
+} catch(e) {
+  console.warn('social-media-cherry.html not found:', e.message);
+}
+
+var BUBBLY_SM_TEMPLATE = '';
+try {
+  BUBBLY_SM_TEMPLATE = fs.readFileSync(path.join(__dirname, 'social-media-bubbly.html'), 'utf8');
+} catch(e) {
+  console.warn('social-media-bubbly.html not found:', e.message);
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '30mb' }));
@@ -177,6 +191,87 @@ app.post('/generate-template-agency', async function(req, res) {
 
   } catch(err) {
     console.error('Generate-template-agency error:', err.message);
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message || 'Generation failed' });
+    } else {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    }
+  }
+});
+
+// Universal Template Fill — supports social, cherry_sm, bubbly_sm, agency, etc.
+app.post('/generate-template-universal', async function(req, res) {
+  try {
+    var templateType = req.body.templateType || 'social';
+    var fields       = req.body.fields || {};
+    var niche        = req.body.niche || 'social media manager';
+
+    var templateMap = {
+      social:     SOCIAL_TEMPLATE,
+      agency:     AGENCY_TEMPLATE,
+      cherry_sm:  CHERRY_SM_TEMPLATE,
+      bubbly_sm:  BUBBLY_SM_TEMPLATE
+    };
+
+    var template = templateMap[templateType] || SOCIAL_TEMPLATE;
+    if (!template) {
+      return res.status(500).json({ error: 'Template "' + templateType + '" not loaded on server' });
+    }
+
+    var fieldText = Object.keys(fields).map(function(k) {
+      return k + ': ' + fields[k];
+    }).join('\n');
+
+    var prompt = 'You are filling in a pre-designed HTML template for a ' + niche + ' with their real business content.\n\n'
+      + 'CRITICAL RULES — read carefully:\n'
+      + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML whatsoever\n'
+      + '- Do NOT change fonts, spacing, animations, colors, or any visual design\n'
+      + '- ONLY replace text content inside elements — nothing else\n'
+      + '- Preserve ALL photo zone divs and img tags exactly — especially any img IDs\n'
+      + '- If the template has a testimonial JS array (var testis = [...]), update text, name, and initial fields only\n'
+      + '- The press bar / marquee — replace publication names with the user\'s press mentions (or keep defaults if none provided)\n'
+      + '- Portfolio cards — replace client names and service lists with the user\'s real clients/services\n'
+      + '- Pricing tiers — use the user\'s tier names, prices, and descriptions; mark the popular tier appropriately\n'
+      + '- Process steps — replace with the user\'s step titles and descriptions\n'
+      + '- If a field was left blank, use a sensible professional default that fits the ' + niche + ' industry\n'
+      + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
+      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
+      + 'TEMPLATE TO FILL IN:\n' + template;
+
+    // Stream response — templates can be large
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.flushHeaders();
+
+    var stream = await client.messages.stream({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var fullText = '';
+    stream.on('text', function(chunk) {
+      fullText += chunk;
+      res.write(': keep-alive\n\n');
+    });
+
+    stream.on('finalMessage', function() {
+      var html = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+      res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
+      res.write('data: [DONE]\n\n');
+      res.end();
+    });
+
+    stream.on('error', function(err) {
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    });
+
+  } catch(err) {
+    console.error('Generate-template-universal error:', err.message);
     if (!res.headersSent) {
       res.status(500).json({ error: err.message || 'Generation failed' });
     } else {
