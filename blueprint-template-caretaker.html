@@ -201,6 +201,28 @@ textarea.fi{resize:vertical;min-height:80px;}
 .left-panel::-webkit-scrollbar{width:4px;}
 .left-panel::-webkit-scrollbar-track{background:transparent;}
 .left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+
+/* ── SMART CHIPS ── */
+.chip-hint{font-size:.62rem;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-top:6px;margin-bottom:5px;}
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip-s{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:4px 12px;font-size:.73rem;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;line-height:1.5;}
+.chip-s:hover{border-color:rgba(200,224,0,0.35);color:var(--lime);}
+.chip-s.used{background:rgba(200,224,0,0.1);border-color:rgba(200,224,0,0.3);color:var(--lime);}
+
+/* ── INCOME CALCULATOR ── */
+.ig-box{background:rgba(67,97,238,0.08);border:1.5px solid rgba(67,97,238,0.2);border-radius:12px;padding:16px;margin-bottom:20px;}
+.ig-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.ig-icon{font-size:1.2rem;flex-shrink:0;}
+.ig-title{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
+.ig-sub{font-size:.74rem;color:rgba(255,255,255,0.4);line-height:1.5;}
+.ig-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.ig-inputs label{display:block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;margin-bottom:5px;}
+.ig-result{display:none;flex-direction:column;gap:7px;border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;margin-top:12px;}
+.ig-result-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;}
+.ig-result-label{color:rgba(255,255,255,0.4);}
+.ig-result-val{color:var(--lime);font-weight:700;font-family:'DM Mono',monospace;}
+.ig-apply{margin-top:6px;background:var(--builtsy-blue);color:white;border:none;border-radius:8px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:opacity .18s;}
+.ig-apply:hover{opacity:0.85;}
 </style>
 </head>
 <body>
@@ -293,6 +315,8 @@ textarea.fi{resize:vertical;min-height:80px;}
         <div class="field">
           <label>Tagline</label>
           <input class="fi" id="ct-tagline" type="text" placeholder="Trusted In-Home Care for Growing Families">
+          <div class="chip-hint">&#9679; Suggestions — click to fill</div>
+          <div class="chips-row" id="ct-chips-tagline"></div>
         </div>
         <div class="field-grid">
           <div class="field">
@@ -329,6 +353,8 @@ textarea.fi{resize:vertical;min-height:80px;}
           <label>Hero Headline <span class="opt">5&ndash;8 words, punchy</span></label>
           <input class="fi" id="ct-hero-headline" type="text" value="Nurturing Care, Right in Your Home">
           <div class="field-hint">This is the first thing visitors read. Make it count.</div>
+          <div class="chip-hint">&#9679; Suggestions — click to fill</div>
+          <div class="chips-row" id="ct-chips-headline"></div>
         </div>
         <div class="field">
           <label>Hero Subheading <span class="opt">2 sentences, who you help</span></label>
@@ -347,6 +373,8 @@ textarea.fi{resize:vertical;min-height:80px;}
           <label>Credentials / Certifications <span class="opt">comma-separated</span></label>
           <input class="fi" id="ct-credentials" type="text" value="Background Checked, Insured &amp; Bonded, CPR Certified, First Aid Trained">
           <div class="field-hint">Trust signals shown prominently on your site.</div>
+          <div class="chip-hint">&#9679; Suggestions — click to add</div>
+          <div class="chips-row" id="ct-chips-creds"></div>
         </div>
         <div class="step-nav">
           <button class="btn-back" onclick="ctGoStep(3)">&#8592; Back</button>
@@ -409,6 +437,36 @@ textarea.fi{resize:vertical;min-height:80px;}
         </div>
 
         <span class="sl">Rates (3 tiers)</span>
+
+        <!-- INCOME CALCULATOR -->
+        <div class="ig-box">
+          <div class="ig-head">
+            <span class="ig-icon">&#127919;</span>
+            <div>
+              <div class="ig-title">What do you need to make?</div>
+              <div class="ig-sub">Enter your goal — we'll work out what to charge per hour.</div>
+            </div>
+          </div>
+          <div class="ig-inputs">
+            <div>
+              <label>Monthly income goal</label>
+              <div style="position:relative;">
+                <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.3);font-size:.9rem;">$</span>
+                <input class="fi" id="ct-ig-goal" type="number" placeholder="3,500" style="padding-left:26px;" oninput="ctCalcIncome()">
+              </div>
+            </div>
+            <div>
+              <label>Hours per week</label>
+              <input class="fi" id="ct-ig-hours" type="number" placeholder="30" value="30" oninput="ctCalcIncome()">
+            </div>
+          </div>
+          <div class="ig-result" id="ct-ig-result">
+            <div class="ig-result-row"><span class="ig-result-label">Suggested hourly rate</span><span class="ig-result-val" id="ct-ig-rate"></span></div>
+            <div class="ig-result-row"><span class="ig-result-label">Monthly at this rate</span><span class="ig-result-val" id="ct-ig-monthly"></span></div>
+            <div class="ig-result-row"><span class="ig-result-label">Suggested rate range</span><span class="ig-result-val" id="ct-ig-range"></span></div>
+            <button class="ig-apply" onclick="ctApplyRates()">Apply these rates to my tiers &#8594;</button>
+          </div>
+        </div>
 
         <div class="price-block" id="ct-price-block-1">
           <div class="price-block-label">Tier 1</div>
@@ -747,6 +805,8 @@ function ctToggleCareType(label, pillId) {
     _ctCareTypes.push(label);
     if (pill) pill.className = 'care-pill active';
   }
+  // Refresh chips to match current care type
+  if (typeof ctInitChips === 'function') ctInitChips();
 }
 
 function ctBuildNiche() {
@@ -1800,10 +1860,185 @@ function ctDownload() {
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
+// ── SMART CHIPS ──────────────────────────────────────────
+var CT_CHIPS = {
+  tagline: {
+    children: [
+      'Trusted In-Home Childcare',
+      'Safe, Nurturing Care for Your Little Ones',
+      'Reliable Care That Feels Like Family',
+      'Where Kids Thrive and Parents Breathe Easy',
+      'Loving Childcare, Right at Home',
+      'Your Village — One Caregiver at a Time'
+    ],
+    senior: [
+      'Compassionate In-Home Senior Care',
+      'Dignified, Loving Care for Your Loved One',
+      'Trusted Companion & In-Home Support',
+      'Quality Senior Care in the Comfort of Home',
+      'Caring for the People Who Cared for You',
+      'Reliable Care, Real Connection'
+    ],
+    pet: [
+      'Loving Care for Your Furry Family',
+      'Your Pet\'s Home Away From Home',
+      'Trusted Pet Care That Feels Like Family',
+      'Happy Pets, Happy Owners',
+      'Professional Care with a Personal Touch',
+      'Safe, Fun, Loving Pet Care'
+    ],
+    default: [
+      'Trusted In-Home Care',
+      'Reliable Care That Feels Like Family',
+      'Professional, Personal, and Always Present',
+      'Care You Can Count On',
+      'Compassionate Care, Right at Home',
+      'Your Trusted Local Caregiver'
+    ]
+  },
+  headline: {
+    children: [
+      'Nurturing Care, Right in Your Home',
+      'The Caregiver Your Family Deserves',
+      'Safe Hands for Your Little Ones',
+      'Where Every Child Feels at Home',
+      'Trusted Care So You Can Breathe Easy',
+      'Love, Play, and Safe Keeping — Every Day'
+    ],
+    senior: [
+      'Compassionate Care at Home',
+      'Dignity, Comfort, and Companionship',
+      'Where Your Loved One Feels at Home',
+      'Trusted Care for Those You Love Most',
+      'Caring for the People Who Matter Most',
+      'Real Support, Real Connection'
+    ],
+    pet: [
+      'Your Pet Is in the Best Hands',
+      'Love and Attention Every Single Day',
+      'A Home Away From Home for Your Pet',
+      'Happy Tails, Stress-Free Owners',
+      'Professional Care with a Personal Touch',
+      'Where Pets Are Truly Family'
+    ],
+    default: [
+      'Nurturing Care, Right in Your Home',
+      'The Caregiver Your Family Deserves',
+      'Trusted, Reliable, and Always There',
+      'Care That Makes a Real Difference',
+      'Your Trusted Local Caregiver',
+      'Professional Care with a Personal Touch'
+    ]
+  },
+  creds: [
+    'Background Checked',
+    'CPR Certified',
+    'First Aid Trained',
+    'Insured & Bonded',
+    'Fully Vaccinated',
+    'Montessori Trained',
+    'Newborn Specialist',
+    'Pet First Aid Certified',
+    'Dementia Care Trained',
+    'Non-smoker',
+    'Own transportation',
+    'References available'
+  ]
+};
+
+function ctGetCareKey() {
+  var types = _ctCareTypes || [];
+  if (types.indexOf('Senior') !== -1) return 'senior';
+  if (types.indexOf('Pet') !== -1) return 'pet';
+  if (types.length > 0) return 'children';
+  return 'default';
+}
+
+function ctRenderChips(rowId, chips, fieldId, appendMode) {
+  var row = document.getElementById(rowId);
+  if (!row) return;
+  row.innerHTML = '';
+  for (var i = 0; i < chips.length; i++) {
+    (function(text) {
+      var chip = document.createElement('span');
+      chip.className = 'chip-s';
+      chip.textContent = text;
+      chip.onclick = function() {
+        var inp = document.getElementById(fieldId);
+        if (!inp) return;
+        if (appendMode) {
+          // Append to comma-separated list
+          var current = inp.value.trim();
+          var parts = current ? current.split(',').map(function(s){ return s.trim(); }) : [];
+          if (parts.indexOf(text) === -1) {
+            parts.push(text);
+            inp.value = parts.join(', ');
+          }
+          chip.classList.toggle('used');
+        } else {
+          inp.value = text;
+          var siblings = row.querySelectorAll('.chip-s');
+          for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('used');
+          chip.classList.add('used');
+        }
+      };
+      row.appendChild(chip);
+    })(chips[i]);
+  }
+}
+
+function ctInitChips() {
+  var key = ctGetCareKey();
+  ctRenderChips('ct-chips-tagline',  CT_CHIPS.tagline[key]  || CT_CHIPS.tagline.default,  'ct-tagline',       false);
+  ctRenderChips('ct-chips-headline', CT_CHIPS.headline[key] || CT_CHIPS.headline.default, 'ct-hero-headline', false);
+  ctRenderChips('ct-chips-creds',    CT_CHIPS.creds,                                      'ct-credentials',   true);
+}
+
+// ── INCOME CALCULATOR ────────────────────────────────────
+function ctCalcIncome() {
+  var goal  = parseFloat(document.getElementById('ct-ig-goal').value) || 0;
+  var hours = parseFloat(document.getElementById('ct-ig-hours').value) || 30;
+  var result = document.getElementById('ct-ig-result');
+  if (!goal || goal < 100) { result.style.display = 'none'; return; }
+  var hoursPerMonth = hours * 4.33;
+  var rate       = Math.ceil(goal / hoursPerMonth);
+  rate           = Math.ceil(rate / 0.5) * 0.5; // round to nearest $0.50
+  var actualMo   = Math.round(rate * hoursPerMonth);
+  var tier1      = Math.max(10, Math.round(rate * 1.15 * 2) / 2); // drop-in higher
+  var tier3      = Math.max(10, Math.round(rate * 0.78 * 2) / 2); // full-time discount
+  document.getElementById('ct-ig-rate').textContent    = '$' + rate.toFixed(2) + '/hr';
+  document.getElementById('ct-ig-monthly').textContent = '$' + actualMo.toLocaleString() + '/mo';
+  document.getElementById('ct-ig-range').textContent   = '$' + tier3.toFixed(0) + ' – $' + tier1.toFixed(0) + '/hr';
+  result.style.display = 'flex';
+}
+
+function ctApplyRates() {
+  var goal  = parseFloat(document.getElementById('ct-ig-goal').value) || 0;
+  var hours = parseFloat(document.getElementById('ct-ig-hours').value) || 30;
+  if (!goal || goal < 100) return;
+  var hoursPerMonth = hours * 4.33;
+  var rate  = Math.ceil(goal / hoursPerMonth / 0.5) * 0.5;
+  var tier1 = Math.max(10, Math.round(rate * 1.15 * 2) / 2);
+  var tier2 = rate;
+  var tier3 = Math.max(10, Math.round(rate * 0.78 * 2) / 2);
+  var r1 = document.getElementById('ct-rate1-price');
+  var r2 = document.getElementById('ct-rate2-price');
+  var r3 = document.getElementById('ct-rate3-price');
+  if (r1) r1.value = '$' + tier1.toFixed(0) + '/hr';
+  if (r2) r2.value = '$' + tier2.toFixed(0) + '/hr';
+  if (r3) r3.value = '$' + tier3.toFixed(0) + '/hr';
+  var box = document.querySelector('.ig-box');
+  if (box) {
+    box.style.borderColor = 'rgba(200,224,0,0.5)';
+    setTimeout(function(){ box.style.borderColor = 'rgba(67,97,238,0.2)'; }, 1200);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   ctRenderTemplateCards();
   ctRenderPaletteGrid('light');
   ctGoStep(1);
+  ctInitChips();
 });
 </script>
 </body>
