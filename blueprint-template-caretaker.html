@@ -223,6 +223,25 @@ textarea.fi{resize:vertical;min-height:80px;}
 .ig-result-val{color:var(--lime);font-weight:700;font-family:'DM Mono',monospace;}
 .ig-apply{margin-top:6px;background:var(--builtsy-blue);color:white;border:none;border-radius:8px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:opacity .18s;}
 .ig-apply:hover{opacity:0.85;}
+/* Animation picker */
+.anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+.anim-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 8px 10px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);text-align:center;user-select:none;}
+.anim-card:hover{border-color:rgba(255,255,255,0.22);}
+.anim-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
+.anim-card-icon{font-size:1.4rem;margin-bottom:5px;}
+.anim-card-name{font-weight:700;font-size:.72rem;color:white;display:block;}
+.anim-card-desc{font-size:.62rem;color:rgba(255,255,255,0.35);display:block;margin-top:2px;}
+.anim-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+.anim-mode-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px 8px 8px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);text-align:center;user-select:none;}
+.anim-mode-card:hover{border-color:rgba(255,255,255,0.22);}
+.anim-mode-card.selected{border-color:var(--lime);box-shadow:0 0 0 3px rgba(163,230,53,.1);}
+.anim-mode-name{font-weight:700;font-size:.72rem;color:white;display:block;}
+.anim-mode-desc{font-size:.6rem;color:rgba(255,255,255,0.35);display:block;margin-top:2px;}
+.burst-trigger-row{display:flex;gap:12px;margin-top:10px;}
+.burst-trigger-check{display:flex;align-items:center;gap:7px;cursor:pointer;padding:9px 14px;border:2px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);transition:all .2s;flex:1;}
+.burst-trigger-check:hover{border-color:rgba(255,255,255,0.2);}
+.burst-trigger-check input{accent-color:var(--builtsy-blue);width:15px;height:15px;}
+.burst-trigger-check span{font-size:.75rem;font-weight:600;color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
@@ -522,6 +541,51 @@ textarea.fi{resize:vertical;min-height:80px;}
         <h2 class="step-title-main">Your Photos</h2>
         <p class="step-sub-main">Upload images for your template. All optional &mdash; styled placeholders used if skipped.</p>
         <div id="ct-photo-zones-container"></div>
+
+        <!-- CELEBRATION EFFECTS -->
+        <div style="margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.07);">
+          <p class="step-label-top" style="color:var(--lime);">✦ CELEBRATION EFFECTS</p>
+          <p style="color:rgba(255,255,255,0.45);font-size:.8rem;margin:2px 0 16px;line-height:1.5;">Background animation on your site. Subtle or none — your call.</p>
+
+          <span class="sl">BACKGROUND ANIMATION</span>
+          <div class="anim-grid" id="ct-anim-grid">
+            <div class="anim-card selected" id="ct-anim-none" onclick="ctSelectAnim('none')"><div class="anim-card-icon">○</div><span class="anim-card-name">None</span><span class="anim-card-desc">Clean &amp; still</span></div>
+            <div class="anim-card" id="ct-anim-sparkles" onclick="ctSelectAnim('sparkles')"><div class="anim-card-icon">✦</div><span class="anim-card-name">Sparkles</span><span class="anim-card-desc">Floating particles</span></div>
+            <div class="anim-card" id="ct-anim-stars" onclick="ctSelectAnim('stars')"><div class="anim-card-icon">⭐</div><span class="anim-card-name">Stars</span><span class="anim-card-desc">Twinkling stars</span></div>
+            <div class="anim-card" id="ct-anim-bubbles" onclick="ctSelectAnim('bubbles')"><div class="anim-card-icon">○</div><span class="anim-card-name">Bubbles</span><span class="anim-card-desc">Rising circles</span></div>
+            <div class="anim-card" id="ct-anim-petals" onclick="ctSelectAnim('petals')"><div class="anim-card-icon">🌸</div><span class="anim-card-name">Petals</span><span class="anim-card-desc">Falling petals</span></div>
+            <div class="anim-card" id="ct-anim-confetti" onclick="ctSelectAnim('confetti')"><div class="anim-card-icon">🎊</div><span class="anim-card-name">Confetti</span><span class="anim-card-desc">Classic confetti</span></div>
+          </div>
+
+          <div id="ct-anim-mode-wrap" style="display:none;margin-top:14px;">
+            <span class="sl">PLAYS</span>
+            <div class="anim-mode-grid">
+              <div class="anim-mode-card selected" id="ct-mode-ambient" onclick="ctSelectAnimMode('ambient')"><span class="anim-mode-name">Ambient</span><span class="anim-mode-desc">Always running</span></div>
+              <div class="anim-mode-card" id="ct-mode-load" onclick="ctSelectAnimMode('load')"><span class="anim-mode-name">On Load</span><span class="anim-mode-desc">Once on open</span></div>
+              <div class="anim-mode-card" id="ct-mode-scroll" onclick="ctSelectAnimMode('scroll')"><span class="anim-mode-name">On Scroll</span><span class="anim-mode-desc">As they scroll</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top:22px;">
+            <span class="sl">CELEBRATION BURST</span>
+            <div class="anim-grid" id="ct-burst-grid">
+              <div class="anim-card selected" id="ct-burst-none" onclick="ctSelectBurst('none')"><div class="anim-card-icon">○</div><span class="anim-card-name">None</span><span class="anim-card-desc">No burst</span></div>
+              <div class="anim-card" id="ct-burst-confetti" onclick="ctSelectBurst('confetti')"><div class="anim-card-icon">🎉</div><span class="anim-card-name">Confetti</span><span class="anim-card-desc">Party burst</span></div>
+              <div class="anim-card" id="ct-burst-sparkles" onclick="ctSelectBurst('sparkles')"><div class="anim-card-icon">✨</div><span class="anim-card-name">Sparkles</span><span class="anim-card-desc">Sparkle pop</span></div>
+              <div class="anim-card" id="ct-burst-stars" onclick="ctSelectBurst('stars')"><div class="anim-card-icon">⭐</div><span class="anim-card-name">Stars</span><span class="anim-card-desc">Star burst</span></div>
+              <div class="anim-card" id="ct-burst-fireworks" onclick="ctSelectBurst('fireworks')"><div class="anim-card-icon">🎆</div><span class="anim-card-name">Fireworks</span><span class="anim-card-desc">Boom!</span></div>
+            </div>
+
+            <div id="ct-burst-trigger-wrap" style="display:none;margin-top:12px;">
+              <span class="sl">TRIGGER ON</span>
+              <div class="burst-trigger-row">
+                <label class="burst-trigger-check"><input type="checkbox" id="ct-burst-on-form" checked><span>Form Submit</span></label>
+                <label class="burst-trigger-check"><input type="checkbox" id="ct-burst-on-cta"><span>CTA Clicks</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="step-nav">
           <button class="btn-back" onclick="ctGoStep(5)">&#8592; Back</button>
           <button class="btn-next" onclick="ctGoStep(7)">Continue &#8594;</button>
@@ -1428,7 +1492,12 @@ function ctCollect() {
     ftesti3Name:  _ctTestiOn ? v('ct-ftesti3-name')  : '',
     ftesti3Ctx:   _ctTestiOn ? v('ct-ftesti3-ctx')   : '',
     calendlyUrl:  _ctCalOn   ? (v('ct-calendly-url')     || '') : '',
-    googleFormUrl:_ctFormOn  ? (v('ct-google-form-url')  || '') : ''
+    googleFormUrl:_ctFormOn  ? (v('ct-google-form-url')  || '') : '',
+    _animType: _ctAnim,
+    _animMode: _ctAnimMode,
+    _burstType: _ctBurst,
+    _burstOnForm: document.getElementById('ct-burst-on-form') ? document.getElementById('ct-burst-on-form').checked : false,
+    _burstOnCta: document.getElementById('ct-burst-on-cta') ? document.getElementById('ct-burst-on-cta').checked : false
   };
 }
 
@@ -2042,6 +2111,52 @@ function ctApplyAllLive() {
   }
 }
 
+  // ── ANIMATION PICKERS ──
+  var _ctAnim = 'none', _ctAnimMode = 'ambient', _ctBurst = 'none';
+  function ctSelectAnim(val) {
+    _ctAnim = val;
+    document.querySelectorAll('#ct-anim-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ct-anim-' + val);
+    if (el) el.classList.add('selected');
+    document.getElementById('ct-anim-mode-wrap').style.display = val === 'none' ? 'none' : 'block';
+    ctPushAnimToPreview();
+  }
+  function ctSelectAnimMode(val) {
+    _ctAnimMode = val;
+    document.querySelectorAll('.anim-mode-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ct-mode-' + val);
+    if (el) el.classList.add('selected');
+    ctPushAnimToPreview();
+  }
+  function ctSelectBurst(val) {
+    _ctBurst = val;
+    document.querySelectorAll('#ct-burst-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ct-burst-' + val);
+    if (el) el.classList.add('selected');
+    document.getElementById('ct-burst-trigger-wrap').style.display = val === 'none' ? 'none' : 'block';
+    ctPushAnimToPreview();
+  }
+  function ctPushAnimToPreview() {
+    var iframe = document.getElementById('preview-iframe');
+    if (!iframe) return;
+    var doc;
+    try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+    if (!doc || !doc.body) return;
+    doc.body.setAttribute('data-anim', _ctAnim);
+    doc.body.setAttribute('data-anim-mode', _ctAnimMode);
+    doc.body.setAttribute('data-burst', _ctBurst);
+    var burstOn = [];
+    if (document.getElementById('ct-burst-on-form') && document.getElementById('ct-burst-on-form').checked) burstOn.push('form');
+    if (document.getElementById('ct-burst-on-cta') && document.getElementById('ct-burst-on-cta').checked) burstOn.push('cta');
+    doc.body.setAttribute('data-burst-on', burstOn.join(','));
+    // Trigger re-init of animation engine in iframe if it exists
+    try {
+      if (iframe.contentWindow && iframe.contentWindow.builtsy_initAnim) {
+        iframe.contentWindow.builtsy_initAnim();
+      }
+    } catch(e) {}
+  }
+
 function ctSetupLivePreview() {
   for (var i = 0; i < CT_LIVE_MAP.length; i++) {
     (function(m) {
@@ -2056,6 +2171,7 @@ function ctSetupLivePreview() {
   if (iframe) {
     iframe.addEventListener('load', function() {
       setTimeout(ctApplyAllLive, 80);
+      setTimeout(ctPushAnimToPreview, 120);
     });
   }
 }

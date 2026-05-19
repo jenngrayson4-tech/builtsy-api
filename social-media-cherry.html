@@ -1093,7 +1093,8 @@
     }
   </style>
 </head>
-<body>
+<body data-anim="none" data-anim-mode="ambient" data-burst="none" data-burst-on="form">
+<canvas id="builtsy-bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.35;"></canvas>
 
 <!-- ══════════════════════════════════════════════════
      NAV
@@ -1757,6 +1758,242 @@
       e.target.reset();
     }, 4000);
   }
+</script>
+<script>
+(function(){
+  var canvas = document.getElementById('builtsy-bg-canvas');
+  var ctx = canvas ? canvas.getContext('2d') : null;
+  var particles = [], animFrame, running = false;
+  var COLORS = ['#4361ee','#7c3aed','#ec4899','#f59e0b','#10b981','#06b6d4','#a78bfa'];
+
+  function resize() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function makeParticle(type) {
+    var p = {
+      x: rand(0, canvas.width),
+      y: type === 'bubbles' ? canvas.height + 10 : rand(-20, -5),
+      size: type === 'sparkles' ? rand(1.5, 3.5) : type === 'stars' ? rand(3, 7) : type === 'bubbles' ? rand(6, 18) : type === 'petals' ? rand(6, 12) : rand(6, 14),
+      color: COLORS[Math.floor(rand(0, COLORS.length))],
+      alpha: rand(0.3, 0.9),
+      speed: rand(0.3, 1.2),
+      drift: rand(-0.4, 0.4),
+      spin: rand(-0.04, 0.04),
+      angle: 0,
+      twinkle: rand(0, Math.PI * 2),
+      twinkleSpeed: rand(0.03, 0.07),
+      type: type,
+      shape: type === 'confetti' ? ['rect','circle','tri'][Math.floor(rand(0,3))] : null
+    };
+    if (type === 'bubbles') { p.y = canvas.height + p.size; p.speed = rand(0.4, 1.0); }
+    return p;
+  }
+
+  function drawParticle(p) {
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.strokeStyle = p.color;
+    if (p.type === 'sparkles') {
+      var s = p.size * (0.6 + 0.4 * Math.sin(p.twinkle));
+      ctx.beginPath();
+      for (var i = 0; i < 4; i++) {
+        var a = (i / 4) * Math.PI * 2;
+        ctx.lineTo(p.x + Math.cos(a) * s, p.y + Math.sin(a) * s);
+        ctx.lineTo(p.x + Math.cos(a + Math.PI/4) * s * 0.3, p.y + Math.sin(a + Math.PI/4) * s * 0.3);
+      }
+      ctx.closePath();
+      ctx.fill();
+    } else if (p.type === 'stars') {
+      var s2 = p.size * (0.5 + 0.5 * Math.abs(Math.sin(p.twinkle)));
+      ctx.beginPath();
+      for (var i2 = 0; i2 < 5; i2++) {
+        var ao = (i2 / 5) * Math.PI * 2 - Math.PI / 2;
+        var ai = ao + Math.PI / 5;
+        ctx.lineTo(p.x + Math.cos(ao) * s2, p.y + Math.sin(ao) * s2);
+        ctx.lineTo(p.x + Math.cos(ai) * s2 * 0.4, p.y + Math.sin(ai) * s2 * 0.4);
+      }
+      ctx.closePath();
+      ctx.fill();
+    } else if (p.type === 'bubbles') {
+      ctx.globalAlpha = p.alpha * 0.4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else if (p.type === 'petals') {
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size * 0.5, p.size, 0, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (p.type === 'confetti') {
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      if (p.shape === 'rect') { ctx.fillRect(-p.size/2, -p.size/4, p.size, p.size/2); }
+      else if (p.shape === 'circle') { ctx.beginPath(); ctx.arc(0,0,p.size/2,0,Math.PI*2); ctx.fill(); }
+      else { ctx.beginPath(); ctx.moveTo(0,-p.size/2); ctx.lineTo(p.size/2,p.size/2); ctx.lineTo(-p.size/2,p.size/2); ctx.closePath(); ctx.fill(); }
+    }
+    ctx.restore();
+  }
+
+  function updateParticle(p) {
+    p.twinkle += p.twinkleSpeed;
+    p.angle += p.spin;
+    p.x += p.drift;
+    if (p.type === 'bubbles') { p.y -= p.speed; p.alpha -= 0.0015; }
+    else { p.y += p.speed; }
+    var oob = p.type === 'bubbles' ? p.y < -p.size || p.alpha <= 0 : p.y > canvas.height + 20;
+    return !oob;
+  }
+
+  function loop() {
+    if (!running || !ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var anim = document.body.getAttribute('data-anim') || 'none';
+    if (anim === 'none') { animFrame = requestAnimationFrame(loop); return; }
+    var count = anim === 'bubbles' ? 60 : anim === 'petals' ? 50 : 80;
+    while (particles.length < count) particles.push(makeParticle(anim));
+    particles = particles.filter(function(p) {
+      var alive = updateParticle(p);
+      if (alive) drawParticle(p);
+      return alive;
+    });
+    animFrame = requestAnimationFrame(loop);
+  }
+
+  function startAnim() {
+    if (!canvas || !ctx) return;
+    var anim = document.body.getAttribute('data-anim') || 'none';
+    var mode = document.body.getAttribute('data-anim-mode') || 'ambient';
+    if (anim === 'none') { canvas.style.display = 'none'; return; }
+    canvas.style.display = 'block';
+    particles = [];
+    running = true;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    loop();
+    if (mode === 'load') {
+      setTimeout(function() {
+        running = false;
+        setTimeout(function() { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; }, 500);
+      }, 3500);
+    } else if (mode === 'scroll') {
+      running = false;
+      canvas.style.display = 'none';
+      window.addEventListener('scroll', function onScroll() {
+        if (window.scrollY > 80) {
+          canvas.style.display = 'block';
+          running = true;
+          loop();
+          window.removeEventListener('scroll', onScroll);
+          setTimeout(function() { running = false; setTimeout(function(){ canvas.style.display='none'; }, 400); }, 3000);
+        }
+      });
+    }
+  }
+
+  // Burst system
+  function doBurst(type) {
+    if (!type || type === 'none') return;
+    var bc = document.createElement('canvas');
+    bc.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+    bc.width = window.innerWidth; bc.height = window.innerHeight;
+    document.body.appendChild(bc);
+    var bctx = bc.getContext('2d');
+    var bp = [];
+    var burstColors = type === 'confetti' ? ['#4361ee','#f59e0b','#ec4899','#10b981','#7c3aed','#ef4444','#06b6d4'] :
+                      type === 'fireworks' ? ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ffffff'] :
+                      COLORS;
+    var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    for (var i = 0; i < 120; i++) {
+      var angle = rand(0, Math.PI * 2);
+      var speed = rand(3, 12);
+      bp.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed * (type === 'fireworks' ? 1.5 : 1),
+        vy: Math.sin(angle) * speed * (type === 'fireworks' ? 1.5 : 1) - (type !== 'confetti' ? 2 : 0),
+        size: type === 'sparkles' || type === 'stars' ? rand(4, 10) : rand(5, 12),
+        color: burstColors[Math.floor(rand(0, burstColors.length))],
+        alpha: 1, angle: rand(0, Math.PI*2), spin: rand(-0.15, 0.15),
+        gravity: type === 'fireworks' ? 0.12 : 0.08,
+        type: type === 'confetti' ? 'confetti' : type === 'fireworks' ? 'fireworks' : type,
+        shape: type === 'confetti' ? ['rect','circle','tri'][Math.floor(rand(0,3))] : null
+      });
+    }
+    function bloop() {
+      bctx.clearRect(0,0,bc.width,bc.height);
+      bp = bp.filter(function(p) {
+        p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.vx *= 0.99;
+        p.alpha -= 0.014; p.angle += p.spin;
+        if (p.alpha <= 0) return false;
+        bctx.save();
+        bctx.globalAlpha = p.alpha;
+        bctx.fillStyle = p.color;
+        bctx.strokeStyle = p.color;
+        if (p.type === 'sparkles') {
+          bctx.translate(p.x,p.y); bctx.rotate(p.angle);
+          bctx.beginPath();
+          for (var i=0;i<4;i++){var a=(i/4)*Math.PI*2;bctx.lineTo(Math.cos(a)*p.size,Math.sin(a)*p.size);bctx.lineTo(Math.cos(a+Math.PI/4)*p.size*0.3,Math.sin(a+Math.PI/4)*p.size*0.3);}
+          bctx.closePath(); bctx.fill();
+        } else if (p.type === 'stars') {
+          bctx.translate(p.x,p.y); bctx.rotate(p.angle);
+          bctx.beginPath();
+          for(var i2=0;i2<5;i2++){var ao=(i2/5)*Math.PI*2-Math.PI/2;var ai=ao+Math.PI/5;bctx.lineTo(Math.cos(ao)*p.size,Math.sin(ao)*p.size);bctx.lineTo(Math.cos(ai)*p.size*0.4,Math.sin(ai)*p.size*0.4);}
+          bctx.closePath(); bctx.fill();
+        } else if (p.type === 'fireworks') {
+          bctx.beginPath(); bctx.arc(p.x,p.y,p.size/2,0,Math.PI*2); bctx.fill();
+          bctx.globalAlpha = p.alpha * 0.3;
+          bctx.beginPath(); bctx.moveTo(p.x,p.y); bctx.lineTo(p.x-p.vx*3,p.y-p.vy*3);
+          bctx.lineWidth=p.size/3; bctx.stroke();
+        } else {
+          bctx.translate(p.x,p.y); bctx.rotate(p.angle);
+          if (p.shape==='rect'){bctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}
+          else if(p.shape==='circle'){bctx.beginPath();bctx.arc(0,0,p.size/2,0,Math.PI*2);bctx.fill();}
+          else{bctx.beginPath();bctx.moveTo(0,-p.size/2);bctx.lineTo(p.size/2,p.size/2);bctx.lineTo(-p.size/2,p.size/2);bctx.closePath();bctx.fill();}
+        }
+        bctx.restore();
+        return true;
+      });
+      if (bp.length > 0) requestAnimationFrame(bloop);
+      else document.body.removeChild(bc);
+    }
+    bloop();
+  }
+
+  function setupBurst() {
+    var burstType = document.body.getAttribute('data-burst') || 'none';
+    var burstOn = (document.body.getAttribute('data-burst-on') || '').split(',');
+    if (burstType === 'none') return;
+    if (burstOn.indexOf('form') > -1) {
+      document.addEventListener('submit', function() { setTimeout(function(){ doBurst(burstType); }, 200); });
+    }
+    if (burstOn.indexOf('cta') > -1) {
+      document.querySelectorAll('a[href="#contact"],a[href="#booking"],button.btn-primary,.btn-primary,.cta-btn,.hero-cta').forEach(function(el){
+        el.addEventListener('click', function(){ doBurst(burstType); });
+      });
+    }
+  }
+
+  window.builtsy_initAnim = function() {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    running = false;
+    particles = [];
+    startAnim();
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    startAnim();
+    setupBurst();
+  });
+})();
 </script>
 
 </body>
