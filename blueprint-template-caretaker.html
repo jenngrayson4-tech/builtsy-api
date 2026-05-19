@@ -2013,11 +2013,43 @@ function ctApplyRates() {
   }
 }
 
+// ── LIVE PREVIEW ─────────────────────────────────────────
+function ctUpdatePreview(key, value) {
+  if (!value) return;
+  var iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    if (!doc) return;
+    var els = doc.querySelectorAll('[data-live="' + key + '"]');
+    for (var i = 0; i < els.length; i++) {
+      els[i].textContent = value;
+    }
+  } catch(e) {}
+}
+
+function ctSetupLivePreview() {
+  var map = [
+    { id: 'ct-biz-name',       key: 'biz-name' },
+    { id: 'ct-hero-headline',  key: 'headline' }
+  ];
+  for (var i = 0; i < map.length; i++) {
+    (function(m) {
+      var el = document.getElementById(m.id);
+      if (!el) return;
+      el.addEventListener('input', function() {
+        ctUpdatePreview(m.key, this.value.trim());
+      });
+    })(map[i]);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   ctRenderTemplateCards();
   ctRenderPaletteGrid('light');
   ctGoStep(1);
   ctInitChips();
+  ctSetupLivePreview();
 });
 </script>
 </body>
