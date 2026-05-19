@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Testimonials Tool | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;
+  --dark:#0D1220;--card:#1A2338;--border:rgba(255,255,255,0.08);
+  --text:#F0F4FF;--muted:#8892A4;
+  --lime-dim:rgba(200,224,0,0.10);--lime-border:rgba(200,224,0,0.25);
+  --pink-dim:rgba(238,112,188,0.10);--pink-border:rgba(238,112,188,0.2);
+  --r:10px;--rl:14px;
+}
+html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-serif;color:var(--text);}
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'DM Sans',sans-serif;color:var(--text);font-size:1.15rem;font-weight:700;text-decoration:none;letter-spacing:-0.02em;}
+.logo-text .logo-sy{color:var(--pink);}
+.tn-center{position:absolute;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.tn-right{display:flex;align-items:center;gap:1rem;}
+.save-indicator{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.08em;color:transparent;transition:all .3s;}
+.save-indicator.saving{color:rgba(200,224,0,0.6);}
+.save-indicator.saved{color:rgba(200,224,0,0.9);}
+.save-indicator.error{color:rgba(238,112,188,0.8);}
+.page-wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+.page-header{margin-bottom:2rem;text-align:center;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem;opacity:0.75;}
+.page-title{font-size:1.75rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;letter-spacing:-0.02em;}
+.page-sub{color:var(--muted);font-size:0.88rem;line-height:1.65;}
+.warn-banner{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:var(--r);padding:0.65rem 1rem;font-size:0.8rem;color:var(--pink);margin-bottom:1.5rem;text-align:center;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;}
+.card+.card{margin-top:1.25rem;}
+.step-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;opacity:0.8;}
+.step-dot{width:20px;height:20px;background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:var(--lime);flex-shrink:0;}
+.form-group{margin-bottom:1.1rem;}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:0.45rem;display:block;letter-spacing:0.01em;}
+.form-hint{font-size:0.72rem;color:var(--muted);margin-bottom:0.45rem;display:block;line-height:1.5;}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.875rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:rgba(200,224,0,0.4);}
+.form-input::placeholder{color:var(--muted);}
+textarea.form-input{resize:vertical;min-height:70px;line-height:1.55;}
+.btn-primary{background:var(--lime);color:var(--dark);border:none;border-radius:8px;padding:0.8rem 1.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:-0.01em;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.25rem;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2);color:var(--text);}
+.divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+.success-msg{background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:var(--r);padding:1rem 1.25rem;font-size:0.88rem;color:var(--lime);margin-top:1rem;line-height:1.6;display:none;}
+
+/* TESTIMONIAL CARDS */
+.testi-list{display:flex;flex-direction:column;gap:1rem;}
+.testi-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;position:relative;transition:border-color .15s;}
+.testi-card:focus-within{border-color:rgba(200,224,0,0.2);}
+.testi-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.testi-num{font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);opacity:0.7;}
+.testi-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:0.2rem 0.4rem;border-radius:5px;font-size:0.85rem;line-height:1;transition:all .15s;}
+.testi-del:hover{background:var(--pink-dim);color:var(--pink);}
+.testi-fields{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
+@media(max-width:520px){.testi-fields{grid-template-columns:1fr;}}
+.testi-stars{display:flex;gap:0.3rem;margin-bottom:0.75rem;}
+.star-btn{background:none;border:none;cursor:pointer;font-size:1.2rem;line-height:1;color:rgba(255,255,255,0.15);transition:color .15s;padding:0 1px;}
+.star-btn.active{color:#FFBA00;}
+.star-btn:hover{color:#FFBA00;}
+
+/* ADD BUTTON */
+.add-testi-btn{display:flex;align-items:center;justify-content:center;gap:0.4rem;background:none;border:1px dashed rgba(255,255,255,0.12);border-radius:8px;padding:0.65rem 1rem;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;width:100%;margin-top:0.75rem;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.add-testi-btn:hover{border-color:rgba(200,224,0,0.25);color:var(--lime);}
+
+.info-row{display:flex;align-items:flex-start;gap:0.75rem;background:rgba(200,224,0,0.05);border:1px solid rgba(200,224,0,0.12);border-radius:8px;padding:0.85rem 1rem;margin-bottom:1.25rem;}
+.info-icon{font-size:1rem;flex-shrink:0;}
+.info-text{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span></a>
+  </div>
+  <div class="tn-center">Testimonials Tool</div>
+  <div class="tn-right">
+    <span class="save-indicator" id="save-indicator"></span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Builtsy Tool</div>
+    <h1 class="page-title">Testimonials</h1>
+    <p class="page-sub">Add your client reviews and they'll be beautifully displayed on your generated site. Copy them from Google, ChatGPT, wherever — paste them in.</p>
+  </div>
+
+  <div id="no-bp-warn" class="warn-banner hidden">
+    No blueprint ID detected. Link this tab from your blueprint to save correctly.
+  </div>
+
+  <!-- CARDS -->
+  <div class="card">
+    <div class="step-label"><span class="step-dot">1</span>Add your testimonials</div>
+
+    <div class="info-row">
+      <span class="info-icon">&#9432;</span>
+      <div class="info-text">
+        Real quotes only — your clients' actual words. Add 3–6 for best results on your site.
+      </div>
+    </div>
+
+    <div class="testi-list" id="testi-list"></div>
+
+    <button class="add-testi-btn" id="add-btn" onclick="addCard()">+ Add another testimonial</button>
+
+    <hr class="divider">
+
+    <button class="btn-primary" id="save-btn" onclick="saveConfig()">Save Testimonials</button>
+
+    <div class="success-msg" id="success-msg">
+      Testimonials saved! They'll appear as a section on your generated site.
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SUPABASE_URL = 'https://nukcbqlxxrfsgchqyxud.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX';
+var _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var _bpId = new URLSearchParams(window.location.search).get('blueprint')
+         || localStorage.getItem('builtsy_bp_id') || '';
+
+var _cardCount = 0;
+var MAX_CARDS = 8;
+
+(function init() {
+  if (!_bpId) document.getElementById('no-bp-warn').classList.remove('hidden');
+  // Start with 3 blank cards
+  addCard(); addCard(); addCard();
+  loadConfig();
+})();
+
+function setSaveStatus(status, msg) {
+  var el = document.getElementById('save-indicator');
+  el.className = 'save-indicator ' + (status || '');
+  el.textContent = msg || '';
+}
+
+function addCard(data) {
+  var list = document.getElementById('testi-list');
+  var cards = list.querySelectorAll('.testi-card');
+  if (cards.length >= MAX_CARDS) {
+    document.getElementById('add-btn').style.display = 'none';
+    return;
+  }
+  _cardCount++;
+  var id = _cardCount;
+
+  var card = document.createElement('div');
+  card.className = 'testi-card';
+  card.setAttribute('data-id', id);
+
+  var header = document.createElement('div');
+  header.className = 'testi-card-header';
+  var numEl = document.createElement('span');
+  numEl.className = 'testi-num';
+  numEl.textContent = 'Testimonial ' + (cards.length + 1);
+  var delBtn = document.createElement('button');
+  delBtn.className = 'testi-del';
+  delBtn.textContent = 'Remove';
+  delBtn.setAttribute('data-id', id);
+  delBtn.onclick = function() { removeCard(this.getAttribute('data-id')); };
+  header.appendChild(numEl);
+  header.appendChild(delBtn);
+
+  // Stars
+  var starsWrap = document.createElement('div');
+  starsWrap.className = 'testi-stars';
+  starsWrap.setAttribute('data-rating', data ? (data.rating || 5) : 5);
+  for (var s = 1; s <= 5; s++) {
+    var star = document.createElement('button');
+    star.className = 'star-btn' + (s <= (data ? (data.rating || 5) : 5) ? ' active' : '');
+    star.textContent = '★';
+    star.setAttribute('data-val', s);
+    star.setAttribute('data-wrap-id', id);
+    star.onclick = function() {
+      var val = parseInt(this.getAttribute('data-val'));
+      var wrap = this.parentNode;
+      wrap.setAttribute('data-rating', val);
+      var btns = wrap.querySelectorAll('.star-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].className = 'star-btn' + (parseInt(btns[i].getAttribute('data-val')) <= val ? ' active' : '');
+      }
+    };
+    starsWrap.appendChild(star);
+  }
+
+  // Name + Role row
+  var fieldsRow = document.createElement('div');
+  fieldsRow.className = 'testi-fields';
+
+  var nameGroup = document.createElement('div');
+  var nameLabel = document.createElement('label');
+  nameLabel.className = 'form-label';
+  nameLabel.style.fontSize = '0.72rem';
+  nameLabel.textContent = 'Client name';
+  var nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.className = 'form-input testi-name';
+  nameInput.placeholder = 'e.g. Sarah M.';
+  nameInput.style.fontSize = '0.84rem';
+  nameInput.style.padding = '0.5rem 0.75rem';
+  if (data && data.name) nameInput.value = data.name;
+  nameGroup.appendChild(nameLabel);
+  nameGroup.appendChild(nameInput);
+
+  var roleGroup = document.createElement('div');
+  var roleLabel = document.createElement('label');
+  roleLabel.className = 'form-label';
+  roleLabel.style.fontSize = '0.72rem';
+  roleLabel.textContent = 'Title / Company';
+  var roleInput = document.createElement('input');
+  roleInput.type = 'text';
+  roleInput.className = 'form-input testi-role';
+  roleInput.placeholder = 'e.g. Small Business Owner';
+  roleInput.style.fontSize = '0.84rem';
+  roleInput.style.padding = '0.5rem 0.75rem';
+  if (data && data.role) roleInput.value = data.role;
+  roleGroup.appendChild(roleLabel);
+  roleGroup.appendChild(roleInput);
+
+  fieldsRow.appendChild(nameGroup);
+  fieldsRow.appendChild(roleGroup);
+
+  // Quote
+  var quoteGroup = document.createElement('div');
+  quoteGroup.className = 'form-group';
+  quoteGroup.style.marginBottom = '0';
+  var quoteLabel = document.createElement('label');
+  quoteLabel.className = 'form-label';
+  quoteLabel.style.fontSize = '0.72rem';
+  quoteLabel.textContent = 'Their words';
+  var quoteArea = document.createElement('textarea');
+  quoteArea.className = 'form-input testi-quote';
+  quoteArea.placeholder = 'Paste their review here exactly as they wrote it...';
+  quoteArea.style.fontSize = '0.84rem';
+  quoteArea.style.minHeight = '80px';
+  if (data && data.quote) quoteArea.value = data.quote;
+  quoteGroup.appendChild(quoteLabel);
+  quoteGroup.appendChild(quoteArea);
+
+  card.appendChild(header);
+  card.appendChild(starsWrap);
+  card.appendChild(fieldsRow);
+  card.appendChild(quoteGroup);
+  list.appendChild(card);
+
+  // Show/hide add button based on count
+  var newCards = list.querySelectorAll('.testi-card');
+  if (newCards.length >= MAX_CARDS) {
+    document.getElementById('add-btn').style.display = 'none';
+  } else {
+    document.getElementById('add-btn').style.display = '';
+  }
+
+  renumberCards();
+}
+
+function removeCard(id) {
+  var list = document.getElementById('testi-list');
+  var card = list.querySelector('[data-id="' + id + '"]');
+  if (card) list.removeChild(card);
+  document.getElementById('add-btn').style.display = '';
+  renumberCards();
+}
+
+function renumberCards() {
+  var cards = document.querySelectorAll('.testi-card');
+  for (var i = 0; i < cards.length; i++) {
+    var num = cards[i].querySelector('.testi-num');
+    if (num) num.textContent = 'Testimonial ' + (i + 1);
+  }
+}
+
+function collectTestimonials() {
+  var cards = document.querySelectorAll('.testi-card');
+  var result = [];
+  for (var i = 0; i < cards.length; i++) {
+    var name = cards[i].querySelector('.testi-name').value.trim();
+    var role = cards[i].querySelector('.testi-role').value.trim();
+    var quote = cards[i].querySelector('.testi-quote').value.trim();
+    var starsWrap = cards[i].querySelector('.testi-stars');
+    var rating = starsWrap ? parseInt(starsWrap.getAttribute('data-rating')) || 5 : 5;
+    if (quote) {
+      result.push({ name: name, role: role, quote: quote, rating: rating });
+    }
+  }
+  return result;
+}
+
+function saveConfig() {
+  var items = collectTestimonials();
+  if (!items.length) { alert('Add at least one testimonial before saving.'); return; }
+
+  var btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  setSaveStatus('saving', 'Saving...');
+
+  var row = {
+    blueprint_id: _bpId || 'unknown',
+    tool_type: 'testimonials',
+    config: { testimonials: items }
+  };
+
+  _sb.from('tool_configs')
+    .upsert(row, {onConflict: 'blueprint_id,tool_type'})
+    .then(function(res) {
+      if (res.error) throw res.error;
+      setSaveStatus('saved', 'Saved');
+      setTimeout(function(){ setSaveStatus('',''); }, 3000);
+      document.getElementById('success-msg').style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Save Testimonials';
+    })
+    .catch(function(e) {
+      setSaveStatus('error', 'Save failed');
+      btn.disabled = false; btn.textContent = 'Save Testimonials';
+      alert('Save failed: ' + (e.message || 'Unknown error'));
+    });
+}
+
+function loadConfig() {
+  if (!_bpId) return;
+  _sb.from('tool_configs')
+    .select('config')
+    .eq('blueprint_id', _bpId)
+    .eq('tool_type', 'testimonials')
+    .maybeSingle()
+    .then(function(res) {
+      if (res.data && res.data.config && res.data.config.testimonials && res.data.config.testimonials.length) {
+        // Clear default blanks and load saved
+        var list = document.getElementById('testi-list');
+        list.innerHTML = '';
+        _cardCount = 0;
+        var items = res.data.config.testimonials;
+        for (var i = 0; i < items.length; i++) {
+          addCard(items[i]);
+        }
+      }
+    });
+}
+</script>
+</body>
+</html>

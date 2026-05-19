@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calendly Tool | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;
+  --dark:#0D1220;--card:#1A2338;--border:rgba(255,255,255,0.08);
+  --text:#F0F4FF;--muted:#8892A4;
+  --lime-dim:rgba(200,224,0,0.10);--lime-border:rgba(200,224,0,0.25);
+  --pink-dim:rgba(238,112,188,0.10);--r:10px;--rl:14px;
+}
+html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-serif;color:var(--text);}
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'DM Sans',sans-serif;color:var(--text);font-size:1.15rem;font-weight:700;text-decoration:none;letter-spacing:-0.02em;}
+.logo-text .logo-sy{color:var(--pink);}
+.tn-center{position:absolute;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.tn-right{display:flex;align-items:center;gap:1rem;}
+.save-indicator{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.08em;color:transparent;transition:all .3s;}
+.save-indicator.saving{color:rgba(200,224,0,0.6);}
+.save-indicator.saved{color:rgba(200,224,0,0.9);}
+.save-indicator.error{color:rgba(238,112,188,0.8);}
+.page-wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+.page-header{margin-bottom:2rem;text-align:center;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem;opacity:0.75;}
+.page-title{font-size:1.75rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;letter-spacing:-0.02em;}
+.page-sub{color:var(--muted);font-size:0.88rem;line-height:1.65;}
+.warn-banner{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:var(--r);padding:0.65rem 1rem;font-size:0.8rem;color:var(--pink);margin-bottom:1.5rem;text-align:center;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;}
+.card+.card{margin-top:1.25rem;}
+.step-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;opacity:0.8;}
+.step-dot{width:20px;height:20px;background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:var(--lime);flex-shrink:0;}
+.form-group{margin-bottom:1.1rem;}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:0.45rem;display:block;letter-spacing:0.01em;}
+.form-hint{font-size:0.72rem;color:var(--muted);margin-bottom:0.45rem;display:block;line-height:1.5;}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.875rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:rgba(200,224,0,0.4);}
+.form-input::placeholder{color:var(--muted);}
+.btn-primary{background:var(--lime);color:var(--dark);border:none;border-radius:8px;padding:0.8rem 1.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:-0.01em;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.25rem;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2);color:var(--text);}
+.action-row{display:flex;gap:0.75rem;margin-top:1.25rem;}
+.action-row .btn-primary{flex:1;}
+.action-row .btn-secondary{flex-shrink:0;}
+.divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+.success-msg{background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:var(--r);padding:1rem 1.25rem;font-size:0.88rem;color:var(--lime);margin-top:1rem;line-height:1.6;display:none;}
+.preview-wrap{margin-top:1.25rem;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#fff;display:none;}
+.preview-wrap iframe{width:100%;height:460px;border:none;display:block;}
+.info-row{display:flex;align-items:flex-start;gap:0.75rem;background:rgba(200,224,0,0.05);border:1px solid rgba(200,224,0,0.12);border-radius:8px;padding:0.85rem 1rem;margin-bottom:1.25rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.05rem;}
+.info-text{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+.info-text a{color:var(--lime);text-decoration:none;}
+.info-text a:hover{text-decoration:underline;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span></a>
+  </div>
+  <div class="tn-center">Calendly Tool</div>
+  <div class="tn-right">
+    <span class="save-indicator" id="save-indicator"></span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Builtsy Tool</div>
+    <h1 class="page-title">Calendly Booking</h1>
+    <p class="page-sub">Drop in your Calendly link and it'll be embedded as a booking section on your generated site.</p>
+  </div>
+
+  <div id="no-bp-warn" class="warn-banner hidden">
+    No blueprint ID detected. Link this tab from your blueprint to save correctly.
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="step-main" class="card">
+    <div class="step-label"><span class="step-dot">1</span>Your Calendly link</div>
+
+    <div class="info-row">
+      <span class="info-icon">&#9432;</span>
+      <div class="info-text">
+        Don't have a Calendly account? It's free. <a href="https://calendly.com/signup" target="_blank">Sign up at calendly.com</a> — takes 2 minutes.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="cal-url">Calendly URL</label>
+      <span class="form-hint">Your personal scheduling link — e.g. calendly.com/yourname/30min</span>
+      <input class="form-input" type="url" id="cal-url" placeholder="https://calendly.com/yourname/30min" oninput="onUrlChange()">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="cal-label">Section heading <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <span class="form-hint">Shown above the booking widget on your site.</span>
+      <input class="form-input" type="text" id="cal-label" placeholder="e.g. Book a Free Consultation" value="Book a Free Consultation">
+    </div>
+
+    <div id="preview-wrap" class="preview-wrap">
+      <iframe id="cal-preview" src="" title="Calendly preview"></iframe>
+    </div>
+
+    <hr class="divider">
+
+    <div class="action-row">
+      <button class="btn-primary" id="save-btn" onclick="saveConfig()">Save to My Site</button>
+      <button class="btn-secondary" onclick="previewCal()">Preview</button>
+    </div>
+
+    <div class="success-msg" id="success-msg">
+      Calendly link saved! It will be embedded as a booking section when you generate your site.
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SUPABASE_URL = 'https://nukcbqlxxrfsgchqyxud.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX';
+var _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var _bpId = new URLSearchParams(window.location.search).get('blueprint')
+         || localStorage.getItem('builtsy_bp_id') || '';
+
+(function init() {
+  if (!_bpId) document.getElementById('no-bp-warn').classList.remove('hidden');
+  loadConfig();
+})();
+
+function setSaveStatus(status, msg) {
+  var el = document.getElementById('save-indicator');
+  el.className = 'save-indicator ' + (status || '');
+  el.textContent = msg || '';
+}
+
+function onUrlChange() {
+  document.getElementById('preview-wrap').style.display = 'none';
+}
+
+function getCalUrl() {
+  return document.getElementById('cal-url').value.trim();
+}
+
+function previewCal() {
+  var url = getCalUrl();
+  if (!url) { alert('Enter your Calendly URL first.'); return; }
+  // Normalize to embed URL
+  var embedUrl = url.replace('calendly.com/', 'calendly.com/');
+  if (embedUrl.indexOf('?') === -1) embedUrl += '?hide_gdpr_banner=1';
+  else embedUrl += '&hide_gdpr_banner=1';
+  var wrap = document.getElementById('preview-wrap');
+  var iframe = document.getElementById('cal-preview');
+  iframe.src = embedUrl;
+  wrap.style.display = 'block';
+}
+
+function saveConfig() {
+  var url = getCalUrl();
+  var label = document.getElementById('cal-label').value.trim() || 'Book a Free Consultation';
+  if (!url) { alert('Enter your Calendly URL before saving.'); return; }
+
+  var btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  setSaveStatus('saving', 'Saving...');
+
+  var row = {
+    blueprint_id: _bpId || 'unknown',
+    tool_type: 'calendly',
+    config: { calendlyUrl: url, sectionLabel: label }
+  };
+
+  _sb.from('tool_configs')
+    .upsert(row, {onConflict: 'blueprint_id,tool_type'})
+    .then(function(res) {
+      if (res.error) throw res.error;
+      setSaveStatus('saved', 'Saved');
+      setTimeout(function(){ setSaveStatus('',''); }, 3000);
+      document.getElementById('success-msg').style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Save to My Site';
+    })
+    .catch(function(e) {
+      setSaveStatus('error', 'Save failed');
+      btn.disabled = false; btn.textContent = 'Save to My Site';
+      alert('Save failed: ' + (e.message || 'Unknown error'));
+    });
+}
+
+function loadConfig() {
+  if (!_bpId) return;
+  _sb.from('tool_configs')
+    .select('config')
+    .eq('blueprint_id', _bpId)
+    .eq('tool_type', 'calendly')
+    .maybeSingle()
+    .then(function(res) {
+      if (res.data && res.data.config) {
+        var c = res.data.config;
+        if (c.calendlyUrl) document.getElementById('cal-url').value = c.calendlyUrl;
+        if (c.sectionLabel) document.getElementById('cal-label').value = c.sectionLabel;
+      }
+    });
+}
+</script>
+</body>
+</html>
