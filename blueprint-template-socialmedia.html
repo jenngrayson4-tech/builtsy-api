@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -518,6 +519,28 @@ textarea.fi{resize:vertical;min-height:80px;}
           <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step4-desc" type="text" value="Monthly reporting, optimization, and scaling your results month over month."></div>
         </div>
 
+        <!-- ── REVENUE BOOSTER ── -->
+        <div style="margin-top:28px;padding:16px;background:rgba(200,224,0,0.06);border:1.5px solid rgba(200,224,0,0.22);border-radius:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:var(--lime);">Revenue Booster</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Add an interactive pricing calculator to your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleRevBooster()">
+              <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">OFF</span>
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-rb-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-rb-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+              <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">ON</span>
+            </div>
+          </div>
+          <div id="sm-rb-wrap" style="display:none;margin-top:12px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your packages and add-ons in the Revenue Booster tool — it saves automatically and gets embedded in your site.</div>
+            <button onclick="smOpenRevBooster()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">Open Revenue Booster</button>
+          </div>
+        </div>
+
         <div class="step-nav">
           <button class="btn-back" onclick="smGoStep(6)">&#8592; Back</button>
           <button class="btn-generate" onclick="smGenerate()">
@@ -689,6 +712,87 @@ var _smPhotos = {};
 var _smHTML = '';
 var _smLastFields = {};
 var _smPopularTier = 2;
+
+// ── Supabase + Revenue Booster ──
+var _sbClientSM = null;
+function smGetSupabase() {
+  if (!_sbClientSM && window.supabase) {
+    _sbClientSM = window.supabase.createClient(
+      'https://nukcbqlxxrfsgchqyxud.supabase.co',
+      'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX'
+    );
+  }
+  return _sbClientSM;
+}
+window._smRevBoosterConfig = null;
+
+function smFetchRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  if (!bpId) return;
+  var sb = smGetSupabase();
+  if (!sb) return;
+  sb.from('tool_configs')
+    .select('config')
+    .eq('blueprint_id', bpId)
+    .eq('tool_type', 'revenue_booster')
+    .maybeSingle()
+    .then(function(res) {
+      if (res.data && res.data.config) window._smRevBoosterConfig = res.data.config;
+    })
+    .catch(function() {});
+}
+
+var _smRBOn = false;
+function smToggleRevBooster() {
+  _smRBOn = !_smRBOn;
+  var wrap  = document.getElementById('sm-rb-wrap');
+  var track = document.getElementById('sm-rb-track');
+  var thumb = document.getElementById('sm-rb-thumb');
+  if (wrap)  wrap.style.display  = _smRBOn ? 'block' : 'none';
+  if (track) track.style.background = _smRBOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smRBOn ? '21px' : '3px';
+  if (_smRBOn) smFetchRevBooster();
+}
+
+function smOpenRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  var url = 'calculator.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : '');
+  window.open(url, '_blank');
+}
+
+function smBuildRBSection(config) {
+  if (!config || !config.sessions || !config.sessions.length) return '';
+  var sessions = config.sessions;
+  var addons = config.addons || [];
+  var btnLabel = config.bookingLabel || 'Book Now';
+  var html = '<section style="background:#1A0E2E;padding:80px 40px;"><div style="max-width:700px;margin:0 auto;">'
+    + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#E8458A;margin-bottom:16px;">Interactive Pricing</div>'
+    + '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:42px;font-style:italic;color:white;margin-bottom:8px;">Build Your Package.</h2>'
+    + '<p style="color:#9A8AAA;margin-bottom:40px;font-size:15px;">Select a package and add the services you need.</p>';
+  sessions.forEach(function(s) {
+    html += '<div class="rb-session-card" data-rb-price="' + (s.price||0) + '" onclick="_rbPick(this,' + (s.price||0) + ')" style="cursor:pointer;padding:1.25rem 1.5rem;border:2px solid rgba(232,69,138,0.2);border-radius:12px;margin-bottom:0.75rem;transition:all .2s;background:rgba(255,255,255,0.03);">'
+      + '<div style="font-weight:700;color:white;margin-bottom:4px;">' + (s.name||'Package') + '</div>'
+      + (s.description ? '<div style="font-size:13px;color:#9A8AAA;margin-bottom:8px;">' + s.description + '</div>' : '')
+      + '<div style="font-size:1.75rem;font-weight:900;color:#E8458A;">$' + (s.price||0) + '</div>'
+      + '</div>';
+  });
+  if (addons.length) {
+    html += '<div style="margin-top:24px;margin-bottom:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#9A8AAA;">Add-Ons</div>';
+    addons.forEach(function(a, i) {
+      html += '<div onclick="_rbToggle(\'' + i + '\',' + (a.price||0) + ')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border:1.5px solid rgba(232,69,138,0.15);border-radius:8px;margin-bottom:0.5rem;background:rgba(255,255,255,0.02);">'
+        + '<div style="display:flex;align-items:center;gap:0.75rem;">'
+        + '<div id="rb-check-' + i + '" style="width:18px;height:18px;border-radius:4px;border:2px solid #E8458A;background:transparent;flex-shrink:0;"></div>'
+        + '<span style="color:white;">' + (a.name||'Add-on') + '</span></div>'
+        + '<span style="font-weight:700;color:#E8458A;">+$' + (a.price||0) + '</span></div>';
+    });
+  }
+  html += '<div style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid rgba(232,69,138,0.2);">'
+    + '<div><div style="font-size:12px;color:#9A8AAA;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Total</div>'
+    + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:white;">$0</div></div>'
+    + '<a href="#contact" style="background:#E8458A;color:white;border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;">' + btnLabel + '</a></div>'
+    + '</div></section>';
+  return html;
+}
 var _smGenMsgs = [
   'Reading your business info…',
   'Swapping in your copy…',
@@ -1103,6 +1207,12 @@ function smInjectAssets(html) {
     }
   }
 
+  // Inject Revenue Booster section before </body>
+  if (_smRBOn && window._smRevBoosterConfig) {
+    var rbSection = smBuildRBSection(window._smRevBoosterConfig);
+    if (rbSection) html = html.replace('</body>', rbSection + '\n</body>');
+  }
+
   // Inject "Made with love" credit bar before </body>
   var bizName = (_smLastFields.businessName || _smLastFields.ownerName || 'You').trim();
   var creditBar = '<div id="builtsy-credit" style="text-align:center;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#999;letter-spacing:0.02em;background:transparent;">'
@@ -1250,6 +1360,43 @@ function smShowOutput(html) {
 
   var frame = document.getElementById('sm-output-preview-frame');
   frame.srcdoc = html;
+
+  // Wire up Revenue Booster interactive calculator once the iframe loads
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      var doc = win.document;
+      var _rbSession = 0, _rbAddons = {};
+      win._rbCalc = function() {
+        var total = _rbSession;
+        for (var k in _rbAddons) total += _rbAddons[k];
+        var el = doc.getElementById('rb-total');
+        if (el) el.textContent = '$' + total;
+      };
+      win._rbPick = function(el, price) {
+        var cards = doc.querySelectorAll('.rb-session-card');
+        for (var i = 0; i < cards.length; i++) {
+          cards[i].style.borderColor = 'rgba(232,69,138,0.2)';
+          cards[i].style.background  = 'rgba(255,255,255,0.03)';
+        }
+        el.style.borderColor = '#E8458A';
+        el.style.background  = 'rgba(232,69,138,0.08)';
+        _rbSession = price;
+        win._rbCalc();
+      };
+      win._rbToggle = function(idx, price) {
+        var check = doc.getElementById('rb-check-' + idx);
+        if (_rbAddons[idx]) {
+          delete _rbAddons[idx];
+          if (check) { check.style.background = 'transparent'; check.style.borderColor = '#E8458A'; }
+        } else {
+          _rbAddons[idx] = price;
+          if (check) { check.style.background = '#E8458A'; check.style.borderColor = '#E8458A'; }
+        }
+        win._rbCalc();
+      };
+    } catch(e) {}
+  };
 }
 
 function smShowError(msg) {
