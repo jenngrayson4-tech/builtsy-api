@@ -258,6 +258,11 @@ textarea.fi{resize:vertical;min-height:80px;}
 
     <div class="left-inner">
 
+      <div style="background:rgba(200,224,0,0.07);border:1px solid rgba(200,224,0,0.15);border-radius:10px;padding:10px 14px;margin:16px 0 4px;display:flex;align-items:flex-start;gap:10px;">
+        <span style="font-size:1rem;flex-shrink:0;">✦</span>
+        <span style="font-size:.78rem;color:rgba(255,255,255,0.65);line-height:1.55;">Fill in what you know — <strong style="color:var(--lime);">Builtsy AI writes the rest.</strong> Nothing is required.</span>
+      </div>
+
       <!-- ══ STEP 1 ══ -->
       <div class="step-panel active" id="sm-step-1">
         <p class="step-label-top">Step 1 of 7</p>
@@ -302,7 +307,7 @@ textarea.fi{resize:vertical;min-height:80px;}
         </div>
         <div class="field">
           <label>Tagline</label>
-          <input class="fi" id="sm-tagline" type="text" placeholder="Social Media Strategy &amp; Brand Growth">
+          <input class="fi" id="sm-tagline" type="text">
           <div class="chip-hint">&#9679; Suggestions — click to fill</div>
           <div class="chips-row" id="sm-chips-tagline"></div>
         </div>
@@ -339,28 +344,28 @@ textarea.fi{resize:vertical;min-height:80px;}
         <p class="step-sub-main">The copy that sells you. Short, punchy, and true.</p>
         <div class="field">
           <label>Hero Headline <span class="opt">short &amp; punchy</span></label>
-          <input class="fi" id="sm-hero-headline" type="text" value="Your Brand, Amplified Online">
+          <input class="fi" id="sm-hero-headline" type="text" placeholder="e.g. Your Brand, Amplified Online">
           <div class="field-hint">This is the first thing visitors read. Make it count.</div>
           <div class="chip-hint">&#9679; Suggestions — click to fill</div>
           <div class="chips-row" id="sm-chips-headline"></div>
         </div>
         <div class="field">
           <label>Hero Subheading <span class="opt">2&#8211;3 sentences</span></label>
-          <textarea class="fi" id="sm-hero-sub">I help ambitious brands turn social media into their most powerful growth channel. From strategy to scroll-stopping content — I handle it all so you can focus on running your business.</textarea>
+          <textarea class="fi" id="sm-hero-sub" placeholder="What you do and who you help — 2-3 sentences."></textarea>
         </div>
         <div class="field">
           <label>About / Bio <span class="opt">3&#8211;5 sentences</span></label>
-          <textarea class="fi" id="sm-bio" style="min-height:100px;">Hi, I'm Olivia — a social media strategist who's spent the last 6 years obsessing over what actually makes brands grow online. I've managed accounts from solo entrepreneurs to 7-figure brands, and the through-line is always the same: strategy-first, content second, ego never. I believe your social presence should work as hard as you do.</textarea>
+          <textarea class="fi" id="sm-bio" style="min-height:100px;" placeholder="Your story, in your voice — 3–5 sentences."></textarea>
         </div>
         <div class="field">
           <label>Value Prop Line <span class="opt">one punchy sentence</span></label>
-          <input class="fi" id="sm-value-prop" type="text" value="We do the hard work for you.">
+          <input class="fi" id="sm-value-prop" type="text" placeholder="e.g. We do the hard work for you.">
           <div class="chip-hint">&#9679; Suggestions — click to fill</div>
           <div class="chips-row" id="sm-chips-valueprop"></div>
         </div>
         <div class="field">
           <label>"As Seen In" Press <span class="opt">comma-separated, up to 6</span></label>
-          <input class="fi" id="sm-press-items" type="text" value="Forbes, Business Insider, Social Media Today, Later, Sprout Social, HubSpot">
+          <input class="fi" id="sm-press-items" type="text" placeholder="e.g. Forbes, Business Insider, HubSpot">
           <div class="field-hint">Shown in the marquee press bar. Leave blank to use defaults.</div>
         </div>
         <div class="step-nav">
@@ -509,32 +514,6 @@ textarea.fi{resize:vertical;min-height:80px;}
         <h2 class="step-title-main">Final Details</h2>
         <p class="step-sub-main">Testimonials, contact info, and your process — the finishing touches.</p>
 
-        <span class="sl">Testimonials (3)</span>
-        <div class="testi-block">
-          <div class="testi-num">Testimonial 1</div>
-          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi1-quote">"Working with her transformed our Instagram from 800 to 12K followers in 4 months — and sales followed."</textarea></div>
-          <div class="field-grid">
-            <div class="field"><label>Name</label><input class="fi" id="sm-testi1-name" type="text" value="Jess Hartley"></div>
-            <div class="field"><label>Company</label><input class="fi" id="sm-testi1-company" type="text" value="Hartley Botanicals"></div>
-          </div>
-        </div>
-        <div class="testi-block">
-          <div class="testi-num">Testimonial 2</div>
-          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi2-quote">"The strategy session alone was worth 10x the investment. Our engagement rate tripled in 6 weeks."</textarea></div>
-          <div class="field-grid">
-            <div class="field"><label>Name</label><input class="fi" id="sm-testi2-name" type="text" value="Marcus Bell"></div>
-            <div class="field"><label>Company</label><input class="fi" id="sm-testi2-company" type="text" value="Bell Creative Co."></div>
-          </div>
-        </div>
-        <div class="testi-block">
-          <div class="testi-num">Testimonial 3</div>
-          <div class="field"><label>Quote</label><textarea class="fi" id="sm-testi3-quote">"I finally have a social presence I'm proud of. She gets my brand better than I do sometimes."</textarea></div>
-          <div class="field-grid">
-            <div class="field"><label>Name</label><input class="fi" id="sm-testi3-name" type="text" value="Priya Sundaram"></div>
-            <div class="field"><label>Company</label><input class="fi" id="sm-testi3-company" type="text" value="Sundaram Studio"></div>
-          </div>
-        </div>
-
         <span class="sl">Contact &amp; Social</span>
         <div class="field">
           <label>Contact Email</label>
@@ -585,7 +564,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
             <div>
               <div style="font-size:.8rem;font-weight:700;color:#fff;">Testimonials</div>
-              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Paste real reviews — Claude will weave them into your site</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Paste real reviews — Builtsy will weave them into your site</div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleTesti()">
               <div style="position:relative;width:40px;height:22px;">
@@ -625,7 +604,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
             <div>
               <div style="font-size:.8rem;font-weight:700;color:#fff;">FAQ Generator</div>
-              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Claude writes 8 FAQs for your business — edit and save in the tool</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Builtsy writes 8 FAQs for your business — edit and save in the tool</div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleFAQ()">
               <div style="position:relative;width:40px;height:22px;">
@@ -635,7 +614,7 @@ textarea.fi{resize:vertical;min-height:80px;}
             </div>
           </div>
           <div id="sm-faq-wrap" style="display:none;padding:12px 0 4px;">
-            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Claude generates 8 tailored FAQs for your business — open the tool to review and save them before building your site.</div>
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Builtsy generates 8 tailored FAQs for your business — open the tool to review and save them before building your site.</div>
             <button onclick="smOpenFAQTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">Open FAQ Generator</button>
           </div>
 
@@ -1428,9 +1407,6 @@ function smCollect() {
     port1Client: v('sm-port1-client'), port1Services: v('sm-port1-services'),
     port2Client: v('sm-port2-client'), port2Services: v('sm-port2-services'),
     port3Client: v('sm-port3-client'), port3Services: v('sm-port3-services'),
-    testi1Quote: v('sm-testi1-quote'), testi1Name: v('sm-testi1-name'), testi1Company: v('sm-testi1-company'),
-    testi2Quote: v('sm-testi2-quote'), testi2Name: v('sm-testi2-name'), testi2Company: v('sm-testi2-company'),
-    testi3Quote: v('sm-testi3-quote'), testi3Name: v('sm-testi3-name'), testi3Company: v('sm-testi3-company'),
     contactEmail: v('sm-contact-email'),
     instagramUrl: v('sm-instagram-url'),
     tiktokUrl:    v('sm-tiktok-url'),
