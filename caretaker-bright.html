@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mia Santos — Childcare & Pet Care | Chicago, IL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #FF6B35;
+      --orange2: #E85520;
+      --pink: #FF3D8A;
+      --pink2: #E0206E;
+      --teal: #00BFA5;
+      --teal2: #009688;
+      --yellow: #FFD93D;
+      --bg: #FFFAF8;
+      --light: #FFF3EE;
+      --dark: #1A0808;
+      --text: #2D1515;
+      --text2: #6B3030;
+      --white: #FFFFFF;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ==============================
+       TYPOGRAPHY
+    ============================== */
+    h1, h2, h3, .display {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+    }
+
+    h4, h5, h6 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+
+    .eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ==============================
+       NAV
+    ============================== */
+    #main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: var(--white);
+      transition: box-shadow 0.3s;
+    }
+
+    #main-nav.scrolled {
+      box-shadow: 0 2px 20px rgba(255, 107, 53, 0.15);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--orange);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--orange);
+    }
+
+    .btn-nav {
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-nav:hover {
+      background: var(--orange2);
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger (CSS only) */
+    .nav-toggle {
+      display: none;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      padding: 20px 28px 24px;
+      background: var(--white);
+      border-top: 1px solid #FFE8DC;
+      gap: 16px;
+    }
+
+    .mobile-menu a {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--text2);
+      text-decoration: none;
+    }
+
+    #nav-toggle-check:checked ~ .mobile-menu {
+      display: flex;
+    }
+
+    #nav-toggle-check:checked ~ .nav-inner .nav-hamburger span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    #nav-toggle-check:checked ~ .nav-inner .nav-hamburger span:nth-child(2) {
+      opacity: 0;
+    }
+
+    #nav-toggle-check:checked ~ .nav-inner .nav-hamburger span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+    #hero {
+      background: var(--bg);
+      padding: 130px 28px 0;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .hero-text h1 em {
+      font-family: 'Poppins', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--orange);
+    }
+
+    .hero-sub {
+      font-size: 1.08rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 440px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--orange);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 13px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 2.5px solid var(--orange);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      background: var(--light);
+      transform: translateY(-2px);
+    }
+
+    .trust-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trust-pill {
+      background: var(--pink);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      padding: 6px 14px;
+      border-radius: 50px;
+    }
+
+    /* Hero Photo Zone */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+      width: 420px;
+      max-width: 100%;
+    }
+
+    .photo-blob {
+      width: 100%;
+      padding-top: 110%;
+      border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+      background: linear-gradient(135deg, #FFD93D 0%, #FF6B35 50%, #FF3D8A 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-blob .photo-placeholder-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .photo-placeholder-text .ph-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-placeholder-text .ph-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: rgba(255,255,255,0.9);
+    }
+
+    .photo-placeholder-text p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+
+    #cb-hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+      display: none;
+    }
+
+    .exp-badge {
+      position: absolute;
+      bottom: 30px;
+      left: -20px;
+      background: var(--yellow);
+      border-radius: 20px;
+      padding: 14px 20px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .exp-badge .badge-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .exp-badge .badge-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    /* ==============================
+       WAVE DIVIDERS
+    ============================== */
+    .wave-wrap {
+      line-height: 0;
+      position: relative;
+    }
+
+    .wave-wrap svg {
+      width: 100%;
+      display: block;
+    }
+
+    /* ==============================
+       ABOUT
+    ============================== */
+    #about {
+      background: var(--orange);
+      padding: 80px 28px;
+      position: relative;
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .about-eyebrow {
+      color: var(--yellow);
+      margin-bottom: 14px;
+    }
+
+    .about-headline {
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 22px;
+    }
+
+    .about-bio {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .fun-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .fact-pill {
+      background: var(--teal);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      padding: 7px 16px;
+      border-radius: 50px;
+    }
+
+    /* About Photo */
+    .about-photo-wrap {
+      position: relative;
+    }
+
+    .about-blob {
+      width: 100%;
+      padding-top: 100%;
+      border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+      background: linear-gradient(135deg, #FFD93D 0%, rgba(255,255,255,0.4) 100%);
+      position: relative;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.4);
+    }
+
+    #cb-about-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+      display: none;
+    }
+
+    /* ==============================
+       SERVICES
+    ============================== */
+    #services {
+      background: var(--white);
+      padding: 80px 28px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-eyebrow-pink {
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+
+    .section-eyebrow-teal {
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      color: var(--text);
+    }
+
+    .services-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 20px;
+      border: 2px solid #F2E8E4;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.09);
+    }
+
+    .service-card-bar {
+      height: 6px;
+    }
+
+    .bar-orange { background: var(--orange); }
+    .bar-pink { background: var(--pink); }
+    .bar-teal { background: var(--teal); }
+
+    .service-card-body {
+      padding: 28px;
+    }
+
+    .service-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .icon-bg-orange { background: #FFF0EA; }
+    .icon-bg-pink { background: #FFF0F5; }
+    .icon-bg-teal { background: #E8FAF8; }
+
+    .service-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .service-name {
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-pill {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    .tag-orange { background: #FFF0EA; color: var(--orange); }
+    .tag-pink { background: #FFF0F5; color: var(--pink); }
+    .tag-teal { background: #E8FAF8; color: var(--teal2); }
+
+    /* ==============================
+       WHY CHOOSE ME
+    ============================== */
+    #why {
+      background: var(--teal);
+      padding: 80px 28px;
+    }
+
+    .why-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .why-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .why-eyebrow {
+      color: var(--yellow);
+      margin-bottom: 12px;
+    }
+
+    .why-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      color: var(--white);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .why-item {
+      text-align: center;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 32px 20px;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+
+    .why-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      color: var(--yellow);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .why-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .why-desc {
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+
+    /* ==============================
+       REVIEWS
+    ============================== */
+    #reviews {
+      background: #FFF0F5;
+      padding: 80px 28px;
+    }
+
+    .reviews-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .review-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 28px;
+      border: 2px solid #FFE4EE;
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .review-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .stars {
+      color: var(--yellow);
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .review-quote {
+      font-size: 0.93rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 22px;
+      font-style: italic;
+    }
+
+    .review-footer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-placeholder {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--white);
+    }
+
+    .avatar-orange { background: linear-gradient(135deg, var(--orange), var(--pink)); }
+    .avatar-pink { background: linear-gradient(135deg, var(--pink), #a855f7); }
+    .avatar-teal { background: linear-gradient(135deg, var(--teal), #2563eb); }
+
+    .review-avatar img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: none;
+    }
+
+    .reviewer-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .reviewer-desc {
+      font-size: 0.78rem;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    /* ==============================
+       RATES
+    ============================== */
+    #rates {
+      background: var(--white);
+      padding: 80px 28px;
+    }
+
+    .rates-grid {
+      max-width: 1000px;
+      margin: 50px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .rate-card {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid #F2E8E4;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .rate-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.1);
+    }
+
+    .rate-card.popular {
+      border-color: var(--pink);
+      box-shadow: 0 8px 30px rgba(255, 61, 138, 0.15);
+    }
+
+    .rate-header {
+      padding: 28px;
+      text-align: center;
+    }
+
+    .rate-header-orange { background: var(--orange); }
+    .rate-header-pink { background: var(--pink); }
+    .rate-header-teal { background: var(--teal); }
+
+    .popular-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .rate-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .rate-price {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 2.6rem;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .rate-unit {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 4px;
+    }
+
+    .rate-body {
+      padding: 26px 28px;
+    }
+
+    .rate-desc {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .rate-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rate-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .rate-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .check-orange { background: var(--orange); }
+    .check-pink { background: var(--pink); }
+    .check-teal { background: var(--teal); }
+
+    .rate-check svg {
+      width: 10px;
+      height: 10px;
+      fill: white;
+    }
+
+    /* ==============================
+       WHERE I WORK
+    ============================== */
+    #area {
+      background: var(--light);
+      padding: 80px 28px;
+    }
+
+    .area-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .area-title {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .area-desc {
+      font-size: 0.97rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .area-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .area-pill {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 9px 20px;
+      border-radius: 50px;
+    }
+
+    .area-pill-orange { background: var(--orange); color: var(--white); }
+    .area-pill-pink { background: var(--pink); color: var(--white); }
+    .area-pill-teal { background: var(--teal); color: var(--white); }
+    .area-pill-outline { background: transparent; color: var(--text2); border: 2px solid #DDD; }
+
+    /* ==============================
+       CONTACT
+    ============================== */
+    #contact {
+      background: var(--dark);
+      padding: 90px 28px 80px;
+      position: relative;
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .contact-headline {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      margin-bottom: 14px;
+      line-height: 1.15;
+    }
+
+    .contact-sub {
+      font-size: 0.97rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .contact-info-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-icon-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon-circle svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    .ci-orange { background: var(--orange); }
+    .ci-pink { background: var(--pink); }
+    .ci-teal { background: var(--teal); }
+
+    .contact-info-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .contact-info-val {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* Form */
+    .contact-form {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 36px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 7px;
+      letter-spacing: 0.04em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.09);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--orange);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      padding: 15px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      margin-top: 6px;
+    }
+
+    .btn-submit:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.4);
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      background: #0F0404;
+      padding: 36px 28px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--white);
+    }
+
+    .footer-logo span {
+      color: var(--orange);
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--orange);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      text-align: right;
+    }
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-bottom: 60px;
+        gap: 40px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero-ctas {
+        justify-content: center;
+      }
+
+      .trust-pills {
+        justify-content: center;
+      }
+
+      .hero-sub {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-photo-wrap {
+        width: 300px;
+        margin: 0 auto;
+      }
+
+      .exp-badge {
+        left: 0;
+        bottom: -10px;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        text-align: center;
+      }
+
+      .about-inner .about-photo-wrap {
+        order: -1;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
+      .fun-facts {
+        justify-content: center;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rates-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .footer-copy {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==============================
+       NAV
+  ============================== -->
+  <nav id="main-nav">
+    <input type="checkbox" id="nav-toggle-check" style="display:none;" />
+    <div class="nav-inner">
+      <a href="#" class="nav-logo"><span>Mia</span> Santos</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#contact" class="btn-nav">Get in Touch</a></li>
+      </ul>
+      <label for="nav-toggle-check" class="nav-hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    </div>
+    <div class="mobile-menu">
+      <a href="#about" onclick="document.getElementById('nav-toggle-check').checked=false;">About</a>
+      <a href="#services" onclick="document.getElementById('nav-toggle-check').checked=false;">Services</a>
+      <a href="#reviews" onclick="document.getElementById('nav-toggle-check').checked=false;">Reviews</a>
+      <a href="#rates" onclick="document.getElementById('nav-toggle-check').checked=false;">Rates</a>
+      <a href="#contact" onclick="document.getElementById('nav-toggle-check').checked=false;" class="btn-nav" style="width:fit-content;">Get in Touch</a>
+    </div>
+  </nav>
+
+  <!-- ==============================
+       HERO
+  ============================== -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Play. Learn.<br><em>Thrive.</em></h1>
+        <p class="hero-sub">Chicago's warmest childcare provider — bringing patience, creativity, and genuine joy to every family I serve.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn-primary">Book a Meet &amp; Greet</a>
+          <a href="#services" class="btn-secondary">See What I Offer</a>
+        </div>
+        <div class="trust-pills">
+          <span class="trust-pill">Insured</span>
+          <span class="trust-pill">CPR Certified</span>
+          <span class="trust-pill">Background Checked</span>
+          <span class="trust-pill">First Aid Trained</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo-wrap">
+          <div class="photo-blob" style="position:relative;">
+            <div class="photo-placeholder-text">
+              <div class="ph-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+              </div>
+              <p>Add your photo here</p>
+            </div>
+            <img id="cb-hero-photo" src="" alt="Mia Santos" />
+          </div>
+          <div class="exp-badge">
+            <div class="badge-num">10+</div>
+            <div class="badge-label">Years of<br>Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wave-wrap">
+      <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+        <path d="M0,25 C250,60 550,5 800,38 C980,58 1100,12 1200,28 L1200,70 L0,70 Z" fill="#FF6B35"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==============================
+       ABOUT
+  ============================== -->
+  <section id="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <p class="eyebrow about-eyebrow">Hi, I'm Mia</p>
+        <h2 class="about-headline">More than a sitter — a trusted part of your family.</h2>
+        <p class="about-bio">I'm Mia Santos, a Chicago-based childcare provider with over a decade of hands-on experience caring for children from newborns to teenagers. I believe every child deserves an environment where they feel safe, celebrated, and endlessly curious. Whether it's building block towers at 8 AM or reading one more bedtime story at 8 PM, I show up fully — every single time.</p>
+        <p class="about-bio">I'm a graduate of the Early Childhood Education program at DePaul University, and I've worked with families across Lincoln Park, Bucktown, Wicker Park, and Logan Square. When I'm not caring for your little ones, you'll find me at the farmers market or teaching my rescue dog new tricks.</p>
+        <div class="fun-facts">
+          <span class="fact-pill">Montessori Trained</span>
+          <span class="fact-pill">Bilingual (English &amp; Spanish)</span>
+          <span class="fact-pill">Dog Lover</span>
+          <span class="fact-pill">Former Preschool Teacher</span>
+          <span class="fact-pill">Healthy Snack Pro</span>
+        </div>
+      </div>
+      <div class="about-photo-wrap">
+        <div class="about-blob" style="position:relative;">
+          <div class="photo-placeholder-text">
+            <div class="ph-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            </div>
+            <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;font-weight:500;font-family:'Poppins',sans-serif;">Add your photo here</p>
+          </div>
+          <img id="cb-about-photo" src="" alt="Mia Santos" />
+        </div>
+      </div>
+    </div>
+
+    <div class="wave-wrap" style="margin-top:60px;">
+      <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+        <path d="M0,30 C200,65 500,8 750,40 C920,60 1080,14 1200,32 L1200,70 L0,70 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SERVICES
+  ============================== -->
+  <section id="services">
+    <div class="section-header">
+      <p class="eyebrow section-eyebrow-pink">What I offer</p>
+      <h2 class="section-title">What I do best</h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-card-bar bar-orange"></div>
+        <div class="service-card-body">
+          <div class="service-icon-wrap icon-bg-orange">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h4 class="service-name">Newborn &amp; Infant Care</h4>
+          <p class="service-desc">Gentle, attentive care for your newest family member. I follow your feeding schedule, sleep routines, and developmental milestones with precision and love. Parents rest easy knowing their baby is in experienced hands.</p>
+          <div class="service-tags">
+            <span class="tag-pill tag-orange">Feeding Support</span>
+            <span class="tag-pill tag-orange">Sleep Schedules</span>
+            <span class="tag-pill tag-orange">Tummy Time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-card-bar bar-pink"></div>
+        <div class="service-card-body">
+          <div class="service-icon-wrap icon-bg-pink">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#FF3D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l3 3 5-5"/></svg>
+          </div>
+          <h4 class="service-name">Big Kid Adventures</h4>
+          <p class="service-desc">School-age kids need more than babysitting — they need engagement. From homework help and art projects to park days and cooking experiments, I keep bigger kids busy, happy, and growing.</p>
+          <div class="service-tags">
+            <span class="tag-pill tag-pink">Homework Help</span>
+            <span class="tag-pill tag-pink">Arts &amp; Crafts</span>
+            <span class="tag-pill tag-pink">After School</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-card-bar bar-teal"></div>
+        <div class="service-card-body">
+          <div class="service-icon-wrap icon-bg-teal">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00BFA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h4 class="service-name">Overnight Stays</h4>
+          <p class="service-desc">Date nights, work trips, or weekend getaways — I stay the night so your family's routine keeps rolling. Full bedtime routine, morning breakfast, and all the in-between moments handled with care.</p>
+          <div class="service-tags">
+            <span class="tag-pill tag-teal">Overnight</span>
+            <span class="tag-pill tag-teal">Multi-day</span>
+            <span class="tag-pill tag-teal">Travel Nanny</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-card-bar bar-orange" style="background:var(--yellow);"></div>
+        <div class="service-card-body">
+          <div class="service-icon-wrap" style="background:#FFFBE6;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#E6A200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2M14 2v2M3 8h18M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M9 13h6M9 17h4"/></svg>
+          </div>
+          <h4 class="service-name">Pet &amp; Home Care</h4>
+          <p class="service-desc">Furry family members welcome. I provide dog walks, pet sitting, feeding, and basic home upkeep while you're away — so you return to a happy pet and a tidy home, not a chaotic one.</p>
+          <div class="service-tags">
+            <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Dog Walking</span>
+            <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Pet Sitting</span>
+            <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Home Check-ins</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="wave-wrap" style="margin-top:70px;">
+      <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+        <path d="M0,20 C300,58 600,5 900,42 C1050,58 1150,16 1200,30 L1200,70 L0,70 Z" fill="#00BFA5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==============================
+       WHY CHOOSE ME
+  ============================== -->
+  <section id="why">
+    <div class="why-inner">
+      <div class="why-header">
+        <p class="eyebrow why-eyebrow">By the numbers</p>
+        <h2 class="why-title">Why families keep coming back</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-num">10+</div>
+          <div class="why-label">Years of Experience</div>
+          <p class="why-desc">A decade of caring for children from newborns through middle school.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-num">30+</div>
+          <div class="why-label">Families Served</div>
+          <p class="why-desc">Trusted by over 30 Chicago families across multiple neighborhoods.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-num">100%</div>
+          <div class="why-label">Always On Time</div>
+          <p class="why-desc">Punctuality is a promise. I'm there when you need me, every time.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-num">Pets</div>
+          <div class="why-label">Loved by Pets Too</div>
+          <p class="why-desc">Dogs, cats, and guinea pigs — your furry family is in good hands.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wave-wrap" style="margin-top:70px;">
+      <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+        <path d="M0,35 C180,5 420,62 680,28 C880,5 1060,55 1200,20 L1200,70 L0,70 Z" fill="#FFF0F5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==============================
+       REVIEWS
+  ============================== -->
+  <section id="reviews">
+    <div class="reviews-inner">
+      <div class="section-header">
+        <p class="eyebrow section-eyebrow-pink">Parent stories</p>
+        <h2 class="section-title">What families say</h2>
+      </div>
+      <div class="reviews-grid">
+
+        <div class="review-card">
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p class="review-quote">"Mia is an absolute lifesaver. Our twins adore her — she has this magical ability to keep them engaged and calm at the same time. We went from dreading date nights to actually looking forward to them. She's part of our family now."</p>
+          <div class="review-footer">
+            <div class="review-avatar">
+              <div class="avatar-placeholder avatar-orange">R</div>
+              <img id="cb-port-1-photo" src="" alt="Rachel T." />
+            </div>
+            <div>
+              <div class="reviewer-name">Rachel T.</div>
+              <div class="reviewer-desc">Mom of twins, Lincoln Park</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p class="review-quote">"We hired Mia when our son was 3 weeks old and had no idea what we were doing. She was patient, knowledgeable, and so reassuring. She taught us more in two weeks than we'd learned in nine months of pregnancy books."</p>
+          <div class="review-footer">
+            <div class="review-avatar">
+              <div class="avatar-placeholder avatar-pink">D</div>
+              <img id="cb-port-2-photo" src="" alt="David &amp; Priya K." />
+            </div>
+            <div>
+              <div class="reviewer-name">David &amp; Priya K.</div>
+              <div class="reviewer-desc">New parents, Bucktown</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p class="review-quote">"I travel for work every month and Mia stays with my daughter and our dog while I'm gone. I never worry, not even a little. My daughter always says 'Mom, can Mia come back this week?' That tells you everything."</p>
+          <div class="review-footer">
+            <div class="review-avatar">
+              <div class="avatar-placeholder avatar-teal">S</div>
+              <img id="cb-port-3-photo" src="" alt="Stephanie M." />
+            </div>
+            <div>
+              <div class="reviewer-name">Stephanie M.</div>
+              <div class="reviewer-desc">Working mom, Wicker Park</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="wave-wrap" style="margin-top:70px;">
+      <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+        <path d="M0,22 C220,60 480,8 720,40 C900,62 1080,18 1200,35 L1200,70 L0,70 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==============================
+       RATES
+  ============================== -->
+  <section id="rates">
+    <div class="section-header">
+      <p class="eyebrow section-eyebrow-pink">Transparent pricing</p>
+      <h2 class="section-title">Simple rates, no surprises</h2>
+    </div>
+    <div class="rates-grid">
+
+      <div class="rate-card">
+        <div class="rate-header rate-header-orange">
+          <div class="rate-name">Hourly Drop-In</div>
+          <div class="rate-price">$22</div>
+          <div class="rate-unit">per hour</div>
+        </div>
+        <div class="rate-body">
+          <p class="rate-desc">Perfect for date nights, appointments, or anytime you need a few hours of coverage. 3-hour minimum on weekends.</p>
+          <ul class="rate-features">
+            <li>
+              <div class="rate-check check-orange">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              3-hour minimum weekdays
+            </li>
+            <li>
+              <div class="rate-check check-orange">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Evenings &amp; weekends available
+            </li>
+            <li>
+              <div class="rate-check check-orange">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Siblings: +$3/hr
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rate-card popular">
+        <div class="rate-header rate-header-pink">
+          <div class="popular-badge">Most Popular</div>
+          <div class="rate-name">Weekly Regular</div>
+          <div class="rate-price">$19</div>
+          <div class="rate-unit">per hour (min. 15 hrs/wk)</div>
+        </div>
+        <div class="rate-body">
+          <p class="rate-desc">Best for families needing consistent weekly childcare. Lock in a discounted rate with a 4-week commitment. Priority scheduling guaranteed.</p>
+          <ul class="rate-features">
+            <li>
+              <div class="rate-check check-pink">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              15+ hours per week
+            </li>
+            <li>
+              <div class="rate-check check-pink">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Priority schedule access
+            </li>
+            <li>
+              <div class="rate-check check-pink">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Weekly activity reports
+            </li>
+            <li>
+              <div class="rate-check check-pink">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Light meal prep included
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rate-card">
+        <div class="rate-header rate-header-teal">
+          <div class="rate-name">Overnight &amp; Travel</div>
+          <div class="rate-price">$26</div>
+          <div class="rate-unit">per hour (12-hr min.)</div>
+        </div>
+        <div class="rate-body">
+          <p class="rate-desc">Work trips, vacations, or extended stays. I can travel with your family or stay at your home. Flat overnight rate for 10PM–7AM.</p>
+          <ul class="rate-features">
+            <li>
+              <div class="rate-check check-teal">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              In-home or travel nanny
+            </li>
+            <li>
+              <div class="rate-check check-teal">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Full bedtime &amp; morning routine
+            </li>
+            <li>
+              <div class="rate-check check-teal">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Pet care included when applicable
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================
+       WHERE I WORK
+  ============================== -->
+  <section id="area">
+    <div class="wave-wrap" style="margin-bottom:0;">
+      <svg viewBox="0 0 1200 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:50px;display:block;">
+        <path d="M0,15 C280,48 560,2 840,30 C1000,46 1120,10 1200,22 L1200,0 L0,0 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+    <div class="area-inner" style="padding-top:40px;">
+      <p class="eyebrow section-eyebrow-pink" style="margin-bottom:12px;">Coverage area</p>
+      <h2 class="area-title">Where I Work</h2>
+      <p class="area-desc">I'm based in Logan Square and serve families across Chicago's north and northwest sides. I'm happy to travel up to 8 miles — just ask if your neighborhood isn't listed below.</p>
+      <div class="area-pills">
+        <span class="area-pill area-pill-orange">Logan Square</span>
+        <span class="area-pill area-pill-pink">Bucktown</span>
+        <span class="area-pill area-pill-teal">Wicker Park</span>
+        <span class="area-pill area-pill-orange">Lincoln Park</span>
+        <span class="area-pill area-pill-pink">Andersonville</span>
+        <span class="area-pill area-pill-teal">Roscoe Village</span>
+        <span class="area-pill area-pill-orange">Lakeview</span>
+        <span class="area-pill area-pill-pink">Ukrainian Village</span>
+        <span class="area-pill area-pill-teal">Humboldt Park</span>
+        <span class="area-pill area-pill-outline">+ surrounding areas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       CONTACT
+  ============================== -->
+  <div class="wave-wrap">
+    <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
+      <path d="M0,28 C200,65 480,10 720,44 C900,65 1060,15 1200,35 L1200,70 L0,70 Z" fill="#1A0808"/>
+    </svg>
+  </div>
+
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <h2 class="contact-headline">Let's make it<br>official.</h2>
+        <p class="contact-sub">Ready to find your family's perfect fit? Fill out the form and I'll get back to you within 24 hours to schedule a free meet-and-greet.</p>
+        <div class="contact-info-items">
+          <div class="contact-info-item">
+            <div class="contact-icon-circle ci-orange">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-val">mia@miasantoscare.com</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-icon-circle ci-pink">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Phone</div>
+              <div class="contact-info-val">(773) 555-0182</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-icon-circle ci-teal">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Based In</div>
+              <div class="contact-info-val">Logan Square, Chicago, IL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-name">Your Name</label>
+            <input type="text" id="f-name" placeholder="Jane Smith" />
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email Address</label>
+            <input type="email" id="f-email" placeholder="jane@email.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="f-phone">Phone Number</label>
+          <input type="tel" id="f-phone" placeholder="(312) 555-0000" />
+        </div>
+        <div class="form-group">
+          <label for="f-children">Tell Me About Your Family</label>
+          <input type="text" id="f-children" placeholder="e.g. Two kids, ages 2 and 5, plus a golden retriever" />
+        </div>
+        <div class="form-group">
+          <label for="f-message">What Are You Looking For?</label>
+          <textarea id="f-message" placeholder="Describe your scheduling needs, any special considerations, and what matters most to you in a caregiver..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="handleFormSubmit()">Send My Message</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span>Mia</span> Santos</div>
+        <div class="footer-tagline">Childcare &amp; Pet Care — Chicago, IL</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">
+        &copy; 2026 Mia Santos.<br>All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==============================
+       JAVASCRIPT
+  ============================== -->
+  <script>
+    // Scroll shadow on nav
+    window.onscroll = function() {
+      var nav = document.getElementById('main-nav');
+      if (window.pageYOffset > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    };
+
+    // Form submit handler
+    function handleFormSubmit() {
+      var name = document.getElementById('f-name').value;
+      var email = document.getElementById('f-email').value;
+      if (!name || !email) {
+        alert('Please fill in your name and email address.');
+        return;
+      }
+      var btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Message Sent! I\'ll be in touch soon.';
+      btn.style.background = '#00BFA5';
+      btn.disabled = true;
+    }
+  </script>
+
+</body>
+</html>

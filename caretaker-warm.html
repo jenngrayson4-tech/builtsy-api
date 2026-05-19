@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sophie Lane | Trusted In-Home Childcare &amp; Nanny Services</title>
+  <meta name="description" content="Sophie Lane offers warm, nurturing childcare and nanny services across Brookside, Riverside, and Midtown. CPR certified, background checked, and Montessori trained." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FDF8F4;
+      --cream: #FAF0E8;
+      --cream2: #F5E6D8;
+      --terra: #D4745A;
+      --terra2: #B85C42;
+      --mint: #7DB894;
+      --mint2: #5A9E72;
+      --dark: #2C1810;
+      --text: #4A3728;
+      --text2: #7A6258;
+      --white: #FFFFFF;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* =================== NAV =================== */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--white);
+      transition: box-shadow 0.3s ease;
+    }
+
+    #site-nav.scrolled {
+      box-shadow: 0 2px 20px rgba(44, 24, 16, 0.10);
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--dark);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .nav-logo strong {
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--terra);
+    }
+
+    .btn-nav {
+      background: var(--terra);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-nav:hover {
+      background: var(--terra2);
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      background: var(--white);
+      border-top: 1px solid var(--cream2);
+      padding: 20px 24px 24px;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mobile-menu a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--cream2);
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu .btn-nav {
+      margin-top: 8px;
+      text-align: center;
+      border-radius: 50px;
+    }
+
+    /* =================== HERO =================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      padding-top: 72px;
+    }
+
+    .hero-split {
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .hero-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 80px 60px 80px 0;
+      padding-left: calc((100vw - 1140px) / 2 + 24px);
+    }
+
+    .hero-content {
+      max-width: 520px;
+    }
+
+    .eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cream2);
+      color: var(--terra2);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow-badge .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--terra);
+      display: inline-block;
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--terra);
+    }
+
+    .hero-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 420px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--terra);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: inline-block;
+      box-shadow: 0 4px 16px rgba(212, 116, 90, 0.30);
+    }
+
+    .btn-primary:hover {
+      background: var(--terra2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212, 116, 90, 0.40);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--terra);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 2px solid var(--terra);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      background: var(--terra);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .hero-right {
+      width: 45%;
+      min-height: 100%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .photo-zone {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+    }
+
+    .hero-photo-bg {
+      background: linear-gradient(160deg, #D4745A 0%, #C4634A 30%, #A85238 60%, #8B3E2A 100%);
+    }
+
+    .about-photo-bg-a {
+      background: linear-gradient(135deg, #E8A88A 0%, #D4745A 50%, #B85C42 100%);
+    }
+
+    .about-photo-bg-b {
+      background: linear-gradient(135deg, #F5E6D8 0%, #E8C8A8 50%, #D4A888 100%);
+    }
+
+    .port-photo-bg {
+      background: linear-gradient(135deg, #FAF0E8 0%, #F0D8C0 100%);
+    }
+
+    .stat-badge {
+      position: absolute;
+      bottom: 40px;
+      left: -28px;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 16px 22px;
+      box-shadow: 0 8px 32px rgba(44, 24, 16, 0.15);
+      z-index: 10;
+    }
+
+    .stat-badge .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--terra);
+      line-height: 1;
+      display: block;
+    }
+
+    .stat-badge .stat-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text2);
+      font-weight: 600;
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* =================== TRUST BAR =================== */
+    #trust {
+      background: var(--cream);
+      padding: 48px 24px;
+      border-top: 1px solid var(--cream2);
+      border-bottom: 1px solid var(--cream2);
+    }
+
+    .trust-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trust-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .trust-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .trust-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .trust-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--cream2);
+    }
+
+    /* =================== ABOUT =================== */
+    #about {
+      padding: 100px 24px;
+      background: var(--bg);
+    }
+
+    .about-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+
+    .about-photos {
+      position: relative;
+    }
+
+    .about-photo-a {
+      border-radius: 24px;
+      overflow: hidden;
+      height: 360px;
+      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.12);
+    }
+
+    .about-photo-a .photo-placeholder {
+      min-height: 360px;
+    }
+
+    .about-photo-b {
+      border-radius: 20px;
+      overflow: hidden;
+      height: 220px;
+      width: 68%;
+      margin-left: auto;
+      margin-top: -60px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.14);
+      border: 5px solid var(--white);
+    }
+
+    .about-photo-b .photo-placeholder {
+      min-height: 220px;
+    }
+
+    .eyebrow {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mint2);
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .section-heading em {
+      font-style: italic;
+      color: var(--terra);
+    }
+
+    .about-bio {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .fun-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      background: var(--cream2);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 7px 16px;
+      border-radius: 50px;
+      letter-spacing: 0.01em;
+    }
+
+    .pill-mint {
+      background: rgba(125, 184, 148, 0.18);
+      color: var(--mint2);
+    }
+
+    /* =================== SERVICES =================== */
+    #services {
+      padding: 100px 24px;
+      background: var(--cream);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-header .section-heading {
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      color: var(--text2);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.07);
+      transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      box-shadow: 0 12px 40px rgba(212, 116, 90, 0.16);
+      transform: translateY(-4px);
+      border-color: rgba(212, 116, 90, 0.25);
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--cream2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .service-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--terra);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .service-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--cream2);
+      color: var(--text2);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    /* =================== STATS BAR =================== */
+    #stats {
+      background: var(--dark);
+      padding: 72px 24px;
+    }
+
+    .stats-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      text-align: center;
+    }
+
+    .stat-item {
+      padding: 0 16px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--terra);
+      line-height: 1;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .stat-text {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.4;
+    }
+
+    /* =================== TESTIMONIALS =================== */
+    #reviews {
+      padding: 100px 24px;
+      background: var(--bg);
+    }
+
+    .reviews-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .review-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 32px;
+      border-left: 4px solid var(--terra);
+      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .review-quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      color: var(--terra);
+      line-height: 0.6;
+      margin-bottom: 16px;
+      display: block;
+      opacity: 0.5;
+    }
+
+    .review-text {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.97rem;
+      color: var(--text);
+      line-height: 1.7;
+      flex: 1;
+      margin-bottom: 24px;
+    }
+
+    .review-footer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .review-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .review-avatar .photo-placeholder {
+      min-height: 44px;
+      border-radius: 50%;
+    }
+
+    .review-avatar img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .review-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--dark);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .review-role {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text2);
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 14px;
+    }
+
+    .star {
+      width: 14px;
+      height: 14px;
+      background: var(--terra);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    /* =================== RATES =================== */
+    #rates {
+      padding: 100px 24px;
+      background: var(--cream);
+    }
+
+    .rates-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .rate-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 40px 36px;
+      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.07);
+      border: 2px solid transparent;
+      position: relative;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+
+    .rate-card:hover {
+      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .rate-card.featured {
+      border-color: var(--terra);
+      padding-top: 52px;
+      box-shadow: 0 8px 36px rgba(212, 116, 90, 0.20);
+      transform: scale(1.03);
+    }
+
+    .rate-card.featured:hover {
+      transform: scale(1.03) translateY(-3px);
+    }
+
+    .rate-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--mint);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 18px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .rate-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text2);
+      margin-bottom: 14px;
+    }
+
+    .rate-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .rate-price sup {
+      font-size: 1.4rem;
+      vertical-align: top;
+      margin-top: 8px;
+    }
+
+    .rate-unit {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text2);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .rate-divider {
+      height: 1px;
+      background: var(--cream2);
+      margin: 20px 0;
+    }
+
+    .rate-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.93rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .rate-includes {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .rate-includes li {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 600;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rate-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(125, 184, 148, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rate-check svg {
+      width: 10px;
+      height: 10px;
+      stroke: var(--mint2);
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .btn-inquire {
+      display: block;
+      width: 100%;
+      background: var(--cream2);
+      color: var(--terra);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 20px;
+      border-radius: 50px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-inquire:hover {
+      background: var(--terra);
+      color: var(--white);
+    }
+
+    .rate-card.featured .btn-inquire {
+      background: var(--terra);
+      color: var(--white);
+    }
+
+    .rate-card.featured .btn-inquire:hover {
+      background: var(--terra2);
+    }
+
+    /* =================== SERVICE AREA =================== */
+    #area {
+      padding: 80px 24px;
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .area-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .area-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .area-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .area-pill {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      border: 1px solid var(--cream2);
+    }
+
+    .area-note {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    /* =================== CONTACT =================== */
+    #contact {
+      padding: 100px 24px;
+      background: var(--dark);
+    }
+
+    .contact-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-left .section-heading {
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .contact-left .section-heading em {
+      color: var(--terra);
+    }
+
+    .contact-intro {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .form-input,
+    .form-textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      width: 100%;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--terra);
+      background: rgba(255,255,255,0.10);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .btn-submit {
+      background: var(--terra);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 15px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      align-self: flex-start;
+      box-shadow: 0 4px 16px rgba(212, 116, 90, 0.30);
+    }
+
+    .btn-submit:hover {
+      background: var(--terra2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212, 116, 90, 0.40);
+    }
+
+    .contact-right {
+      padding-top: 8px;
+    }
+
+    .contact-info-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(212, 116, 90, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-info-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--terra);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .contact-info-text a,
+    .contact-info-text span {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.97rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .contact-info-text a:hover {
+      color: var(--terra);
+    }
+
+    .contact-info-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+    }
+
+    .avail-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .avail-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--mint);
+      margin-bottom: 10px;
+    }
+
+    .avail-text {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.65;
+    }
+
+    .avail-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      margin-right: 8px;
+      vertical-align: middle;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* =================== FOOTER =================== */
+    #footer {
+      background: #1A0D08;
+      padding: 32px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+    }
+
+    .footer-logo em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .footer-logo strong {
+      font-weight: 700;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-nav a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.50);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover {
+      color: var(--terra);
+    }
+
+    .footer-copy {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* =================== RESPONSIVE =================== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .mobile-menu.open {
+        display: flex;
+      }
+
+      #hero {
+        padding-top: 72px;
+        min-height: auto;
+      }
+
+      .hero-split {
+        flex-direction: column;
+      }
+
+      .hero-left {
+        padding: 56px 24px 40px;
+        padding-left: 24px;
+      }
+
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .hero-right {
+        width: 100%;
+        min-height: 320px;
+      }
+
+      .photo-placeholder {
+        min-height: 320px;
+      }
+
+      .stat-badge {
+        left: 16px;
+        bottom: 20px;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .about-photo-a {
+        height: 260px;
+      }
+
+      .about-photo-a .photo-placeholder {
+        min-height: 260px;
+      }
+
+      .about-photo-b {
+        height: 180px;
+        width: 72%;
+        margin-top: -48px;
+      }
+
+      .about-photo-b .photo-placeholder {
+        min-height: 180px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .stat-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 24px;
+      }
+
+      .stat-item:nth-child(2),
+      .stat-item:last-child {
+        border-bottom: none;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rates-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rate-card.featured {
+        transform: none;
+      }
+
+      .rate-card.featured:hover {
+        transform: translateY(-3px);
+      }
+
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 56px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .footer-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .trust-divider {
+        display: none;
+      }
+
+      .trust-grid {
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline {
+        font-size: 2.2rem;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+      }
+
+      .hero-ctas a {
+        text-align: center;
+      }
+
+      .stats-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-item {
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 20px;
+      }
+
+      .stat-item:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== NAV =================== -->
+  <nav id="site-nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo"><em>Sophie</em> <strong>Lane</strong></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact" class="btn-nav">Book a Call</a></li>
+      </ul>
+      <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#about" onclick="closeMenu()">About</a>
+      <a href="#services" onclick="closeMenu()">Services</a>
+      <a href="#rates" onclick="closeMenu()">Rates</a>
+      <a href="#reviews" onclick="closeMenu()">Reviews</a>
+      <a href="#contact" onclick="closeMenu()">Contact</a>
+      <a href="#contact" class="btn-nav" onclick="closeMenu()">Book a Call</a>
+    </div>
+  </nav>
+
+  <!-- =================== HERO =================== -->
+  <section id="hero">
+    <div class="hero-split">
+      <div class="hero-left">
+        <div class="hero-content">
+          <span class="eyebrow-badge">
+            CPR Certified
+            <span class="dot"></span>
+            Background Checked
+          </span>
+          <h1 class="hero-headline">
+            Trusted Care,<br><em>Right at Home</em>
+          </h1>
+          <p class="hero-sub">
+            I bring warmth, structure, and genuine love for children into every home I work in. With over eight years of hands-on experience, your family deserves nothing less than exceptional.
+          </p>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn-primary">Book a Free Intro Call</a>
+            <a href="#services" class="btn-ghost">See What I Offer</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="photo-zone">
+          <div class="photo-placeholder hero-photo-bg"></div>
+          <img id="cw-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="Sophie Lane" />
+          <div class="stat-badge">
+            <span class="stat-num">45+</span>
+            <span class="stat-label">Families Served</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TRUST BAR =================== -->
+  <section id="trust">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <span class="trust-label">Insured &amp; Bonded</span>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <span class="trust-label">Background Checked</span>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <span class="trust-label">CPR Certified</span>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+        </div>
+        <span class="trust-label">First Aid Trained</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== ABOUT =================== -->
+  <section id="about">
+    <div class="about-inner">
+      <div class="about-photos">
+        <div class="about-photo-a">
+          <div class="photo-placeholder about-photo-bg-a"></div>
+          <img id="cw-about-a-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="Sophie with children" />
+        </div>
+        <div class="about-photo-b">
+          <div class="photo-placeholder about-photo-bg-b"></div>
+          <img id="cw-about-b-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="Sophie" />
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="eyebrow">A little about me</p>
+        <h2 class="section-heading">Raising children<br>is <em>an honor</em></h2>
+        <p class="about-bio">
+          I'm Sophie Lane, a Montessori-trained nanny and childcare specialist with eight-plus years of experience supporting families across Brookside, Riverside, and Midtown. I believe every child deserves a safe, loving environment where curiosity is celebrated and independence is gently encouraged. From soothing a newborn to helping a six-year-old sound out their first chapter book, I show up fully present every single day. Families trust me not just because of my credentials, but because I genuinely love what I do.
+        </p>
+        <div class="fun-pills">
+          <span class="pill">8+ Years Experience</span>
+          <span class="pill pill-mint">Montessori Trained</span>
+          <span class="pill">Dog Mom</span>
+          <span class="pill pill-mint">Infant Specialist</span>
+          <span class="pill">Speaks Spanish</span>
+          <span class="pill pill-mint">Cook &amp; Meal Planner</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== SERVICES =================== -->
+  <section id="services">
+    <div class="section-header">
+      <p class="eyebrow">What I offer</p>
+      <h2 class="section-heading">Care for every<br>stage of childhood</h2>
+      <p class="section-sub">From the earliest newborn days through the busy after-school years, I tailor my approach to fit your child and your family.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </div>
+        <h3 class="service-name">Infant &amp; Newborn Care</h3>
+        <p class="service-desc">Specialized, gentle care for babies from birth through 12 months, with a strong focus on secure attachment, feeding support, and predictable sleep routines. I partner closely with parents during the most tender season of their baby's life.</p>
+        <div class="tag-pills">
+          <span class="tag">Newborn Specialist</span>
+          <span class="tag">Sleep Routines</span>
+          <span class="tag">Feeding Support</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+        </div>
+        <h3 class="service-name">Toddler &amp; Preschool</h3>
+        <p class="service-desc">Engaging, Montessori-inspired activities that nurture language, motor development, and social confidence in children ages one through five. Every day is filled with purposeful play, outdoor exploration, and age-appropriate independence.</p>
+        <div class="tag-pills">
+          <span class="tag">Montessori Activities</span>
+          <span class="tag">Outdoor Play</span>
+          <span class="tag">Language Development</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
+        <h3 class="service-name">After School Care</h3>
+        <p class="service-desc">Reliable pick-up, healthy snacks, homework help, and plenty of downtime for school-age children. I provide structure without rigidity so kids can decompress, recharge, and still feel accomplished before dinner.</p>
+        <div class="tag-pills">
+          <span class="tag">School Pick-Up</span>
+          <span class="tag">Homework Help</span>
+          <span class="tag">Snack Prep</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+        </div>
+        <h3 class="service-name">Overnight &amp; Travel Care</h3>
+        <p class="service-desc">Extended coverage for parents traveling for work or a long-awaited getaway. I maintain your children's routines, keep the household steady, and provide full peace of mind so you can be truly present wherever you are.</p>
+        <div class="tag-pills">
+          <span class="tag">Overnight Stays</span>
+          <span class="tag">Travel Nanny</span>
+          <span class="tag">Multi-Day Coverage</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== STATS BAR =================== -->
+  <section id="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number">8+</span>
+        <span class="stat-text">Years of Experience</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">45+</span>
+        <span class="stat-text">Families Served</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">2</span>
+        <span class="stat-text">Children of My Own</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">0</span>
+        <span class="stat-text">Bad Reviews</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TESTIMONIALS =================== -->
+  <section id="reviews">
+    <div class="section-header">
+      <p class="eyebrow">What families say</p>
+      <h2 class="section-heading">Trusted by parents<br>who <em>love their kids</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <span class="review-quote-mark">"</span>
+        <div class="review-stars">
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <p class="review-text">Sophie joined our family when our daughter was just six weeks old. Her calm energy and expertise with newborns gave us genuine confidence during those early weeks. Three years later she is still with us and our daughter calls her by name every single morning.</p>
+        <div class="review-footer">
+          <div class="review-avatar">
+            <div class="photo-placeholder port-photo-bg" style="min-height:44px;"></div>
+            <img id="cw-port-1-photo" src="" style="display:none;" alt="Parent photo" />
+          </div>
+          <div>
+            <span class="review-name">Megan &amp; Chris T.</span>
+            <span class="review-role">Mom to Avery, age 3 — Brookside</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <span class="review-quote-mark">"</span>
+        <div class="review-stars">
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <p class="review-text">We have twins, which I know is a lot to ask of anyone. Sophie came in organized, patient, and completely unshaken. The boys were on a consistent schedule within two weeks and I finally felt like I could breathe. I recommend her to every parent I meet.</p>
+        <div class="review-footer">
+          <div class="review-avatar">
+            <div class="photo-placeholder port-photo-bg" style="min-height:44px;"></div>
+            <img id="cw-port-2-photo" src="" style="display:none;" alt="Parent photo" />
+          </div>
+          <div>
+            <span class="review-name">Priya R.</span>
+            <span class="review-role">Mom to twins, age 2 — Riverside</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <span class="review-quote-mark">"</span>
+        <div class="review-stars">
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <p class="review-text">My son has always been slow to warm up to new people, but within three visits he was running to the door when Sophie arrived. That said more than any credential ever could. She is thoughtful, attentive, and truly invested in our family's wellbeing.</p>
+        <div class="review-footer">
+          <div class="review-avatar">
+            <div class="photo-placeholder port-photo-bg" style="min-height:44px;"></div>
+            <img id="cw-port-3-photo" src="" style="display:none;" alt="Parent photo" />
+          </div>
+          <div>
+            <span class="review-name">James &amp; Leah F.</span>
+            <span class="review-role">Dad to Oliver, age 5 — Midtown</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== RATES =================== -->
+  <section id="rates">
+    <div class="section-header">
+      <p class="eyebrow">Simple, transparent pricing</p>
+      <h2 class="section-heading">No hidden fees,<br><em>just honest rates</em></h2>
+      <p class="section-sub">Every engagement includes open communication, daily activity updates, and a genuine commitment to your child's wellbeing.</p>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card">
+        <p class="rate-name">Occasional / Date Night</p>
+        <div class="rate-price"><sup>$</sup>22</div>
+        <p class="rate-unit">per hour &middot; 4 hr minimum</p>
+        <div class="rate-divider"></div>
+        <p class="rate-desc">Perfect for date nights, errands, or a few hours of personal time. Flexible scheduling, booked at least 48 hours in advance.</p>
+        <ul class="rate-includes">
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Flexible booking
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Meal &amp; snack prep
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Age-appropriate activities
+          </li>
+        </ul>
+        <a href="#contact" class="btn-inquire">Inquire Now</a>
+      </div>
+      <div class="rate-card featured">
+        <div class="rate-badge">Most Requested</div>
+        <p class="rate-name">Regular Weekly</p>
+        <div class="rate-price"><sup>$</sup>20</div>
+        <p class="rate-unit">per hour &middot; ongoing schedule</p>
+        <div class="rate-divider"></div>
+        <p class="rate-desc">A dedicated weekly schedule that creates consistency for your child and reliable support for your family. Minimum 15 hours per week.</p>
+        <ul class="rate-includes">
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Consistent schedule
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Daily activity reports
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Meal planning &amp; prep
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Light tidying
+          </li>
+        </ul>
+        <a href="#contact" class="btn-inquire">Inquire Now</a>
+      </div>
+      <div class="rate-card">
+        <p class="rate-name">Full Time</p>
+        <div class="rate-price"><sup>$</sup>28</div>
+        <p class="rate-unit">per hour &middot; 40+ hrs/week</p>
+        <div class="rate-divider"></div>
+        <p class="rate-desc">Comprehensive full-time partnership for families who need a dedicated household team member — including travel coverage upon request.</p>
+        <ul class="rate-includes">
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Full household support
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Curriculum planning
+          </li>
+          <li>
+            <span class="rate-check"><svg viewBox="0 0 12 12"><polyline points="10 3 5 9 2 6"></polyline></svg></span>
+            Travel nanny available
+          </li>
+        </ul>
+        <a href="#contact" class="btn-inquire">Inquire Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== SERVICE AREA =================== -->
+  <section id="area">
+    <div class="area-inner">
+      <p class="eyebrow">Where I work</p>
+      <h2 class="section-heading">Serving families<br>across the <em>greater metro area</em></h2>
+      <p class="area-desc">I primarily serve neighborhoods within 20 miles of downtown, and I am happy to discuss locations outside that radius for full-time or multi-day arrangements.</p>
+      <div class="area-pills">
+        <span class="area-pill">Brookside</span>
+        <span class="area-pill">Riverside</span>
+        <span class="area-pill">Midtown</span>
+        <span class="area-pill">Oak Park</span>
+        <span class="area-pill">Westwood</span>
+        <span class="area-pill">Elmhurst</span>
+        <span class="area-pill">Lakeview</span>
+        <span class="area-pill">Northgate</span>
+        <span class="area-pill">Sunset Hills</span>
+        <span class="area-pill">Clearfield</span>
+      </div>
+      <p class="area-note">Not sure if I cover your neighborhood? Reach out and let's chat. I am always open to the right family.</p>
+    </div>
+  </section>
+
+  <!-- =================== CONTACT =================== -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <h2 class="section-heading">Let's find the<br><em>perfect fit</em> for your family</h2>
+        <p class="contact-intro">Fill out the form and I will get back to you within 24 hours to schedule a free 20-minute intro call. No pressure, just a conversation.</p>
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="cf-name">Your Name</label>
+              <input class="form-input" type="text" id="cf-name" name="name" placeholder="Jane Smith" required />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-email">Email Address</label>
+              <input class="form-input" type="email" id="cf-email" name="email" placeholder="jane@email.com" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="cf-phone">Phone (optional)</label>
+              <input class="form-input" type="tel" id="cf-phone" name="phone" placeholder="(555) 000-0000" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-children">Number of Children</label>
+              <input class="form-input" type="text" id="cf-children" name="children" placeholder="e.g. 2 (ages 1 and 4)" />
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="cf-message">Tell me about your family</label>
+            <textarea class="form-textarea" id="cf-message" name="message" placeholder="Share a bit about your children, your schedule, and what you're looking for in a caregiver..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send My Message</button>
+        </form>
+      </div>
+      <div class="contact-right">
+        <h3 class="contact-info-heading">Reach me directly</h3>
+        <div class="contact-info-list">
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div class="contact-info-text">
+              <a href="mailto:hello@sophielane.care">hello@sophielane.care</a>
+              <span class="contact-info-sub">Replies within 24 hours</span>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <div class="contact-info-text">
+              <a href="tel:+15552847193">(555) 284-7193</a>
+              <span class="contact-info-sub">Text or call anytime</span>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </div>
+            <div class="contact-info-text">
+              <a href="https://instagram.com/sophielanecare" target="_blank" rel="noopener">@sophielanecare</a>
+              <span class="contact-info-sub">Follow along on Instagram</span>
+            </div>
+          </div>
+        </div>
+        <div class="avail-box">
+          <p class="avail-title"><span class="avail-dot"></span>Current Availability</p>
+          <p class="avail-text">I currently have limited openings for new weekly families starting in June 2026. Date night and occasional bookings are available most weekends. Reach out soon to reserve your spot before the summer rush.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== FOOTER =================== -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <a href="#hero" class="footer-logo"><em>Sophie</em> <strong>Lane</strong></a>
+      <ul class="footer-nav">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <p class="footer-copy">© 2026 Sophie Lane. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav shadow on scroll
+    var nav = document.getElementById('site-nav');
+    window.onscroll = function() {
+      if (window.scrollY > 10) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    };
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      var menu = document.getElementById('mobile-menu');
+      if (menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        menu.style.display = 'none';
+      } else {
+        menu.classList.add('open');
+        menu.style.display = 'flex';
+      }
+    }
+
+    function closeMenu() {
+      var menu = document.getElementById('mobile-menu');
+      menu.classList.remove('open');
+      menu.style.display = 'none';
+    }
+
+    // Form submit handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      var btn = e.target.querySelector('.btn-submit');
+      var original = btn.textContent;
+      btn.textContent = 'Message Sent!';
+      btn.style.background = '#7DB894';
+      btn.disabled = true;
+      setTimeout(function() {
+        btn.textContent = original;
+        btn.style.background = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 4000);
+    }
+  </script>
+
+</body>
+</html>

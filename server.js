@@ -33,6 +33,27 @@ try {
   console.warn('social-media-bubbly.html not found:', e.message);
 }
 
+var CARETAKER_WARM_TEMPLATE = '';
+try {
+  CARETAKER_WARM_TEMPLATE = fs.readFileSync(path.join(__dirname, 'caretaker-warm.html'), 'utf8');
+} catch(e) {
+  console.warn('caretaker-warm.html not found:', e.message);
+}
+
+var CARETAKER_BRIGHT_TEMPLATE = '';
+try {
+  CARETAKER_BRIGHT_TEMPLATE = fs.readFileSync(path.join(__dirname, 'caretaker-bright.html'), 'utf8');
+} catch(e) {
+  console.warn('caretaker-bright.html not found:', e.message);
+}
+
+var CARETAKER_CLEAN_TEMPLATE = '';
+try {
+  CARETAKER_CLEAN_TEMPLATE = fs.readFileSync(path.join(__dirname, 'caretaker-clean.html'), 'utf8');
+} catch(e) {
+  console.warn('caretaker-clean.html not found:', e.message);
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '30mb' }));
@@ -208,10 +229,13 @@ app.post('/generate-template-universal', async function(req, res) {
     var niche        = req.body.niche || 'social media manager';
 
     var templateMap = {
-      social:     SOCIAL_TEMPLATE,
-      agency:     AGENCY_TEMPLATE,
-      cherry_sm:  CHERRY_SM_TEMPLATE,
-      bubbly_sm:  BUBBLY_SM_TEMPLATE
+      social:            SOCIAL_TEMPLATE,
+      agency:            AGENCY_TEMPLATE,
+      cherry_sm:         CHERRY_SM_TEMPLATE,
+      bubbly_sm:         BUBBLY_SM_TEMPLATE,
+      caretaker_warm:    CARETAKER_WARM_TEMPLATE,
+      caretaker_bright:  CARETAKER_BRIGHT_TEMPLATE,
+      caretaker_clean:   CARETAKER_CLEAN_TEMPLATE
     };
 
     var template = templateMap[templateType] || SOCIAL_TEMPLATE;
