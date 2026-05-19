@@ -1207,10 +1207,16 @@ function smInjectAssets(html) {
     }
   }
 
-  // Inject Revenue Booster section before </body>
+  // Inject Revenue Booster section before the footer (not after it)
   if (_smRBOn && window._smRevBoosterConfig) {
     var rbSection = smBuildRBSection(window._smRevBoosterConfig);
-    if (rbSection) html = html.replace('</body>', rbSection + '\n</body>');
+    if (rbSection) {
+      if (html.indexOf('<footer') !== -1) {
+        html = html.replace('<footer', rbSection + '\n<footer');
+      } else {
+        html = html.replace('</body>', rbSection + '\n</body>');
+      }
+    }
   }
 
   // Inject "Made with love" credit bar before </body>
