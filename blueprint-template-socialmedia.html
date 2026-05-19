@@ -1942,35 +1942,60 @@ function smApplyRates() {
 }
 
 // ── LIVE PREVIEW ─────────────────────────────────────────
-function smUpdatePreview(key, value) {
-  if (!value) return;
+var SM_LIVE_MAP = [
+  { id: 'sm-biz-name',      key: 'biz-name' },
+  { id: 'sm-owner-name',    key: 'biz-name' },   // owner name also drives biz-name elements
+  { id: 'sm-hero-headline', key: 'headline' },
+  { id: 'sm-tagline',       key: 'tagline' }
+];
+
+function smPushToPreview(key, value) {
   var iframe = document.getElementById('preview-iframe');
   if (!iframe) return;
-  try {
-    var doc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!doc) return;
-    var els = doc.querySelectorAll('[data-live="' + key + '"]');
-    for (var i = 0; i < els.length; i++) {
-      els[i].textContent = value;
+  var doc;
+  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+  if (!doc || !doc.body) return;
+  var els = doc.querySelectorAll('[data-live="' + key + '"]');
+  for (var i = 0; i < els.length; i++) {
+    if (value) els[i].textContent = value;
+  }
+}
+
+function smApplyAllLive() {
+  for (var i = 0; i < SM_LIVE_MAP.length; i++) {
+    var el = document.getElementById(SM_LIVE_MAP[i].id);
+    if (el && el.value && el.value.trim()) {
+      smPushToPreview(SM_LIVE_MAP[i].key, el.value.trim());
     }
-  } catch(e) {}
+  }
 }
 
 function smSetupLivePreview() {
-  var map = [
-    { id: 'sm-biz-name',       key: 'biz-name' },
-    { id: 'sm-hero-headline',  key: 'headline' }
-  ];
-  for (var i = 0; i < map.length; i++) {
+  // Attach input listeners
+  for (var i = 0; i < SM_LIVE_MAP.length; i++) {
     (function(m) {
       var el = document.getElementById(m.id);
       if (!el) return;
       el.addEventListener('input', function() {
-        smUpdatePreview(m.key, this.value.trim());
+        smPushToPreview(m.key, this.value.trim());
       });
-    })(map[i]);
+    })(SM_LIVE_MAP[i]);
+  }
+  // Re-apply all values whenever the iframe loads a new template
+  var iframe = document.getElementById('preview-iframe');
+  if (iframe) {
+    iframe.addEventListener('load', function() {
+      setTimeout(smApplyAllLive, 80);
+    });
   }
 }
+
+// Hook into smSelectTemplate so it also re-applies after load
+var _smOrigSelectTemplate = smSelectTemplate;
+smSelectTemplate = function(key) {
+  _smOrigSelectTemplate(key);
+  // iframe.onload handles re-apply automatically
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   smRenderTemplateCards();

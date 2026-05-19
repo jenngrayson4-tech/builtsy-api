@@ -2014,33 +2014,49 @@ function ctApplyRates() {
 }
 
 // ── LIVE PREVIEW ─────────────────────────────────────────
-function ctUpdatePreview(key, value) {
-  if (!value) return;
+var CT_LIVE_MAP = [
+  { id: 'ct-biz-name',      key: 'biz-name' },
+  { id: 'ct-owner-name',    key: 'biz-name' },
+  { id: 'ct-hero-headline', key: 'headline' },
+  { id: 'ct-tagline',       key: 'tagline' }
+];
+
+function ctPushToPreview(key, value) {
   var iframe = document.getElementById('preview-iframe');
   if (!iframe) return;
-  try {
-    var doc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!doc) return;
-    var els = doc.querySelectorAll('[data-live="' + key + '"]');
-    for (var i = 0; i < els.length; i++) {
-      els[i].textContent = value;
+  var doc;
+  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+  if (!doc || !doc.body) return;
+  var els = doc.querySelectorAll('[data-live="' + key + '"]');
+  for (var i = 0; i < els.length; i++) {
+    if (value) els[i].textContent = value;
+  }
+}
+
+function ctApplyAllLive() {
+  for (var i = 0; i < CT_LIVE_MAP.length; i++) {
+    var el = document.getElementById(CT_LIVE_MAP[i].id);
+    if (el && el.value && el.value.trim()) {
+      ctPushToPreview(CT_LIVE_MAP[i].key, el.value.trim());
     }
-  } catch(e) {}
+  }
 }
 
 function ctSetupLivePreview() {
-  var map = [
-    { id: 'ct-biz-name',       key: 'biz-name' },
-    { id: 'ct-hero-headline',  key: 'headline' }
-  ];
-  for (var i = 0; i < map.length; i++) {
+  for (var i = 0; i < CT_LIVE_MAP.length; i++) {
     (function(m) {
       var el = document.getElementById(m.id);
       if (!el) return;
       el.addEventListener('input', function() {
-        ctUpdatePreview(m.key, this.value.trim());
+        ctPushToPreview(m.key, this.value.trim());
       });
-    })(map[i]);
+    })(CT_LIVE_MAP[i]);
+  }
+  var iframe = document.getElementById('preview-iframe');
+  if (iframe) {
+    iframe.addEventListener('load', function() {
+      setTimeout(ctApplyAllLive, 80);
+    });
   }
 }
 
