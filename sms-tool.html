@@ -126,19 +126,38 @@ textarea{min-height:140px;line-height:1.6;}
   <!-- MAIN FORM CARD -->
   <div class="card" id="mainCard">
 
-    <!-- SECTION 1: Phone -->
+    <!-- SECTION 1: Twilio Setup -->
     <div class="section-title">Step 1</div>
+    <div class="section-label">Connect Your Twilio Account</div>
+    <div class="section-helper">You need a free Twilio account to send SMS. <a href="https://www.twilio.com/try-twilio" target="_blank" style="color:var(--lime);text-decoration:none;font-weight:600;">Sign up at twilio.com →</a></div>
+
+    <label class="field-label" for="accountSidInput">Account SID</label>
+    <input type="text" id="accountSidInput" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" oninput="onFormChange()" style="font-family:'DM Mono',monospace;font-size:.82rem;">
+    <div class="helper-text">Found in your Twilio Console dashboard</div>
+
+    <label class="field-label" for="authTokenInput" style="margin-top:14px;">Auth Token</label>
+    <input type="password" id="authTokenInput" placeholder="Your Twilio Auth Token" oninput="onFormChange()" style="font-family:'DM Mono',monospace;font-size:.82rem;">
+    <div class="helper-text">Found next to your Account SID in the Twilio Console</div>
+
+    <label class="field-label" for="fromNumberInput" style="margin-top:14px;">Twilio Phone Number</label>
+    <input type="tel" id="fromNumberInput" placeholder="+1 (555) 000-0000" oninput="onFormChange()">
+    <div class="helper-text">The number Twilio assigned to you (your "From" number)</div>
+
+    <hr class="divider">
+
+    <!-- SECTION 2: Your Number -->
+    <div class="section-title">Step 2</div>
     <div class="section-label">Your Phone Number</div>
     <div class="section-helper">Where should we send lead alerts?</div>
 
-    <label class="field-label" for="phoneInput">Phone number</label>
+    <label class="field-label" for="phoneInput">Your cell number</label>
     <input type="tel" id="phoneInput" placeholder="+1 (555) 000-0000" oninput="onFormChange()">
     <div class="helper-text">You'll get a text every time someone fills out your contact form</div>
 
     <hr class="divider">
 
-    <!-- SECTION 2: Template -->
-    <div class="section-title">Step 2</div>
+    <!-- SECTION 3: Template -->
+    <div class="section-title">Step 3</div>
     <div class="section-label">Customize Your Alert Message</div>
 
     <label class="field-label" for="templateInput">Message template</label>
@@ -150,17 +169,17 @@ textarea{min-height:140px;line-height:1.6;}
 
     <hr class="divider">
 
-    <!-- SECTION 3: Test -->
-    <div class="section-title">Step 3</div>
+    <!-- SECTION 4: Test -->
+    <div class="section-title">Step 4</div>
     <div class="section-label">Test It</div>
 
     <button class="btn-outline" id="testBtn" onclick="sendTest()">Send a Test Text</button>
     <div class="inline-msg" id="testMsg"></div>
-    <div class="helper-text" style="margin-top:0.6rem;">Make sure your number is correct before saving</div>
+    <div class="helper-text" style="margin-top:0.6rem;">Sends a test text to your number using your Twilio account</div>
 
     <hr class="divider">
 
-    <!-- SECTION 4: Save -->
+    <!-- SECTION 5: Save -->
     <button class="btn-lime" id="saveBtn" onclick="saveConfig()">Save &amp; Activate</button>
     <div class="inline-msg" id="saveMsg"></div>
 
@@ -236,18 +255,19 @@ function hideInlineMsg(id) {
   el.textContent = '';
 }
 
-function getPhone() {
-  return document.getElementById('phoneInput').value.trim();
-}
-
-function getTemplate() {
-  return document.getElementById('templateInput').value;
-}
+function getPhone()      { return document.getElementById('phoneInput').value.trim(); }
+function getTemplate()   { return document.getElementById('templateInput').value; }
+function getAccountSid() { return document.getElementById('accountSidInput').value.trim(); }
+function getAuthToken()  { return document.getElementById('authTokenInput').value.trim(); }
+function getFromNumber() { return document.getElementById('fromNumberInput').value.trim(); }
 
 function sendTest() {
-  var phone = getPhone();
-  if (!phone) {
-    showInlineMsg('testMsg', 'fail', 'Enter your phone number first.');
+  var phone      = getPhone();
+  var accountSid = getAccountSid();
+  var authToken  = getAuthToken();
+  var fromNumber = getFromNumber();
+  if (!phone || !accountSid || !authToken || !fromNumber) {
+    showInlineMsg('testMsg', 'fail', 'Fill in all Twilio fields and your phone number first.');
     return;
   }
   var btn = document.getElementById('testBtn');
@@ -258,19 +278,19 @@ function sendTest() {
   fetch(RAILWAY_URL + '/test-sms', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({phone: phone})
+    body: JSON.stringify({ phone: phone, accountSid: accountSid, authToken: authToken, fromNumber: fromNumber })
   })
   .then(function(res) {
-    if (res.ok) {
-      showInlineMsg('testMsg', 'success', 'Test sent! Check your phone.');
-    } else {
-      return res.text().then(function(t) {
-        showInlineMsg('testMsg', 'fail', 'Could not send test: ' + (t || res.status));
-      });
-    }
+    return res.json().then(function(data) {
+      if (res.ok && data.ok) {
+        showInlineMsg('testMsg', 'success', 'Test sent! Check your phone.');
+      } else {
+        showInlineMsg('testMsg', 'fail', data.error || 'Could not send test. Check your Twilio credentials.');
+      }
+    });
   })
-  .catch(function(err) {
-    showInlineMsg('testMsg', 'fail', 'Could not send test. Check your connection.');
+  .catch(function() {
+    showInlineMsg('testMsg', 'fail', 'Connection error. Try again.');
   })
   .finally(function() {
     btn.disabled = false;
@@ -279,15 +299,16 @@ function sendTest() {
 }
 
 function saveConfig() {
-  var phone = getPhone();
-  var template = getTemplate();
+  var phone      = getPhone();
+  var accountSid = getAccountSid();
+  var authToken  = getAuthToken();
+  var fromNumber = getFromNumber();
+  var template   = getTemplate();
 
-  if (!phone) {
-    document.getElementById('phoneInput').classList.add('error-field');
-    showInlineMsg('saveMsg', 'fail', 'A phone number is required.');
+  if (!phone || !accountSid || !authToken || !fromNumber) {
+    showInlineMsg('saveMsg', 'fail', 'All Twilio fields and your phone number are required.');
     return;
   }
-  document.getElementById('phoneInput').classList.remove('error-field');
 
   var btn = document.getElementById('saveBtn');
   btn.disabled = true;
@@ -295,17 +316,20 @@ function saveConfig() {
   setSaveIndicator('saving', 'Saving...');
   hideInlineMsg('saveMsg');
 
-  var config = {phone: phone, messageTemplate: template, active: true};
+  var config = {
+    phone: phone,
+    accountSid: accountSid,
+    authToken: authToken,
+    fromNumber: fromNumber,
+    messageTemplate: template,
+    active: true
+  };
 
   var promise;
   if (_existingRowId) {
-    promise = supabase
-      .from('tool_configs')
-      .update({config: config})
-      .eq('id', _existingRowId);
+    promise = supabase.from('tool_configs').update({config: config}).eq('id', _existingRowId);
   } else {
-    promise = supabase
-      .from('tool_configs')
+    promise = supabase.from('tool_configs')
       .upsert({blueprint_id: _bpId, tool_type: 'sms', config: config}, {onConflict: 'blueprint_id,tool_type'});
   }
 
@@ -316,10 +340,10 @@ function saveConfig() {
     } else {
       setSaveIndicator('saved', 'Saved');
       showActiveStatus(phone);
-      loadConfig(); // refresh row id
+      loadConfig();
     }
   })
-  .catch(function(err) {
+  .catch(function() {
     setSaveIndicator('error', 'Error');
     showInlineMsg('saveMsg', 'fail', 'Save failed. Try again.');
   })
@@ -378,9 +402,10 @@ function loadConfig() {
         var row = result.data;
         _existingRowId = row.id;
         var cfg = row.config || {};
-        if (cfg.phone) {
-          document.getElementById('phoneInput').value = cfg.phone;
-        }
+        if (cfg.phone)       document.getElementById('phoneInput').value      = cfg.phone;
+        if (cfg.accountSid)  document.getElementById('accountSidInput').value = cfg.accountSid;
+        if (cfg.authToken)   document.getElementById('authTokenInput').value  = cfg.authToken;
+        if (cfg.fromNumber)  document.getElementById('fromNumberInput').value = cfg.fromNumber;
         if (cfg.messageTemplate !== undefined) {
           document.getElementById('templateInput').value = cfg.messageTemplate;
         }

@@ -467,56 +467,21 @@ app.post('/generate-faq', async function(req, res) {
   }
 });
 
-// ── SMS Auto-Text (Twilio) ──
-app.post('/send-sms', async function(req, res) {
-  try {
-    var to       = req.body.to;
-    var name     = req.body.name    || 'Someone';
-    var email    = req.body.email   || '';
-    var message  = req.body.message || '';
-    var template = req.body.template || 'New lead from your website!\n\nName: {{name}}\nEmail: {{email}}\nMessage: {{message}}\n\nReply to follow up.';
-
-    if (!to) return res.status(400).json({ error: 'No phone number configured' });
-
-    var accountSid = process.env.TWILIO_ACCOUNT_SID;
-    var authToken  = process.env.TWILIO_AUTH_TOKEN;
-    var fromNumber = process.env.TWILIO_FROM_NUMBER;
-
-    if (!accountSid || !authToken || !fromNumber) {
-      return res.status(500).json({ error: 'SMS not configured on server' });
-    }
-
-    var body = template
-      .replace(/\{\{name\}\}/g,    name)
-      .replace(/\{\{email\}\}/g,   email)
-      .replace(/\{\{message\}\}/g, message);
-
-    var twilio = require('twilio')(accountSid, authToken);
-    await twilio.messages.create({ body: body, from: fromNumber, to: to });
-    res.json({ ok: true });
-  } catch(err) {
-    console.error('Send-sms error:', err.message);
-    res.status(500).json({ error: err.message || 'SMS failed' });
-  }
-});
-
-// ── SMS Test ──
+// ── SMS Test — uses user's own Twilio credentials ──
 app.post('/test-sms', async function(req, res) {
   try {
-    var to = req.body.phone;
-    if (!to) return res.status(400).json({ error: 'No phone number provided' });
+    var to         = req.body.phone;
+    var accountSid = req.body.accountSid;
+    var authToken  = req.body.authToken;
+    var fromNumber = req.body.fromNumber;
 
-    var accountSid = process.env.TWILIO_ACCOUNT_SID;
-    var authToken  = process.env.TWILIO_AUTH_TOKEN;
-    var fromNumber = process.env.TWILIO_FROM_NUMBER;
-
-    if (!accountSid || !authToken || !fromNumber) {
-      return res.status(500).json({ error: 'SMS not configured on server' });
+    if (!to || !accountSid || !authToken || !fromNumber) {
+      return res.status(400).json({ error: 'Missing phone, accountSid, authToken, or fromNumber' });
     }
 
     var twilio = require('twilio')(accountSid, authToken);
     await twilio.messages.create({
-      body: 'This is a test alert from Builtsy. Your SMS notifications are working!',
+      body: 'Test from Builtsy — your SMS lead alerts are working!',
       from: fromNumber,
       to: to
     });
@@ -528,27 +493,25 @@ app.post('/test-sms', async function(req, res) {
 });
 
 // ── Contact Form + SMS notify (used by generated sites) ──
+// Hidden fields _smsTo, _smsSid, _smsTok, _smsFrom, _smsTpl injected into site at generate time
 app.post('/contact-notify', async function(req, res) {
   try {
-    var name     = req.body.name     || '';
-    var email    = req.body.email    || '';
-    var message  = req.body.message  || '';
-    var phone    = req.body._smsTo   || '';
-    var template = req.body._smsTpl  || 'New lead!\n\nName: {{name}}\nEmail: {{email}}\nMessage: {{message}}';
+    var name       = req.body.name     || '';
+    var email      = req.body.email    || '';
+    var message    = req.body.message  || '';
+    var phone      = req.body._smsTo   || '';
+    var accountSid = req.body._smsSid  || '';
+    var authToken  = req.body._smsTok  || '';
+    var fromNumber = req.body._smsFrom || '';
+    var template   = req.body._smsTpl  || 'New lead!\n\nName: {{name}}\nEmail: {{email}}\nMessage: {{message}}';
 
-    // Send SMS if phone configured
-    if (phone) {
-      var accountSid = process.env.TWILIO_ACCOUNT_SID;
-      var authToken  = process.env.TWILIO_AUTH_TOKEN;
-      var fromNumber = process.env.TWILIO_FROM_NUMBER;
-      if (accountSid && authToken && fromNumber) {
-        var body = template
-          .replace(/\{\{name\}\}/g,    name)
-          .replace(/\{\{email\}\}/g,   email)
-          .replace(/\{\{message\}\}/g, message);
-        var twilio = require('twilio')(accountSid, authToken);
-        await twilio.messages.create({ body: body, from: fromNumber, to: phone });
-      }
+    if (phone && accountSid && authToken && fromNumber) {
+      var body = template
+        .replace(/\{\{name\}\}/g,    name)
+        .replace(/\{\{email\}\}/g,   email)
+        .replace(/\{\{message\}\}/g, message);
+      var twilio = require('twilio')(accountSid, authToken);
+      await twilio.messages.create({ body: body, from: fromNumber, to: phone });
     }
 
     res.json({ ok: true, message: 'Thank you! We will be in touch soon.' });

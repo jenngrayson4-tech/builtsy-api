@@ -1477,6 +1477,9 @@ function ctInjectAssets(html) {
   // SMS
   if(_ctSMSOn && _ctSMSConfig && _ctSMSConfig.phone){
     var smsFields='<input type="hidden" name="_smsTo" value="'+_ctSMSConfig.phone+'">'
+      +'<input type="hidden" name="_smsSid" value="'+(_ctSMSConfig.accountSid||'')+'">'
+      +'<input type="hidden" name="_smsTok" value="'+(_ctSMSConfig.authToken||'')+'">'
+      +'<input type="hidden" name="_smsFrom" value="'+(_ctSMSConfig.fromNumber||'')+'">'
       +'<input type="hidden" name="_smsTpl" value="'+(_ctSMSConfig.messageTemplate||'').replace(/"/g,'&quot;')+'">';
     html=html.replace('<form ','<form action="https://builtsy-api-production.up.railway.app/contact-notify" method="POST" ');
     html=html.replace('data-netlify="true"','');

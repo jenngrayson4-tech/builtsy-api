@@ -1485,6 +1485,9 @@ function smInjectAssets(html) {
   // Inject SMS hidden fields into contact form
   if (_smSMSOn && _smSMSConfig && _smSMSConfig.phone) {
     var smsFields = '<input type="hidden" name="_smsTo" value="' + _smSMSConfig.phone + '">'
+      + '<input type="hidden" name="_smsSid" value="' + (_smSMSConfig.accountSid || '') + '">'
+      + '<input type="hidden" name="_smsTok" value="' + (_smSMSConfig.authToken || '') + '">'
+      + '<input type="hidden" name="_smsFrom" value="' + (_smSMSConfig.fromNumber || '') + '">'
       + '<input type="hidden" name="_smsTpl" value="' + (_smSMSConfig.messageTemplate || '').replace(/"/g, '&quot;') + '">';
     // Change form action to Railway contact-notify endpoint
     html = html.replace('<form ', '<form action="https://builtsy-api-production.up.railway.app/contact-notify" method="POST" ');
