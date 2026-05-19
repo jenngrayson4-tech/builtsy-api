@@ -522,6 +522,122 @@ textarea.fi{resize:vertical;min-height:80px;}
           <div class="field-hint">Shown in your contact section so families know when to reach out.</div>
         </div>
 
+        <!-- ── FEATURES & ADD-ONS ── -->
+        <div style="margin-top:28px;margin-bottom:20px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+          <div style="font-size:.7rem;font-weight:700;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Features &amp; Add-Ons</div>
+
+          <!-- Testimonials -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Testimonials</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Paste real reviews &mdash; Claude will weave them into your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="ctToggleTesti()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ct-testi-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ct-testi-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ct-testi-feature-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="margin-bottom:10px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 1</div>
+              <textarea class="fi" id="ct-ftesti1-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ct-ftesti1-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ct-ftesti1-ctx" type="text" placeholder="Mom of twins, ages 3 &amp; 5">
+              </div>
+            </div>
+            <div style="margin-bottom:10px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 2</div>
+              <textarea class="fi" id="ct-ftesti2-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ct-ftesti2-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ct-ftesti2-ctx" type="text" placeholder="Family of 4, kids ages 5 &amp; 8">
+              </div>
+            </div>
+            <div style="margin-bottom:4px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 3</div>
+              <textarea class="fi" id="ct-ftesti3-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ct-ftesti3-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ct-ftesti3-ctx" type="text" placeholder="Parents of a toddler, 18 months">
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Generator -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">FAQ Generator</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Claude writes 8 FAQs for your business &mdash; edit and save in the tool</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="ctToggleFAQ()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ct-faq-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ct-faq-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ct-faq-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Claude will generate 8 FAQs tailored to your care business and embed them as an accordion on your site.</div>
+            <button onclick="ctOpenFAQTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Open FAQ Generator</button>
+          </div>
+
+          <!-- Calendly Booking -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Calendly Booking</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed your booking calendar directly on your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="ctToggleCal()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ct-cal-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ct-cal-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ct-cal-wrap" style="display:none;padding:12px 0 4px;">
+            <input class="fi" id="ct-calendly-url" type="text" placeholder="calendly.com/yourname">
+          </div>
+
+          <!-- Google Form / Intake Form -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Google Form / Intake Form</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed an intake form &mdash; great for collecting family info before a meet &amp; greet</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="ctToggleForm()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ct-form-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ct-form-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ct-form-wrap" style="display:none;padding:12px 0 4px;">
+            <input class="fi" id="ct-google-form-url" type="text" placeholder="docs.google.com/forms/...">
+          </div>
+
+          <!-- SMS Lead Alerts -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">SMS Lead Alerts</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Get an instant text when a family fills out your contact form</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="ctToggleSMS()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ct-sms-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ct-sms-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ct-sms-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your phone number and message template so you get a text the moment a new family reaches out.</div>
+            <button onclick="ctOpenSMSTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Configure SMS</button>
+          </div>
+
+        </div>
+
         <!-- ── REVENUE BOOSTER ── -->
         <div style="margin-top:28px;padding:16px;background:rgba(200,224,0,0.06);border:1.5px solid rgba(200,224,0,0.22);border-radius:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
@@ -770,6 +886,92 @@ function ctFetchRevBooster() {
 }
 
 var _ctRBOn = false;
+var _ctTestiOn = false;
+var _ctFAQOn   = false;
+var _ctCalOn   = false;
+var _ctFormOn  = false;
+var _ctSMSOn   = false;
+var _ctFAQConfig = null;
+var _ctSMSConfig = null;
+
+function ctToggleTesti() {
+  _ctTestiOn = !_ctTestiOn;
+  var wrap=document.getElementById('ct-testi-feature-wrap'), track=document.getElementById('ct-testi-track'), thumb=document.getElementById('ct-testi-thumb');
+  if(wrap) wrap.style.display=_ctTestiOn?'block':'none';
+  if(track) track.style.background=_ctTestiOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctTestiOn?'21px':'3px';
+}
+function ctToggleFAQ() {
+  _ctFAQOn = !_ctFAQOn;
+  var wrap=document.getElementById('ct-faq-wrap'), track=document.getElementById('ct-faq-track'), thumb=document.getElementById('ct-faq-thumb');
+  if(wrap) wrap.style.display=_ctFAQOn?'block':'none';
+  if(track) track.style.background=_ctFAQOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctFAQOn?'21px':'3px';
+  if(_ctFAQOn) ctFetchFAQ();
+}
+function ctToggleCal() {
+  _ctCalOn = !_ctCalOn;
+  var wrap=document.getElementById('ct-cal-wrap'), track=document.getElementById('ct-cal-track'), thumb=document.getElementById('ct-cal-thumb');
+  if(wrap) wrap.style.display=_ctCalOn?'block':'none';
+  if(track) track.style.background=_ctCalOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctCalOn?'21px':'3px';
+}
+function ctToggleForm() {
+  _ctFormOn = !_ctFormOn;
+  var wrap=document.getElementById('ct-form-wrap'), track=document.getElementById('ct-form-track'), thumb=document.getElementById('ct-form-thumb');
+  if(wrap) wrap.style.display=_ctFormOn?'block':'none';
+  if(track) track.style.background=_ctFormOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctFormOn?'21px':'3px';
+}
+function ctToggleSMS() {
+  _ctSMSOn = !_ctSMSOn;
+  var wrap=document.getElementById('ct-sms-wrap'), track=document.getElementById('ct-sms-track'), thumb=document.getElementById('ct-sms-thumb');
+  if(wrap) wrap.style.display=_ctSMSOn?'block':'none';
+  if(track) track.style.background=_ctSMSOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctSMSOn?'21px':'3px';
+  if(_ctSMSOn) ctFetchSMS();
+}
+function ctOpenFAQTool() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  window.open('faq-tool.html'+(bpId?'?blueprint='+encodeURIComponent(bpId):''),'_blank');
+}
+function ctOpenSMSTool() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  window.open('sms-tool.html'+(bpId?'?blueprint='+encodeURIComponent(bpId):''),'_blank');
+}
+function ctFetchFAQ() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  if(!bpId) return;
+  var sb=ctGetSupabase(); if(!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','faq').maybeSingle()
+    .then(function(res){if(res.data&&res.data.config)_ctFAQConfig=res.data.config;}).catch(function(){});
+}
+function ctFetchSMS() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  if(!bpId) return;
+  var sb=ctGetSupabase(); if(!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','sms').maybeSingle()
+    .then(function(res){if(res.data&&res.data.config)_ctSMSConfig=res.data.config;}).catch(function(){});
+}
+function ctBuildFAQSection(faqs) {
+  if(!faqs||!faqs.length) return '';
+  var html='<section style="padding:80px 40px;background:#f9f9f9;"><div style="max-width:800px;margin:0 auto;">'
+    +'<p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:12px;">FAQ</p>'
+    +'<h2 style="font-family:serif;font-size:2.2rem;margin-bottom:40px;color:#1a1a1a;">Frequently Asked Questions</h2>'
+    +'<div id="builtsy-faq">';
+  faqs.forEach(function(faq,i){
+    html+='<div style="border-bottom:1px solid #e5e5e5;padding:20px 0;">'
+      +'<div onclick="var a=document.getElementById(\'faq-a-'+i+'\');var arr=document.getElementById(\'faq-arr-'+i+'\');a.style.display=a.style.display===\'none\'?\'block\':\'none\';arr.style.transform=a.style.display===\'block\'?\'rotate(180deg)\':\'rotate(0deg)\';" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:1.05rem;color:#1a1a1a;">'
+      +'<span>'+faq.q+'</span>'
+      +'<span id="faq-arr-'+i+'" style="transition:transform .2s;font-size:1.2rem;color:#888;">&#8964;</span>'
+      +'</div>'
+      +'<div id="faq-a-'+i+'" style="display:none;margin-top:12px;color:#555;line-height:1.7;font-size:.95rem;">'+faq.a+'</div>'
+      +'</div>';
+  });
+  html+='</div></div></section>';
+  return html;
+}
+
 function ctToggleRevBooster() {
   _ctRBOn = !_ctRBOn;
   var wrap  = document.getElementById('ct-rb-wrap');
@@ -1178,7 +1380,19 @@ function ctCollect() {
     facebook:       v('ct-facebook'),
     availability:   v('ct-availability'),
     paletteCSS:     _ctSelectedPalette,
-    paletteName:    _ctSelectedPaletteName
+    paletteName:    _ctSelectedPaletteName,
+    testiFeatureOn: _ctTestiOn ? 'yes' : '',
+    ftesti1Quote: _ctTestiOn ? v('ct-ftesti1-quote') : '',
+    ftesti1Name:  _ctTestiOn ? v('ct-ftesti1-name')  : '',
+    ftesti1Ctx:   _ctTestiOn ? v('ct-ftesti1-ctx')   : '',
+    ftesti2Quote: _ctTestiOn ? v('ct-ftesti2-quote') : '',
+    ftesti2Name:  _ctTestiOn ? v('ct-ftesti2-name')  : '',
+    ftesti2Ctx:   _ctTestiOn ? v('ct-ftesti2-ctx')   : '',
+    ftesti3Quote: _ctTestiOn ? v('ct-ftesti3-quote') : '',
+    ftesti3Name:  _ctTestiOn ? v('ct-ftesti3-name')  : '',
+    ftesti3Ctx:   _ctTestiOn ? v('ct-ftesti3-ctx')   : '',
+    calendlyUrl:  _ctCalOn   ? (v('ct-calendly-url')     || '') : '',
+    googleFormUrl:_ctFormOn  ? (v('ct-google-form-url')  || '') : ''
   };
 }
 
@@ -1230,6 +1444,43 @@ function ctInjectAssets(html) {
         html = html.replace('</body>', rbSection + '\n</body>');
       }
     }
+  }
+
+  // FAQ section
+  if(_ctFAQOn && _ctFAQConfig && _ctFAQConfig.faqs && _ctFAQConfig.faqs.length){
+    var faqHtml=ctBuildFAQSection(_ctFAQConfig.faqs);
+    if(faqHtml) html=html.replace('<footer',faqHtml+'\n<footer');
+  }
+  // Calendly
+  if(_ctCalOn){
+    var calUrl=(document.getElementById('ct-calendly-url')||{}).value||'';
+    if(calUrl){
+      if(calUrl.indexOf('http')!==0) calUrl='https://'+calUrl;
+      var calEmbed='<section style="padding:60px 40px;text-align:center;background:#fafafa;">'
+        +'<h2 style="font-family:sans-serif;margin-bottom:24px;">Book a Time</h2>'
+        +'<iframe src="'+calUrl+'" style="width:100%;min-width:320px;height:700px;border:none;border-radius:12px;" frameborder="0"></iframe>'
+        +'</section>';
+      html=html.replace('<footer',calEmbed+'\n<footer');
+    }
+  }
+  // Google Form
+  if(_ctFormOn){
+    var gfUrl=(document.getElementById('ct-google-form-url')||{}).value||'';
+    if(gfUrl){
+      var gfEmbed='<section style="padding:60px 40px;text-align:center;background:#fff;">'
+        +'<h2 style="font-family:sans-serif;margin-bottom:24px;">Get in Touch</h2>'
+        +'<iframe src="'+gfUrl+'" style="width:100%;max-width:700px;height:800px;border:none;border-radius:12px;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>'
+        +'</section>';
+      html=html.replace('<footer',gfEmbed+'\n<footer');
+    }
+  }
+  // SMS
+  if(_ctSMSOn && _ctSMSConfig && _ctSMSConfig.phone){
+    var smsFields='<input type="hidden" name="_smsTo" value="'+_ctSMSConfig.phone+'">'
+      +'<input type="hidden" name="_smsTpl" value="'+(_ctSMSConfig.messageTemplate||'').replace(/"/g,'&quot;')+'">';
+    html=html.replace('<form ','<form action="https://builtsy-api-production.up.railway.app/contact-notify" method="POST" ');
+    html=html.replace('data-netlify="true"','');
+    html=html.replace(/(<form[^>]*>)/,'$1\n'+smsFields);
   }
 
   // Inject "Made with love" credit bar

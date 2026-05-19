@@ -424,6 +424,140 @@ app.post('/generate-from-pdf', async function(req, res) {
   }
 });
 
+// ── FAQ Generator ──
+app.post('/generate-faq', async function(req, res) {
+  try {
+    var businessName  = req.body.businessName  || '';
+    var niche         = req.body.niche         || '';
+    var audience      = req.body.audience      || '';
+    var services      = req.body.services      || '';
+    var tone          = req.body.tone          || 'friendly';
+
+    var toneGuide = tone === 'professional'
+      ? 'Write in a polished, professional tone.'
+      : tone === 'casual'
+      ? 'Write in a relaxed, casual, conversational tone.'
+      : 'Write in a warm, friendly, approachable tone.';
+
+    var prompt = 'Generate exactly 8 frequently asked questions (FAQs) for a business with the following details:\n\n'
+      + 'Business Name: ' + businessName + '\n'
+      + 'What they do: ' + niche + '\n'
+      + 'Target audience: ' + audience + '\n'
+      + 'Services: ' + services + '\n\n'
+      + toneGuide + '\n\n'
+      + 'The FAQs should cover: pricing, process/how it works, experience/credentials, what\'s included, '
+      + 'how to get started, turnaround/availability, what makes them different, and one common concern their audience has.\n\n'
+      + 'Return ONLY valid JSON in this exact format — no explanation, no markdown:\n'
+      + '{"faqs":[{"q":"Question here?","a":"Answer here."},...]}\n\n'
+      + 'Make the answers 2-4 sentences each. Make them specific to the business, not generic.';
+
+    var message = await client.messages.create({
+      model: MODEL,
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var text = message.content[0].text.trim();
+    text = text.replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim();
+    var parsed = JSON.parse(text);
+    res.json(parsed);
+  } catch(err) {
+    console.error('Generate-faq error:', err.message);
+    res.status(500).json({ error: err.message || 'FAQ generation failed' });
+  }
+});
+
+// ── SMS Auto-Text (Twilio) ──
+app.post('/send-sms', async function(req, res) {
+  try {
+    var to       = req.body.to;
+    var name     = req.body.name    || 'Someone';
+    var email    = req.body.email   || '';
+    var message  = req.body.message || '';
+    var template = req.body.template || 'New lead from your website!\n\nName: {{name}}\nEmail: {{email}}\nMessage: {{message}}\n\nReply to follow up.';
+
+    if (!to) return res.status(400).json({ error: 'No phone number configured' });
+
+    var accountSid = process.env.TWILIO_ACCOUNT_SID;
+    var authToken  = process.env.TWILIO_AUTH_TOKEN;
+    var fromNumber = process.env.TWILIO_FROM_NUMBER;
+
+    if (!accountSid || !authToken || !fromNumber) {
+      return res.status(500).json({ error: 'SMS not configured on server' });
+    }
+
+    var body = template
+      .replace(/\{\{name\}\}/g,    name)
+      .replace(/\{\{email\}\}/g,   email)
+      .replace(/\{\{message\}\}/g, message);
+
+    var twilio = require('twilio')(accountSid, authToken);
+    await twilio.messages.create({ body: body, from: fromNumber, to: to });
+    res.json({ ok: true });
+  } catch(err) {
+    console.error('Send-sms error:', err.message);
+    res.status(500).json({ error: err.message || 'SMS failed' });
+  }
+});
+
+// ── SMS Test ──
+app.post('/test-sms', async function(req, res) {
+  try {
+    var to = req.body.phone;
+    if (!to) return res.status(400).json({ error: 'No phone number provided' });
+
+    var accountSid = process.env.TWILIO_ACCOUNT_SID;
+    var authToken  = process.env.TWILIO_AUTH_TOKEN;
+    var fromNumber = process.env.TWILIO_FROM_NUMBER;
+
+    if (!accountSid || !authToken || !fromNumber) {
+      return res.status(500).json({ error: 'SMS not configured on server' });
+    }
+
+    var twilio = require('twilio')(accountSid, authToken);
+    await twilio.messages.create({
+      body: 'This is a test alert from Builtsy. Your SMS notifications are working!',
+      from: fromNumber,
+      to: to
+    });
+    res.json({ ok: true });
+  } catch(err) {
+    console.error('Test-sms error:', err.message);
+    res.status(500).json({ error: err.message || 'Test SMS failed' });
+  }
+});
+
+// ── Contact Form + SMS notify (used by generated sites) ──
+app.post('/contact-notify', async function(req, res) {
+  try {
+    var name     = req.body.name     || '';
+    var email    = req.body.email    || '';
+    var message  = req.body.message  || '';
+    var phone    = req.body._smsTo   || '';
+    var template = req.body._smsTpl  || 'New lead!\n\nName: {{name}}\nEmail: {{email}}\nMessage: {{message}}';
+
+    // Send SMS if phone configured
+    if (phone) {
+      var accountSid = process.env.TWILIO_ACCOUNT_SID;
+      var authToken  = process.env.TWILIO_AUTH_TOKEN;
+      var fromNumber = process.env.TWILIO_FROM_NUMBER;
+      if (accountSid && authToken && fromNumber) {
+        var body = template
+          .replace(/\{\{name\}\}/g,    name)
+          .replace(/\{\{email\}\}/g,   email)
+          .replace(/\{\{message\}\}/g, message);
+        var twilio = require('twilio')(accountSid, authToken);
+        await twilio.messages.create({ body: body, from: fromNumber, to: phone });
+      }
+    }
+
+    res.json({ ok: true, message: 'Thank you! We will be in touch soon.' });
+  } catch(err) {
+    console.error('Contact-notify error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
   console.log('Builtsy API running on port ' + PORT);

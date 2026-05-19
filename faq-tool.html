@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FAQ Generator | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;
+  --lime:#C8E000;
+  --pink:#ee70bc;
+  --dark:#0D1220;
+  --card:#1A2338;
+  --border:rgba(255,255,255,0.08);
+  --text:#F0F4FF;
+  --muted:#8892A4;
+  --lime-dim:rgba(200,224,0,0.10);
+  --lime-border:rgba(200,224,0,0.25);
+  --pink-dim:rgba(238,112,188,0.10);
+  --r:10px;--rl:14px;
+}
+html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-serif;color:var(--text);}
+
+/* TOPNAV */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
+.logo-wrap{display:flex;align-items:center;gap:0.5rem;}
+.logo-text{font-family:'DM Sans',sans-serif;color:var(--text);font-size:1.15rem;font-weight:700;text-decoration:none;letter-spacing:-0.02em;}
+.logo-text .logo-sy{color:var(--pink);}
+.tn-center{position:absolute;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.tn-right{display:flex;align-items:center;gap:1rem;}
+.save-indicator{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.08em;color:transparent;transition:all .3s;}
+.save-indicator.saving{color:rgba(200,224,0,0.6);}
+.save-indicator.saved{color:rgba(200,224,0,0.9);}
+.save-indicator.error{color:rgba(238,112,188,0.8);}
+
+/* LAYOUT */
+.page-wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+.page-header{margin-bottom:2rem;text-align:center;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem;opacity:0.75;}
+.page-title{font-size:1.75rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;letter-spacing:-0.02em;}
+.page-sub{color:var(--muted);font-size:0.88rem;line-height:1.65;}
+
+/* WARNING BANNER */
+.warn-banner{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:var(--r);padding:0.65rem 1rem;font-size:0.8rem;color:var(--pink);margin-bottom:1.5rem;text-align:center;}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;}
+.card + .card{margin-top:1.25rem;}
+
+/* STEP LABEL */
+.step-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;opacity:0.8;}
+.step-dot{width:20px;height:20px;background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:var(--lime);flex-shrink:0;}
+
+/* FORM */
+.form-group{margin-bottom:1.1rem;}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:0.45rem;display:block;letter-spacing:0.01em;}
+.form-hint{font-size:0.72rem;color:var(--muted);margin-bottom:0.45rem;display:block;}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.875rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:rgba(200,224,0,0.4);}
+.form-input::placeholder{color:var(--muted);}
+textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
+
+/* TONE PILLS */
+.tone-group{display:flex;gap:0.5rem;flex-wrap:wrap;}
+.tone-pill{background:transparent;border:1px solid var(--border);border-radius:100px;padding:0.4rem 1rem;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.tone-pill:hover{border-color:rgba(200,224,0,0.3);color:var(--text);}
+.tone-pill.active{background:var(--lime-dim);border-color:var(--lime-border);color:var(--lime);}
+
+/* BUTTONS */
+.btn-primary{background:var(--lime);color:var(--dark);border:none;border-radius:8px;padding:0.8rem 1.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:-0.01em;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.25rem;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2);color:var(--text);}
+
+/* LOADING */
+.loading-wrap{text-align:center;padding:3rem 1rem;}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--lime);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.25rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{color:var(--muted);font-size:0.9rem;}
+
+/* FAQ CARDS */
+.faq-list{display:flex;flex-direction:column;gap:0.75rem;}
+.faq-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.1rem 1.1rem 1.25rem;position:relative;}
+.faq-card:focus-within{border-color:rgba(200,224,0,0.25);}
+.faq-card-top{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.6rem;}
+.faq-q-label{font-family:'DM Mono',monospace;font-size:0.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);opacity:0.7;margin-top:0.3rem;flex-shrink:0;width:14px;}
+.faq-question{flex:1;font-size:0.9rem;font-weight:600;color:var(--text);outline:none;line-height:1.5;border-bottom:1px dashed transparent;transition:border-color .15s;min-width:0;word-break:break-word;}
+.faq-question:focus{border-bottom-color:rgba(200,224,0,0.3);}
+.faq-question:empty:before{content:attr(data-placeholder);color:var(--muted);font-weight:400;}
+.faq-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:0.2rem 0.3rem;border-radius:5px;font-size:0.85rem;line-height:1;flex-shrink:0;transition:all .15s;margin-top:0.1rem;}
+.faq-del:hover{background:var(--pink-dim);color:var(--pink);}
+.faq-answer{font-size:0.85rem;color:var(--muted);outline:none;line-height:1.65;margin-left:1.25rem;padding-top:0.25rem;border-left:2px solid var(--border);padding-left:0.75rem;transition:border-color .15s;min-height:2.5em;word-break:break-word;}
+.faq-answer:focus{border-left-color:rgba(200,224,0,0.3);color:var(--text);}
+.faq-answer:empty:before{content:attr(data-placeholder);color:var(--muted);opacity:0.6;}
+
+/* ACTION ROW */
+.action-row{display:flex;gap:0.75rem;margin-top:1.25rem;}
+.action-row .btn-primary{flex:1;}
+.action-row .btn-secondary{flex-shrink:0;}
+
+/* ADD FAQ */
+.add-faq-btn{display:flex;align-items:center;justify-content:center;gap:0.4rem;background:none;border:1px dashed rgba(255,255,255,0.12);border-radius:8px;padding:0.65rem 1rem;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;width:100%;margin-top:0.75rem;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.add-faq-btn:hover{border-color:rgba(200,224,0,0.25);color:var(--lime);}
+
+/* SUCCESS */
+.success-msg{background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:var(--r);padding:1rem 1.25rem;font-size:0.88rem;color:var(--lime);margin-top:1rem;line-height:1.6;display:none;}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+
+/* HIDDEN */
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo-wrap">
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span></a>
+  </div>
+  <div class="tn-center">FAQ Generator</div>
+  <div class="tn-right">
+    <span class="save-indicator" id="save-indicator"></span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Builtsy Tool</div>
+    <h1 class="page-title">FAQ Generator</h1>
+    <p class="page-sub">Tell Claude about your business and get a polished FAQ section — ready to drop into your site.</p>
+  </div>
+
+  <div id="no-bp-warn" class="warn-banner hidden">
+    No blueprint ID detected. FAQs will still generate — link this tab from your blueprint to save correctly.
+  </div>
+
+  <!-- STEP 1: Context Form -->
+  <div id="step-form" class="card">
+    <div class="step-label"><span class="step-dot">1</span>Tell Claude about your business</div>
+
+    <div class="form-group">
+      <label class="form-label" for="inp-name">Business name</label>
+      <input class="form-input" type="text" id="inp-name" placeholder="e.g. Bliss Brand Studio">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="inp-niche">What you do / niche</label>
+      <span class="form-hint">Be specific — this shapes the whole FAQ.</span>
+      <input class="form-input" type="text" id="inp-niche" placeholder="e.g. Social media manager for small businesses">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="inp-audience">Target audience</label>
+      <input class="form-input" type="text" id="inp-audience" placeholder="e.g. Female entrepreneurs launching their first brand">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="inp-services">Top 3 services</label>
+      <span class="form-hint">Brief is fine — one service per line or comma-separated.</span>
+      <textarea class="form-input" id="inp-services" placeholder="e.g. Brand strategy, Social media management, Content creation"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tone</label>
+      <div class="tone-group" id="tone-group">
+        <button class="tone-pill" onclick="setTone('professional')">Professional</button>
+        <button class="tone-pill active" onclick="setTone('friendly')">Friendly</button>
+        <button class="tone-pill" onclick="setTone('casual')">Casual</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <button class="btn-primary" id="generate-btn" onclick="generateFaqs()">Generate My FAQs</button>
+    <div id="gen-error" style="margin-top:0.65rem;font-size:0.8rem;color:var(--pink);text-align:center;display:none;"></div>
+  </div>
+
+  <!-- STEP 2: Loading -->
+  <div id="step-loading" class="card hidden">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <div class="loading-text">Claude is writing your FAQs&hellip;</div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Review & Edit -->
+  <div id="step-edit" class="hidden">
+    <div class="card">
+      <div class="step-label"><span class="step-dot">2</span>Review and edit your FAQs</div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.6;">Click any question or answer to edit it. Delete ones you don't need. Add more below.</p>
+
+      <div class="faq-list" id="faq-list"></div>
+
+      <button class="add-faq-btn" onclick="addBlankFaq()">+ Add another FAQ</button>
+
+      <hr class="divider">
+
+      <div class="action-row">
+        <button class="btn-primary" id="save-btn" onclick="saveFaqs()">Save FAQs</button>
+        <button class="btn-secondary" onclick="goBack()">Regenerate</button>
+      </div>
+
+      <div class="success-msg" id="success-msg">
+        Your FAQs are saved and will be included when you generate your site.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// CONFIG
+var SUPABASE_URL = 'https://nukcbqlxxrfsgchqyxud.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX';
+var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
+
+// SUPABASE CLIENT
+var _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// BLUEPRINT ID
+var _bpId = new URLSearchParams(window.location.search).get('blueprint')
+         || localStorage.getItem('builtsy_bp_id')
+         || '';
+
+// STATE
+var _tone = 'friendly';
+var _faqs = [];
+
+// INIT
+(function init() {
+  if (!_bpId) {
+    document.getElementById('no-bp-warn').classList.remove('hidden');
+  }
+})();
+
+// TONE SELECTOR
+function setTone(t) {
+  _tone = t;
+  var pills = document.querySelectorAll('.tone-pill');
+  for (var i = 0; i < pills.length; i++) {
+    pills[i].classList.remove('active');
+    if (pills[i].textContent.toLowerCase() === t) {
+      pills[i].classList.add('active');
+    }
+  }
+}
+
+// SAVE INDICATOR
+function setSaveStatus(status, msg) {
+  var el = document.getElementById('save-indicator');
+  if (!el) return;
+  el.className = 'save-indicator ' + (status || '');
+  el.textContent = msg || '';
+}
+
+// SHOW / HIDE STEPS
+function showStep(step) {
+  document.getElementById('step-form').classList.add('hidden');
+  document.getElementById('step-loading').classList.add('hidden');
+  document.getElementById('step-edit').classList.add('hidden');
+  if (step === 'form') {
+    document.getElementById('step-form').classList.remove('hidden');
+  } else if (step === 'loading') {
+    document.getElementById('step-loading').classList.remove('hidden');
+  } else if (step === 'edit') {
+    document.getElementById('step-edit').classList.remove('hidden');
+  }
+}
+
+// GO BACK
+function goBack() {
+  showStep('form');
+  document.getElementById('success-msg').style.display = 'none';
+}
+
+// GENERATE
+function generateFaqs() {
+  var name = document.getElementById('inp-name').value.trim();
+  var niche = document.getElementById('inp-niche').value.trim();
+  var audience = document.getElementById('inp-audience').value.trim();
+  var services = document.getElementById('inp-services').value.trim();
+  var errEl = document.getElementById('gen-error');
+
+  if (!niche) {
+    errEl.textContent = 'Please describe what you do — this helps Claude write relevant FAQs.';
+    errEl.style.display = 'block';
+    document.getElementById('inp-niche').focus();
+    return;
+  }
+  errEl.style.display = 'none';
+
+  showStep('loading');
+
+  var payload = {
+    businessName: name,
+    niche: niche,
+    audience: audience,
+    services: services,
+    tone: _tone
+  };
+
+  fetch(RAILWAY_URL + '/generate-faq', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(function(res) {
+    if (!res.ok) {
+      return res.json().then(function(d) { throw new Error(d.error || 'Request failed'); });
+    }
+    return res.json();
+  })
+  .then(function(data) {
+    if (!data.faqs || !data.faqs.length) throw new Error('No FAQs returned');
+    _faqs = data.faqs.slice();
+    renderFaqList();
+    showStep('edit');
+  })
+  .catch(function(e) {
+    showStep('form');
+    var errEl2 = document.getElementById('gen-error');
+    errEl2.textContent = e.message || 'Something went wrong. Please try again.';
+    errEl2.style.display = 'block';
+  });
+}
+
+// RENDER FAQ CARDS
+function renderFaqList() {
+  var list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  for (var i = 0; i < _faqs.length; i++) {
+    list.appendChild(makeFaqCard(i, _faqs[i].q, _faqs[i].a));
+  }
+}
+
+function makeFaqCard(idx, q, a) {
+  var card = document.createElement('div');
+  card.className = 'faq-card';
+  card.setAttribute('data-idx', idx);
+
+  var top = document.createElement('div');
+  top.className = 'faq-card-top';
+
+  var qlabel = document.createElement('span');
+  qlabel.className = 'faq-q-label';
+  qlabel.textContent = 'Q';
+
+  var qDiv = document.createElement('div');
+  qDiv.className = 'faq-question';
+  qDiv.contentEditable = 'true';
+  qDiv.setAttribute('data-placeholder', 'Type your question...');
+  qDiv.textContent = q || '';
+
+  var delBtn = document.createElement('button');
+  delBtn.className = 'faq-del';
+  delBtn.title = 'Remove';
+  delBtn.textContent = 'x';
+  delBtn.setAttribute('data-idx', idx);
+  delBtn.onclick = function() {
+    removeFaq(parseInt(this.getAttribute('data-idx')));
+  };
+
+  top.appendChild(qlabel);
+  top.appendChild(qDiv);
+  top.appendChild(delBtn);
+
+  var aDiv = document.createElement('div');
+  aDiv.className = 'faq-answer';
+  aDiv.contentEditable = 'true';
+  aDiv.setAttribute('data-placeholder', 'Type your answer...');
+  aDiv.textContent = a || '';
+
+  card.appendChild(top);
+  card.appendChild(aDiv);
+  return card;
+}
+
+// REMOVE FAQ
+function removeFaq(idx) {
+  var cards = document.querySelectorAll('.faq-card');
+  var realIdx = 0;
+  for (var i = 0; i < cards.length; i++) {
+    if (parseInt(cards[i].getAttribute('data-idx')) === idx) {
+      cards[i].parentNode.removeChild(cards[i]);
+      return;
+    }
+  }
+}
+
+// ADD BLANK
+function addBlankFaq() {
+  var list = document.getElementById('faq-list');
+  var cards = list.querySelectorAll('.faq-card');
+  var newIdx = cards.length;
+  var card = makeFaqCard(newIdx, '', '');
+  list.appendChild(card);
+  var qDiv = card.querySelector('.faq-question');
+  if (qDiv) qDiv.focus();
+}
+
+// COLLECT FAQS FROM DOM
+function collectFaqs() {
+  var cards = document.querySelectorAll('.faq-card');
+  var result = [];
+  for (var i = 0; i < cards.length; i++) {
+    var qEl = cards[i].querySelector('.faq-question');
+    var aEl = cards[i].querySelector('.faq-answer');
+    var q = qEl ? qEl.textContent.trim() : '';
+    var a = aEl ? aEl.textContent.trim() : '';
+    if (q || a) {
+      result.push({q: q, a: a});
+    }
+  }
+  return result;
+}
+
+// SAVE TO SUPABASE
+function saveFaqs() {
+  var pairs = collectFaqs();
+  if (!pairs.length) {
+    alert('Add at least one FAQ before saving.');
+    return;
+  }
+
+  var btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  setSaveStatus('saving', 'Saving...');
+
+  var cfg = {
+    faqs: pairs,
+    tone: _tone
+  };
+
+  var row = {
+    blueprint_id: _bpId || 'unknown',
+    tool_type: 'faq',
+    config: cfg
+  };
+
+  _sb.from('tool_configs')
+    .upsert(row, {onConflict: 'blueprint_id,tool_type'})
+    .then(function(res) {
+      if (res.error) throw res.error;
+      setSaveStatus('saved', 'Saved');
+      setTimeout(function() { setSaveStatus('', ''); }, 3000);
+      var msg = document.getElementById('success-msg');
+      msg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Save FAQs';
+    })
+    .catch(function(e) {
+      setSaveStatus('error', 'Save failed');
+      btn.disabled = false;
+      btn.textContent = 'Save FAQs';
+      alert('Save failed: ' + (e.message || 'Unknown error'));
+    });
+}
+</script>
+
+</body>
+</html>

@@ -519,6 +519,122 @@ textarea.fi{resize:vertical;min-height:80px;}
           <div class="field" style="margin-bottom:4px;"><label>Description</label><input class="fi" id="sm-step4-desc" type="text" value="Monthly reporting, optimization, and scaling your results month over month."></div>
         </div>
 
+        <!-- ── FEATURES & ADD-ONS ── -->
+        <div style="margin-top:28px;margin-bottom:20px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+          <div style="font-size:.7rem;font-weight:700;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Features &amp; Add-Ons</div>
+
+          <!-- Testimonials -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Testimonials</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Paste real reviews — Claude will weave them into your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleTesti()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-testi-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-testi-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sm-testi-feature-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;margin-bottom:8px;">
+              <div style="font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;">Testimonial 1</div>
+              <div class="field"><label>Quote</label><textarea class="fi" id="sm-ftesti1-quote" placeholder="What your client said..."></textarea></div>
+              <div class="field-grid">
+                <div class="field"><label>Name</label><input class="fi" id="sm-ftesti1-name" type="text" placeholder="Jane Smith"></div>
+                <div class="field"><label>Company / Context</label><input class="fi" id="sm-ftesti1-ctx" type="text" placeholder="Acme Co."></div>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;margin-bottom:8px;">
+              <div style="font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;">Testimonial 2</div>
+              <div class="field"><label>Quote</label><textarea class="fi" id="sm-ftesti2-quote" placeholder="What your client said..."></textarea></div>
+              <div class="field-grid">
+                <div class="field"><label>Name</label><input class="fi" id="sm-ftesti2-name" type="text" placeholder="John Doe"></div>
+                <div class="field"><label>Company / Context</label><input class="fi" id="sm-ftesti2-ctx" type="text" placeholder="Beta Brand"></div>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;">
+              <div style="font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;">Testimonial 3</div>
+              <div class="field"><label>Quote</label><textarea class="fi" id="sm-ftesti3-quote" placeholder="What your client said..."></textarea></div>
+              <div class="field-grid">
+                <div class="field"><label>Name</label><input class="fi" id="sm-ftesti3-name" type="text" placeholder="Alex Rivera"></div>
+                <div class="field"><label>Company / Context</label><input class="fi" id="sm-ftesti3-ctx" type="text" placeholder="Gamma Group"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Generator -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">FAQ Generator</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Claude writes 8 FAQs for your business — edit and save in the tool</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleFAQ()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-faq-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-faq-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sm-faq-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Claude generates 8 tailored FAQs for your business — open the tool to review and save them before building your site.</div>
+            <button onclick="smOpenFAQTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">Open FAQ Generator</button>
+          </div>
+
+          <!-- Calendly Booking -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Calendly Booking</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed your booking calendar directly on your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleCal()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-cal-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-cal-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sm-cal-wrap" style="display:none;padding:12px 0 4px;">
+            <div class="field"><label>Calendly URL</label><input class="fi" id="sm-calendly-url" type="text" placeholder="calendly.com/yourname"></div>
+          </div>
+
+          <!-- Google Form / Intake Form -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Google Form / Intake Form</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed a Google Form for intake, applications, or inquiries</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleForm()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-form-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-form-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sm-form-wrap" style="display:none;padding:12px 0 4px;">
+            <div class="field"><label>Google Form URL</label><input class="fi" id="sm-google-form-url" type="text" placeholder="docs.google.com/forms/..."></div>
+          </div>
+
+          <!-- SMS Lead Alerts -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">SMS Lead Alerts</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Get an instant text when someone fills out your contact form</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="smToggleSMS()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="sm-sms-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="sm-sms-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sm-sms-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your phone number and message template in the SMS tool — it saves automatically and activates when your site goes live.</div>
+            <button onclick="smOpenSMSTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">Configure SMS</button>
+          </div>
+
+        </div>
+
         <!-- ── REVENUE BOOSTER ── -->
         <div style="margin-top:28px;padding:16px;background:rgba(200,224,0,0.06);border:1.5px solid rgba(200,224,0,0.22);border-radius:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
@@ -743,6 +859,14 @@ function smFetchRevBooster() {
 }
 
 var _smRBOn = false;
+var _smTestiOn = false;
+var _smFAQOn   = false;
+var _smCalOn   = false;
+var _smFormOn  = false;
+var _smSMSOn   = false;
+var _smFAQConfig = null;
+var _smSMSConfig = null;
+
 function smToggleRevBooster() {
   _smRBOn = !_smRBOn;
   var wrap  = document.getElementById('sm-rb-wrap');
@@ -758,6 +882,99 @@ function smOpenRevBooster() {
   var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
   var url = 'calculator.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : '');
   window.open(url, '_blank');
+}
+
+function smToggleTesti() {
+  _smTestiOn = !_smTestiOn;
+  var wrap  = document.getElementById('sm-testi-feature-wrap');
+  var track = document.getElementById('sm-testi-track');
+  var thumb = document.getElementById('sm-testi-thumb');
+  if (wrap)  wrap.style.display  = _smTestiOn ? 'block' : 'none';
+  if (track) track.style.background = _smTestiOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smTestiOn ? '21px' : '3px';
+}
+function smToggleFAQ() {
+  _smFAQOn = !_smFAQOn;
+  var wrap  = document.getElementById('sm-faq-wrap');
+  var track = document.getElementById('sm-faq-track');
+  var thumb = document.getElementById('sm-faq-thumb');
+  if (wrap)  wrap.style.display  = _smFAQOn ? 'block' : 'none';
+  if (track) track.style.background = _smFAQOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smFAQOn ? '21px' : '3px';
+  if (_smFAQOn) smFetchFAQ();
+}
+function smToggleCal() {
+  _smCalOn = !_smCalOn;
+  var wrap  = document.getElementById('sm-cal-wrap');
+  var track = document.getElementById('sm-cal-track');
+  var thumb = document.getElementById('sm-cal-thumb');
+  if (wrap)  wrap.style.display  = _smCalOn ? 'block' : 'none';
+  if (track) track.style.background = _smCalOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smCalOn ? '21px' : '3px';
+}
+function smToggleForm() {
+  _smFormOn = !_smFormOn;
+  var wrap  = document.getElementById('sm-form-wrap');
+  var track = document.getElementById('sm-form-track');
+  var thumb = document.getElementById('sm-form-thumb');
+  if (wrap)  wrap.style.display  = _smFormOn ? 'block' : 'none';
+  if (track) track.style.background = _smFormOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smFormOn ? '21px' : '3px';
+}
+function smToggleSMS() {
+  _smSMSOn = !_smSMSOn;
+  var wrap  = document.getElementById('sm-sms-wrap');
+  var track = document.getElementById('sm-sms-track');
+  var thumb = document.getElementById('sm-sms-thumb');
+  if (wrap)  wrap.style.display  = _smSMSOn ? 'block' : 'none';
+  if (track) track.style.background = _smSMSOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left    = _smSMSOn ? '21px' : '3px';
+  if (_smSMSOn) smFetchSMS();
+}
+function smOpenFAQTool() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  window.open('faq-tool.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : ''), '_blank');
+}
+function smOpenSMSTool() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  window.open('sms-tool.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : ''), '_blank');
+}
+function smFetchFAQ() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  if (!bpId) return;
+  var sb = smGetSupabase();
+  if (!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id', bpId).eq('tool_type', 'faq').maybeSingle()
+    .then(function(res) { if (res.data && res.data.config) _smFAQConfig = res.data.config; })
+    .catch(function() {});
+}
+function smFetchSMS() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  if (!bpId) return;
+  var sb = smGetSupabase();
+  if (!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id', bpId).eq('tool_type', 'sms').maybeSingle()
+    .then(function(res) { if (res.data && res.data.config) _smSMSConfig = res.data.config; })
+    .catch(function() {});
+}
+function smBuildFAQSection(faqs) {
+  if (!faqs || !faqs.length) return '';
+  var html = '<section style="padding:80px 40px;background:#f9f9f9;">'
+    + '<div style="max-width:800px;margin:0 auto;">'
+    + '<p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:12px;">FAQ</p>'
+    + '<h2 style="font-family:serif;font-size:2.2rem;margin-bottom:40px;color:#1a1a1a;">Frequently Asked Questions</h2>'
+    + '<div id="builtsy-faq">';
+  faqs.forEach(function(faq, i) {
+    html += '<div style="border-bottom:1px solid #e5e5e5;padding:20px 0;">'
+      + '<div onclick="var a=document.getElementById(\'faq-a-' + i + '\');var arr=document.getElementById(\'faq-arr-' + i + '\');a.style.display=a.style.display===\'none\'?\'block\':\'none\';arr.style.transform=a.style.display===\'block\'?\'rotate(180deg)\':\'rotate(0deg)\';" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:1.05rem;color:#1a1a1a;">'
+      + '<span>' + faq.q + '</span>'
+      + '<span id="faq-arr-' + i + '" style="transition:transform .2s;font-size:1.2rem;color:#888;">&#8964;</span>'
+      + '</div>'
+      + '<div id="faq-a-' + i + '" style="display:none;margin-top:12px;color:#555;line-height:1.7;font-size:.95rem;">' + faq.a + '</div>'
+      + '</div>';
+  });
+  html += '</div></div></section>';
+  return html;
 }
 
 function smBuildRBSection(config) {
@@ -1165,7 +1382,22 @@ function smCollect() {
     step3Title: v('sm-step3-title'), step3Desc: v('sm-step3-desc'),
     step4Title: v('sm-step4-title'), step4Desc: v('sm-step4-desc'),
     paletteCSS:   _smSelectedPalette,
-    paletteName:  _smSelectedPaletteName
+    paletteName:  _smSelectedPaletteName,
+    // Testimonials feature
+    testiFeatureOn: _smTestiOn ? 'yes' : '',
+    ftesti1Quote: _smTestiOn ? v('sm-ftesti1-quote') : '',
+    ftesti1Name:  _smTestiOn ? v('sm-ftesti1-name')  : '',
+    ftesti1Ctx:   _smTestiOn ? v('sm-ftesti1-ctx')   : '',
+    ftesti2Quote: _smTestiOn ? v('sm-ftesti2-quote') : '',
+    ftesti2Name:  _smTestiOn ? v('sm-ftesti2-name')  : '',
+    ftesti2Ctx:   _smTestiOn ? v('sm-ftesti2-ctx')   : '',
+    ftesti3Quote: _smTestiOn ? v('sm-ftesti3-quote') : '',
+    ftesti3Name:  _smTestiOn ? v('sm-ftesti3-name')  : '',
+    ftesti3Ctx:   _smTestiOn ? v('sm-ftesti3-ctx')   : '',
+    // Calendly
+    calendlyUrl: _smCalOn ? (v('sm-calendly-url') || '') : '',
+    // Google Form
+    googleFormUrl: _smFormOn ? (v('sm-google-form-url') || '') : ''
   };
 }
 
@@ -1217,6 +1449,48 @@ function smInjectAssets(html) {
         html = html.replace('</body>', rbSection + '\n</body>');
       }
     }
+  }
+
+  // Inject FAQ section before footer (if enabled and config loaded)
+  if (_smFAQOn && _smFAQConfig && _smFAQConfig.faqs && _smFAQConfig.faqs.length) {
+    var faqHtml = smBuildFAQSection(_smFAQConfig.faqs);
+    if (faqHtml) html = html.replace('<footer', faqHtml + '\n<footer');
+  }
+
+  // Inject Calendly embed before footer
+  if (_smCalOn) {
+    var calUrl = (document.getElementById('sm-calendly-url') || {}).value || '';
+    if (calUrl) {
+      if (calUrl.indexOf('http') !== 0) calUrl = 'https://' + calUrl;
+      var calEmbed = '<section style="padding:60px 40px;text-align:center;background:#fafafa;">'
+        + '<h2 style="font-family:sans-serif;margin-bottom:24px;">Book a Time</h2>'
+        + '<iframe src="' + calUrl + '" style="width:100%;min-width:320px;height:700px;border:none;border-radius:12px;" frameborder="0"></iframe>'
+        + '</section>';
+      html = html.replace('<footer', calEmbed + '\n<footer');
+    }
+  }
+
+  // Inject Google Form embed before footer
+  if (_smFormOn) {
+    var gfUrl = (document.getElementById('sm-google-form-url') || {}).value || '';
+    if (gfUrl) {
+      var gfEmbed = '<section style="padding:60px 40px;text-align:center;background:#fff;">'
+        + '<h2 style="font-family:sans-serif;margin-bottom:24px;">Get in Touch</h2>'
+        + '<iframe src="' + gfUrl + '" style="width:100%;max-width:700px;height:800px;border:none;border-radius:12px;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>'
+        + '</section>';
+      html = html.replace('<footer', gfEmbed + '\n<footer');
+    }
+  }
+
+  // Inject SMS hidden fields into contact form
+  if (_smSMSOn && _smSMSConfig && _smSMSConfig.phone) {
+    var smsFields = '<input type="hidden" name="_smsTo" value="' + _smSMSConfig.phone + '">'
+      + '<input type="hidden" name="_smsTpl" value="' + (_smSMSConfig.messageTemplate || '').replace(/"/g, '&quot;') + '">';
+    // Change form action to Railway contact-notify endpoint
+    html = html.replace('<form ', '<form action="https://builtsy-api-production.up.railway.app/contact-notify" method="POST" ');
+    html = html.replace('data-netlify="true"', '');
+    // Inject hidden fields after first <form tag
+    html = html.replace(/(<form[^>]*>)/, '$1\n' + smsFields);
   }
 
   // Inject "Made with love" credit bar before </body>
