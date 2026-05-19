@@ -687,6 +687,7 @@ var _smPhotos = {};
 // STATE
 // ══════════════════════════════════════════════
 var _smHTML = '';
+var _smLastFields = {};
 var _smPopularTier = 2;
 var _smGenMsgs = [
   'Reading your business info…',
@@ -1101,6 +1102,30 @@ function smInjectAssets(html) {
       }
     }
   }
+
+  // Inject "Made with love" credit bar before </body>
+  var bizName = (_smLastFields.businessName || _smLastFields.ownerName || 'You').trim();
+  var creditBar = '<div id="builtsy-credit" style="text-align:center;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#999;letter-spacing:0.02em;background:transparent;">'
+    + 'Made with love for ' + bizName + ' &nbsp;&middot;&nbsp; '
+    + 'Built<span style="color:#ee70bc;font-weight:700;">sy</span>'
+    + '<span style="color:#C8E000;font-weight:700;">.</span>'
+    + '</div>';
+  html = html.replace('</body>', creditBar + '\n</body>');
+
+  // Inject GDPR/CCPA cookie consent banner before </body>
+  var cookieBanner = '<div id="builtsy-cookie" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a1a1a;color:#f5f5f5;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:sans-serif;font-size:14px;line-height:1.5;">'
+    + '<span>We use cookies to improve your experience and analyze traffic. By continuing, you agree to our '
+    + '<a href="/privacy" style="color:#ee70bc;text-decoration:underline;">Privacy Policy</a>.</span>'
+    + '<div style="display:flex;gap:10px;flex-shrink:0;">'
+    + '<button onclick="document.getElementById(\'builtsy-cookie\').style.display=\'none\';try{localStorage.setItem(\'builtsy-cookie-ok\',\'1\')}catch(e){}" style="background:#ee70bc;color:#fff;border:none;border-radius:6px;padding:9px 22px;font-size:14px;font-weight:700;cursor:pointer;">Accept</button>'
+    + '<button onclick="document.getElementById(\'builtsy-cookie\').style.display=\'none\';try{localStorage.setItem(\'builtsy-cookie-ok\',\'declined\')}catch(e){}" style="background:transparent;color:#aaa;border:1px solid #555;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer;">Decline</button>'
+    + '</div>'
+    + '</div>'
+    + '<script>'
+    + '(function(){try{if(!localStorage.getItem("builtsy-cookie-ok")){var b=document.getElementById("builtsy-cookie");if(b)b.style.display="flex";}}catch(e){}})();'
+    + '<\/script>';
+  html = html.replace('</body>', cookieBanner + '\n</body>');
+
   return html;
 }
 
@@ -1109,6 +1134,7 @@ function smInjectAssets(html) {
 // ══════════════════════════════════════════════
 function smGenerate() {
   var fields = smCollect();
+  _smLastFields = fields;
   var overlay = document.getElementById('sm-overlay');
   if (overlay) overlay.className = 'gen-overlay active';
   _smMsgIdx = 0;
@@ -1258,37 +1284,83 @@ function smRevise() {
   if (drawer) drawer.className = '';
   var overlay = document.getElementById('sm-overlay');
   if (overlay) overlay.className = 'gen-overlay active';
+  _smMsgIdx = 0;
+  _smProgress = 0;
   var msgEl = document.getElementById('sm-gen-msg');
+  var barEl = document.getElementById('sm-progress-fill');
   if (msgEl) msgEl.textContent = 'Applying your changes…';
+  if (barEl) barEl.style.width = '0%';
 
-  var prompt = 'You previously generated this HTML:\n\n' + _smHTML
-    + '\n\n--- REVISION ---\nMake this change: ' + note.trim()
-    + '\nReturn ONLY the complete revised HTML. No markdown, no explanation.';
+  _smMsgInterval = setInterval(function() {
+    _smMsgIdx = (_smMsgIdx + 1) % _smGenMsgs.length;
+    var el = document.getElementById('sm-gen-msg');
+    if (el) el.textContent = _smGenMsgs[_smMsgIdx];
+  }, 5000);
 
-  fetch(RAILWAY_URL + '/generate', {
+  _smProgressInterval = setInterval(function() {
+    _smProgress = Math.min(_smProgress + 0.8, 92);
+    var bar = document.getElementById('sm-progress-fill');
+    if (bar) bar.style.width = _smProgress + '%';
+  }, 400);
+
+  // Build revised fields: clone last fields and append revision note
+  var revisedFields = {};
+  for (var k in _smLastFields) { revisedFields[k] = _smLastFields[k]; }
+  revisedFields['_revisionNote'] = note.trim();
+
+  fetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt })
+    body: JSON.stringify({
+      templateType: _smSelectedTemplate,
+      niche: 'social media manager',
+      fields: revisedFields
+    })
   })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    var overlay2 = document.getElementById('sm-overlay');
-    if (overlay2) overlay2.className = 'gen-overlay';
-    var html = (data.html || '').replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-    if (html && html.length > 200) {
-      var inp = document.getElementById('sm-revise-input');
-      if (inp) inp.value = '';
-      html = smInjectAssets(html);
-      _smHTML = html;
-      smShowOutput(html);
-    } else {
-      smShowError('Revision returned empty. Please try again.');
+  .then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function pumpRevise() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              smFinishGenerate();
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { smFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (html.length < 200) { smFinishError('Revision returned empty content. Please try again.'); return; }
+                html = smInjectAssets(html);
+                _smHTML = html;
+                var inp = document.getElementById('sm-revise-input');
+                if (inp) inp.value = '';
+                smFinishGenerate();
+                smShowOutput(html);
+                return;
+              }
+            } catch(e) {}
+          }
+        }
+        return pumpRevise();
+      });
     }
+    return pumpRevise();
   })
   .catch(function(err) {
-    var overlay3 = document.getElementById('sm-overlay');
-    if (overlay3) overlay3.className = 'gen-overlay';
-    smShowError('Revision error: ' + err.message);
+    smFinishError('Revision error: ' + err.message);
   });
 }
 

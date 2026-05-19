@@ -223,6 +223,11 @@ app.post('/generate-template-universal', async function(req, res) {
       return k + ': ' + fields[k];
     }).join('\n');
 
+    var revisionNote = fields['_revisionNote'] || '';
+    var revisionLine = revisionNote
+      ? '\nREVISION INSTRUCTION — apply this specific change on top of the content replacements:\n' + revisionNote + '\n'
+      : '';
+
     var prompt = 'You are filling in a pre-designed HTML template for a ' + niche + ' with their real business content.\n\n'
       + 'CRITICAL RULES — read carefully:\n'
       + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML whatsoever\n'
@@ -234,9 +239,29 @@ app.post('/generate-template-universal', async function(req, res) {
       + '- Portfolio cards — replace client names and service lists with the user\'s real clients/services\n'
       + '- Pricing tiers — use the user\'s tier names, prices, and descriptions; mark the popular tier appropriately\n'
       + '- Process steps — replace with the user\'s step titles and descriptions\n'
+      + '- NEVER use emoji anywhere in the output — not in text, headings, buttons, labels, or anywhere else\n'
       + '- If a field was left blank, use a sensible professional default that fits the ' + niche + ' industry\n'
       + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
-      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
+      + 'SEO & TECHNICAL REQUIREMENTS — add these inside <head> if not already present:\n'
+      + '- A unique, keyword-rich <title> tag (business name + primary service + city, under 60 chars)\n'
+      + '- <meta name="description"> — compelling 150-160 char description with primary keyword\n'
+      + '- <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">\n'
+      + '- <meta name="robots" content="GPTBot: allow, ClaudeBot: allow, PerplexityBot: allow, anthropic-ai: allow, Bytespider: allow"> (AI discoverability)\n'
+      + '- Open Graph tags: og:title, og:description, og:type (website), og:locale (en_US)\n'
+      + '- Twitter card tags: twitter:card (summary_large_image), twitter:title, twitter:description\n'
+      + '- <link rel="canonical" href="#"> (placeholder)\n\n'
+      + 'JSON-LD SCHEMA — inject a <script type="application/ld+json"> block before </body> with:\n'
+      + '- @type: LocalBusiness (or ProfessionalService if more appropriate)\n'
+      + '- name, description, url, telephone (if provided), email, address with city/region\n'
+      + '- priceRange (derive from pricing tiers), currenciesAccepted: "USD"\n'
+      + '- sameAs array with the social media URLs provided\n'
+      + '- Also include a WebSite schema with name and url\n\n'
+      + 'ACCESSIBILITY — ensure:\n'
+      + '- All img tags have descriptive alt attributes\n'
+      + '- Interactive elements are keyboard-accessible (already in template structure — preserve it)\n'
+      + '- Color contrast is maintained (do not add inline color overrides that could reduce contrast)\n\n'
+      + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n'
+      + revisionLine + '\n'
       + 'TEMPLATE TO FILL IN:\n' + template;
 
     // Stream response — templates can be large
