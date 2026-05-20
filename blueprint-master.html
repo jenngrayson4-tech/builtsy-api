@@ -76,6 +76,13 @@ textarea.fi{resize:vertical;min-height:80px;}
 .tpl-card-meta{flex:1;}
 .tpl-card-name{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
 .tpl-card-vibe{font-size:.72rem;color:rgba(255,255,255,0.4);}
+/* Template category filter pills */
+.tpl-filter-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.tpl-filter-pill{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:100px;padding:5px 13px;font-size:.73rem;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.tpl-filter-pill:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);}
+.tpl-filter-pill.active{background:rgba(67,97,238,0.15);border-color:var(--builtsy-blue);color:white;}
+.tpl-filter-pill.ai-pick{background:rgba(200,224,0,0.08);border-color:rgba(200,224,0,0.3);color:var(--lime);}
+.tpl-filter-pill.ai-pick.active{background:rgba(200,224,0,0.15);border-color:var(--lime);}
 
 /* ── CARE TYPE PILLS ── */
 .care-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
@@ -242,15 +249,77 @@ textarea.fi{resize:vertical;min-height:80px;}
 .burst-trigger-check:hover{border-color:rgba(255,255,255,0.2);}
 .burst-trigger-check input{accent-color:var(--builtsy-blue);width:15px;height:15px;}
 .burst-trigger-check span{font-size:.75rem;font-weight:600;color:rgba(255,255,255,0.7);}
+
+/* ── WELCOME FULLSCREEN (Step 1) ── */
+#ms-welcome{display:none;position:fixed;inset:0;background:#0D1221;z-index:300;overflow-y:auto;}
+body.ms-s1 #ms-welcome{display:flex;flex-direction:column;}
+body.ms-s1 .app-shell{display:none;}
+body.ms-s1 .topnav{display:none;}
+/* centered content area */
+.ms-welcome-body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px 64px;}
+.ms-welcome-inner{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+/* eyebrow */
+.ms-welcome-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;display:inline-block;margin-bottom:20px;background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);padding:5px 14px;border-radius:100px;}
+/* headline */
+.ms-welcome-h1{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;color:white;line-height:1.02;letter-spacing:-0.025em;margin-bottom:18px;}
+.ms-welcome-h1 span{color:var(--lime);font-style:italic;}
+/* subtitle */
+.ms-welcome-sub{color:rgba(255,255,255,0.38);font-size:.9rem;line-height:1.75;margin-bottom:44px;max-width:420px;}
+/* fields wrapper */
+.ms-welcome-fields{width:100%;text-align:left;}
+.ms-welcome-fields .field{margin-bottom:13px;}
+.ms-welcome-fields .fi{background:rgba(255,255,255,0.06);font-size:.95rem;}
+/* CTA */
+.ms-welcome-cta{width:100%;background:var(--lime);color:#0D1221;border:none;border-radius:12px;padding:17px;font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.02em;transition:all .2s;margin-top:10px;}
+.ms-welcome-cta:hover{background:#cef000;transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,224,0,0.25);}
+.ms-welcome-cta:active{transform:translateY(0);}
+.ms-welcome-footnote{text-align:center;font-size:.63rem;color:rgba(255,255,255,0.15);margin-top:16px;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+@media(max-width:600px){.ms-welcome-h1{font-size:2.8rem;}.ms-welcome-body{padding:32px 20px 48px;}}
 </style>
 </head>
-<body>
+<body class="ms-s1">
 
 <div class="topnav">
   <a href="dashboard.html" class="logo-text">builtsy</a>
-  <span class="tn-tag">class="tn-tag">&#9889; Template#9889; Universal</span>
+  <span class="tn-tag" id="ms-tn-tag">&#9889; Universal Blueprint</span>
   <div class="tn-right">
     <button class="btn-top" onclick="msGoStep(8)">&#9889; Generate</button>
+  </div>
+</div>
+
+<!-- ══ FULL-PAGE WELCOME (Step 1) ══ -->
+<div id="ms-welcome">
+  <div class="ms-welcome-body">
+    <div class="ms-welcome-inner">
+
+      <span class="ms-welcome-eyebrow">✦ Welcome to Builtsy</span>
+
+      <h1 class="ms-welcome-h1">Your site.<br><span>Built in minutes.</span></h1>
+
+      <p class="ms-welcome-sub">Tell us what you do — Builtsy AI personalizes your templates, copy, and suggestions. Anything you skip, we write for you.</p>
+
+      <div class="ms-welcome-fields">
+        <div class="field">
+          <label>Your Name</label>
+          <input class="fi" id="ms-owner-name" type="text" placeholder="Sophie Lane" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>Business / Brand Name <span class="opt">or just your name</span></label>
+          <input class="fi" id="ms-biz-name" type="text" placeholder="e.g. Jennifer Lane Studio">
+        </div>
+        <div class="field">
+          <label>What do you do? <span class="opt">in your own words</span></label>
+          <textarea class="fi" id="ms-description" placeholder="Tell us what you do, who you help, and where you're based. The more detail, the better Builtsy AI can personalize your site." style="min-height:110px;"></textarea>
+        </div>
+        <div id="ms-detecting" style="display:none;flex-direction:column;align-items:center;gap:10px;padding:10px 0;">
+          <div style="width:22px;height:22px;border:2px solid rgba(200,224,0,0.15);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+          <p style="font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,0.35);letter-spacing:.06em;">Builtsy is personalizing your experience...</p>
+        </div>
+        <button class="ms-welcome-cta" id="ms-step1-btn" onclick="msStep1Next()">Get Started &rarr;</button>
+        <p class="ms-welcome-footnote">Takes about 3 minutes &middot; Nothing is required &middot; No account needed to start</p>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -284,29 +353,10 @@ textarea.fi{resize:vertical;min-height:80px;}
         <span style="font-size:.78rem;color:rgba(255,255,255,0.65);line-height:1.55;">Fill in what you know — <strong style="color:var(--lime);">Builtsy AI writes the rest.</strong> Nothing is required.</span>
       </div>
 
-      <!-- ══ STEP 1 ══ -->
+      <!-- ══ STEP 1 (placeholder — real Step 1 is the full-page welcome screen) ══ -->
       <div class="step-panel active" id="ms-step-1">
-        <p class="step-label-top">Step 1 of 8</p>
-        <h2 class="step-title-main">Let's start with you.</h2>
-        <p class="step-sub-main">Tell us about yourself and what you do. Builtsy personalizes everything from here.</p>
-        <div class="field">
-          <label>Your Name</label>
-          <input class="fi" id="ms-owner-name" type="text" placeholder="Sophie Lane">
-        </div>
-        <div class="field">
-          <label>Business / Brand Name <span class="opt">or just your name</span></label>
-          <input class="fi" id="ms-biz-name" type="text" placeholder="Sophie Lane Childcare">
-        </div>
-        <div class="field">
-          <label>What do you do? <span class="opt">in your own words</span></label>
-          <textarea class="fi" id="ms-description" placeholder="I provide in-home childcare for families in Austin, TX. I specialize in newborns and toddlers and have 8 years of experience..." style="min-height:90px;"></textarea>
-        </div>
-        <div id="ms-detecting" style="display:none;flex-direction:column;align-items:center;gap:10px;padding:10px 0;">
-          <div style="width:22px;height:22px;border:2px solid rgba(200,224,0,0.15);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-          <p style="font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,0.35);letter-spacing:.06em;">Builtsy is personalizing your experience...</p>
-        </div>
-        <div class="step-nav">
-          <button class="btn-next" id="ms-step1-btn" onclick="msStep1Next()">Continue &#8594;</button>
+        <div class="step-nav" style="margin-top:0;">
+          <button class="btn-next" onclick="document.body.classList.add('ms-s1')">&#8592; Back to Start</button>
         </div>
       </div>
 
@@ -315,6 +365,32 @@ textarea.fi{resize:vertical;min-height:80px;}
         <p class="step-label-top">Step 2 of 8</p>
         <h2 class="step-title-main">Choose Your Template</h2>
         <p class="step-sub-main" id="ms-tpl-sub">Browse all designs &mdash; your best matches are highlighted.</p>
+
+        <!-- AI Design option -->
+        <div id="ms-ai-tpl-card" onclick="msSelectTemplate('ai_design')" style="border:2px dashed rgba(200,224,0,0.3);border-radius:14px;margin-bottom:12px;cursor:pointer;padding:16px 14px;background:rgba(200,224,0,0.04);display:flex;align-items:center;gap:14px;transition:all .2s;">
+          <div style="font-size:1.5rem;flex-shrink:0;">✦</div>
+          <div>
+            <div style="font-weight:700;font-size:.9rem;color:var(--lime);margin-bottom:3px;">Let Builtsy AI Design It</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,0.4);line-height:1.5;">Based on what you told us, Builtsy picks and customizes the perfect template for you.</div>
+          </div>
+          <div class="tpl-card-check" id="ms-tpl-check-ai" style="margin-left:auto;flex-shrink:0;"></div>
+        </div>
+
+        <!-- Category filter pills -->
+        <div class="tpl-filter-row" id="ms-tpl-filters">
+          <div class="tpl-filter-pill active" data-filter="all" onclick="msFilterTemplates('all')">All</div>
+          <div class="tpl-filter-pill" data-filter="childcare" onclick="msFilterTemplates('childcare')">🧸 Childcare</div>
+          <div class="tpl-filter-pill" data-filter="social" onclick="msFilterTemplates('social')">📱 Social Media</div>
+          <div class="tpl-filter-pill" data-filter="lessons" onclick="msFilterTemplates('lessons')">🎓 Lessons</div>
+          <div class="tpl-filter-pill" data-filter="wellness" onclick="msFilterTemplates('wellness')">🌿 Wellness</div>
+          <div class="tpl-filter-pill" data-filter="beauty" onclick="msFilterTemplates('beauty')">✨ Beauty</div>
+          <div class="tpl-filter-pill" data-filter="fitness" onclick="msFilterTemplates('fitness')">💪 Fitness</div>
+          <div class="tpl-filter-pill" data-filter="business" onclick="msFilterTemplates('business')">💼 Business</div>
+          <div class="tpl-filter-pill" data-filter="creative" onclick="msFilterTemplates('creative')">🎨 Creative</div>
+          <div class="tpl-filter-pill" data-filter="trades" onclick="msFilterTemplates('trades')">🔧 Trades</div>
+          <div class="tpl-filter-pill" data-filter="food" onclick="msFilterTemplates('food')">🍽️ Food</div>
+        </div>
+
         <div id="ms-tpl-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
         <div class="step-nav">
           <button class="btn-back" onclick="msGoStep(1)">&#8592; Back</button>
@@ -328,13 +404,14 @@ textarea.fi{resize:vertical;min-height:80px;}
         <h2 class="step-title-main">Your Specialty &amp; Colors</h2>
         <p class="step-sub-main">Tell us your niche, then pick a palette. Changes show live in the preview.</p>
 
-        <span class="sl">Your Specialty</span>
-        <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-bottom:10px;line-height:1.5;">Select all that apply &mdash; helps Builtsy personalize your copy.</p>
-        <div class="care-pills" id="ms-specialty-pills">
-          <!-- populated by AI after step 1 -->
+        <div id="ms-specialty-wrap" style="display:none;">
+          <span class="sl">Your Specialty</span>
+          <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-bottom:10px;line-height:1.5;">Select all that apply &mdash; helps Builtsy personalize your copy.</p>
+          <div class="care-pills" id="ms-specialty-pills"></div>
+          <div style="margin-bottom:16px;"></div>
         </div>
 
-        <span class="sl" style="margin-top:24px;">Choose Your Palette</span>
+        <span class="sl">Choose Your Palette</span>
         <div class="pal-tabs">
           <button class="pal-tab active" id="ms-tab-light" onclick="msSelectPaletteTab('light')">Light</button>
           <button class="pal-tab" id="ms-tab-dark" onclick="msSelectPaletteTab('dark')">Dark</button>
@@ -356,7 +433,7 @@ textarea.fi{resize:vertical;min-height:80px;}
         <p class="step-sub-main">These go in your nav, hero, and footer. Keep them sharp.</p>
         <div class="field">
           <label>Tagline</label>
-          <input class="fi" id="ms-tagline" type="text" placeholder="Trusted In-Home Care for Growing Families">
+          <input class="fi" id="ms-tagline" type="text" placeholder="e.g. Bold, punchy phrase about what you do">
           <div class="chip-hint">&#9679; Suggestions — click to fill</div>
           <div class="chips-row" id="ms-chips-tagline"></div>
         </div>
@@ -393,7 +470,7 @@ textarea.fi{resize:vertical;min-height:80px;}
         <p class="step-sub-main">The copy that sells you. Short, honest, and warm.</p>
         <div class="field">
           <label>Hero Headline <span class="opt">5&ndash;8 words, punchy</span></label>
-          <input class="fi" id="ms-hero-headline" type="text" placeholder="e.g. Nurturing Care, Right in Your Home">
+          <input class="fi" id="ms-hero-headline" type="text" placeholder="e.g. Your powerful 5–8 word headline">
           <div class="field-hint">This is the first thing visitors read. Make it count.</div>
           <div class="chip-hint">&#9679; Suggestions — click to fill</div>
           <div class="chips-row" id="ms-chips-headline"></div>
@@ -401,6 +478,8 @@ textarea.fi{resize:vertical;min-height:80px;}
         <div class="field">
           <label>Hero Subheading <span class="opt">2 sentences, who you help</span></label>
           <textarea class="fi" id="ms-hero-sub" placeholder="What you do and who you help — 2 sentences."></textarea>
+          <div class="chip-hint">&#9679; Suggestions — click to fill</div>
+          <div class="chips-row" id="ms-chips-hero-sub"></div>
         </div>
         <div class="field">
           <label>About / Bio <span class="opt">3&ndash;5 sentences, personal story</span></label>
@@ -408,12 +487,12 @@ textarea.fi{resize:vertical;min-height:80px;}
         </div>
         <div class="field">
           <label>Fun Facts / Credential Pills <span class="opt">comma-separated</span></label>
-          <input class="fi" id="ms-fun-facts" type="text" placeholder="e.g. Dog Mom, CPR Certified, 10 Years Experience">
+          <input class="fi" id="ms-fun-facts" type="text" placeholder="e.g. Dog Mom, Award Winner, 10 Years Experience">
           <div class="field-hint">Short pills shown in your about section.</div>
         </div>
         <div class="field">
           <label>Credentials / Certifications <span class="opt">comma-separated</span></label>
-          <input class="fi" id="ms-credentials" type="text" placeholder="e.g. Background Checked, CPR Certified">
+          <input class="fi" id="ms-credentials" type="text" placeholder="e.g. Licensed, Certified, Published, Award Winning">
           <div class="field-hint">Trust signals shown prominently on your site.</div>
           <div class="chip-hint">&#9679; Suggestions — click to add</div>
           <div class="chips-row" id="ms-chips-creds"></div>
@@ -438,9 +517,24 @@ textarea.fi{resize:vertical;min-height:80px;}
               <span class="svc-block-chevron open">&#9662;</span>
             </div>
             <div class="svc-block-body open">
-              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc1-name" type="text" value="In-Home Childcare"></div>
-              <div class="field"><label>Description <span class="opt">1&ndash;2 sentences</span></label><input class="fi" id="ms-svc1-desc" type="text" value="Full-day or part-time in-home care tailored to your child&rsquo;s schedule and developmental needs."></div>
-              <div class="field" style="margin-bottom:4px;"><label>Tags <span class="opt">comma-separated</span></label><input class="fi" id="ms-svc1-tags" type="text" value="Ages 0&ndash;12, Flexible Hours, Loving Care"></div>
+              <div class="field" style="margin-top:11px;">
+                <label>Name</label>
+                <input class="fi" id="ms-svc1-name" type="text" placeholder="e.g. Private Art Lessons">
+                <div class="chip-hint">&#9679; Quick picks — click to fill</div>
+                <div class="chips-row" id="ms-chips-svc1-name"></div>
+              </div>
+              <div class="field">
+                <label>Description <span class="opt">1&ndash;2 sentences</span></label>
+                <input class="fi" id="ms-svc1-desc" type="text" placeholder="Describe what you offer in 1–2 sentences.">
+                <div class="chip-hint">&#9679; AI suggestion — click to use</div>
+                <div class="chips-row" id="ms-chips-svc1-desc"></div>
+              </div>
+              <div class="field" style="margin-bottom:4px;">
+                <label>Tags <span class="opt">comma-separated</span></label>
+                <input class="fi" id="ms-svc1-tags" type="text" placeholder="e.g. Beginners Welcome, All Ages, Online & In-Person">
+                <div class="chip-hint">&#9679; Click to add tags</div>
+                <div class="chips-row" id="ms-chips-svc1-tags"></div>
+              </div>
             </div>
           </div>
           <div class="svc-block">
@@ -449,9 +543,24 @@ textarea.fi{resize:vertical;min-height:80px;}
               <span class="svc-block-chevron">&#9662;</span>
             </div>
             <div class="svc-block-body">
-              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc2-name" type="text" value="After School Care"></div>
-              <div class="field"><label>Description</label><input class="fi" id="ms-svc2-desc" type="text" value="Pick-up, homework help, snacks, and a safe space until you get home."></div>
-              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc2-tags" type="text" value="Homework Help, Pick-Up, Afternoons"></div>
+              <div class="field" style="margin-top:11px;">
+                <label>Name</label>
+                <input class="fi" id="ms-svc2-name" type="text" placeholder="e.g. Group Sessions">
+                <div class="chip-hint">&#9679; Quick picks — click to fill</div>
+                <div class="chips-row" id="ms-chips-svc2-name"></div>
+              </div>
+              <div class="field">
+                <label>Description</label>
+                <input class="fi" id="ms-svc2-desc" type="text" placeholder="Describe this service in 1–2 sentences.">
+                <div class="chip-hint">&#9679; AI suggestion — click to use</div>
+                <div class="chips-row" id="ms-chips-svc2-desc"></div>
+              </div>
+              <div class="field" style="margin-bottom:4px;">
+                <label>Tags</label>
+                <input class="fi" id="ms-svc2-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
+                <div class="chip-hint">&#9679; Click to add tags</div>
+                <div class="chips-row" id="ms-chips-svc2-tags"></div>
+              </div>
             </div>
           </div>
           <div class="svc-block">
@@ -460,9 +569,24 @@ textarea.fi{resize:vertical;min-height:80px;}
               <span class="svc-block-chevron">&#9662;</span>
             </div>
             <div class="svc-block-body">
-              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc3-name" type="text" value="Newborn Care"></div>
-              <div class="field"><label>Description</label><input class="fi" id="ms-svc3-desc" type="text" value="Overnight and daytime newborn support to help you rest, recover, and feel confident as a new parent."></div>
-              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc3-tags" type="text" value="Overnight, Newborn, New Parents"></div>
+              <div class="field" style="margin-top:11px;">
+                <label>Name</label>
+                <input class="fi" id="ms-svc3-name" type="text" placeholder="e.g. Intensive Workshop">
+                <div class="chip-hint">&#9679; Quick picks — click to fill</div>
+                <div class="chips-row" id="ms-chips-svc3-name"></div>
+              </div>
+              <div class="field">
+                <label>Description</label>
+                <input class="fi" id="ms-svc3-desc" type="text" placeholder="Describe this service in 1–2 sentences.">
+                <div class="chip-hint">&#9679; AI suggestion — click to use</div>
+                <div class="chips-row" id="ms-chips-svc3-desc"></div>
+              </div>
+              <div class="field" style="margin-bottom:4px;">
+                <label>Tags</label>
+                <input class="fi" id="ms-svc3-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
+                <div class="chip-hint">&#9679; Click to add tags</div>
+                <div class="chips-row" id="ms-chips-svc3-tags"></div>
+              </div>
             </div>
           </div>
           <div class="svc-block">
@@ -471,9 +595,24 @@ textarea.fi{resize:vertical;min-height:80px;}
               <span class="svc-block-chevron">&#9662;</span>
             </div>
             <div class="svc-block-body">
-              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc4-name" type="text" value="Date Night / Occasional"></div>
-              <div class="field"><label>Description</label><input class="fi" id="ms-svc4-desc" type="text" value="Flexible evening or weekend care with no long-term commitment required."></div>
-              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc4-tags" type="text" value="Evenings, Weekends, No Contract"></div>
+              <div class="field" style="margin-top:11px;">
+                <label>Name</label>
+                <input class="fi" id="ms-svc4-name" type="text" placeholder="e.g. One-on-One Coaching">
+                <div class="chip-hint">&#9679; Quick picks — click to fill</div>
+                <div class="chips-row" id="ms-chips-svc4-name"></div>
+              </div>
+              <div class="field">
+                <label>Description</label>
+                <input class="fi" id="ms-svc4-desc" type="text" placeholder="Describe this service in 1–2 sentences.">
+                <div class="chip-hint">&#9679; AI suggestion — click to use</div>
+                <div class="chips-row" id="ms-chips-svc4-desc"></div>
+              </div>
+              <div class="field" style="margin-bottom:4px;">
+                <label>Tags</label>
+                <input class="fi" id="ms-svc4-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
+                <div class="chip-hint">&#9679; Click to add tags</div>
+                <div class="chips-row" id="ms-chips-svc4-tags"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -512,30 +651,30 @@ textarea.fi{resize:vertical;min-height:80px;}
 
         <div class="price-block" id="ms-price-block-1">
           <div class="price-block-label">Tier 1</div>
-          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="1" onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="1" onchange="msUpdatePopular()"><span>Mark as Most Requested</span></label>
           <div class="field-grid">
-            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate1-name" type="text" value="Occasional / Drop-In"></div>
-            <div class="field"><label>Rate</label><input class="fi" id="ms-rate1-price" type="text" value="$22/hr"></div>
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate1-name" type="text" placeholder="e.g. Starter"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate1-price" type="text" placeholder="e.g. $75/hr"></div>
           </div>
           <div class="field" style="margin-bottom:4px;"><label>Description <span class="opt">1&ndash;2 sentences</span></label><textarea class="fi" id="ms-rate1-desc">Perfect for date nights or one-off coverage with no long-term commitment.</textarea></div>
         </div>
 
         <div class="price-block popular" id="ms-price-block-2">
           <div class="price-block-label">&#9733; Most Requested</div>
-          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="2" checked onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="2" checked onchange="msUpdatePopular()"><span>Mark as Most Requested</span></label>
           <div class="field-grid">
-            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate2-name" type="text" value="Regular Weekly"></div>
-            <div class="field"><label>Rate</label><input class="fi" id="ms-rate2-price" type="text" value="$18/hr"></div>
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate2-name" type="text" placeholder="e.g. Most Popular"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate2-price" type="text" placeholder="e.g. $150/session"></div>
           </div>
           <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="ms-rate2-desc">Consistent weekly schedule with a discounted hourly rate for ongoing families.</textarea></div>
         </div>
 
         <div class="price-block" id="ms-price-block-3">
           <div class="price-block-label">Tier 3</div>
-          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="3" onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="3" onchange="msUpdatePopular()"><span>Mark as Most Requested</span></label>
           <div class="field-grid">
-            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate3-name" type="text" value="Full Time"></div>
-            <div class="field"><label>Rate</label><input class="fi" id="ms-rate3-price" type="text" value="$15/hr"></div>
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate3-name" type="text" placeholder="e.g. VIP Package"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate3-price" type="text" placeholder="e.g. $500/mo"></div>
           </div>
           <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="ms-rate3-desc">Full-time placement with a guaranteed weekly minimum and priority scheduling.</textarea></div>
         </div>
@@ -543,7 +682,7 @@ textarea.fi{resize:vertical;min-height:80px;}
         <span class="sl">Service Area</span>
         <div class="field">
           <label>Neighborhoods / Cities <span class="opt">comma-separated</span></label>
-          <input class="fi" id="ms-service-area" type="text" placeholder="South Congress, Brentwood, Hyde Park, Round Rock">
+          <input class="fi" id="ms-service-area" type="text" placeholder="e.g. Austin, TX or Online Nationwide">
           <div class="field-hint">Shown in your contact and services section.</div>
         </div>
 
@@ -637,7 +776,7 @@ textarea.fi{resize:vertical;min-height:80px;}
         </div>
         <div class="field">
           <label>Availability Note</label>
-          <input class="fi" id="ms-availability" type="text" value="Available Mon&ndash;Fri, flexible weekends">
+          <input class="fi" id="ms-availability" type="text" placeholder="e.g. Mon–Fri, evenings by appointment">
           <div class="field-hint">Shown in your contact section so families know when to reach out.</div>
         </div>
 
@@ -664,7 +803,7 @@ textarea.fi{resize:vertical;min-height:80px;}
               <textarea class="fi" id="ms-ftesti1-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
               <div class="field-grid">
                 <input class="fi" id="ms-ftesti1-name" type="text" placeholder="Reviewer name">
-                <input class="fi" id="ms-ftesti1-ctx" type="text" placeholder="Mom of twins, ages 3 &amp; 5">
+                <input class="fi" id="ms-ftesti1-ctx" type="text" placeholder="e.g. Client since 2022">
               </div>
             </div>
             <div style="margin-bottom:10px;">
@@ -672,7 +811,7 @@ textarea.fi{resize:vertical;min-height:80px;}
               <textarea class="fi" id="ms-ftesti2-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
               <div class="field-grid">
                 <input class="fi" id="ms-ftesti2-name" type="text" placeholder="Reviewer name">
-                <input class="fi" id="ms-ftesti2-ctx" type="text" placeholder="Family of 4, kids ages 5 &amp; 8">
+                <input class="fi" id="ms-ftesti2-ctx" type="text" placeholder="e.g. Small business owner">
               </div>
             </div>
             <div style="margin-bottom:4px;">
@@ -680,7 +819,7 @@ textarea.fi{resize:vertical;min-height:80px;}
               <textarea class="fi" id="ms-ftesti3-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
               <div class="field-grid">
                 <input class="fi" id="ms-ftesti3-name" type="text" placeholder="Reviewer name">
-                <input class="fi" id="ms-ftesti3-ctx" type="text" placeholder="Parents of a toddler, 18 months">
+                <input class="fi" id="ms-ftesti3-ctx" type="text" placeholder="e.g. Returning client, 3 years">
               </div>
             </div>
           </div>
@@ -845,12 +984,24 @@ textarea.fi{resize:vertical;min-height:80px;}
 // TEMPLATES
 // ══════════════════════════════════════════════
 var _ctTemplates = [
-  { key: 'caretaker_warm',   name: 'Warm',    vibe: 'Terracotta + cream — soft, inviting, trustworthy.',  file: 'caretaker-warm.html' },
-  { key: 'caretaker_bright', name: 'Bright',  vibe: 'Orange + pink — vibrant, energetic, full of life.',  file: 'caretaker-bright.html' },
-  { key: 'caretaker_clean',  name: 'Clean',   vibe: 'Navy + white — polished, professional, credible.',   file: 'caretaker-clean.html' },
-  { key: 'sm_bubbly',        name: 'Bubbly',  vibe: 'Bold & playful — pops off the screen.',              file: 'social-media-bubbly.html' },
-  { key: 'sm_cherry',        name: 'Cherry',  vibe: 'Sleek & dark — editorial and modern.',               file: 'social-media-cherry.html' },
-  { key: 'sm_studio',        name: 'Studio',  vibe: 'Clean & minimal — crisp and professional.',          file: 'social-media-manager-site.html' }
+  // Childcare & Home Care
+  { key: 'caretaker_warm',   name: 'Warm',         vibe: 'Terracotta + cream — soft, inviting, trustworthy.',    file: 'caretaker-warm.html',             category: 'childcare' },
+  { key: 'caretaker_bright', name: 'Bright',        vibe: 'Orange + pink — vibrant, energetic, full of life.',    file: 'caretaker-bright.html',           category: 'childcare' },
+  { key: 'caretaker_clean',  name: 'Clean',         vibe: 'Navy + white — polished, professional, credible.',     file: 'caretaker-clean.html',            category: 'childcare' },
+  // Social Media
+  { key: 'sm_bubbly',        name: 'Bubbly',        vibe: 'Bold & playful — pops off the screen.',                file: 'social-media-bubbly.html',        category: 'social' },
+  { key: 'sm_cherry',        name: 'Cherry',        vibe: 'Sleek & dark — editorial and modern.',                 file: 'social-media-cherry.html',        category: 'social' },
+  { key: 'sm_studio',        name: 'Studio',        vibe: 'Clean & minimal — crisp and professional.',            file: 'social-media-manager-site.html',  category: 'social' },
+  // Wellness
+  { key: 'wellness_ember',   name: 'Ember',         vibe: 'Earthy & sacred — warm, calm, intentional.',           file: 'wellness-ember.html',             category: 'wellness' },
+  // Creative
+  { key: 'creative_studio',  name: 'Studio',        vibe: 'Dark & editorial — luxury, bold, premium.',            file: 'creative-studio.html',            category: 'creative' },
+  { key: 'interior_linen',   name: 'Linen',         vibe: 'Warm & editorial — timeless, refined, airy.',          file: 'interior-linen.html',             category: 'creative' },
+  // Beauty
+  { key: 'beauty_bloom',     name: 'Bloom',         vibe: 'Rose & blush — feminine, elegant, inviting.',          file: 'beauty-bloom.html',               category: 'beauty' },
+  // Business / Coaching
+  { key: 'professional_slate', name: 'Slate',       vibe: 'Clean & professional — trustworthy, modern, sharp.',   file: 'professional-slate.html',         category: 'business' },
+  { key: 'brand_peach',        name: 'Peach',       vibe: 'Bold & retro — bright, fun, personal brand energy.',   file: 'brand-peach.html',                category: 'business' },
 ];
 var _ctSelectedTemplate = 'caretaker_warm';
 var MS_INDUSTRY = null;
@@ -876,11 +1027,15 @@ function msToggleCareType(label, pillId) {
 }
 
 function msBuildNiche() {
-  if (!_ctCareTypes.length) return 'solo caregiver';
-  if (_ctCareTypes.length === 1) return _ctCareTypes[0].toLowerCase() + ' provider';
-  var last = _ctCareTypes[_ctCareTypes.length - 1];
-  var rest = _ctCareTypes.slice(0, -1);
-  return rest.map(function(t) { return t.toLowerCase(); }).join(', ') + ' and ' + last.toLowerCase() + ' provider';
+  // Priority 1: AI-detected industry label from Step 1 detect-industry call
+  if (MS_INDUSTRY && MS_INDUSTRY.industryLabel) return MS_INDUSTRY.industryLabel;
+  // Priority 2: User's own description from Step 1
+  var desc = (document.getElementById('ms-description') || {}).value || '';
+  if (desc.trim()) return desc.trim().substring(0, 200);
+  // Priority 3: Specialty pills selected in Step 3
+  if (_ctCareTypes.length) return _ctCareTypes.join(', ');
+  // Fallback: generic
+  return 'independent professional';
 }
 
 // ══════════════════════════════════════════════
@@ -942,6 +1097,63 @@ var _ctPalettes = {
       { name: 'Slate',     css: '--navy:#2D3748;--navy2:#1A202C;--blue:#4A5568;--blue2:#2D3748;--sky:#EDF2F7;--accent:#718096;', preview: ['#FFFFFF','#2D3748','#4A5568'] }
     ],
     customVars: ['--navy', '--navy2', '--blue', '--blue2', '--sky', '--bg', '--accent']
+  },
+
+  // ── SOCIAL MEDIA: CHERRY ──
+  sm_cherry: {
+    light: [
+      { name: 'Original',   css: '',                                                                                    preview: ['#FAF8F4','#1A3A3A','#E8458A'] },
+      { name: 'Violet',     css: '--accent:#7C3AED;--accent2:#9D5CF6;--dark:#1A0A3A;--dark2:#0F0628;',                 preview: ['#FAF8F4','#1A0A3A','#7C3AED'] },
+      { name: 'Coral',      css: '--accent:#E8603A;--accent2:#FF845A;--dark:#2A1208;--dark2:#1A0A04;',                 preview: ['#FAF8F4','#2A1208','#E8603A'] },
+      { name: 'Teal',       css: '--accent:#0D9488;--accent2:#14B8A6;--dark:#0A1E1C;--dark2:#051210;',                 preview: ['#FAF8F4','#0A1E1C','#0D9488'] }
+    ],
+    dark: [
+      { name: 'Cherry Dark',css: '--bg:#0D0A10;--cream:#1A1020;--cream2:#241530;--dark:#050308;--text:#F5F0F8;--text2:#C09EC8;', preview: ['#0D0A10','#1A3A3A','#E8458A'] },
+      { name: 'Noir',       css: '--bg:#080808;--cream:#111111;--cream2:#1A1A1A;--dark:#020202;--text:#F5F5F5;--text2:#A0A0A0;--accent:#E8458A;', preview: ['#080808','#E8458A','#FAF8F4'] }
+    ],
+    mono: [
+      { name: 'Stone',      css: '--accent:#6B6560;--accent2:#8A8480;--dark:#1A1814;--dark2:#0A0806;',                 preview: ['#FAF8F4','#1A1814','#6B6560'] },
+      { name: 'Blush',      css: '--accent:#C4857A;--accent2:#D4A09A;--dark:#2A1412;--dark2:#1A0A08;',                 preview: ['#FDF8F7','#2A1412','#C4857A'] }
+    ],
+    customVars: ['--accent', '--accent2', '--bg', '--cream', '--cream2', '--dark', '--dark2', '--text']
+  },
+
+  // ── SOCIAL MEDIA: BUBBLY ──
+  sm_bubbly: {
+    light: [
+      { name: 'Original',   css: '',                                                                                    preview: ['#FFFAFA','#1A0A12','#FF1D8C'] },
+      { name: 'Sunshine',   css: '--pink:#F59E0B;--pink2:#FBBF24;--pink-light:#FEF3C7;--dark:#1C1400;--dark2:#2C1F00;', preview: ['#FFFDF0','#1C1400','#F59E0B'] },
+      { name: 'Lavender',   css: '--pink:#7C3AED;--pink2:#9D5CF6;--pink-light:#F5F3FF;--dark:#1A0A3A;--dark2:#120528;', preview: ['#FDFAFF','#1A0A3A','#7C3AED'] },
+      { name: 'Citrus',     css: '--pink:#16A34A;--pink2:#22C55E;--pink-light:#F0FDF4;--dark:#052E16;--dark2:#031B0E;', preview: ['#F8FFF9','#052E16','#16A34A'] }
+    ],
+    dark: [
+      { name: 'Neon',       css: '--bg:#0A0A0F;--cream:#12121F;--dark:#050508;--text:#F0F0FF;--text2:#8080CC;--pink:#FF1D8C;--yellow:#FFE566;', preview: ['#0A0A0F','#FF1D8C','#FFE566'] },
+      { name: 'Midnight Rose', css: '--bg:#0F080F;--cream:#1A101A;--dark:#060306;--text:#FFE8F8;--text2:#CC80CC;--pink:#FF1D8C;', preview: ['#0F080F','#1A101A','#FF1D8C'] }
+    ],
+    mono: [
+      { name: 'Pastel',     css: '--pink:#CC7AAA;--pink2:#DDA0C0;--pink-light:#FDF0F7;--dark:#2A1020;--dark2:#1A0818;', preview: ['#FFFAFA','#2A1020','#CC7AAA'] },
+      { name: 'Carbon',     css: '--pink:#444444;--pink2:#666666;--pink-light:#F5F5F5;--dark:#111111;--dark2:#080808;', preview: ['#FFFAFA','#111111','#444444'] }
+    ],
+    customVars: ['--pink', '--pink2', '--pink-light', '--bg', '--cream', '--dark', '--dark2', '--yellow']
+  },
+
+  // ── SOCIAL MEDIA: STUDIO ──
+  sm_studio: {
+    light: [
+      { name: 'Original',   css: '',                                                                                    preview: ['#FAF8F4','#1A1A1A','#E8458A'] },
+      { name: 'Sage',       css: '--pink:#2D6A4F;--pink-light:#D8F3DC;--pink-pale:#F0FAF2;',                           preview: ['#FAF8F4','#1A1A1A','#2D6A4F'] },
+      { name: 'Gold',       css: '--pink:#B7860B;--pink-light:#FEF3C7;--pink-pale:#FFFBEB;',                           preview: ['#FAF8F4','#1A1A1A','#B7860B'] },
+      { name: 'Sky',        css: '--pink:#0369A1;--pink-light:#E0F2FE;--pink-pale:#F0F9FF;',                           preview: ['#FAF8F4','#1A1A1A','#0369A1'] }
+    ],
+    dark: [
+      { name: 'Ink',        css: '--cream:#0A0A0A;--cream2:#111111;--dark:#000000;--mid:#888888;--light:#AAAAAA;--pink:#E8458A;', preview: ['#0A0A0A','#1A1A1A','#E8458A'] },
+      { name: 'Charcoal',   css: '--cream:#181818;--cream2:#222222;--dark:#0A0A0A;--mid:#909090;--light:#B8B8B8;--pink:#E8458A;', preview: ['#181818','#222222','#E8458A'] }
+    ],
+    mono: [
+      { name: 'Parchment',  css: '--pink:#8B7A5A;--pink-light:#F5EED8;--pink-pale:#FAF5EA;',                          preview: ['#FAF8F4','#1A1A1A','#8B7A5A'] },
+      { name: 'Slate',      css: '--pink:#4A6080;--pink-light:#DCE8F5;--pink-pale:#EEF4FB;',                          preview: ['#FAF8F4','#1A1A1A','#4A6080'] }
+    ],
+    customVars: ['--pink', '--pink-light', '--pink-pale', '--cream', '--cream2', '--dark', '--mid', '--light']
   }
 };
 
@@ -998,7 +1210,7 @@ window._ctRevBoosterConfig = null;
 function msFetchRevBooster() {
   var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
   if (!bpId) return;
-  var sb = ctGetSupabase();
+  var sb = msGetSupabase();
   if (!sb) return;
   sb.from('tool_configs')
     .select('config')
@@ -1033,7 +1245,7 @@ function msToggleFAQ() {
   if(wrap) wrap.style.display=_ctFAQOn?'block':'none';
   if(track) track.style.background=_ctFAQOn?'var(--lime)':'#374151';
   if(thumb) thumb.style.left=_ctFAQOn?'21px':'3px';
-  if(_ctFAQOn) ctFetchFAQ();
+  if(_ctFAQOn) msFetchFAQ();
 }
 function msToggleCal() {
   _ctCalOn = !_ctCalOn;
@@ -1055,7 +1267,7 @@ function msToggleSMS() {
   if(wrap) wrap.style.display=_ctSMSOn?'block':'none';
   if(track) track.style.background=_ctSMSOn?'var(--lime)':'#374151';
   if(thumb) thumb.style.left=_ctSMSOn?'21px':'3px';
-  if(_ctSMSOn) ctFetchSMS();
+  if(_ctSMSOn) msFetchSMS();
 }
 function msOpenFAQTool() {
   var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
@@ -1068,14 +1280,14 @@ function msOpenSMSTool() {
 function msFetchFAQ() {
   var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
   if(!bpId) return;
-  var sb=ctGetSupabase(); if(!sb) return;
+  var sb=msGetSupabase(); if(!sb) return;
   sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','faq').maybeSingle()
     .then(function(res){if(res.data&&res.data.config)_ctFAQConfig=res.data.config;}).catch(function(){});
 }
 function msFetchSMS() {
   var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
   if(!bpId) return;
-  var sb=ctGetSupabase(); if(!sb) return;
+  var sb=msGetSupabase(); if(!sb) return;
   sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','sms').maybeSingle()
     .then(function(res){if(res.data&&res.data.config)_msSMSConfig=res.data.config;}).catch(function(){});
 }
@@ -1106,7 +1318,7 @@ function msToggleRevBooster() {
   if (wrap)  wrap.style.display    = _ctRBOn ? 'block' : 'none';
   if (track) track.style.background = _ctRBOn ? 'var(--lime)' : '#374151';
   if (thumb) thumb.style.left      = _ctRBOn ? '21px' : '3px';
-  if (_ctRBOn) ctFetchRevBooster();
+  if (_ctRBOn) msFetchRevBooster();
 }
 
 function msOpenRevBooster() {
@@ -1163,11 +1375,24 @@ var _ctMsgInterval = null;
 var _ctProgress = 0;
 var _ctProgressInterval = null;
 
-var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
+// Use local server when running on localhost (Railway outage fallback)
+var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? (window.location.protocol + '//' + window.location.host)
+  : 'https://builtsy-api-production.up.railway.app';
 
 // ══════════════════════════════════════════════
 // STEP NAV
 // ══════════════════════════════════════════════
+// Section anchors — preview scrolls to show relevant section per step
+var MS_SECTION_MAP = {
+  1: null, 2: null, 3: null,
+  4: '#hero',
+  5: '#hero',
+  6: '#services',
+  7: null,
+  8: '#contact'
+};
+
 function msGoStep(n) {
   for (var i = 1; i <= 8; i++) {
     var p = document.getElementById('ms-step-' + i);
@@ -1181,7 +1406,50 @@ function msGoStep(n) {
   }
   var leftPanel = document.querySelector('.left-panel');
   if (leftPanel) leftPanel.scrollTop = 0;
+
+  // Toggle full-screen welcome (Step 1) vs split layout (Steps 2–8)
+  if (n === 1) {
+    document.body.classList.add('ms-s1');
+  } else {
+    document.body.classList.remove('ms-s1');
+  }
+
+  // Push user's info into the preview whenever we're past Step 1
+  if (n >= 2) setTimeout(msApplyAllLive, 300);
+
+  // Re-render palette grid every time Step 3 is entered
+  if (n === 3) msRenderPaletteGrid(_ctActivePaletteTab);
+
+  // Build photo zones on step 7
   if (n === 7) msBuildPhotoZones();
+
+  // Scroll preview to relevant section
+  var anchor = MS_SECTION_MAP[n];
+  if (anchor && n > 1) {
+    setTimeout(function() { msScrollPreviewTo(anchor); }, 400);
+  } else if (n > 1) {
+    setTimeout(function() { msScrollPreviewToTop(); }, 300);
+  }
+}
+
+function msScrollPreviewTo(selector) {
+  var iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    var el = doc.querySelector(selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch(e) {}
+}
+
+function msScrollPreviewToTop() {
+  var iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  try {
+    iframe.contentWindow.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch(e) {}
 }
 
 // ══════════════════════════════════════════════
@@ -1197,21 +1465,34 @@ function msStep1Next() {
   if (btn) btn.style.display = 'none';
   var payload = [name, biz, desc].filter(Boolean).join(' — ');
   if (!payload.trim()) { msGoStep(2); return; }
-  fetch('/.netlify/functions/detect-industry', {
+
+  // Use origin-relative URL so it works with both `node server.js` (port 3000)
+  // and `netlify dev` (port 8888) — falls back to Netlify function path
+  var _host = window.location.hostname;
+  var detectUrl = (_host === 'localhost' || _host === '127.0.0.1')
+    ? '/detect-industry'                          // local node server.js
+    : '/.netlify/functions/detect-industry';      // Netlify (deployed)
+
+  fetch(detectUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ description: payload })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
   .then(function(cfg) {
+    if (cfg.error) throw new Error(cfg.error);
     MS_INDUSTRY = cfg;
     msOnIndustryDetected(cfg);
   })
-  .catch(function() {})
+  .catch(function(err) { console.warn('detect-industry failed:', err); })
   .finally(function() {
     if (detecting) detecting.style.display = 'none';
     if (btn) btn.style.display = '';
     msGoStep(2);
+    setTimeout(msApplyAllLive, 500);
   });
 }
 
@@ -1219,9 +1500,10 @@ function msOnIndustryDetected(cfg) {
   if (!cfg) return;
   // Recommended templates
   MS_RECOMMENDED = cfg.recommendedTemplates || [];
-  msRenderTemplateCards(); // re-render with badges
+  msHighlightAIFilter(); // adds "✦ For You" pill and re-renders filtered to matches
 
-  // Specialty pills (Step 3)
+  // Specialty pills (Step 3) — only show if AI returned them
+  var pillsWrap = document.getElementById('ms-specialty-wrap');
   var pillsContainer = document.getElementById('ms-specialty-pills');
   if (pillsContainer && cfg.specialtyPills && cfg.specialtyPills.length) {
     pillsContainer.innerHTML = '';
@@ -1232,25 +1514,140 @@ function msOnIndustryDetected(cfg) {
       el.onclick = function() { el.classList.toggle('active'); };
       pillsContainer.appendChild(el);
     });
+    if (pillsWrap) pillsWrap.style.display = 'block';
+  } else {
+    if (pillsWrap) pillsWrap.style.display = 'none';
   }
 
   // Template subtitle
   if (cfg.industryLabel) {
     var sub = document.getElementById('ms-tpl-sub');
-    if (sub) sub.textContent = 'Great picks for a ' + cfg.industryLabel + ' are highlighted — browse all, they’re yours.';
+    if (sub) sub.textContent = "Great picks for a " + cfg.industryLabel + " are highlighted. Browse all — yours to pick.";
   }
 
-  // Chips
+  // Chips — tagline, headline, creds
   if (cfg.taglineChips)    msPopulateAIChips('ms-chips-tagline',  cfg.taglineChips,    'ms-tagline',       'replace');
   if (cfg.headlineChips)   msPopulateAIChips('ms-chips-headline', cfg.headlineChips,   'ms-hero-headline', 'replace');
   if (cfg.valuePropChips)  msPopulateAIChips('ms-chips-valueprop',cfg.valuePropChips,  'ms-value-prop',    'replace');
   if (cfg.credentialChips) msPopulateAIChips('ms-chips-creds',    cfg.credentialChips, 'ms-credentials',   'append');
+
+  // Hero sub chips
+  if (cfg.heroSubChips)    msPopulateAIChips('ms-chips-hero-sub', cfg.heroSubChips,    'ms-hero-sub',      'replace');
 
   // Income calc label
   if (cfg.incomeCalcLabel) {
     var lbl = document.getElementById('ms-calc-unit-label');
     if (lbl) lbl.textContent = cfg.incomeCalcLabel;
   }
+
+  // Service fields — auto-fill + inline chip suggestions
+  if (cfg.serviceSuggestions && cfg.serviceSuggestions.length) {
+    // Collect all service names to use as cross-pick chips on every name field
+    var allSvcNames = cfg.serviceSuggestions.map(function(s) { return s.name; }).filter(Boolean);
+
+    cfg.serviceSuggestions.forEach(function(svc, idx) {
+      var n = idx + 1;
+      var nameEl = document.getElementById('ms-svc' + n + '-name');
+      var descEl = document.getElementById('ms-svc' + n + '-desc');
+      var tagsEl = document.getElementById('ms-svc' + n + '-tags');
+
+      // Auto-fill if user hasn't typed anything yet
+      if (nameEl && !nameEl.value) nameEl.value = svc.name || '';
+      if (descEl && !descEl.value) descEl.value = svc.desc || '';
+      if (tagsEl && !tagsEl.value) tagsEl.value = (svc.tags || []).join(', ');
+
+      // Smart name chips: clicking a service name also fills its desc & tags
+      msPopulateSvcNameChips('ms-chips-svc' + n + '-name', allSvcNames, n, cfg.serviceSuggestions);
+
+      // Desc chip: AI-generated description for this service
+      if (svc.desc) {
+        msPopulateAIChips('ms-chips-svc' + n + '-desc', [svc.desc], 'ms-svc' + n + '-desc', 'replace');
+        (function(n2) {
+          setTimeout(function() {
+            var row = document.getElementById('ms-chips-svc' + n2 + '-desc');
+            if (row) row.querySelectorAll('.chip-s').forEach(function(c) { c.classList.add('used'); });
+          }, 50);
+        })(n);
+      }
+
+      // Tag chips: individual tags for append-clicking
+      if (svc.tags && svc.tags.length) {
+        msPopulateAIChips('ms-chips-svc' + n + '-tags', svc.tags, 'ms-svc' + n + '-tags', 'append');
+        (function(n2, tags) {
+          setTimeout(function() {
+            var row = document.getElementById('ms-chips-svc' + n2 + '-tags');
+            if (!row) return;
+            row.querySelectorAll('.chip-s').forEach(function(c) {
+              if (tags.indexOf(c.textContent) !== -1) c.classList.add('used');
+            });
+          }, 50);
+        })(n, svc.tags || []);
+      }
+    });
+    setTimeout(msApplyAllLive, 200);
+  }
+}
+
+// Smart service name chips — clicking also fills the matching desc & tags
+function msPopulateSvcNameChips(containerId, names, targetSlot, allSuggestions) {
+  var container = document.getElementById(containerId);
+  if (!container || !names) return;
+  container.innerHTML = '';
+
+  // Mark current value as used on init
+  var currentName = (document.getElementById('ms-svc' + targetSlot + '-name') || {}).value || '';
+
+  names.forEach(function(name) {
+    // Find the full suggestion object for this name
+    var match = null;
+    for (var i = 0; i < allSuggestions.length; i++) {
+      if (allSuggestions[i].name === name) { match = allSuggestions[i]; break; }
+    }
+    var chip = document.createElement('span');
+    chip.className = 'chip-s' + (name === currentName ? ' used' : '');
+    chip.textContent = name;
+    chip.onclick = function() {
+      // Fill name
+      var nameEl = document.getElementById('ms-svc' + targetSlot + '-name');
+      if (nameEl) { nameEl.value = name; nameEl.dispatchEvent(new Event('input')); }
+      // Mark all name chips in this row
+      container.querySelectorAll('.chip-s').forEach(function(c) { c.classList.remove('used'); });
+      chip.classList.add('used');
+
+      if (match) {
+        // Fill desc + mark desc chip as used
+        var descEl = document.getElementById('ms-svc' + targetSlot + '-desc');
+        if (descEl && match.desc) { descEl.value = match.desc; descEl.dispatchEvent(new Event('input')); }
+        var descRow = document.getElementById('ms-chips-svc' + targetSlot + '-desc');
+        if (descRow) descRow.querySelectorAll('.chip-s').forEach(function(c) { c.classList.add('used'); });
+
+        // Fill tags + refresh tag chips
+        var tagsEl = document.getElementById('ms-svc' + targetSlot + '-tags');
+        if (tagsEl && match.tags && match.tags.length) {
+          tagsEl.value = match.tags.join(', ');
+          tagsEl.dispatchEvent(new Event('input'));
+          var tagsRow = document.getElementById('ms-chips-svc' + targetSlot + '-tags');
+          if (tagsRow) {
+            // Update desc chip with new desc
+            msPopulateAIChips('ms-chips-svc' + targetSlot + '-desc', match.desc ? [match.desc] : [], 'ms-svc' + targetSlot + '-desc', 'replace');
+            // Re-render tag chips for new tags
+            msPopulateAIChips('ms-chips-svc' + targetSlot + '-tags', match.tags, 'ms-svc' + targetSlot + '-tags', 'append');
+            setTimeout(function() {
+              var tr = document.getElementById('ms-chips-svc' + targetSlot + '-tags');
+              if (!tr) return;
+              tr.querySelectorAll('.chip-s').forEach(function(c) {
+                if (match.tags.indexOf(c.textContent) !== -1) c.classList.add('used');
+              });
+              var dr = document.getElementById('ms-chips-svc' + targetSlot + '-desc');
+              if (dr) dr.querySelectorAll('.chip-s').forEach(function(c) { c.classList.add('used'); });
+            }, 30);
+          }
+        }
+      }
+      setTimeout(msApplyAllLive, 100);
+    };
+    container.appendChild(chip);
+  });
 }
 
 function msPopulateAIChips(containerId, chips, fieldId, mode) {
@@ -1284,12 +1681,63 @@ function msPopulateAIChips(containerId, chips, fieldId, mode) {
 // ══════════════════════════════════════════════
 // TEMPLATE SELECTION
 // ══════════════════════════════════════════════
+var _ctActiveFilter = 'all';
+
+function msFilterTemplates(filter) {
+  _ctActiveFilter = filter;
+  // Update pill active states
+  var pills = document.querySelectorAll('#ms-tpl-filters .tpl-filter-pill');
+  for (var i = 0; i < pills.length; i++) {
+    pills[i].classList.toggle('active', pills[i].getAttribute('data-filter') === filter);
+  }
+  msRenderTemplateCards();
+}
+
+function msHighlightAIFilter() {
+  // After AI returns recommended templates, highlight the matching filter pill
+  // and auto-select 'for-you' if there are recommendations
+  if (!MS_RECOMMENDED || !MS_RECOMMENDED.length) return;
+  var filterRow = document.getElementById('ms-tpl-filters');
+  if (!filterRow) return;
+  // Check if a "For You" pill exists, add it if not
+  if (!document.querySelector('[data-filter="foryou"]')) {
+    var pill = document.createElement('div');
+    pill.className = 'tpl-filter-pill ai-pick active';
+    pill.setAttribute('data-filter', 'foryou');
+    pill.textContent = '✦ For You';
+    pill.onclick = function() { msFilterTemplates('foryou'); };
+    filterRow.insertBefore(pill, filterRow.firstChild);
+    // Deactivate 'all' pill
+    var allPill = document.querySelector('[data-filter="all"]');
+    if (allPill) allPill.classList.remove('active');
+    _ctActiveFilter = 'foryou';
+  }
+  msRenderTemplateCards();
+}
+
 function msRenderTemplateCards() {
   var wrap = document.getElementById('ms-tpl-cards');
   if (!wrap) return;
   var html = '';
-  for (var i = 0; i < _ctTemplates.length; i++) {
-    var t = _ctTemplates[i];
+  var visibleCount = 0;
+
+  // Sort: recommended first, then rest
+  var sorted = _ctTemplates.slice().sort(function(a, b) {
+    var aRec = MS_RECOMMENDED.indexOf(a.file ? a.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(a.key) > -1;
+    var bRec = MS_RECOMMENDED.indexOf(b.file ? b.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(b.key) > -1;
+    return (bRec ? 1 : 0) - (aRec ? 1 : 0);
+  });
+
+  for (var i = 0; i < sorted.length; i++) {
+    var t = sorted[i];
+    // Filter logic
+    if (_ctActiveFilter === 'foryou') {
+      var isRecCheck = MS_RECOMMENDED.indexOf(t.file ? t.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(t.key) > -1;
+      if (!isRecCheck) continue;
+    } else if (_ctActiveFilter !== 'all') {
+      if (t.category !== _ctActiveFilter) continue;
+    }
+    visibleCount++;
     var isSel = t.key === _ctSelectedTemplate;
     var isRec = MS_RECOMMENDED.indexOf(t.file ? t.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(t.key) > -1;
     var selClass = isSel ? ' selected' : '';
@@ -1303,6 +1751,11 @@ function msRenderTemplateCards() {
       + '<div class="tpl-card-meta"><div class="tpl-card-name">' + t.name + '</div><div class="tpl-card-vibe">' + t.vibe + '</div></div>'
       + '</div></div>';
   }
+
+  if (visibleCount === 0) {
+    html = '<div style="grid-column:1/-1;text-align:center;padding:32px 0;color:rgba(255,255,255,0.3);font-size:.82rem;">No templates in this category yet — more coming soon!</div>';
+  }
+
   wrap.innerHTML = html;
 }
 
@@ -1324,7 +1777,10 @@ function msSelectTemplate(key) {
     if (_ctTemplates[j].key === key) {
       var iframe = document.getElementById('preview-iframe');
       var urlEl = document.getElementById('ms-preview-url');
-      if (iframe) iframe.src = _ctTemplates[j].file;
+      if (iframe) {
+        iframe.src = _ctTemplates[j].file;
+        iframe.onload = function() { setTimeout(msApplyAllLive, 150); };
+      }
       if (urlEl) urlEl.textContent = _ctTemplates[j].file;
       break;
     }
@@ -1351,7 +1807,7 @@ function msSelectPaletteTab(tab) {
 function msRenderPaletteGrid(tab) {
   var wrap = document.getElementById('ms-palette-grid-wrap');
   if (!wrap) return;
-  var tplPalettes = _ctPalettes[_ctSelectedTemplate];
+  var tplPalettes = _ctPalettes[_ctSelectedTemplate] || _ctPalettes['caretaker_warm'];
   if (!tplPalettes) { wrap.innerHTML = ''; return; }
 
   if (tab === 'custom') {
@@ -1364,7 +1820,7 @@ function msRenderPaletteGrid(tab) {
       var defColor = _ctCustomVars[varName] || '#D4745A';
       html += '<div class="custom-pal-item">'
         + '<div class="custom-pal-swatch" id="' + swatchId + '" style="background:' + defColor + ';" onclick="document.getElementById(\'' + inputId + '\').click()"></div>'
-        + '<input type="color" id="' + inputId + '" value="' + defColor + '" style="position:absolute;opacity:0;pointer-events:none;" onchange="ctCustomColorChange(\'' + varName + '\',this.value,\'' + swatchId + '\')">'
+        + '<input type="color" id="' + inputId + '" value="' + defColor + '" style="position:absolute;opacity:0;pointer-events:none;" onchange="msCustomColorChange(\'' + varName + '\',this.value,\'' + swatchId + '\')">'
         + '<div class="custom-pal-label">' + varName + '</div>'
         + '</div>';
     }
@@ -1399,7 +1855,7 @@ function msSelectPalette(cssStr, paletteName) {
   _ctSelectedPalette = cssStr;
   _ctSelectedPaletteName = paletteName;
   msRenderPaletteGrid(_ctActivePaletteTab);
-  ctInjectPaletteIntoIframe(cssStr);
+  msInjectPaletteIntoIframe(cssStr);
 }
 
 function msCustomColorChange(varName, value, swatchId) {
@@ -1418,7 +1874,7 @@ function msApplyCustom() {
   }
   _ctSelectedPalette = css;
   _ctSelectedPaletteName = 'Custom';
-  ctInjectPaletteIntoIframe(css);
+  msInjectPaletteIntoIframe(css);
 }
 
 function msInjectPaletteIntoIframe(cssOverride) {
@@ -1499,18 +1955,18 @@ function msBuildPhotoZones() {
   if (heroZones.length > 0) {
     html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>';
     for (var hi = 0; hi < heroZones.length; hi++) {
-      html += ctZoneHTML(heroZones[hi]);
+      html += msZoneHTML(heroZones[hi]);
     }
   }
 
   if (aboutZones.length > 0) {
     html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">About Section</span>';
     if (aboutZones.length === 1) {
-      html += ctZoneHTML(aboutZones[0]);
+      html += msZoneHTML(aboutZones[0]);
     } else {
       html += '<div class="upload-grid-2">';
       for (var ai = 0; ai < aboutZones.length; ai++) {
-        html += '<div>' + ctZoneHTML(aboutZones[ai]) + '</div>';
+        html += '<div>' + msZoneHTML(aboutZones[ai]) + '</div>';
       }
       html += '</div>';
     }
@@ -1521,7 +1977,7 @@ function msBuildPhotoZones() {
     html += '<p style="font-size:.76rem;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.5;">Small circular photos that appear next to each family testimonial.</p>';
     html += '<div class="upload-grid-3">';
     for (var pi = 0; pi < portZones.length; pi++) {
-      html += '<div>' + ctZoneHTML(portZones[pi]) + '</div>';
+      html += '<div>' + msZoneHTML(portZones[pi]) + '</div>';
     }
     html += '</div>';
   }
@@ -1537,7 +1993,7 @@ function msZoneHTML(zone) {
       + '<span class="upload-zone-label-top">' + zone.label + '</span>'
       + '<div class="upload-zone has-photo" id="ms-zone-' + zone.id + '">'
       + '<img class="upload-thumb" src="' + photoData + '" alt="">'
-      + '<button class="upload-clear" onclick="event.stopPropagation();ctClearPhoto(\'' + zone.id + '\')">×</button>'
+      + '<button class="upload-clear" onclick="event.stopPropagation();msClearPhoto(\'' + zone.id + '\')">×</button>'
       + '</div>'
       + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="msHandlePhoto(\'' + zone.id + '\',this)">'
       + '</div>';
@@ -1577,6 +2033,8 @@ function msCollect() {
   return {
     ownerName:      v('ms-owner-name'),
     businessName:   v('ms-biz-name'),
+    description:    v('ms-description'),
+    industryLabel:  MS_INDUSTRY ? (MS_INDUSTRY.industryLabel || '') : '',
     tagline:        v('ms-tagline'),
     location:       v('ms-location'),
     handle:         v('ms-handle'),
@@ -1664,7 +2122,7 @@ function msInjectAssets(html) {
 
   // Inject Revenue Booster section before footer
   if (_ctRBOn && window._ctRevBoosterConfig) {
-    var rbSection = ctBuildRBSection(window._ctRevBoosterConfig);
+    var rbSection = msBuildRBSection(window._ctRevBoosterConfig);
     if (rbSection) {
       if (html.indexOf('<footer') !== -1) {
         html = html.replace('<footer', rbSection + '\n<footer');
@@ -1676,7 +2134,7 @@ function msInjectAssets(html) {
 
   // FAQ section
   if(_ctFAQOn && _ctFAQConfig && _ctFAQConfig.faqs && _ctFAQConfig.faqs.length){
-    var faqHtml=ctBuildFAQSection(_ctFAQConfig.faqs);
+    var faqHtml=msBuildFAQSection(_ctFAQConfig.faqs);
     if(faqHtml) html=html.replace('<footer',faqHtml+'\n<footer');
   }
   // Calendly
@@ -1767,12 +2225,27 @@ function msGenerate() {
     if (bar) bar.style.width = _ctProgress + '%';
   }, 400);
 
+  // Map master blueprint template keys to Railway server keys
+  var _tplKeyMap = {
+    sm_cherry:       'cherry_sm',
+    sm_bubbly:       'bubbly_sm',
+    sm_studio:       'social',
+    ai_design:       'social',
+    wellness_ember:  'caretaker_warm',  // fallback to closest generate style until dedicated endpoint
+    beauty_bloom:    'caretaker_warm',
+    creative_studio: 'social',
+    professional_slate: 'caretaker_clean',
+    brand_peach:     'social',
+    interior_linen:  'social'
+  };
+  var _serverTplKey = _tplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate;
+
   fetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      templateType: _ctSelectedTemplate,
-      niche: ctBuildNiche(),
+      templateType: _serverTplKey,
+      niche: msBuildNiche(),
       fields: fields
     })
   })
@@ -1793,19 +2266,19 @@ function msGenerate() {
           if (line.startsWith('data: ')) {
             var payload = line.slice(6);
             if (payload === '[DONE]') {
-              ctFinishGenerate();
+              msFinishGenerate();
               return;
             }
             try {
               var data = JSON.parse(payload);
-              if (data.error) { ctFinishError(data.error); return; }
+              if (data.error) { msFinishError(data.error); return; }
               if (data.html) {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-                if (html.length < 200) { ctFinishError('Generation returned empty content. Please try again.'); return; }
-                html = ctInjectAssets(html);
+                if (html.length < 200) { msFinishError('Generation returned empty content. Please try again.'); return; }
+                html = msInjectAssets(html);
                 _ctHTML = html;
-                ctFinishGenerate();
-                ctShowOutput(html);
+                msFinishGenerate();
+                msShowOutput(html);
                 return;
               }
             } catch(e) {}
@@ -1817,7 +2290,7 @@ function msGenerate() {
     return pump();
   })
   .catch(function(err) {
-    ctFinishError('Connection error: ' + err.message);
+    msFinishError('Connection error: ' + err.message);
   });
 }
 
@@ -1841,7 +2314,7 @@ function msFinishError(msg) {
   if (shell) shell.style.display = 'none';
   var outputPanel = document.getElementById('ms-output-panel');
   if (outputPanel) { outputPanel.className = 'active'; outputPanel.style.display = 'flex'; }
-  ctShowError(msg);
+  msShowError(msg);
 }
 
 // ══════════════════════════════════════════════
@@ -1958,8 +2431,8 @@ function msRevise() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      templateType: _ctSelectedTemplate,
-      niche: ctBuildNiche(),
+      templateType: (_tplKeyMap || {})[_ctSelectedTemplate] || _ctSelectedTemplate,
+      niche: msBuildNiche(),
       fields: revisedFields
     })
   })
@@ -1980,21 +2453,21 @@ function msRevise() {
           if (line.startsWith('data: ')) {
             var payload = line.slice(6);
             if (payload === '[DONE]') {
-              ctFinishGenerate();
+              msFinishGenerate();
               return;
             }
             try {
               var data = JSON.parse(payload);
-              if (data.error) { ctFinishError(data.error); return; }
+              if (data.error) { msFinishError(data.error); return; }
               if (data.html) {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-                if (html.length < 200) { ctFinishError('Revision returned empty content. Please try again.'); return; }
-                html = ctInjectAssets(html);
+                if (html.length < 200) { msFinishError('Revision returned empty content. Please try again.'); return; }
+                html = msInjectAssets(html);
                 _ctHTML = html;
                 var inp = document.getElementById('ms-revise-input');
                 if (inp) inp.value = '';
-                ctFinishGenerate();
-                ctShowOutput(html);
+                msFinishGenerate();
+                msShowOutput(html);
                 return;
               }
             } catch(e) {}
@@ -2006,7 +2479,7 @@ function msRevise() {
     return pumpRevise();
   })
   .catch(function(err) {
-    ctFinishError('Revision error: ' + err.message);
+    msFinishError('Revision error: ' + err.message);
   });
 }
 
@@ -2030,97 +2503,59 @@ function msDownload() {
 // ══════════════════════════════════════════════
 // ── SMART CHIPS ──────────────────────────────────────────
 var MS_CHIPS = {
-  tagline: {
-    children: [
-      'Trusted In-Home Childcare',
-      'Safe, Nurturing Care for Your Little Ones',
-      'Reliable Care That Feels Like Family',
-      'Where Kids Thrive and Parents Breathe Easy',
-      'Loving Childcare, Right at Home',
-      'Your Village — One Caregiver at a Time'
-    ],
-    senior: [
-      'Compassionate In-Home Senior Care',
-      'Dignified, Loving Care for Your Loved One',
-      'Trusted Companion & In-Home Support',
-      'Quality Senior Care in the Comfort of Home',
-      'Caring for the People Who Cared for You',
-      'Reliable Care, Real Connection'
-    ],
-    pet: [
-      'Loving Care for Your Furry Family',
-      'Your Pet\'s Home Away From Home',
-      'Trusted Pet Care That Feels Like Family',
-      'Happy Pets, Happy Owners',
-      'Professional Care with a Personal Touch',
-      'Safe, Fun, Loving Pet Care'
-    ],
-    default: [
-      'Trusted In-Home Care',
-      'Reliable Care That Feels Like Family',
-      'Professional, Personal, and Always Present',
-      'Care You Can Count On',
-      'Compassionate Care, Right at Home',
-      'Your Trusted Local Caregiver'
-    ]
-  },
-  headline: {
-    children: [
-      'Nurturing Care, Right in Your Home',
-      'The Caregiver Your Family Deserves',
-      'Safe Hands for Your Little Ones',
-      'Where Every Child Feels at Home',
-      'Trusted Care So You Can Breathe Easy',
-      'Love, Play, and Safe Keeping — Every Day'
-    ],
-    senior: [
-      'Compassionate Care at Home',
-      'Dignity, Comfort, and Companionship',
-      'Where Your Loved One Feels at Home',
-      'Trusted Care for Those You Love Most',
-      'Caring for the People Who Matter Most',
-      'Real Support, Real Connection'
-    ],
-    pet: [
-      'Your Pet Is in the Best Hands',
-      'Love and Attention Every Single Day',
-      'A Home Away From Home for Your Pet',
-      'Happy Tails, Stress-Free Owners',
-      'Professional Care with a Personal Touch',
-      'Where Pets Are Truly Family'
-    ],
-    default: [
-      'Nurturing Care, Right in Your Home',
-      'The Caregiver Your Family Deserves',
-      'Trusted, Reliable, and Always There',
-      'Care That Makes a Real Difference',
-      'Your Trusted Local Caregiver',
-      'Professional Care with a Personal Touch'
-    ]
-  },
+  tagline: [
+    'Professional, Personal, and Always Present',
+    'Quality Work You Can Count On',
+    'Local Expertise, Real Results',
+    'Trusted by Clients Across the Community',
+    'Your Go-To Expert, Every Time',
+    'Passionate About What I Do'
+  ],
+  headline: [
+    'The Expert Your Community Trusts',
+    'Quality Work, Every Single Time',
+    'Professional Results, Personal Service',
+    'Here to Help You Achieve Your Goals',
+    'Experience the Difference',
+    'Dedicated to Your Success'
+  ],
+  heroSub: [
+    'I help busy people get results without the stress. Book a free intro call today.',
+    'Serving clients across [your city] — in-person and online options available.',
+    'Whether you\'re just starting out or ready to level up, I\'m here for it.',
+    'Real results, real people. I\'d love to work with you.',
+    'With [X] years of experience, I bring expertise and care to every client.',
+    'Let\'s build something great together — starting with a conversation.'
+  ],
   creds: [
+    'Licensed & Insured',
+    'Certified Professional',
+    '5+ Years Experience',
+    '10+ Years Experience',
     'Background Checked',
-    'CPR Certified',
-    'First Aid Trained',
-    'Insured & Bonded',
-    'Fully Vaccinated',
-    'Montessori Trained',
-    'Newborn Specialist',
-    'Pet First Aid Certified',
-    'Dementia Care Trained',
-    'Non-smoker',
-    'Own transportation',
-    'References available'
+    'Award-Winning',
+    'Locally Owned',
+    'Fully Trained',
+    'References Available',
+    'Free Consultation'
+  ],
+  svcNames: [
+    'Private 1-on-1 Sessions',
+    'Group Classes',
+    'Intensive Workshop',
+    'Starter Package',
+    'VIP Experience',
+    'Online Sessions'
+  ],
+  svcTags: [
+    'Beginners Welcome',
+    'All Skill Levels',
+    'Online & In-Person',
+    'Flexible Scheduling',
+    'By Appointment',
+    'Limited Spots'
   ]
 };
-
-function msGetCareKey() {
-  var types = _ctCareTypes || [];
-  if (types.indexOf('Senior') !== -1) return 'senior';
-  if (types.indexOf('Pet') !== -1) return 'pet';
-  if (types.length > 0) return 'children';
-  return 'default';
-}
 
 function msRenderChips(rowId, chips, fieldId, appendMode) {
   var row = document.getElementById(rowId);
@@ -2152,6 +2587,9 @@ function msRenderChips(rowId, chips, fieldId, appendMode) {
           for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('used');
           chip.classList.add('used');
         }
+        // Trigger live preview update
+        var inp2 = document.getElementById(fieldId);
+        if (inp2) inp2.dispatchEvent(new Event('input'));
       };
       row.appendChild(chip);
     })(chips[i]);
@@ -2159,10 +2597,17 @@ function msRenderChips(rowId, chips, fieldId, appendMode) {
 }
 
 function msInitChips() {
-  var key = msGetCareKey();
-  msRenderChips('ms-chips-tagline',  MS_CHIPS.tagline[key]  || MS_CHIPS.tagline.default,  'ms-tagline',       false);
-  msRenderChips('ms-chips-headline', MS_CHIPS.headline[key] || MS_CHIPS.headline.default, 'ms-hero-headline', false);
-  msRenderChips('ms-chips-creds',    MS_CHIPS.creds,                                      'ms-credentials',   true);
+  // Show neutral placeholder chips until AI returns personalized ones
+  msRenderChips('ms-chips-tagline',   MS_CHIPS.tagline,   'ms-tagline',       false);
+  msRenderChips('ms-chips-headline',  MS_CHIPS.headline,  'ms-hero-headline', false);
+  msRenderChips('ms-chips-hero-sub',  MS_CHIPS.heroSub,   'ms-hero-sub',      false);
+  msRenderChips('ms-chips-creds',     MS_CHIPS.creds,     'ms-credentials',   true);
+
+  // Service name + tag fallback chips
+  for (var n = 1; n <= 4; n++) {
+    msRenderChips('ms-chips-svc' + n + '-name', MS_CHIPS.svcNames, 'ms-svc' + n + '-name', false);
+    msRenderChips('ms-chips-svc' + n + '-tags', MS_CHIPS.svcTags,  'ms-svc' + n + '-tags', true);
+  }
 }
 
 // ── INCOME CALCULATOR ────────────────────────────────────
@@ -2210,7 +2655,19 @@ var MS_LIVE_MAP = [
   { id: 'ms-biz-name',      key: 'biz-name' },
   { id: 'ms-owner-name',    key: 'biz-name' },
   { id: 'ms-hero-headline', key: 'headline' },
-  { id: 'ms-tagline',       key: 'tagline' }
+  { id: 'ms-tagline',       key: 'tagline' },
+  { id: 'ms-svc1-name',     key: 'svc1-name' },
+  { id: 'ms-svc1-desc',     key: 'svc1-desc' },
+  { id: 'ms-svc1-tags',     key: 'svc1-tags' },
+  { id: 'ms-svc2-name',     key: 'svc2-name' },
+  { id: 'ms-svc2-desc',     key: 'svc2-desc' },
+  { id: 'ms-svc2-tags',     key: 'svc2-tags' },
+  { id: 'ms-svc3-name',     key: 'svc3-name' },
+  { id: 'ms-svc3-desc',     key: 'svc3-desc' },
+  { id: 'ms-svc3-tags',     key: 'svc3-tags' },
+  { id: 'ms-svc4-name',     key: 'svc4-name' },
+  { id: 'ms-svc4-desc',     key: 'svc4-desc' },
+  { id: 'ms-svc4-tags',     key: 'svc4-tags' },
 ];
 
 function msPushToPreview(key, value) {
@@ -2221,7 +2678,19 @@ function msPushToPreview(key, value) {
   if (!doc || !doc.body) return;
   var els = doc.querySelectorAll('[data-live="' + key + '"]');
   for (var i = 0; i < els.length; i++) {
-    if (value) els[i].textContent = value;
+    if (!value) continue;
+    if (key.indexOf('-tags') !== -1) {
+      // Rebuild tag pills from comma-separated string
+      var tags = value.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+      var firstSpan = els[i].querySelector('span');
+      var cls = firstSpan ? firstSpan.className : 'tag-pill';
+      var sty = firstSpan ? (firstSpan.getAttribute('style') || '') : '';
+      els[i].innerHTML = tags.map(function(t){
+        return '<span class="' + cls + '"' + (sty ? ' style="' + sty + '"' : '') + '>' + t + '</span>';
+      }).join('');
+    } else {
+      els[i].textContent = value;
+    }
   }
 }
 
@@ -2238,7 +2707,7 @@ function msApplyAllLive() {
   var _ctAnim = 'none', _ctAnimMode = 'ambient', _ctBurst = 'none';
   function msSelectAnim(val) {
     _ctAnim = val;
-    document.querySelectorAll('#ct-anim-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    document.querySelectorAll('#ms-anim-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
     var el = document.getElementById('ms-anim-' + val);
     if (el) el.classList.add('selected');
     document.getElementById('ms-anim-mode-wrap').style.display = val === 'none' ? 'none' : 'block';
@@ -2253,11 +2722,23 @@ function msApplyAllLive() {
   }
   function msSelectBurst(val) {
     _ctBurst = val;
-    document.querySelectorAll('#ct-burst-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    document.querySelectorAll('#ms-burst-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
     var el = document.getElementById('ms-burst-' + val);
     if (el) el.classList.add('selected');
-    document.getElementById('ms-burst-trigger-wrap').style.display = val === 'none' ? 'none' : 'block';
+    var tw = document.getElementById('ms-burst-trigger-wrap');
+    if (tw) tw.style.display = val === 'none' ? 'none' : 'block';
     msPushAnimToPreview();
+    // Fire a live demo burst in the preview immediately
+    if (val !== 'none') {
+      setTimeout(function() {
+        try {
+          var iframe = document.getElementById('preview-iframe');
+          if (iframe && iframe.contentWindow && iframe.contentWindow.builtsy_demoBurst) {
+            iframe.contentWindow.builtsy_demoBurst(val);
+          }
+        } catch(e) {}
+      }, 100);
+    }
   }
   function msPushAnimToPreview() {
     var iframe = document.getElementById('preview-iframe');
@@ -2301,10 +2782,23 @@ function msSetupLivePreview() {
 
 document.addEventListener('DOMContentLoaded', function() {
   msRenderTemplateCards();
+  msHideEmptyFilterPills();
   msSelectPaletteTab('light');
   msGoStep(1);
   msSetupLivePreview();
+  msInitChips();
 });
+
+function msHideEmptyFilterPills() {
+  // Hide category pills that have no templates yet
+  var pills = document.querySelectorAll('#ms-tpl-filters .tpl-filter-pill[data-filter]');
+  for (var i = 0; i < pills.length; i++) {
+    var cat = pills[i].getAttribute('data-filter');
+    if (cat === 'all' || cat === 'foryou') continue;
+    var hasTemplates = _ctTemplates.some(function(t) { return t.category === cat; });
+    pills[i].style.display = hasTemplates ? '' : 'none';
+  }
+}
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ exports.handler = async function(event) {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const msg = await client.messages.create({
       model: 'claude-opus-4-5',
-      max_tokens: 900,
+      max_tokens: 1800,
       messages: [{
         role: 'user',
         content: `You are helping configure a website builder. Based on this business description, return ONLY valid JSON (no markdown, no explanation):
@@ -23,12 +23,17 @@ Return this exact JSON structure:
   "recommendedTemplates": ["up to 3 template ids from this list only: social-media-bubbly, social-media-cherry, social-media-manager-site, caretaker-warm, caretaker-bright, caretaker-clean — pick whichever visually suit their work best"],
   "taglineChips": ["6 short punchy tagline suggestions specific to their exact business"],
   "headlineChips": ["6 hero headline suggestions, varied tone, specific to their business"],
+  "heroSubChips": ["4 hero subheading options (2 sentences each) — who they help and what they offer, specific to this business"],
   "credentialChips": ["6 relevant credentials, certifications, or trust signals for their field"],
   "incomeCalcType": "per_session or per_client or hourly",
   "incomeCalcLabel": "per session or per client or per hour",
-  "customQuestion": "One specific question relevant to their field, e.g. What instrument do you teach? or null if not needed",
-  "customPlaceholder": "placeholder text for above or null",
-  "suggestedTools": ["subset of: calendly, faq, sms, forms, testimonials — whichever make sense for their business"]
+  "suggestedTools": ["subset of: calendly, faq, sms, forms, testimonials — whichever make sense for their business"],
+  "serviceSuggestions": [
+    {"name": "Service 1 name specific to their business", "desc": "1-2 sentence description of this service", "tags": ["Tag1", "Tag2", "Tag3"]},
+    {"name": "Service 2 name", "desc": "1-2 sentence description", "tags": ["Tag1", "Tag2", "Tag3"]},
+    {"name": "Service 3 name", "desc": "1-2 sentence description", "tags": ["Tag1", "Tag2", "Tag3"]},
+    {"name": "Service 4 name", "desc": "1-2 sentence description", "tags": ["Tag1", "Tag2", "Tag3"]}
+  ]
 }`
       }]
     });

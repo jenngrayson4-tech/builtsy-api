@@ -58,13 +58,62 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '30mb' }));
 
+// Serve static HTML files from the same directory
+app.use(express.static(__dirname));
+
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = 'claude-sonnet-4-20250514';
 const MAX_TOKENS = 32000;
 
 // Health check
 app.get('/', function(req, res) {
-  res.json({ status: 'ok', model: MODEL });
+  res.sendFile(path.join(__dirname, 'blueprint-master.html'));
+});
+
+// ── Detect Industry — AI-powered Step 1 analysis ──────────────────────────────
+app.post('/detect-industry', async function(req, res) {
+  try {
+    var description = req.body.description || req.body.prompt || '';
+    if (!description) return res.status(400).json({ error: 'No description' });
+
+    var prompt = 'You are configuring a website builder for this business: "' + description + '".\n'
+      + 'Return ONLY valid JSON (no markdown, no explanation) with this exact structure:\n'
+      + '{\n'
+      + '  "industry": "short-slug e.g. art-teacher or fitness-trainer or photographer",\n'
+      + '  "industryLabel": "Friendly label e.g. Art Teacher",\n'
+      + '  "recommendedTemplates": ["up to 3 from: caretaker-warm, caretaker-bright, caretaker-clean, social-media-bubbly, social-media-cherry, social-media-manager-site"],\n'
+      + '  "taglineChips": ["6 short punchy taglines specific to their exact business"],\n'
+      + '  "headlineChips": ["6 hero headline options, varied tone, specific to their business"],\n'
+      + '  "heroSubChips": ["4 hero subheading options (2 sentences each) — who they help and what they offer, specific to this business"],\n'
+      + '  "credentialChips": ["6 relevant credentials or trust signals for their field"],\n'
+      + '  "valuePropChips": ["4 short value propositions specific to their business"],\n'
+      + '  "incomeCalcType": "per_session or per_client or hourly",\n'
+      + '  "incomeCalcLabel": "per session or per client or per hour",\n'
+      + '  "suggestedTools": ["subset of: calendly, faq, sms, forms, testimonials"],\n'
+      + '  "serviceSuggestions": [\n'
+      + '    {"name": "Service 1 name", "desc": "1-2 sentence description", "tags": ["Tag1","Tag2","Tag3"]},\n'
+      + '    {"name": "Service 2 name", "desc": "1-2 sentence description", "tags": ["Tag1","Tag2","Tag3"]},\n'
+      + '    {"name": "Service 3 name", "desc": "1-2 sentence description", "tags": ["Tag1","Tag2","Tag3"]},\n'
+      + '    {"name": "Service 4 name", "desc": "1-2 sentence description", "tags": ["Tag1","Tag2","Tag3"]}\n'
+      + '  ]\n'
+      + '}';
+
+    var message = await client.messages.create({
+      model: MODEL,
+      max_tokens: 1400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var raw = message.content[0].text.replace(/```json|```/g, '').trim();
+    var match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('no JSON in response');
+    var config = JSON.parse(match[0]);
+
+    res.json(config);
+  } catch(err) {
+    console.error('detect-industry error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Main site generation endpoint
