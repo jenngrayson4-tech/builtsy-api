@@ -2,1220 +2,1741 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Build Your Site | Builtsy</title>
+<title>Master Blueprint | Builtsy</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#08080f;--lime:#a3e635;--blue:#4361ee;
-  --text:rgba(255,255,255,0.92);--muted:rgba(255,255,255,0.4);
-  --border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.13);
-  --selected:#4361ee;
+  --navy:#12192B;--lime:#C8E000;--pink:#ee70bc;--builtsy-blue:#4361EE;
+  --cream:#fafaf7;--yellow:#E8D400;
 }
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--navy);}
 
-/* ── PROGRESS BAR ── */
-#ms-progress{position:fixed;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,0.06);z-index:1000;}
-#ms-progress-fill{height:100%;background:var(--lime);width:0%;transition:width 0.4s ease;}
+/* ── TOP NAV ── */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:200;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.tn-tag{background:var(--yellow);color:#0D0D0D;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 
-/* ── FULL-SCREEN STEP ── */
-.fs-step{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:40px 24px;}
-.fs-step.active{display:flex;}
+/* ── TWO-COLUMN SHELL ── */
+.app-shell{display:flex;height:calc(100vh - 52px);overflow:hidden;}
 
-/* ── STEP EYEBROW ── */
-.ms-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px;}
+/* ── LEFT PANEL ── */
+.left-panel{width:440px;flex-shrink:0;background:var(--navy);color:white;overflow-y:auto;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.08);}
+.left-inner{padding:0 24px 100px;flex:1;}
 
-/* ── BIG QUESTION ── */
-.fs-question{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);color:white;text-align:center;margin-bottom:14px;line-height:1.15;max-width:700px;}
+/* ── RIGHT PANEL ── */
+.right-panel{flex:1;background:#1A2135;display:flex;flex-direction:column;min-width:0;}
+.preview-toolbar{height:40px;background:rgba(0,0,0,0.3);display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.preview-url{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);flex:1;background:rgba(255,255,255,0.06);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.preview-dot{width:10px;height:10px;border-radius:50%;}
+.preview-frame-wrap{flex:1;overflow:hidden;position:relative;}
+#preview-iframe{width:100%;height:100%;border:none;background:#fff;}
 
-/* ── SUB TEXT ── */
-.fs-sub{font-family:'Inter',sans-serif;font-size:1rem;color:rgba(255,255,255,0.42);text-align:center;margin-bottom:36px;max-width:520px;line-height:1.6;}
+/* ── STEP PROGRESS ── */
+.step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;cursor:pointer;}
+.step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,0.1);min-width:4px;}
+.step-line.done{background:var(--lime);}
 
-/* ── FULL-SCREEN TEXTAREA ── */
-.fs-textarea{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px 24px;font-family:'Inter',sans-serif;font-size:1.05rem;color:white;width:100%;max-width:580px;min-height:120px;resize:none;outline:none;transition:border-color .2s;line-height:1.6;}
-.fs-textarea:focus{border-color:rgba(163,230,53,0.5);}
-.fs-textarea::placeholder{color:rgba(255,255,255,0.25);}
+/* ── STEP PANELS ── */
+.step-panel{display:none;padding-top:24px;}
+.step-panel.active{display:block;}
+.step-label-top{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:5px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.35rem;color:white;margin-bottom:5px;}
+.step-sub-main{color:rgba(255,255,255,0.5);font-size:.85rem;margin-bottom:22px;line-height:1.6;}
 
-/* ── FULL-SCREEN SINGLE INPUT ── */
-.fs-input-single{background:rgba(255,255,255,0.05);border:none;border-bottom:2px solid rgba(255,255,255,0.15);padding:16px 4px;font-family:'Playfair Display',serif;font-size:1.8rem;color:white;width:100%;max-width:500px;outline:none;transition:border-color .2s;text-align:center;}
-.fs-input-single:focus{border-color:var(--lime);}
-.fs-input-single::placeholder{color:rgba(255,255,255,0.2);}
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:16px;}
+.field label{display:block;font-weight:700;font-size:.68rem;margin-bottom:6px;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:rgba(255,255,255,0.35);font-size:.7rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--builtsy-blue);}
+.fi::placeholder{color:rgba(255,255,255,0.25);}
+textarea.fi{resize:vertical;min-height:80px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field-hint{font-size:.7rem;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;}
+.sl{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:24px 0 11px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);}
 
-/* ── NEXT BUTTON ── */
-.fs-btn{margin-top:28px;background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.95rem;padding:15px 40px;border-radius:50px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;}
-.fs-btn:hover{opacity:.9;transform:translateY(-1px);}
-.fs-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+/* ── TEMPLATE CARDS ── */
+.tpl-card{border:2px solid rgba(255,255,255,0.1);border-radius:14px;margin-bottom:12px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);overflow:hidden;user-select:none;}
+.tpl-card:hover{border-color:rgba(255,255,255,0.25);}
+.tpl-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
+.tpl-card-preview{height:148px;overflow:hidden;position:relative;background:#f5f5f5;}
+.tpl-card-preview iframe{width:357%;height:536px;border:none;transform:scale(0.28);transform-origin:top left;pointer-events:none;}
+.tpl-card-info{padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.tpl-card-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);background:transparent;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;transition:all .2s;color:transparent;}
+.tpl-card.selected .tpl-card-check{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.tpl-card-meta{flex:1;}
+.tpl-card-name{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
+.tpl-card-vibe{font-size:.72rem;color:rgba(255,255,255,0.4);}
 
-/* ── BACK LINK ── */
-.fs-back{margin-top:16px;font-family:'Inter',sans-serif;font-size:.82rem;color:rgba(255,255,255,0.3);cursor:pointer;background:none;border:none;transition:color .2s;}
-.fs-back:hover{color:rgba(255,255,255,0.6);}
+/* ── CARE TYPE PILLS ── */
+.care-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.care-pill{border:1.5px solid rgba(255,255,255,0.15);border-radius:100px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.04);user-select:none;}
+.care-pill:hover{border-color:rgba(255,255,255,0.35);color:rgba(255,255,255,0.8);}
+.care-pill.active{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.15);color:white;}
 
-/* ── AI LOADING STATE ── */
-.fs-detecting{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:20px;}
-.fs-detecting .spinner{width:28px;height:28px;border:2px solid rgba(163,230,53,0.2);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;}
-.fs-detecting p{font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,0.4);letter-spacing:.08em;}
-@keyframes spin{to{transform:rotate(360deg);}}
+/* ── PALETTE TABS ── */
+.pal-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.pal-tab{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 13px;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .2s;}
+.pal-tab.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.palette-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 12px 10px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);user-select:none;}
+.palette-card:hover{border-color:rgba(255,255,255,0.22);}
+.palette-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
+.palette-swatches{display:flex;gap:5px;margin-bottom:9px;}
+.palette-swatch{height:24px;border-radius:6px;flex:1;}
+.palette-card-name{font-weight:700;font-size:.78rem;color:white;margin-bottom:2px;}
+.palette-card-desc{font-size:.67rem;color:rgba(255,255,255,0.35);line-height:1.4;}
+.palette-check{float:right;width:16px;height:16px;border-radius:50%;background:var(--builtsy-blue);color:white;font-size:.55rem;display:none;align-items:center;justify-content:center;margin-top:-1px;}
+.palette-card.selected .palette-check{display:flex;}
 
-/* ── TEMPLATE GALLERY ── */
-.tpl-gallery{width:100%;max-width:1100px;margin:0 auto;}
-.tpl-filters{display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;}
-.tpl-filter{font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .2s;}
-.tpl-filter.active,.tpl-filter:hover{border-color:rgba(163,230,53,0.5);color:var(--lime);background:rgba(163,230,53,0.06);}
-.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-height:60vh;overflow-y:auto;padding:4px;}
-.tpl-card{border:2px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.03);}
-.tpl-card:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);}
-.tpl-card.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
-.tpl-preview-box{width:100%;height:170px;overflow:hidden;position:relative;background:#1a1a2e;}
-.tpl-preview-iframe{width:1200px;height:850px;transform:scale(0.258);transform-origin:top left;pointer-events:none;border:none;}
-.tpl-card-body{padding:14px 16px 16px;}
-.tpl-card-name{font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;color:white;margin-bottom:3px;}
-.tpl-card-desc{font-size:.72rem;color:rgba(255,255,255,0.38);line-height:1.4;}
-.tpl-rec-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:rgba(163,230,53,0.12);color:var(--lime);border:1px solid rgba(163,230,53,0.25);padding:3px 9px;border-radius:50px;margin-bottom:8px;}
+/* Custom palette */
+.custom-pal-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;}
+.custom-pal-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.custom-pal-swatch{width:52px;height:52px;border-radius:10px;cursor:pointer;border:2.5px solid rgba(255,255,255,0.15);transition:border-color .2s;}
+.custom-pal-swatch:hover{border-color:rgba(255,255,255,0.4);}
+.custom-pal-label{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(255,255,255,0.4);text-align:center;}
+.btn-apply-custom{width:100%;margin-top:12px;background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
 
-/* ── SPLIT LAYOUT ── */
-#ms-phase2{display:flex;height:100vh;overflow:hidden;}
-#ms-left{width:420px;flex-shrink:0;background:var(--bg);overflow-y:auto;border-right:1px solid rgba(255,255,255,0.06);padding:32px 28px;}
-#ms-right{flex:1;background:#0d0d18;position:relative;}
-#ms-preview-iframe{width:100%;height:100%;border:none;}
+/* ── SERVICE BLOCKS ── */
+.svc-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;}
+.svc-block-title{font-size:.85rem;font-weight:700;color:white;}
+.svc-block-chevron{font-size:.7rem;color:rgba(255,255,255,0.35);transition:transform .2s;}
+.svc-block-chevron.open{transform:rotate(180deg);}
+.svc-block-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,0.08);}
+.svc-block-body.open{display:block;}
 
-/* ── SPLIT STEP ── */
-.split-step{display:none;animation:fadeUp .3s ease;}
-.split-step.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* ── PRICING BLOCKS ── */
+.price-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.price-block.popular{border-color:var(--yellow);background:rgba(232,212,0,0.06);}
+.price-block-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px;font-family:'DM Mono',monospace;}
+.popular-toggle{display:flex;align-items:center;gap:6px;margin-bottom:8px;cursor:pointer;}
+.popular-toggle input[type=radio]{accent-color:var(--yellow);width:14px;height:14px;cursor:pointer;}
+.popular-toggle span{font-size:.72rem;color:rgba(255,255,255,0.45);font-family:'DM Mono',monospace;}
 
-/* ── SPLIT STEP QUESTION ── */
-.split-q{font-family:'Playfair Display',serif;font-size:1.65rem;color:white;margin-bottom:6px;line-height:1.25;}
-.split-sub{font-family:'Inter',sans-serif;font-size:.82rem;color:rgba(255,255,255,0.38);margin-bottom:24px;line-height:1.55;}
+/* ── TESTIMONIAL BLOCKS ── */
+.testi-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.testi-num{font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;}
 
-/* ── FIELD INPUTS ── */
-.ms-field{margin-bottom:16px;}
-.ms-label{font-family:'DM Mono',monospace;font-size:.63rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:7px;display:block;}
-.ms-input{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:.95rem;color:white;outline:none;transition:border-color .2s;}
-.ms-input:focus{border-color:rgba(163,230,53,0.45);}
-.ms-input::placeholder{color:rgba(255,255,255,0.2);}
-textarea.ms-input{resize:none;min-height:90px;line-height:1.6;}
+/* ── UPLOAD ZONES ── */
+.upload-zone-wrap{margin-bottom:12px;}
+.upload-zone-label-top{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-family:'DM Mono',monospace;margin-bottom:5px;display:block;}
+.upload-zone{border:2px dashed rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.04);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;min-height:90px;}
+.upload-zone:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.06);}
+.upload-zone.has-photo{border-style:solid;border-color:rgba(255,255,255,0.15);padding:0;overflow:hidden;display:block;min-height:0;}
+.upload-zone-icon{font-size:1.1rem;opacity:.5;}
+.upload-zone-text{font-size:.72rem;color:rgba(255,255,255,0.35);line-height:1.4;}
+.upload-zone-text strong{display:block;color:rgba(255,255,255,0.6);font-weight:600;margin-bottom:1px;}
+.upload-zone-btn{background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);border-radius:7px;padding:6px 12px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:2px;}
+.upload-thumb{width:100%;height:100px;object-fit:cover;display:block;}
+.upload-clear{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.upload-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.upload-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.upload-optional{font-size:.67rem;color:rgba(255,255,255,0.25);margin-top:3px;text-align:center;}
 
-/* ── SPLIT NAV ── */
-.split-nav{display:flex;gap:10px;margin-top:24px;}
-.split-next{flex:1;background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:opacity .15s;}
-.split-next:hover{opacity:.9;}
-.split-back{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-weight:600;font-size:.88rem;padding:13px 18px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;}
-.split-back:hover{background:rgba(255,255,255,0.1);}
+/* ── NAV BUTTONS ── */
+.step-nav{display:flex;gap:10px;margin-top:24px;}
+.btn-back{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;}
+.btn-back:hover{border-color:rgba(255,255,255,0.4);color:white;}
+.btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
+.btn-next:hover{background:#b8d000;}
+.btn-generate{flex:1;background:linear-gradient(135deg,var(--lime),#a8c000);color:var(--navy);border:none;border-radius:10px;padding:13px 20px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate:hover{filter:brightness(1.07);}
 
-/* ── PALETTE ── */
-.ms-pal-tabs{display:flex;gap:6px;margin-bottom:12px;}
-.ms-pal-tab{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;transition:all .2s;}
-.ms-pal-tab.active{border-color:rgba(163,230,53,0.5);color:var(--lime);}
-.ms-pal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.ms-pal-card{border:2px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);}
-.ms-pal-card:hover{border-color:rgba(255,255,255,0.2);}
-.ms-pal-card.selected{border-color:var(--blue);}
-.ms-pal-swatches{display:flex;gap:4px;margin-bottom:7px;}
-.ms-pal-swatch{height:20px;border-radius:5px;flex:1;}
-.ms-pal-name{font-weight:700;font-size:.72rem;color:white;}
-.ms-pal-desc{font-size:.65rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+/* ── OVERLAY ── */
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.96);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
+.gen-overlay.active{display:flex;}
+.gen-spinner{width:44px;height:44px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.25rem;}
+.gen-sub{color:rgba(255,255,255,.45);font-size:.85rem;max-width:300px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.75rem;}
+.gen-progress-bar{width:260px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.gen-progress-fill{height:100%;background:var(--lime);border-radius:2px;width:0%;transition:width .5s;}
 
-/* ── CHIPS ── */
-.ms-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
-.ms-chip{font-family:'Inter',sans-serif;font-size:.72rem;padding:6px 12px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);cursor:pointer;transition:all .2s;background:transparent;}
-.ms-chip:hover{border-color:rgba(163,230,53,0.4);color:var(--lime);}
-.ms-chip.used{background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.5);color:var(--lime);}
-
-/* ── INCOME CALCULATOR ── */
-.ms-calc{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;}
-.ms-calc-title{font-family:'DM Mono',monospace;font-size:.63rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;}
-.ms-calc-row{display:flex;gap:10px;margin-bottom:10px;}
-.ms-calc-result{font-family:'Inter',sans-serif;font-size:.82rem;color:var(--lime);margin-top:8px;}
-.ms-calc-apply{margin-top:8px;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;}
-
-/* ── ANIMATION PICKER ── */
-.ms-anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
-.ms-anim-card{border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px 8px;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);text-align:center;}
-.ms-anim-card:hover{border-color:rgba(255,255,255,0.2);}
-.ms-anim-card.selected{border-color:var(--blue);background:rgba(67,97,238,0.08);}
-.ms-anim-icon{font-size:1.2rem;margin-bottom:4px;}
-.ms-anim-name{font-family:'Inter',sans-serif;font-weight:700;font-size:.68rem;color:white;display:block;}
-.ms-anim-desc{font-size:.6rem;color:rgba(255,255,255,0.3);display:block;}
-
-/* ── SECTION LABEL ── */
-.ms-sl{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin:18px 0 8px;display:block;}
-
-/* ── GENERATE SCREEN ── */
-#ms-phase3{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:40px 24px;background:var(--bg);}
-.gen-summary{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px;max-width:560px;width:100%;margin-bottom:32px;}
-.gen-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Inter',sans-serif;font-size:.85rem;}
-.gen-row:last-child{border-bottom:none;}
-.gen-row-label{color:rgba(255,255,255,0.38);}
-.gen-row-val{color:white;font-weight:500;text-align:right;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.gen-btn{background:var(--lime);color:#080810;font-family:'Inter',sans-serif;font-weight:800;font-size:1.05rem;padding:18px 56px;border-radius:50px;border:none;cursor:pointer;transition:transform .15s,opacity .15s;}
-.gen-btn:hover{transform:translateY(-2px);}
-.gen-progress-wrap{width:100%;max-width:480px;margin-top:20px;display:none;}
-.gen-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;margin-bottom:10px;}
-.gen-bar-fill{height:100%;background:var(--lime);width:0%;transition:width 0.4s;}
-.gen-status{font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,0.4);text-align:center;}
-
-/* ── BUILTSY AI BANNER ── */
-.ms-ai-banner{background:rgba(163,230,53,0.07);border:1px solid rgba(163,230,53,0.18);border-radius:10px;padding:10px 14px;margin-bottom:20px;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.55);line-height:1.5;}
-.ms-ai-banner strong{color:var(--lime);}
+/* ── OUTPUT PANEL ── */
+#ms-output-panel{display:none;position:fixed;inset:0;z-index:300;background:#e8e8e0;flex-direction:column;}
+#ms-output-panel.active{display:flex;}
+.output-toolbar{background:#0D0D0D;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-badge{background:var(--lime);color:var(--navy);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.output-title{color:rgba(255,255,255,.6);font-size:.78rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.btn-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;}
+.btn-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
+.deploy-bar{background:rgba(200,224,0,.08);border-bottom:1px solid rgba(200,224,0,.15);padding:8px 16px;font-size:.74rem;color:rgba(255,255,255,.65);flex-shrink:0;}
+.deploy-bar a{color:var(--lime);font-weight:600;}
+.output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;}
+#ms-output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
+.output-error{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:13px;color:#fca5a5;font-size:.85rem;margin:14px;display:none;}
+.output-error.active{display:block;}
+#ms-revise-drawer{display:none;background:#0D0D0D;border-top:1px solid rgba(255,255,255,.08);padding:11px 14px;flex-shrink:0;}
+#ms-revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
+#ms-revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+#ms-revise-input::placeholder{color:rgba(255,255,255,.3);}
+.btn-revise-submit{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px 13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;flex-shrink:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .tpl-grid{grid-template-columns:repeat(2,1fr);}
-  #ms-phase2{flex-direction:column;height:auto;}
-  #ms-left{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,0.06);}
-  #ms-right{height:50vh;}
+  .app-shell{flex-direction:column;}
+  .left-panel{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .right-panel{display:none;}
 }
-@media(max-width:600px){
-  .tpl-grid{grid-template-columns:1fr;}
-  .fs-question{font-size:2rem;}
+@media(max-width:500px){
+  .field-grid{grid-template-columns:1fr;}
+  .upload-grid-2{grid-template-columns:1fr;}
+  .upload-grid-3{grid-template-columns:1fr 1fr;}
+  .palette-grid{grid-template-columns:1fr;}
+  .pal-tabs{flex-wrap:wrap;}
 }
+.left-panel::-webkit-scrollbar{width:4px;}
+.left-panel::-webkit-scrollbar-track{background:transparent;}
+.left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+
+/* ── SMART CHIPS ── */
+.chip-hint{font-size:.62rem;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-top:6px;margin-bottom:5px;}
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip-s{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:4px 12px;font-size:.73rem;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;line-height:1.5;}
+.chip-s:hover{border-color:rgba(200,224,0,0.35);color:var(--lime);}
+.chip-s.used{background:rgba(200,224,0,0.1);border-color:rgba(200,224,0,0.3);color:var(--lime);}
+
+/* ── INCOME CALCULATOR ── */
+.ig-box{background:rgba(67,97,238,0.08);border:1.5px solid rgba(67,97,238,0.2);border-radius:12px;padding:16px;margin-bottom:20px;}
+.ig-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.ig-icon{font-size:1.2rem;flex-shrink:0;}
+.ig-title{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
+.ig-sub{font-size:.74rem;color:rgba(255,255,255,0.4);line-height:1.5;}
+.ig-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.ig-inputs label{display:block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;margin-bottom:5px;}
+.ig-result{display:none;flex-direction:column;gap:7px;border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;margin-top:12px;}
+.ig-result-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;}
+.ig-result-label{color:rgba(255,255,255,0.4);}
+.ig-result-val{color:var(--lime);font-weight:700;font-family:'DM Mono',monospace;}
+.ig-apply{margin-top:6px;background:var(--builtsy-blue);color:white;border:none;border-radius:8px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:opacity .18s;}
+.ig-apply:hover{opacity:0.85;}
+/* Animation picker */
+.anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+.anim-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 8px 10px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);text-align:center;user-select:none;}
+.anim-card:hover{border-color:rgba(255,255,255,0.22);}
+.anim-card.selected{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
+.anim-card-icon{font-size:1.4rem;margin-bottom:5px;}
+.anim-card-name{font-weight:700;font-size:.72rem;color:white;display:block;}
+.anim-card-desc{font-size:.62rem;color:rgba(255,255,255,0.35);display:block;margin-top:2px;}
+.anim-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+.anim-mode-card{border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px 8px 8px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);text-align:center;user-select:none;}
+.anim-mode-card:hover{border-color:rgba(255,255,255,0.22);}
+.anim-mode-card.selected{border-color:var(--lime);box-shadow:0 0 0 3px rgba(163,230,53,.1);}
+.anim-mode-name{font-weight:700;font-size:.72rem;color:white;display:block;}
+.anim-mode-desc{font-size:.6rem;color:rgba(255,255,255,0.35);display:block;margin-top:2px;}
+.burst-trigger-row{display:flex;gap:12px;margin-top:10px;}
+.burst-trigger-check{display:flex;align-items:center;gap:7px;cursor:pointer;padding:9px 14px;border:2px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);transition:all .2s;flex:1;}
+.burst-trigger-check:hover{border-color:rgba(255,255,255,0.2);}
+.burst-trigger-check input{accent-color:var(--builtsy-blue);width:15px;height:15px;}
+.burst-trigger-check span{font-size:.75rem;font-weight:600;color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
 
-<!-- PROGRESS BAR -->
-<div id="ms-progress"><div id="ms-progress-fill"></div></div>
-
-<!-- ══════════════════════════════════
-     PHASE 1: Full-screen steps 1-3
-     ══════════════════════════════════ -->
-<div id="ms-phase1">
-
-  <!-- STEP 1: What do you do -->
-  <div class="fs-step active" id="ms-step-1">
-    <div class="ms-eyebrow">Step 1 of 15</div>
-    <h1 class="fs-question">What do you do?</h1>
-    <p class="fs-sub">Tell us about your work. The more you share, the better we tailor your site.</p>
-    <textarea class="fs-textarea" id="ms-what-you-do" placeholder="I help families find reliable childcare — I specialize in newborns and toddlers, and I work in the Chicago area..." rows="4"></textarea>
-    <button class="fs-btn" id="ms-step1-btn" onclick="msStep1Next()">Continue &rarr;</button>
-    <div class="fs-detecting" id="ms-detecting">
-      <div class="spinner"></div>
-      <p>Builtsy is personalizing your experience...</p>
-    </div>
+<div class="topnav">
+  <a href="dashboard.html" class="logo-text">builtsy</a>
+  <span class="tn-tag">class="tn-tag">&#9889; Template#9889; Universal</span>
+  <div class="tn-right">
+    <button class="btn-top" onclick="msGoStep(8)">&#9889; Generate</button>
   </div>
-
-  <!-- STEP 2: Template gallery -->
-  <div class="fs-step" id="ms-step-2">
-    <div class="ms-eyebrow" id="ms-step2-eyebrow">Step 2 of 15</div>
-    <h1 class="fs-question">Pick your vibe.</h1>
-    <p class="fs-sub" id="ms-step2-sub">Your best matches are highlighted. Browse freely — they're all yours.</p>
-    <div class="tpl-gallery">
-      <div class="tpl-filters" id="ms-tpl-filters">
-        <button class="tpl-filter active" onclick="msTplFilter('all')">All</button>
-        <button class="tpl-filter" onclick="msTplFilter('recommended')">&#10022; For You</button>
-      </div>
-      <div class="tpl-grid" id="ms-tpl-grid"></div>
-    </div>
-    <button class="fs-btn" id="ms-step2-btn" onclick="msGoStep(3)" disabled style="margin-top:24px;">Continue &rarr;</button>
-    <button class="fs-back" onclick="msGoStep(1)">&larr; Back</button>
-  </div>
-
-  <!-- STEP 3: Color palette -->
-  <div class="fs-step" id="ms-step-3">
-    <div class="ms-eyebrow">Step 3 of 15</div>
-    <h1 class="fs-question">Choose your colors.</h1>
-    <p class="fs-sub">Pick a palette — you'll see it live on your site in a moment.</p>
-    <div style="width:100%;max-width:560px;">
-      <div class="ms-pal-tabs">
-        <button class="ms-pal-tab active" onclick="msPalTab('light')">Light</button>
-        <button class="ms-pal-tab" onclick="msPalTab('dark')">Dark</button>
-        <button class="ms-pal-tab" onclick="msPalTab('mono')">Mono</button>
-      </div>
-      <div class="ms-pal-grid" id="ms-pal-grid"></div>
-    </div>
-    <button class="fs-btn" id="ms-step3-btn" onclick="msRevealSplit()" disabled>Continue &rarr;</button>
-    <button class="fs-back" onclick="msGoStep(2)">&larr; Back</button>
-  </div>
-
-</div><!-- /ms-phase1 -->
-
-
-<!-- ══════════════════════════════════
-     PHASE 2: Split layout steps 4-15
-     ══════════════════════════════════ -->
-<div id="ms-phase2" style="display:none;">
-
-  <!-- LEFT PANEL -->
-  <div id="ms-left">
-
-    <!-- Step counter + industry badge -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
-      <span id="ms-split-eyebrow" style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Step 4 of 15</span>
-      <span id="ms-industry-badge" style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(163,230,53,0.1);color:#a3e635;border:1px solid rgba(163,230,53,0.2);padding:3px 10px;border-radius:50px;"></span>
-    </div>
-
-    <!-- STEP 4: Your name -->
-    <div class="split-step active" id="ms-split-4">
-      <h2 class="split-q">Your name.</h2>
-      <p class="split-sub">As it appears on your site — first name or full name, your call.</p>
-      <div class="ms-field">
-        <input class="ms-input" id="ms-owner-name" type="text" placeholder="Olivia Martinez">
-      </div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(3)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(5)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 5: Business name -->
-    <div class="split-step" id="ms-split-5">
-      <h2 class="split-q">Your business name.</h2>
-      <p class="split-sub">What appears in your nav and footer. Can be your own name.</p>
-      <div class="ms-field">
-        <input class="ms-input" id="ms-biz-name" type="text" placeholder="Olivia Cares">
-      </div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(4)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(6)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 6: Location + tagline -->
-    <div class="split-step" id="ms-split-6">
-      <h2 class="split-q">Where you're based &amp; your tagline.</h2>
-      <p class="split-sub">Your city shows in trust signals. Your tagline goes in the footer and hero.</p>
-      <div class="ms-field">
-        <label class="ms-label">Location</label>
-        <input class="ms-input" id="ms-location" type="text" placeholder="Chicago, IL">
-      </div>
-      <div class="ms-field">
-        <label class="ms-label">Tagline</label>
-        <input class="ms-input" id="ms-tagline" type="text" placeholder="">
-      </div>
-      <div class="ms-chips" id="ms-tagline-chips"></div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(5)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(7)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 7: Hero headline -->
-    <div class="split-step" id="ms-split-7">
-      <h2 class="split-q">Your headline.</h2>
-      <p class="split-sub">The big statement at the top of your site. Make it count.</p>
-      <div class="ms-field">
-        <input class="ms-input" id="ms-headline" type="text" placeholder="">
-      </div>
-      <div class="ms-chips" id="ms-headline-chips"></div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(6)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(8)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 8: Bio -->
-    <div class="split-step" id="ms-split-8">
-      <h2 class="split-q">Your story.</h2>
-      <p class="split-sub">2&ndash;3 sentences about who you are and why you're great at what you do. Builtsy writes the rest.</p>
-      <div class="ms-field">
-        <textarea class="ms-input" id="ms-bio" placeholder="Share a little about yourself and your background..."></textarea>
-      </div>
-      <div class="ms-ai-banner"><strong>Builtsy writes the rest.</strong> Anything you leave blank gets filled in by our AI when you generate.</div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(7)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(9)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 9: Services -->
-    <div class="split-step" id="ms-split-9">
-      <h2 class="split-q">Your services.</h2>
-      <p class="split-sub">Name your top 3 offerings and what you charge. Builtsy writes the descriptions.</p>
-      <div id="ms-services-wrap"></div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(8)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(10)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 10: Credentials -->
-    <div class="split-step" id="ms-split-10">
-      <h2 class="split-q">Your credentials.</h2>
-      <p class="split-sub">Certifications, experience, trust signals. Click to add or type your own.</p>
-      <div class="ms-chips" id="ms-cred-chips"></div>
-      <div class="ms-field">
-        <input class="ms-input" id="ms-credentials" type="text" placeholder="e.g. CPR Certified, 8 years experience">
-      </div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(9)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(11)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 11: Income calculator + pricing -->
-    <div class="split-step" id="ms-split-11">
-      <h2 class="split-q">Your pricing.</h2>
-      <p class="split-sub">Set your rates for 3 tiers. Use the calculator if you need a starting point.</p>
-      <div class="ms-calc" id="ms-calc-wrap">
-        <div class="ms-calc-title">&#128161; INCOME CALCULATOR</div>
-        <div class="ms-calc-row">
-          <div class="ms-field" style="flex:1;margin:0;">
-            <label class="ms-label">Monthly goal ($)</label>
-            <input class="ms-input" id="ms-calc-goal" type="number" placeholder="4000" oninput="msCalcIncome()">
-          </div>
-          <div class="ms-field" style="flex:1;margin:0;">
-            <label class="ms-label" id="ms-calc-unit-label">Clients / mo</label>
-            <input class="ms-input" id="ms-calc-units" type="number" placeholder="8" oninput="msCalcIncome()">
-          </div>
-        </div>
-        <div class="ms-calc-result" id="ms-calc-result"></div>
-        <button class="ms-calc-apply" onclick="msCalcApply()">Apply to tiers &rarr;</button>
-      </div>
-      <div id="ms-tiers-wrap"></div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(10)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(12)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 12: Contact info -->
-    <div class="split-step" id="ms-split-12">
-      <h2 class="split-q">How to reach you.</h2>
-      <p class="split-sub">Your contact email and phone for the contact section.</p>
-      <div class="ms-field">
-        <label class="ms-label">Email</label>
-        <input class="ms-input" id="ms-email" type="email" placeholder="hello@yourbusiness.com">
-      </div>
-      <div class="ms-field">
-        <label class="ms-label">Phone <span style="opacity:.4;font-size:.85em;">(optional)</span></label>
-        <input class="ms-input" id="ms-phone" type="tel" placeholder="(312) 555-0100">
-      </div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(11)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(13)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 13: Social links -->
-    <div class="split-step" id="ms-split-13">
-      <h2 class="split-q">Your socials.</h2>
-      <p class="split-sub">Add whichever apply. All optional.</p>
-      <div class="ms-field">
-        <label class="ms-label">Instagram</label>
-        <input class="ms-input" id="ms-instagram" type="url" placeholder="https://instagram.com/yourhandle">
-      </div>
-      <div class="ms-field">
-        <label class="ms-label">TikTok</label>
-        <input class="ms-input" id="ms-tiktok" type="url" placeholder="https://tiktok.com/@yourhandle">
-      </div>
-      <div class="ms-field">
-        <label class="ms-label">LinkedIn</label>
-        <input class="ms-input" id="ms-linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile">
-      </div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(12)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(14)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 14: Photos -->
-    <div class="split-step" id="ms-split-14">
-      <h2 class="split-q">Your photos.</h2>
-      <p class="split-sub">Upload yours or skip — we use styled placeholders until you're ready.</p>
-      <div id="ms-photo-zones"></div>
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(13)">&larr;</button>
-        <button class="split-next" onclick="msGoStep(15)">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- STEP 15: Celebration effects -->
-    <div class="split-step" id="ms-split-15">
-      <h2 class="split-q">Celebration effects.</h2>
-      <p class="split-sub">Background animation and celebration bursts. Default is none.</p>
-
-      <span class="ms-sl">BACKGROUND ANIMATION</span>
-      <div class="ms-anim-grid" id="ms-anim-grid">
-        <div class="ms-anim-card selected" id="ms-anim-none" onclick="msSelectAnim('none')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">None</span><span class="ms-anim-desc">Clean &amp; still</span></div>
-        <div class="ms-anim-card" id="ms-anim-sparkles" onclick="msSelectAnim('sparkles')"><div class="ms-anim-icon">&#10022;</div><span class="ms-anim-name">Sparkles</span><span class="ms-anim-desc">Floating particles</span></div>
-        <div class="ms-anim-card" id="ms-anim-stars" onclick="msSelectAnim('stars')"><div class="ms-anim-icon">&#11088;</div><span class="ms-anim-name">Stars</span><span class="ms-anim-desc">Twinkling stars</span></div>
-        <div class="ms-anim-card" id="ms-anim-bubbles" onclick="msSelectAnim('bubbles')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">Bubbles</span><span class="ms-anim-desc">Rising circles</span></div>
-        <div class="ms-anim-card" id="ms-anim-petals" onclick="msSelectAnim('petals')"><div class="ms-anim-icon">&#127800;</div><span class="ms-anim-name">Petals</span><span class="ms-anim-desc">Falling petals</span></div>
-        <div class="ms-anim-card" id="ms-anim-confetti" onclick="msSelectAnim('confetti')"><div class="ms-anim-icon">&#127882;</div><span class="ms-anim-name">Confetti</span><span class="ms-anim-desc">Classic confetti</span></div>
-      </div>
-
-      <div id="ms-anim-mode-wrap" style="display:none;margin-bottom:16px;">
-        <span class="ms-sl">PLAYS</span>
-        <div class="ms-anim-grid">
-          <div class="ms-anim-card selected" id="ms-mode-ambient" onclick="msSelectAnimMode('ambient')"><span class="ms-anim-name">Ambient</span><span class="ms-anim-desc">Always running</span></div>
-          <div class="ms-anim-card" id="ms-mode-load" onclick="msSelectAnimMode('load')"><span class="ms-anim-name">On Load</span><span class="ms-anim-desc">Once on open</span></div>
-          <div class="ms-anim-card" id="ms-mode-scroll" onclick="msSelectAnimMode('scroll')"><span class="ms-anim-name">On Scroll</span><span class="ms-anim-desc">As they scroll</span></div>
-        </div>
-      </div>
-
-      <span class="ms-sl">CELEBRATION BURST</span>
-      <div class="ms-anim-grid" id="ms-burst-grid">
-        <div class="ms-anim-card selected" id="ms-burst-none" onclick="msSelectBurst('none')"><div class="ms-anim-icon">&#9675;</div><span class="ms-anim-name">None</span></div>
-        <div class="ms-anim-card" id="ms-burst-confetti" onclick="msSelectBurst('confetti')"><div class="ms-anim-icon">&#127881;</div><span class="ms-anim-name">Confetti</span></div>
-        <div class="ms-anim-card" id="ms-burst-sparkles" onclick="msSelectBurst('sparkles')"><div class="ms-anim-icon">&#10024;</div><span class="ms-anim-name">Sparkles</span></div>
-        <div class="ms-anim-card" id="ms-burst-stars" onclick="msSelectBurst('stars')"><div class="ms-anim-icon">&#11088;</div><span class="ms-anim-name">Stars</span></div>
-        <div class="ms-anim-card" id="ms-burst-fireworks" onclick="msSelectBurst('fireworks')"><div class="ms-anim-icon">&#127878;</div><span class="ms-anim-name">Fireworks</span></div>
-      </div>
-
-      <div id="ms-burst-trigger-wrap" style="display:none;margin-bottom:12px;">
-        <span class="ms-sl">TRIGGER ON</span>
-        <div style="display:flex;gap:10px;margin-top:6px;">
-          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;flex:1;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.6);">
-            <input type="checkbox" id="ms-burst-on-form" checked style="accent-color:#4361ee;"> Form Submit
-          </label>
-          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;flex:1;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,0.6);">
-            <input type="checkbox" id="ms-burst-on-cta" style="accent-color:#4361ee;"> CTA Clicks
-          </label>
-        </div>
-      </div>
-
-      <div class="split-nav">
-        <button class="split-back" onclick="msGoStep(14)">&larr;</button>
-        <button class="split-next" onclick="msShowGenerate()">Review &amp; Generate &rarr;</button>
-      </div>
-    </div>
-
-  </div><!-- /ms-left -->
-
-  <!-- RIGHT PANEL: Live preview -->
-  <div id="ms-right">
-    <iframe id="ms-preview-iframe" src="" title="Site preview"></iframe>
-  </div>
-
-</div><!-- /ms-phase2 -->
-
-
-<!-- ══════════════════════════════════
-     PHASE 3: Generate screen
-     ══════════════════════════════════ -->
-<div id="ms-phase3" style="display:none;">
-  <div class="ms-eyebrow" style="text-align:center;margin-bottom:20px;">Step 15 of 15</div>
-  <h1 class="fs-question" style="margin-bottom:8px;">You're ready.</h1>
-  <p class="fs-sub" style="margin-bottom:28px;">Builtsy writes everything you left blank. Here's what you gave us:</p>
-  <div class="gen-summary" id="ms-gen-summary"></div>
-  <button class="gen-btn" onclick="msGenerate()">Generate My Site &rarr;</button>
-  <div class="gen-progress-wrap" id="ms-gen-progress">
-    <div class="gen-bar"><div class="gen-bar-fill" id="ms-gen-bar-fill"></div></div>
-    <p class="gen-status" id="ms-gen-status">Builtsy is building your site...</p>
-  </div>
-  <button class="fs-back" onclick="msGoStep(15)" style="margin-top:16px;">&larr; Edit answers</button>
 </div>
 
+<div class="app-shell">
+
+  <!-- ══ LEFT PANEL ══ -->
+  <div class="left-panel">
+
+    <div class="step-progress">
+      <div class="step-dot active" id="ms-dot-1" onclick="msGoStep(1)">1</div>
+      <div class="step-line" id="ms-line-1"></div>
+      <div class="step-dot" id="ms-dot-2" onclick="msGoStep(2)">2</div>
+      <div class="step-line" id="ms-line-2"></div>
+      <div class="step-dot" id="ms-dot-3" onclick="msGoStep(3)">3</div>
+      <div class="step-line" id="ms-line-3"></div>
+      <div class="step-dot" id="ms-dot-4" onclick="msGoStep(4)">4</div>
+      <div class="step-line" id="ms-line-4"></div>
+      <div class="step-dot" id="ms-dot-5" onclick="msGoStep(5)">5</div>
+      <div class="step-line" id="ms-line-5"></div>
+      <div class="step-dot" id="ms-dot-6" onclick="msGoStep(6)">6</div>
+      <div class="step-line" id="ms-line-6"></div>
+      <div class="step-dot" id="ms-dot-7" onclick="msGoStep(7)">7</div>
+      <div class="step-line" id="ms-line-7"></div>
+      <div class="step-dot" id="ms-dot-8" onclick="msGoStep(8)">8</div>
+    </div>
+
+    <div class="left-inner">
+
+      <div style="background:rgba(200,224,0,0.07);border:1px solid rgba(200,224,0,0.15);border-radius:10px;padding:10px 14px;margin:16px 0 4px;display:flex;align-items:flex-start;gap:10px;">
+        <span style="font-size:1rem;flex-shrink:0;">✦</span>
+        <span style="font-size:.78rem;color:rgba(255,255,255,0.65);line-height:1.55;">Fill in what you know — <strong style="color:var(--lime);">Builtsy AI writes the rest.</strong> Nothing is required.</span>
+      </div>
+
+      <!-- ══ STEP 1 ══ -->
+      <div class="step-panel active" id="ms-step-1">
+        <p class="step-label-top">Step 1 of 8</p>
+        <h2 class="step-title-main">Let's start with you.</h2>
+        <p class="step-sub-main">Tell us about yourself and what you do. Builtsy personalizes everything from here.</p>
+        <div class="field">
+          <label>Your Name</label>
+          <input class="fi" id="ms-owner-name" type="text" placeholder="Sophie Lane">
+        </div>
+        <div class="field">
+          <label>Business / Brand Name <span class="opt">or just your name</span></label>
+          <input class="fi" id="ms-biz-name" type="text" placeholder="Sophie Lane Childcare">
+        </div>
+        <div class="field">
+          <label>What do you do? <span class="opt">in your own words</span></label>
+          <textarea class="fi" id="ms-description" placeholder="I provide in-home childcare for families in Austin, TX. I specialize in newborns and toddlers and have 8 years of experience..." style="min-height:90px;"></textarea>
+        </div>
+        <div id="ms-detecting" style="display:none;flex-direction:column;align-items:center;gap:10px;padding:10px 0;">
+          <div style="width:22px;height:22px;border:2px solid rgba(200,224,0,0.15);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+          <p style="font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,0.35);letter-spacing:.06em;">Builtsy is personalizing your experience...</p>
+        </div>
+        <div class="step-nav">
+          <button class="btn-next" id="ms-step1-btn" onclick="msStep1Next()">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 2 ══ -->
+      <div class="step-panel" id="ms-step-2">
+        <p class="step-label-top">Step 2 of 8</p>
+        <h2 class="step-title-main">Choose Your Template</h2>
+        <p class="step-sub-main" id="ms-tpl-sub">Browse all designs &mdash; your best matches are highlighted.</p>
+        <div id="ms-tpl-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(1)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(3)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 3 ══ -->
+      <div class="step-panel" id="ms-step-3">
+        <p class="step-label-top">Step 3 of 8</p>
+        <h2 class="step-title-main">Your Specialty &amp; Colors</h2>
+        <p class="step-sub-main">Tell us your niche, then pick a palette. Changes show live in the preview.</p>
+
+        <span class="sl">Your Specialty</span>
+        <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-bottom:10px;line-height:1.5;">Select all that apply &mdash; helps Builtsy personalize your copy.</p>
+        <div class="care-pills" id="ms-specialty-pills">
+          <!-- populated by AI after step 1 -->
+        </div>
+
+        <span class="sl" style="margin-top:24px;">Choose Your Palette</span>
+        <div class="pal-tabs">
+          <button class="pal-tab active" id="ms-tab-light" onclick="msSelectPaletteTab('light')">Light</button>
+          <button class="pal-tab" id="ms-tab-dark" onclick="msSelectPaletteTab('dark')">Dark</button>
+          <button class="pal-tab" id="ms-tab-mono" onclick="msSelectPaletteTab('mono')">Mono</button>
+          <button class="pal-tab" id="ms-tab-custom" onclick="msSelectPaletteTab('custom')">Custom</button>
+        </div>
+        <div id="ms-palette-grid-wrap"></div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(2)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(4)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 4 ══ -->
+      <div class="step-panel" id="ms-step-4">
+        <p class="step-label-top">Step 4 of 8</p>
+        <h2 class="step-title-main">Business Basics</h2>
+        <p class="step-sub-main">These go in your nav, hero, and footer. Keep them sharp.</p>
+        <div class="field">
+          <label>Tagline</label>
+          <input class="fi" id="ms-tagline" type="text" placeholder="Trusted In-Home Care for Growing Families">
+          <div class="chip-hint">&#9679; Suggestions — click to fill</div>
+          <div class="chips-row" id="ms-chips-tagline"></div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>City / Location</label>
+            <input class="fi" id="ms-location" type="text" placeholder="Austin, TX">
+          </div>
+          <div class="field">
+            <label>Your Handle</label>
+            <input class="fi" id="ms-handle" type="text" placeholder="@sophielane">
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Years of Experience</label>
+            <input class="fi" id="ms-years-exp" type="text" placeholder="8">
+          </div>
+          <div class="field">
+            <label>Clients Served</label>
+            <input class="fi" id="ms-clients-served" type="text" placeholder="45+">
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(3)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(5)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 5 ══ -->
+      <div class="step-panel" id="ms-step-5">
+        <p class="step-label-top">Step 5 of 8</p>
+        <h2 class="step-title-main">Your Story</h2>
+        <p class="step-sub-main">The copy that sells you. Short, honest, and warm.</p>
+        <div class="field">
+          <label>Hero Headline <span class="opt">5&ndash;8 words, punchy</span></label>
+          <input class="fi" id="ms-hero-headline" type="text" placeholder="e.g. Nurturing Care, Right in Your Home">
+          <div class="field-hint">This is the first thing visitors read. Make it count.</div>
+          <div class="chip-hint">&#9679; Suggestions — click to fill</div>
+          <div class="chips-row" id="ms-chips-headline"></div>
+        </div>
+        <div class="field">
+          <label>Hero Subheading <span class="opt">2 sentences, who you help</span></label>
+          <textarea class="fi" id="ms-hero-sub" placeholder="What you do and who you help — 2 sentences."></textarea>
+        </div>
+        <div class="field">
+          <label>About / Bio <span class="opt">3&ndash;5 sentences, personal story</span></label>
+          <textarea class="fi" id="ms-bio" style="min-height:100px;" placeholder="Your story, in your voice — 3–5 sentences."></textarea>
+        </div>
+        <div class="field">
+          <label>Fun Facts / Credential Pills <span class="opt">comma-separated</span></label>
+          <input class="fi" id="ms-fun-facts" type="text" placeholder="e.g. Dog Mom, CPR Certified, 10 Years Experience">
+          <div class="field-hint">Short pills shown in your about section.</div>
+        </div>
+        <div class="field">
+          <label>Credentials / Certifications <span class="opt">comma-separated</span></label>
+          <input class="fi" id="ms-credentials" type="text" placeholder="e.g. Background Checked, CPR Certified">
+          <div class="field-hint">Trust signals shown prominently on your site.</div>
+          <div class="chip-hint">&#9679; Suggestions — click to add</div>
+          <div class="chips-row" id="ms-chips-creds"></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(4)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(6)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 6 ══ -->
+      <div class="step-panel" id="ms-step-6">
+        <p class="step-label-top">Step 6 of 8</p>
+        <h2 class="step-title-main">Services &amp; Rates</h2>
+        <p class="step-sub-main">What you offer, what it costs, and where you work.</p>
+
+        <span class="sl">Services (up to 4)</span>
+        <div id="ms-services-wrap">
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="msToggleSvc(this)">
+              <span class="svc-block-title">Service 1</span>
+              <span class="svc-block-chevron open">&#9662;</span>
+            </div>
+            <div class="svc-block-body open">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc1-name" type="text" value="In-Home Childcare"></div>
+              <div class="field"><label>Description <span class="opt">1&ndash;2 sentences</span></label><input class="fi" id="ms-svc1-desc" type="text" value="Full-day or part-time in-home care tailored to your child&rsquo;s schedule and developmental needs."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags <span class="opt">comma-separated</span></label><input class="fi" id="ms-svc1-tags" type="text" value="Ages 0&ndash;12, Flexible Hours, Loving Care"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="msToggleSvc(this)">
+              <span class="svc-block-title">Service 2</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc2-name" type="text" value="After School Care"></div>
+              <div class="field"><label>Description</label><input class="fi" id="ms-svc2-desc" type="text" value="Pick-up, homework help, snacks, and a safe space until you get home."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc2-tags" type="text" value="Homework Help, Pick-Up, Afternoons"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="msToggleSvc(this)">
+              <span class="svc-block-title">Service 3</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc3-name" type="text" value="Newborn Care"></div>
+              <div class="field"><label>Description</label><input class="fi" id="ms-svc3-desc" type="text" value="Overnight and daytime newborn support to help you rest, recover, and feel confident as a new parent."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc3-tags" type="text" value="Overnight, Newborn, New Parents"></div>
+            </div>
+          </div>
+          <div class="svc-block">
+            <div class="svc-block-header" onclick="msToggleSvc(this)">
+              <span class="svc-block-title">Service 4</span>
+              <span class="svc-block-chevron">&#9662;</span>
+            </div>
+            <div class="svc-block-body">
+              <div class="field" style="margin-top:11px;"><label>Name</label><input class="fi" id="ms-svc4-name" type="text" value="Date Night / Occasional"></div>
+              <div class="field"><label>Description</label><input class="fi" id="ms-svc4-desc" type="text" value="Flexible evening or weekend care with no long-term commitment required."></div>
+              <div class="field" style="margin-bottom:4px;"><label>Tags</label><input class="fi" id="ms-svc4-tags" type="text" value="Evenings, Weekends, No Contract"></div>
+            </div>
+          </div>
+        </div>
+
+        <span class="sl">Rates (3 tiers)</span>
+
+        <!-- INCOME CALCULATOR -->
+        <div class="ig-box">
+          <div class="ig-head">
+            <span class="ig-icon">&#127919;</span>
+            <div>
+              <div class="ig-title">What do you need to make?</div>
+              <div class="ig-sub">Enter your goal — we'll work out what to charge per hour.</div>
+            </div>
+          </div>
+          <div class="ig-inputs">
+            <div>
+              <label>Monthly income goal</label>
+              <div style="position:relative;">
+                <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.3);font-size:.9rem;">$</span>
+                <input class="fi" id="ms-ig-goal" type="number" placeholder="3,500" style="padding-left:26px;" oninput="msCalcIncome()">
+              </div>
+            </div>
+            <div>
+              <label>Hours per week</label>
+              <input class="fi" id="ms-ig-hours" type="number" placeholder="30" value="30" oninput="msCalcIncome()">
+            </div>
+          </div>
+          <div class="ig-result" id="ms-ig-result">
+            <div class="ig-result-row"><span class="ig-result-label">Suggested hourly rate</span><span class="ig-result-val" id="ms-ig-rate"></span></div>
+            <div class="ig-result-row"><span class="ig-result-label">Monthly at this rate</span><span class="ig-result-val" id="ms-ig-monthly"></span></div>
+            <div class="ig-result-row"><span class="ig-result-label">Suggested rate range</span><span class="ig-result-val" id="ms-ig-range"></span></div>
+            <button class="ig-apply" onclick="msApplyRates()">Apply these rates to my tiers &#8594;</button>
+          </div>
+        </div>
+
+        <div class="price-block" id="ms-price-block-1">
+          <div class="price-block-label">Tier 1</div>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="1" onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate1-name" type="text" value="Occasional / Drop-In"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate1-price" type="text" value="$22/hr"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description <span class="opt">1&ndash;2 sentences</span></label><textarea class="fi" id="ms-rate1-desc">Perfect for date nights or one-off coverage with no long-term commitment.</textarea></div>
+        </div>
+
+        <div class="price-block popular" id="ms-price-block-2">
+          <div class="price-block-label">&#9733; Most Requested</div>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="2" checked onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate2-name" type="text" value="Regular Weekly"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate2-price" type="text" value="$18/hr"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="ms-rate2-desc">Consistent weekly schedule with a discounted hourly rate for ongoing families.</textarea></div>
+        </div>
+
+        <div class="price-block" id="ms-price-block-3">
+          <div class="price-block-label">Tier 3</div>
+          <label class="popular-toggle"><input type="radio" name="ms-popular-tier" value="3" onchange="ctUpdatePopular()"><span>Mark as Most Requested</span></label>
+          <div class="field-grid">
+            <div class="field"><label>Tier Name</label><input class="fi" id="ms-rate3-name" type="text" value="Full Time"></div>
+            <div class="field"><label>Rate</label><input class="fi" id="ms-rate3-price" type="text" value="$15/hr"></div>
+          </div>
+          <div class="field" style="margin-bottom:4px;"><label>Description</label><textarea class="fi" id="ms-rate3-desc">Full-time placement with a guaranteed weekly minimum and priority scheduling.</textarea></div>
+        </div>
+
+        <span class="sl">Service Area</span>
+        <div class="field">
+          <label>Neighborhoods / Cities <span class="opt">comma-separated</span></label>
+          <input class="fi" id="ms-service-area" type="text" placeholder="South Congress, Brentwood, Hyde Park, Round Rock">
+          <div class="field-hint">Shown in your contact and services section.</div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(5)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(7)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 7 ══ -->
+      <div class="step-panel" id="ms-step-7">
+        <p class="step-label-top">Step 7 of 8</p>
+        <h2 class="step-title-main">Your Photos</h2>
+        <p class="step-sub-main">Upload images for your template. All optional &mdash; styled placeholders used if skipped.</p>
+        <div id="ms-photo-zones-container"></div>
+
+        <!-- CELEBRATION EFFECTS -->
+        <div style="margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.07);">
+          <p class="step-label-top" style="color:var(--lime);">✦ CELEBRATION EFFECTS</p>
+          <p style="color:rgba(255,255,255,0.45);font-size:.8rem;margin:2px 0 16px;line-height:1.5;">Background animation on your site. Subtle or none — your call.</p>
+
+          <span class="sl">BACKGROUND ANIMATION</span>
+          <div class="anim-grid" id="ms-anim-grid">
+            <div class="anim-card selected" id="ms-anim-none" onclick="msSelectAnim('none')"><div class="anim-card-icon">○</div><span class="anim-card-name">None</span><span class="anim-card-desc">Clean &amp; still</span></div>
+            <div class="anim-card" id="ms-anim-sparkles" onclick="msSelectAnim('sparkles')"><div class="anim-card-icon">✦</div><span class="anim-card-name">Sparkles</span><span class="anim-card-desc">Floating particles</span></div>
+            <div class="anim-card" id="ms-anim-stars" onclick="msSelectAnim('stars')"><div class="anim-card-icon">⭐</div><span class="anim-card-name">Stars</span><span class="anim-card-desc">Twinkling stars</span></div>
+            <div class="anim-card" id="ms-anim-bubbles" onclick="msSelectAnim('bubbles')"><div class="anim-card-icon">○</div><span class="anim-card-name">Bubbles</span><span class="anim-card-desc">Rising circles</span></div>
+            <div class="anim-card" id="ms-anim-petals" onclick="msSelectAnim('petals')"><div class="anim-card-icon">🌸</div><span class="anim-card-name">Petals</span><span class="anim-card-desc">Falling petals</span></div>
+            <div class="anim-card" id="ms-anim-confetti" onclick="msSelectAnim('confetti')"><div class="anim-card-icon">🎊</div><span class="anim-card-name">Confetti</span><span class="anim-card-desc">Classic confetti</span></div>
+          </div>
+
+          <div id="ms-anim-mode-wrap" style="display:none;margin-top:14px;">
+            <span class="sl">PLAYS</span>
+            <div class="anim-mode-grid">
+              <div class="anim-mode-card selected" id="ms-mode-ambient" onclick="msSelectAnimMode('ambient')"><span class="anim-mode-name">Ambient</span><span class="anim-mode-desc">Always running</span></div>
+              <div class="anim-mode-card" id="ms-mode-load" onclick="msSelectAnimMode('load')"><span class="anim-mode-name">On Load</span><span class="anim-mode-desc">Once on open</span></div>
+              <div class="anim-mode-card" id="ms-mode-scroll" onclick="msSelectAnimMode('scroll')"><span class="anim-mode-name">On Scroll</span><span class="anim-mode-desc">As they scroll</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top:22px;">
+            <span class="sl">CELEBRATION BURST</span>
+            <div class="anim-grid" id="ms-burst-grid">
+              <div class="anim-card selected" id="ms-burst-none" onclick="msSelectBurst('none')"><div class="anim-card-icon">○</div><span class="anim-card-name">None</span><span class="anim-card-desc">No burst</span></div>
+              <div class="anim-card" id="ms-burst-confetti" onclick="msSelectBurst('confetti')"><div class="anim-card-icon">🎉</div><span class="anim-card-name">Confetti</span><span class="anim-card-desc">Party burst</span></div>
+              <div class="anim-card" id="ms-burst-sparkles" onclick="msSelectBurst('sparkles')"><div class="anim-card-icon">✨</div><span class="anim-card-name">Sparkles</span><span class="anim-card-desc">Sparkle pop</span></div>
+              <div class="anim-card" id="ms-burst-stars" onclick="msSelectBurst('stars')"><div class="anim-card-icon">⭐</div><span class="anim-card-name">Stars</span><span class="anim-card-desc">Star burst</span></div>
+              <div class="anim-card" id="ms-burst-fireworks" onclick="msSelectBurst('fireworks')"><div class="anim-card-icon">🎆</div><span class="anim-card-name">Fireworks</span><span class="anim-card-desc">Boom!</span></div>
+            </div>
+
+            <div id="ms-burst-trigger-wrap" style="display:none;margin-top:12px;">
+              <span class="sl">TRIGGER ON</span>
+              <div class="burst-trigger-row">
+                <label class="burst-trigger-check"><input type="checkbox" id="ms-burst-on-form" checked><span>Form Submit</span></label>
+                <label class="burst-trigger-check"><input type="checkbox" id="ms-burst-on-cta"><span>CTA Clicks</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(6)">&#8592; Back</button>
+          <button class="btn-next" onclick="msGoStep(8)">Continue &#8594;</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 8 ══ -->
+      <div class="step-panel" id="ms-step-8">
+        <p class="step-label-top">Step 8 of 8</p>
+        <h2 class="step-title-main">Reviews &amp; Final Details</h2>
+        <p class="step-sub-main">Family testimonials, contact info, and the finishing touches.</p>
+
+        <span class="sl">Contact &amp; Social</span>
+        <div class="field">
+          <label>Contact Email</label>
+          <input class="fi" id="ms-email" type="email" placeholder="hello@yourbusiness.com">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input class="fi" id="ms-phone" type="text" placeholder="(512) 555-0142">
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Instagram URL <span class="opt">optional</span></label>
+            <input class="fi" id="ms-instagram" type="text" placeholder="https://instagram.com/yourhandle">
+          </div>
+          <div class="field">
+            <label>Facebook URL <span class="opt">optional</span></label>
+            <input class="fi" id="ms-facebook" type="text" placeholder="https://facebook.com/yourpage">
+          </div>
+        </div>
+        <div class="field">
+          <label>Availability Note</label>
+          <input class="fi" id="ms-availability" type="text" value="Available Mon&ndash;Fri, flexible weekends">
+          <div class="field-hint">Shown in your contact section so families know when to reach out.</div>
+        </div>
+
+        <!-- ── FEATURES & ADD-ONS ── -->
+        <div style="margin-top:28px;margin-bottom:20px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+          <div style="font-size:.7rem;font-weight:700;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Features &amp; Add-Ons</div>
+
+          <!-- Testimonials -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Testimonials</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Paste real reviews &mdash; Builtsy will weave them into your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleTesti()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-testi-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-testi-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ms-testi-feature-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="margin-bottom:10px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 1</div>
+              <textarea class="fi" id="ms-ftesti1-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ms-ftesti1-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ms-ftesti1-ctx" type="text" placeholder="Mom of twins, ages 3 &amp; 5">
+              </div>
+            </div>
+            <div style="margin-bottom:10px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 2</div>
+              <textarea class="fi" id="ms-ftesti2-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ms-ftesti2-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ms-ftesti2-ctx" type="text" placeholder="Family of 4, kids ages 5 &amp; 8">
+              </div>
+            </div>
+            <div style="margin-bottom:4px;">
+              <div style="font-size:.68rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;">Testimonial 3</div>
+              <textarea class="fi" id="ms-ftesti3-quote" placeholder="Paste review quote here..." style="min-height:64px;margin-bottom:6px;"></textarea>
+              <div class="field-grid">
+                <input class="fi" id="ms-ftesti3-name" type="text" placeholder="Reviewer name">
+                <input class="fi" id="ms-ftesti3-ctx" type="text" placeholder="Parents of a toddler, 18 months">
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Generator -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">FAQ Generator</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Builtsy writes 8 FAQs for your business &mdash; edit and save in the tool</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleFAQ()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-faq-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-faq-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ms-faq-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Builtsy will generate 8 FAQs tailored to your care business and embed them as an accordion on your site.</div>
+            <button onclick="msOpenFAQTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Open FAQ Generator</button>
+          </div>
+
+          <!-- Calendly Booking -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Calendly Booking</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed your booking calendar directly on your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleCal()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-cal-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-cal-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ms-cal-wrap" style="display:none;padding:12px 0 4px;">
+            <input class="fi" id="ms-calendly-url" type="text" placeholder="calendly.com/yourname">
+          </div>
+
+          <!-- Google Form / Intake Form -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">Google Form / Intake Form</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Embed an intake form &mdash; great for collecting family info before a meet &amp; greet</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleForm()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-form-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-form-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ms-form-wrap" style="display:none;padding:12px 0 4px;">
+            <input class="fi" id="ms-google-form-url" type="text" placeholder="docs.google.com/forms/...">
+          </div>
+
+          <!-- SMS Lead Alerts -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:#fff;">SMS Lead Alerts</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Get an instant text when a family fills out your contact form</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleSMS()">
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-sms-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-sms-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+            </div>
+          </div>
+          <div id="ms-sms-wrap" style="display:none;padding:12px 0 4px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your phone number and message template so you get a text the moment a new family reaches out.</div>
+            <button onclick="msOpenSMSTool()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Configure SMS</button>
+          </div>
+
+        </div>
+
+        <!-- ── REVENUE BOOSTER ── -->
+        <div style="margin-top:28px;padding:16px;background:rgba(200,224,0,0.06);border:1.5px solid rgba(200,224,0,0.22);border-radius:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;color:var(--lime);">Revenue Booster</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Add an interactive pricing calculator to your site</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="msToggleRevBooster()">
+              <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">OFF</span>
+              <div style="position:relative;width:40px;height:22px;">
+                <div id="ms-rb-track" style="position:absolute;inset:0;background:#374151;border-radius:11px;transition:background .2s;"></div>
+                <div id="ms-rb-thumb" style="position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+              </div>
+              <span style="font-size:.72rem;color:#9ca3af;font-family:'DM Mono',monospace;">ON</span>
+            </div>
+          </div>
+          <div id="ms-rb-wrap" style="display:none;margin-top:12px;">
+            <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;line-height:1.5;">Configure your packages and add-ons in the Revenue Booster tool &mdash; it saves automatically and gets embedded in your site.</div>
+            <button onclick="msOpenRevBooster()" style="background:linear-gradient(135deg,var(--lime),#a0b800);color:#0D0D0D;border:none;border-radius:8px;padding:0.5rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;">Open Revenue Booster</button>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="msGoStep(7)">&#8592; Back</button>
+          <button class="btn-generate" onclick="msGenerate()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Build My Site
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /left-inner -->
+  </div><!-- /left-panel -->
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <div class="right-panel">
+    <div class="preview-toolbar">
+      <div class="preview-dot" style="background:#FF5F57;"></div>
+      <div class="preview-dot" style="background:#FEBC2E;margin-left:4px;"></div>
+      <div class="preview-dot" style="background:#28C840;margin-left:4px;"></div>
+      <div class="preview-url" id="ms-preview-url">caretaker-warm.html</div>
+    </div>
+    <div class="preview-frame-wrap">
+      <iframe id="preview-iframe" src="caretaker-warm.html" scrolling="yes"></iframe>
+    </div>
+  </div>
+
+</div><!-- /app-shell -->
+
+<!-- GENERATION OVERLAY -->
+<div class="gen-overlay" id="ms-overlay">
+  <div class="gen-spinner"></div>
+  <div class="gen-title">Building your site&#8230;</div>
+  <div class="gen-sub">Filling your content into the template. Takes about 30&ndash;45 seconds.</div>
+  <div class="gen-msg" id="ms-gen-msg">Reading your business info&#8230;</div>
+  <div class="gen-progress-bar"><div class="gen-progress-fill" id="ms-progress-fill"></div></div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="ms-output-panel">
+  <div class="output-toolbar">
+    <span class="output-badge">&#10003; Ready</span>
+    <span class="output-title" id="ms-output-title">Your site &mdash; scroll to preview</span>
+    <button class="btn-tb" onclick="msToggleRevise()">&#9998; Revise</button>
+    <button class="btn-tb" onclick="msRebuild()">&#8635; Rebuild</button>
+    <button class="btn-dl" onclick="msDownload()">&#8595; Download</button>
+    <button class="btn-tb" onclick="msStartOver()">&#8592; Start Over</button>
+  </div>
+  <div class="deploy-bar">
+    &#128640; <strong style="color:white;">Go live:</strong> Download &#8594; drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> &#8594; live in 10 seconds.
+  </div>
+  <div class="output-error" id="ms-error"></div>
+  <div id="ms-revise-drawer">
+    <textarea id="ms-revise-input" placeholder="Describe what to change&#8230; e.g. Make the hero headline warmer and more personal" rows="2"></textarea>
+    <button class="btn-revise-submit" onclick="msRevise()">Apply &#8594;</button>
+  </div>
+  <div class="output-preview-wrap">
+    <div class="output-preview-card">
+      <iframe id="ms-output-preview-frame" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
 
 <script>
 // ══════════════════════════════════════════════
+// TEMPLATES
+// ══════════════════════════════════════════════
+var _ctTemplates = [
+  { key: 'caretaker_warm',   name: 'Warm',    vibe: 'Terracotta + cream — soft, inviting, trustworthy.',  file: 'caretaker-warm.html' },
+  { key: 'caretaker_bright', name: 'Bright',  vibe: 'Orange + pink — vibrant, energetic, full of life.',  file: 'caretaker-bright.html' },
+  { key: 'caretaker_clean',  name: 'Clean',   vibe: 'Navy + white — polished, professional, credible.',   file: 'caretaker-clean.html' },
+  { key: 'sm_bubbly',        name: 'Bubbly',  vibe: 'Bold & playful — pops off the screen.',              file: 'social-media-bubbly.html' },
+  { key: 'sm_cherry',        name: 'Cherry',  vibe: 'Sleek & dark — editorial and modern.',               file: 'social-media-cherry.html' },
+  { key: 'sm_studio',        name: 'Studio',  vibe: 'Clean & minimal — crisp and professional.',          file: 'social-media-manager-site.html' }
+];
+var _ctSelectedTemplate = 'caretaker_warm';
+var MS_INDUSTRY = null;
+var MS_RECOMMENDED = [];
+
+// ══════════════════════════════════════════════
+// CARE TYPES
+// ══════════════════════════════════════════════
+var _ctCareTypes = [];
+
+function msToggleCareType(label, pillId) {
+  var idx = _ctCareTypes.indexOf(label);
+  var pill = document.getElementById(pillId);
+  if (idx >= 0) {
+    _ctCareTypes.splice(idx, 1);
+    if (pill) pill.className = 'care-pill';
+  } else {
+    _ctCareTypes.push(label);
+    if (pill) pill.className = 'care-pill active';
+  }
+  // Refresh chips to match current care type
+  if (typeof msInitChips === 'function') msInitChips();
+}
+
+function msBuildNiche() {
+  if (!_ctCareTypes.length) return 'solo caregiver';
+  if (_ctCareTypes.length === 1) return _ctCareTypes[0].toLowerCase() + ' provider';
+  var last = _ctCareTypes[_ctCareTypes.length - 1];
+  var rest = _ctCareTypes.slice(0, -1);
+  return rest.map(function(t) { return t.toLowerCase(); }).join(', ') + ' and ' + last.toLowerCase() + ' provider';
+}
+
+// ══════════════════════════════════════════════
+// PALETTES
+// ══════════════════════════════════════════════
+var _ctSelectedPalette = '';
+var _ctSelectedPaletteName = 'Original';
+var _ctActivePaletteTab = 'light';
+var _ctCustomVars = {};
+
+var _ctPalettes = {
+  caretaker_warm: {
+    light: [
+      { name: 'Original',  css: '',                                                                 preview: ['#FDF8F4','#D4745A','#7DB894'] },
+      { name: 'Lavender',  css: '--terra:#7C6BB5;--terra2:#5F4E9E;--mint:#A8D8A8;',                preview: ['#F8F6FF','#7C6BB5','#A8D8A8'] },
+      { name: 'Rose',      css: '--terra:#C4607A;--terra2:#A8455E;--mint:#F4A7B9;',                preview: ['#FFF6F8','#C4607A','#F4A7B9'] },
+      { name: 'Sage',      css: '--terra:#5A8A6A;--terra2:#3D6B50;--mint:#A8C5A0;',               preview: ['#F4FAF6','#5A8A6A','#A8C5A0'] }
+    ],
+    dark: [
+      { name: 'Midnight',  css: '--bg:#1A0E08;--cream:#2C1810;--cream2:#3D2418;--text:#F5E6D8;--text2:#C4A882;--dark:#0A0604;', preview: ['#1A0E08','#D4745A','#7DB894'] },
+      { name: 'Forest',    css: '--bg:#0A1A0E;--cream:#142010;--cream2:#1E2E18;--terra:#7DB894;--terra2:#5A9E72;--text:#E8F5E9;--text2:#A8D8B0;--dark:#060E08;', preview: ['#0A1A0E','#7DB894','#D4745A'] }
+    ],
+    mono: [
+      { name: 'Parchment', css: '--terra:#8B7355;--terra2:#6B5535;--mint:#A89878;',               preview: ['#FDF8F4','#8B7355','#A89878'] },
+      { name: 'Charcoal',  css: '--terra:#4A4A4A;--terra2:#2C2C2C;--mint:#7A7A7A;',              preview: ['#FAF8F4','#4A4A4A','#7A7A7A'] }
+    ],
+    customVars: ['--terra', '--terra2', '--mint', '--mint2', '--bg', '--cream', '--dark', '--text']
+  },
+  caretaker_bright: {
+    light: [
+      { name: 'Original',  css: '',                                                                preview: ['#FFFAF8','#FF6B35','#FF3D8A'] },
+      { name: 'Sunshine',  css: '--orange:#F5C842;--orange2:#D4A820;--pink:#FF6B35;',             preview: ['#FFFDF0','#F5C842','#FF6B35'] },
+      { name: 'Berry',     css: '--orange:#9B59B6;--orange2:#7D3C98;--pink:#E91E8C;',             preview: ['#FDF5FF','#9B59B6','#E91E8C'] },
+      { name: 'Ocean',     css: '--orange:#0097A7;--orange2:#00838F;--pink:#0288D1;',             preview: ['#F0FDFF','#0097A7','#0288D1'] }
+    ],
+    dark: [
+      { name: 'Neon Night',css: '--bg:#0D0D1A;--light:#151525;--dark:#050510;--text:#F0F0FF;--text2:#9090CC;', preview: ['#0D0D1A','#FF6B35','#FF3D8A'] },
+      { name: 'Deep Teal', css: '--bg:#051515;--light:#0A2020;--orange:#00BFA5;--orange2:#009688;--dark:#020A0A;--text:#E0F7F5;--text2:#80CBC4;', preview: ['#051515','#00BFA5','#FF3D8A'] }
+    ],
+    mono: [
+      { name: 'Grayscale', css: '--orange:#555;--orange2:#333;--pink:#777;--teal:#999;',          preview: ['#FFFAF8','#555555','#777777'] },
+      { name: 'Black & Bold', css: '--orange:#111;--orange2:#000;--pink:#333;--teal:#555;--bg:#FFFFFF;', preview: ['#FFFFFF','#111111','#333333'] }
+    ],
+    customVars: ['--orange', '--orange2', '--pink', '--pink2', '--teal', '--teal2', '--bg', '--dark']
+  },
+  caretaker_clean: {
+    light: [
+      { name: 'Original',  css: '',                                                                preview: ['#FFFFFF','#1B3A6B','#3B82F6'] },
+      { name: 'Teal',      css: '--navy:#0E5F5F;--navy2:#0A4A4A;--blue:#0097A7;--blue2:#00838F;--sky:#E0F7FA;', preview: ['#FFFFFF','#0E5F5F','#0097A7'] },
+      { name: 'Purple',    css: '--navy:#4A1A7A;--navy2:#35135A;--blue:#7C3AED;--blue2:#6D28D9;--sky:#F3E8FF;', preview: ['#FFFFFF','#4A1A7A','#7C3AED'] },
+      { name: 'Forest',    css: '--navy:#1A4A2A;--navy2:#0E3018;--blue:#2E7D32;--blue2:#1B5E20;--sky:#E8F5E9;', preview: ['#FFFFFF','#1A4A2A','#2E7D32'] }
+    ],
+    dark: [
+      { name: 'Dark Pro',  css: '--bg:#0F172A;--light:#1E293B;--border:#334155;--text:#F1F5F9;--text2:#94A3B8;--white:#F8FAFC;', preview: ['#0F172A','#3B82F6','#10B981'] },
+      { name: 'Dark Navy', css: '--bg:#050D1A;--light:#0A1628;--border:#1E3A5F;--text:#E2E8F0;--text2:#7BA4D0;--white:#EFF6FF;', preview: ['#050D1A','#1B3A6B','#3B82F6'] }
+    ],
+    mono: [
+      { name: 'Minimal',   css: '--navy:#1A1A1A;--navy2:#000000;--blue:#555555;--blue2:#333333;--sky:#F5F5F5;--accent:#888888;', preview: ['#FFFFFF','#1A1A1A','#555555'] },
+      { name: 'Slate',     css: '--navy:#2D3748;--navy2:#1A202C;--blue:#4A5568;--blue2:#2D3748;--sky:#EDF2F7;--accent:#718096;', preview: ['#FFFFFF','#2D3748','#4A5568'] }
+    ],
+    customVars: ['--navy', '--navy2', '--blue', '--blue2', '--sky', '--bg', '--accent']
+  }
+};
+
+// ══════════════════════════════════════════════
+// PHOTO ZONES
+// ══════════════════════════════════════════════
+var _ctPhotoZones = {
+  caretaker_warm: [
+    { id: 'cw-hero-photo',    label: 'Hero Photo',          desc: 'Right side of hero — your best professional photo', isHero: true },
+    { id: 'cw-about-a-photo', label: 'About Photo (top)',   desc: 'Upper photo in the About section' },
+    { id: 'cw-about-b-photo', label: 'About Photo (lower)', desc: 'Lower offset photo in the About section' },
+    { id: 'cw-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Small circular photo for testimonial 1', isPort: true },
+    { id: 'cw-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Small circular photo for testimonial 2', isPort: true },
+    { id: 'cw-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Small circular photo for testimonial 3', isPort: true }
+  ],
+  caretaker_bright: [
+    { id: 'cb-hero-photo',    label: 'Hero Photo',          desc: 'Organic-shaped photo in hero section', isHero: true },
+    { id: 'cb-about-photo',   label: 'About Photo',         desc: 'Photo in the About Me section' },
+    { id: 'cb-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Small circular photo for review 1', isPort: true },
+    { id: 'cb-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Small circular photo for review 2', isPort: true },
+    { id: 'cb-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Small circular photo for review 3', isPort: true }
+  ],
+  caretaker_clean: [
+    { id: 'cc-hero-photo',    label: 'Hero Photo',          desc: 'Right side of hero — professional headshot or candid', isHero: true },
+    { id: 'cc-about-a-photo', label: 'About Photo (top)',   desc: 'Larger photo in the About section' },
+    { id: 'cc-about-b-photo', label: 'About Photo (lower)', desc: 'Smaller offset photo in the About section' },
+    { id: 'cc-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Circular photo for testimonial 1', isPort: true },
+    { id: 'cc-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Circular photo for testimonial 2', isPort: true },
+    { id: 'cc-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Circular photo for testimonial 3', isPort: true }
+  ]
+};
+var _ctPhotos = {};
+
+// ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
-var MS_STEP = 1;
-var MS_INDUSTRY = null;
-var MS_SELECTED_TPL = null;
-var MS_SELECTED_PAL = null;
-var MS_PAL_CSS = '';
-var MS_PAL_NAME = '';
-var _msAnim = 'none', _msAnimMode = 'ambient', _msBurst = 'none';
-var MS_PHOTOS = {};
-var _msPalTab = 'light';
-var _msLastFields = {};
-var _msHTML = '';
-var _msGenProgress = 0;
-var _msGenInterval = null;
-var _msGenMsgs = [
-  'Reading your business info…',
-  'Crafting your copy…',
-  'Swapping in your services…',
-  'Applying your palette…',
-  'Polishing the final touches…',
-  'Almost there…'
-];
-var _msGenMsgIdx = 0;
-var _msGenMsgInterval = null;
+var _ctHTML = '';
+var _ctLastFields = {};
+var _ctPopularRate = 2;
 
-var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
-
-// ══════════════════════════════════════════════
-// SUPABASE
-// ══════════════════════════════════════════════
-var _sbClientMS = null;
+// ── Supabase + Revenue Booster ──
+var _sbClientCT = null;
 function msGetSupabase() {
-  if (!_sbClientMS && window.supabase) {
-    _sbClientMS = window.supabase.createClient(
+  if (!_sbClientCT && window.supabase) {
+    _sbClientCT = window.supabase.createClient(
       'https://nukcbqlxxrfsgchqyxud.supabase.co',
       'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX'
     );
   }
-  return _sbClientMS;
+  return _sbClientCT;
+}
+window._ctRevBoosterConfig = null;
+
+function msFetchRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  if (!bpId) return;
+  var sb = ctGetSupabase();
+  if (!sb) return;
+  sb.from('tool_configs')
+    .select('config')
+    .eq('blueprint_id', bpId)
+    .eq('tool_type', 'revenue_booster')
+    .maybeSingle()
+    .then(function(res) {
+      if (res.data && res.data.config) window._ctRevBoosterConfig = res.data.config;
+    })
+    .catch(function() {});
 }
 
-// ══════════════════════════════════════════════
-// TEMPLATE DEFINITIONS
-// ══════════════════════════════════════════════
-var MS_TEMPLATES = [
-  { id:'social-media-bubbly',       file:'social-media-bubbly.html',       name:'Bubbly',  desc:'Bold &amp; playful. Great for bold brands.',       category:'social-media' },
-  { id:'social-media-cherry',       file:'social-media-cherry.html',       name:'Cherry',  desc:'Sleek &amp; dark. Modern and editorial.',          category:'social-media' },
-  { id:'social-media-manager-site', file:'social-media-manager-site.html', name:'Studio',  desc:'Clean &amp; minimal. Professional and polished.',  category:'social-media' },
-  { id:'caretaker-warm',            file:'caretaker-warm.html',            name:'Warm',    desc:'Soft &amp; inviting. Builds trust instantly.',     category:'caretaker' },
-  { id:'caretaker-bright',          file:'caretaker-bright.html',          name:'Bright',  desc:'Vibrant &amp; energetic. Full of personality.',   category:'caretaker' },
-  { id:'caretaker-clean',           file:'caretaker-clean.html',           name:'Clean',   desc:'Crisp &amp; professional. Calm and credible.',    category:'caretaker' }
+var _ctRBOn = false;
+var _ctTestiOn = false;
+var _ctFAQOn   = false;
+var _ctCalOn   = false;
+var _ctFormOn  = false;
+var _ctSMSOn   = false;
+var _ctFAQConfig = null;
+var _msSMSConfig = null;
+
+function msToggleTesti() {
+  _ctTestiOn = !_ctTestiOn;
+  var wrap=document.getElementById('ms-testi-feature-wrap'), track=document.getElementById('ms-testi-track'), thumb=document.getElementById('ms-testi-thumb');
+  if(wrap) wrap.style.display=_ctTestiOn?'block':'none';
+  if(track) track.style.background=_ctTestiOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctTestiOn?'21px':'3px';
+}
+function msToggleFAQ() {
+  _ctFAQOn = !_ctFAQOn;
+  var wrap=document.getElementById('ms-faq-wrap'), track=document.getElementById('ms-faq-track'), thumb=document.getElementById('ms-faq-thumb');
+  if(wrap) wrap.style.display=_ctFAQOn?'block':'none';
+  if(track) track.style.background=_ctFAQOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctFAQOn?'21px':'3px';
+  if(_ctFAQOn) ctFetchFAQ();
+}
+function msToggleCal() {
+  _ctCalOn = !_ctCalOn;
+  var wrap=document.getElementById('ms-cal-wrap'), track=document.getElementById('ms-cal-track'), thumb=document.getElementById('ms-cal-thumb');
+  if(wrap) wrap.style.display=_ctCalOn?'block':'none';
+  if(track) track.style.background=_ctCalOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctCalOn?'21px':'3px';
+}
+function msToggleForm() {
+  _ctFormOn = !_ctFormOn;
+  var wrap=document.getElementById('ms-form-wrap'), track=document.getElementById('ms-form-track'), thumb=document.getElementById('ms-form-thumb');
+  if(wrap) wrap.style.display=_ctFormOn?'block':'none';
+  if(track) track.style.background=_ctFormOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctFormOn?'21px':'3px';
+}
+function msToggleSMS() {
+  _ctSMSOn = !_ctSMSOn;
+  var wrap=document.getElementById('ms-sms-wrap'), track=document.getElementById('ms-sms-track'), thumb=document.getElementById('ms-sms-thumb');
+  if(wrap) wrap.style.display=_ctSMSOn?'block':'none';
+  if(track) track.style.background=_ctSMSOn?'var(--lime)':'#374151';
+  if(thumb) thumb.style.left=_ctSMSOn?'21px':'3px';
+  if(_ctSMSOn) ctFetchSMS();
+}
+function msOpenFAQTool() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  window.open('faq-tool.html'+(bpId?'?blueprint='+encodeURIComponent(bpId):''),'_blank');
+}
+function msOpenSMSTool() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  window.open('sms-tool.html'+(bpId?'?blueprint='+encodeURIComponent(bpId):''),'_blank');
+}
+function msFetchFAQ() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  if(!bpId) return;
+  var sb=ctGetSupabase(); if(!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','faq').maybeSingle()
+    .then(function(res){if(res.data&&res.data.config)_ctFAQConfig=res.data.config;}).catch(function(){});
+}
+function msFetchSMS() {
+  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
+  if(!bpId) return;
+  var sb=ctGetSupabase(); if(!sb) return;
+  sb.from('tool_configs').select('config').eq('blueprint_id',bpId).eq('tool_type','sms').maybeSingle()
+    .then(function(res){if(res.data&&res.data.config)_msSMSConfig=res.data.config;}).catch(function(){});
+}
+function msBuildFAQSection(faqs) {
+  if(!faqs||!faqs.length) return '';
+  var html='<section style="padding:80px 40px;background:#f9f9f9;"><div style="max-width:800px;margin:0 auto;">'
+    +'<p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:12px;">FAQ</p>'
+    +'<h2 style="font-family:serif;font-size:2.2rem;margin-bottom:40px;color:#1a1a1a;">Frequently Asked Questions</h2>'
+    +'<div id="builtsy-faq">';
+  faqs.forEach(function(faq,i){
+    html+='<div style="border-bottom:1px solid #e5e5e5;padding:20px 0;">'
+      +'<div onclick="var a=document.getElementById(\'faq-a-'+i+'\');var arr=document.getElementById(\'faq-arr-'+i+'\');a.style.display=a.style.display===\'none\'?\'block\':\'none\';arr.style.transform=a.style.display===\'block\'?\'rotate(180deg)\':\'rotate(0deg)\';" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:1.05rem;color:#1a1a1a;">'
+      +'<span>'+faq.q+'</span>'
+      +'<span id="faq-arr-'+i+'" style="transition:transform .2s;font-size:1.2rem;color:#888;">&#8964;</span>'
+      +'</div>'
+      +'<div id="faq-a-'+i+'" style="display:none;margin-top:12px;color:#555;line-height:1.7;font-size:.95rem;">'+faq.a+'</div>'
+      +'</div>';
+  });
+  html+='</div></div></section>';
+  return html;
+}
+
+function msToggleRevBooster() {
+  _ctRBOn = !_ctRBOn;
+  var wrap  = document.getElementById('ms-rb-wrap');
+  var track = document.getElementById('ms-rb-track');
+  var thumb = document.getElementById('ms-rb-thumb');
+  if (wrap)  wrap.style.display    = _ctRBOn ? 'block' : 'none';
+  if (track) track.style.background = _ctRBOn ? 'var(--lime)' : '#374151';
+  if (thumb) thumb.style.left      = _ctRBOn ? '21px' : '3px';
+  if (_ctRBOn) ctFetchRevBooster();
+}
+
+function msOpenRevBooster() {
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  var url = 'calculator.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : '');
+  window.open(url, '_blank');
+}
+
+function msBuildRBSection(config) {
+  if (!config || !config.sessions || !config.sessions.length) return '';
+  var sessions = config.sessions;
+  var addons = config.addons || [];
+  var btnLabel = config.bookingLabel || 'Book Now';
+  var html = '<section style="background:#2C1810;padding:80px 40px;"><div style="max-width:700px;margin:0 auto;">'
+    + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#D4745A;margin-bottom:16px;">Interactive Pricing</div>'
+    + '<h2 style="font-family:\'Playfair Display\',serif;font-size:42px;font-style:italic;color:white;margin-bottom:8px;">Build Your Package.</h2>'
+    + '<p style="color:#A89070;margin-bottom:40px;font-size:15px;">Select a care type and add any extras you need.</p>';
+  sessions.forEach(function(s) {
+    html += '<div class="rb-session-card" data-rb-price="' + (s.price||0) + '" onclick="_rbPick(this,' + (s.price||0) + ')" style="cursor:pointer;padding:1.25rem 1.5rem;border:2px solid rgba(212,116,90,0.2);border-radius:12px;margin-bottom:0.75rem;transition:all .2s;background:rgba(255,255,255,0.03);">'
+      + '<div style="font-weight:700;color:white;margin-bottom:4px;">' + (s.name||'Package') + '</div>'
+      + (s.description ? '<div style="font-size:13px;color:#A89070;margin-bottom:8px;">' + s.description + '</div>' : '')
+      + '<div style="font-size:1.75rem;font-weight:900;color:#D4745A;">$' + (s.price||0) + '</div>'
+      + '</div>';
+  });
+  if (addons.length) {
+    html += '<div style="margin-top:24px;margin-bottom:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#A89070;">Add-Ons</div>';
+    addons.forEach(function(a, i) {
+      html += '<div onclick="_rbToggle(\'' + i + '\',' + (a.price||0) + ')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border:1.5px solid rgba(212,116,90,0.15);border-radius:8px;margin-bottom:0.5rem;background:rgba(255,255,255,0.02);">'
+        + '<div style="display:flex;align-items:center;gap:0.75rem;">'
+        + '<div id="rb-check-' + i + '" style="width:18px;height:18px;border-radius:4px;border:2px solid #D4745A;background:transparent;flex-shrink:0;"></div>'
+        + '<span style="color:white;">' + (a.name||'Add-on') + '</span></div>'
+        + '<span style="font-weight:700;color:#D4745A;">+$' + (a.price||0) + '</span></div>';
+    });
+  }
+  html += '<div style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid rgba(212,116,90,0.2);">'
+    + '<div><div style="font-size:12px;color:#A89070;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Total</div>'
+    + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:white;">$0</div></div>'
+    + '<a href="#contact" style="background:#D4745A;color:white;border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;">' + btnLabel + '</a></div>'
+    + '</div></section>';
+  return html;
+}
+
+var _ctGenMsgs = [
+  'Reading your business info…',
+  'Swapping in your copy…',
+  'Updating services and pricing…',
+  'Filling in your story…',
+  'Applying your palette…',
+  'Injecting your photos…',
+  'Rendering final output…'
 ];
+var _ctMsgIdx = 0;
+var _ctMsgInterval = null;
+var _ctProgress = 0;
+var _ctProgressInterval = null;
+
+var RAILWAY_URL = 'https://builtsy-api-production.up.railway.app';
 
 // ══════════════════════════════════════════════
-// PALETTE DEFINITIONS
-// ══════════════════════════════════════════════
-var MS_PALETTES = {
-  light: [
-    { name:'Rose',     desc:'Warm cream + deep rose',   swatches:['#FDF6F0','#C94070','#F7D5E3'], css:'--cream:#FDF6F0;--cream2:#F5ECE3;--pink:#C94070;--pink-light:#F7D5E3;--pink-pale:#FEF0F6;' },
-    { name:'Peach',    desc:'Cream + terracotta',        swatches:['#FAF6F2','#C4612A','#F5D5C5'], css:'--cream:#FAF6F2;--cream2:#F0E8DF;--pink:#C4612A;--pink-light:#F5D5C5;--pink-pale:#FEF5F0;' },
-    { name:'Lilac',    desc:'White + soft purple',       swatches:['#F9F7FF','#8B5CF6','#E0D0F5'], css:'--cream:#F9F7FF;--cream2:#F0EBFF;--pink:#8B5CF6;--pink-light:#DDD6FE;--pink-pale:#F5F0FF;' },
-    { name:'Ocean',    desc:'Cool white + teal',         swatches:['#F0F8FF','#0E7490','#A5D8E8'], css:'--cream:#F0F8FF;--cream2:#E0F2F8;--pink:#0E7490;--pink-light:#A5D8E8;--pink-pale:#E0F7FA;' },
-    { name:'Sage',     desc:'Warm white + sage green',   swatches:['#F4F7F0','#4A7C59','#B8D8C5'], css:'--cream:#F4F7F0;--cream2:#E8F0E0;--pink:#4A7C59;--pink-light:#B8D8C5;--pink-pale:#E8F4EC;' },
-    { name:'Marigold', desc:'Cream + amber yellow',      swatches:['#FFFBF0','#D97706','#FDE68A'], css:'--cream:#FFFBF0;--cream2:#FFF3D0;--pink:#D97706;--pink-light:#FDE68A;--pink-pale:#FFFAED;' }
-  ],
-  dark: [
-    { name:'Noir',     desc:'Cream + pure black',        swatches:['#FAF8F4','#1A1A1A','#555555'], css:'--pink:#1A1A1A;--pink-light:#404040;--pink-pale:#888888;' },
-    { name:'Navy',     desc:'Cream + deep navy',         swatches:['#FAF8F4','#1B3A5C','#3A6F9F'], css:'--pink:#1B3A5C;--pink-light:#3A6F9F;--pink-pale:#7AAFD0;' },
-    { name:'Forest',   desc:'Cream + deep green',        swatches:['#FAF8F4','#2D5A3D','#5A9070'], css:'--pink:#2D5A3D;--pink-light:#5A9070;--pink-pale:#90C0A0;' },
-    { name:'Plum',     desc:'Cream + rich plum',         swatches:['#FAF8F4','#5B2D8E','#9D6CC0'], css:'--pink:#5B2D8E;--pink-light:#9D6CC0;--pink-pale:#D4B8E8;' }
-  ],
-  mono: [
-    { name:'Pink',     desc:'All pink, tonal',           swatches:['#FFF0F6','#E8458A','#F8D0E8'], css:'--cream:#FFF0F6;--cream2:#FFE0EF;--pink:#E8458A;--pink-light:#F5A0C8;--pink-pale:#FFDDF0;' },
-    { name:'Rose',     desc:'Deep rose tones',           swatches:['#FFF0F3','#C04060','#F0A0B8'], css:'--cream:#FFF0F3;--cream2:#FFE0E8;--pink:#C04060;--pink-light:#E07090;--pink-pale:#F8D0DC;' },
-    { name:'Nude',     desc:'Warm nude tones',           swatches:['#FBF6F0','#B08060','#D0A888'], css:'--cream:#FBF6F0;--cream2:#F5EDE3;--pink:#B08060;--pink-light:#D0A888;--pink-pale:#F0DDD0;' },
-    { name:'Slate',    desc:'Cool grey spectrum',        swatches:['#F5F5F7','#374151','#9CA3AF'], css:'--cream:#F5F5F7;--cream2:#EBEBED;--pink:#374151;--pink-light:#9CA3AF;--pink-pale:#E5E7EB;' }
-  ]
-};
-
-// ══════════════════════════════════════════════
-// HELPER
-// ══════════════════════════════════════════════
-function v(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
-
-// ══════════════════════════════════════════════
-// PROGRESS BAR
-// ══════════════════════════════════════════════
-function msUpdateProgress(n) {
-  var step = n || MS_STEP;
-  var fill = document.getElementById('ms-progress-fill');
-  if (fill) fill.style.width = (step / 15 * 100) + '%';
-}
-
-// ══════════════════════════════════════════════
-// STEP NAVIGATION
+// STEP NAV
 // ══════════════════════════════════════════════
 function msGoStep(n) {
-  MS_STEP = n;
-  msUpdateProgress(n);
-
-  if (n <= 3) {
-    // Phase 1
-    document.getElementById('ms-phase2').style.display = 'none';
-    document.getElementById('ms-phase3').style.display = 'none';
-    var phase1 = document.getElementById('ms-phase1');
-    phase1.style.display = 'block';
-    for (var i = 1; i <= 3; i++) {
-      var el = document.getElementById('ms-step-' + i);
-      if (el) el.className = 'fs-step' + (i === n ? ' active' : '');
+  for (var i = 1; i <= 8; i++) {
+    var p = document.getElementById('ms-step-' + i);
+    var d = document.getElementById('ms-dot-' + i);
+    if (p) p.className = 'step-panel' + (i === n ? ' active' : '');
+    if (d) d.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    if (i < 8) {
+      var l = document.getElementById('ms-line-' + i);
+      if (l) l.className = 'step-line' + (i < n ? ' done' : '');
     }
-    // Scroll to top
-    window.scrollTo(0, 0);
-  } else if (n >= 4 && n <= 15) {
-    // Phase 2
-    document.getElementById('ms-phase1').style.display = 'none';
-    document.getElementById('ms-phase3').style.display = 'none';
-    var phase2 = document.getElementById('ms-phase2');
-    phase2.style.display = 'flex';
-    // Show correct split step
-    for (var j = 4; j <= 15; j++) {
-      var sp = document.getElementById('ms-split-' + j);
-      if (sp) sp.className = 'split-step' + (j === n ? ' active' : '');
-    }
-    // Update eyebrow
-    var eyebrow = document.getElementById('ms-split-eyebrow');
-    if (eyebrow) eyebrow.textContent = 'Step ' + n + ' of 15';
-    // Scroll left panel to top
-    var leftPanel = document.getElementById('ms-left');
-    if (leftPanel) leftPanel.scrollTop = 0;
   }
+  var leftPanel = document.querySelector('.left-panel');
+  if (leftPanel) leftPanel.scrollTop = 0;
+  if (n === 7) msBuildPhotoZones();
 }
 
 // ══════════════════════════════════════════════
-// STEP 1: DETECT INDUSTRY
+// DISCOVERY — STEP 1 AI CALL
 // ══════════════════════════════════════════════
 function msStep1Next() {
-  var desc = document.getElementById('ms-what-you-do').value.trim();
-  if (!desc) {
-    document.getElementById('ms-what-you-do').focus();
-    return;
-  }
-  // Show detecting state
-  var btn = document.getElementById('ms-step1-btn');
+  var name = (document.getElementById('ms-owner-name') || {}).value || '';
+  var biz  = (document.getElementById('ms-biz-name')   || {}).value || '';
+  var desc = (document.getElementById('ms-description') || {}).value || '';
   var detecting = document.getElementById('ms-detecting');
-  if (btn) btn.style.display = 'none';
+  var btn = document.getElementById('ms-step1-btn');
   if (detecting) detecting.style.display = 'flex';
-
+  if (btn) btn.style.display = 'none';
+  var payload = [name, biz, desc].filter(Boolean).join(' — ');
+  if (!payload.trim()) { msGoStep(2); return; }
   fetch('/.netlify/functions/detect-industry', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ description: desc })
+    body: JSON.stringify({ description: payload })
   })
-  .then(function(res) { return res.json(); })
-  .then(function(config) {
-    MS_INDUSTRY = config;
-    msOnIndustryDetected(config);
-    msGoStep(2);
+  .then(function(r) { return r.json(); })
+  .then(function(cfg) {
+    MS_INDUSTRY = cfg;
+    msOnIndustryDetected(cfg);
   })
-  .catch(function() {
-    // Graceful degradation — still move to step 2
-    msGoStep(2);
-  })
+  .catch(function() {})
   .finally(function() {
-    if (btn) btn.style.display = '';
     if (detecting) detecting.style.display = 'none';
+    if (btn) btn.style.display = '';
+    msGoStep(2);
+  });
+}
+
+function msOnIndustryDetected(cfg) {
+  if (!cfg) return;
+  // Recommended templates
+  MS_RECOMMENDED = cfg.recommendedTemplates || [];
+  msRenderTemplateCards(); // re-render with badges
+
+  // Specialty pills (Step 3)
+  var pillsContainer = document.getElementById('ms-specialty-pills');
+  if (pillsContainer && cfg.specialtyPills && cfg.specialtyPills.length) {
+    pillsContainer.innerHTML = '';
+    cfg.specialtyPills.forEach(function(pill) {
+      var el = document.createElement('div');
+      el.className = 'care-pill';
+      el.textContent = pill;
+      el.onclick = function() { el.classList.toggle('active'); };
+      pillsContainer.appendChild(el);
+    });
+  }
+
+  // Template subtitle
+  if (cfg.industryLabel) {
+    var sub = document.getElementById('ms-tpl-sub');
+    if (sub) sub.textContent = 'Great picks for a ' + cfg.industryLabel + ' are highlighted — browse all, they’re yours.';
+  }
+
+  // Chips
+  if (cfg.taglineChips)    msPopulateAIChips('ms-chips-tagline',  cfg.taglineChips,    'ms-tagline',       'replace');
+  if (cfg.headlineChips)   msPopulateAIChips('ms-chips-headline', cfg.headlineChips,   'ms-hero-headline', 'replace');
+  if (cfg.valuePropChips)  msPopulateAIChips('ms-chips-valueprop',cfg.valuePropChips,  'ms-value-prop',    'replace');
+  if (cfg.credentialChips) msPopulateAIChips('ms-chips-creds',    cfg.credentialChips, 'ms-credentials',   'append');
+
+  // Income calc label
+  if (cfg.incomeCalcLabel) {
+    var lbl = document.getElementById('ms-calc-unit-label');
+    if (lbl) lbl.textContent = cfg.incomeCalcLabel;
+  }
+}
+
+function msPopulateAIChips(containerId, chips, fieldId, mode) {
+  var container = document.getElementById(containerId);
+  if (!container || !chips) return;
+  container.innerHTML = '';
+  chips.forEach(function(text) {
+    var chip = document.createElement('span');
+    chip.className = 'chip-s';
+    chip.textContent = text;
+    chip.onclick = function() {
+      var inp = document.getElementById(fieldId);
+      if (!inp) return;
+      if (mode === 'replace') {
+        inp.value = text;
+        container.querySelectorAll('.chip-s').forEach(function(c) { c.classList.remove('used'); });
+        chip.classList.add('used');
+        inp.dispatchEvent(new Event('input'));
+      } else {
+        var parts = inp.value ? inp.value.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
+        var idx = parts.indexOf(text);
+        if (idx === -1) { parts.push(text); chip.classList.add('used'); }
+        else { parts.splice(idx, 1); chip.classList.remove('used'); }
+        inp.value = parts.join(', ');
+      }
+    };
+    container.appendChild(chip);
   });
 }
 
 // ══════════════════════════════════════════════
-// ON INDUSTRY DETECTED
+// TEMPLATE SELECTION
 // ══════════════════════════════════════════════
-function msOnIndustryDetected(config) {
-  if (!config) return;
-  // Set industry badge
-  var badge = document.getElementById('ms-industry-badge');
-  if (badge && config.industryLabel) badge.textContent = config.industryLabel;
-  // Update step 2 sub-text
-  var sub = document.getElementById('ms-step2-sub');
-  if (sub) sub.textContent = 'Your Builtsy picks are highlighted. Browse all — they\'re all yours.';
-  // Set income calc label
-  if (config.incomeCalcLabel) {
-    var lbl = document.getElementById('ms-calc-unit-label');
-    if (lbl) lbl.textContent = config.incomeCalcLabel.charAt(0).toUpperCase() + config.incomeCalcLabel.slice(1) + 's / mo';
-  }
-}
-
-// ══════════════════════════════════════════════
-// TEMPLATE GRID
-// ══════════════════════════════════════════════
-function msRenderTemplateGrid(filter) {
-  var grid = document.getElementById('ms-tpl-grid');
-  if (!grid) return;
+function msRenderTemplateCards() {
+  var wrap = document.getElementById('ms-tpl-cards');
+  if (!wrap) return;
   var html = '';
-  var recIds = (MS_INDUSTRY && MS_INDUSTRY.recommendedTemplates) ? MS_INDUSTRY.recommendedTemplates : [];
-  for (var i = 0; i < MS_TEMPLATES.length; i++) {
-    var tpl = MS_TEMPLATES[i];
-    if (filter === 'recommended' && recIds.length && recIds.indexOf(tpl.id) === -1) continue;
-    var isRec = recIds.indexOf(tpl.id) !== -1;
-    var isSel = MS_SELECTED_TPL && MS_SELECTED_TPL.id === tpl.id;
-    html += '<div class="tpl-card' + (isSel ? ' selected' : '') + '" id="ms-tpl-card-' + tpl.id + '" onclick="msSelectTemplate(\'' + tpl.id + '\')">'
-      + '<div class="tpl-preview-box">'
-      + '<iframe class="tpl-preview-iframe" src="' + tpl.file + '" scrolling="no" tabindex="-1"></iframe>'
-      + '</div>'
-      + '<div class="tpl-card-body">'
-      + (isRec ? '<div class="tpl-rec-badge">&#10022; Recommended</div>' : '')
-      + '<div class="tpl-card-name">' + tpl.name + '</div>'
-      + '<div class="tpl-card-desc">' + tpl.desc + '</div>'
-      + '</div>'
-      + '</div>';
+  for (var i = 0; i < _ctTemplates.length; i++) {
+    var t = _ctTemplates[i];
+    var isSel = t.key === _ctSelectedTemplate;
+    var isRec = MS_RECOMMENDED.indexOf(t.file ? t.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(t.key) > -1;
+    var selClass = isSel ? ' selected' : '';
+    var chk = isSel ? '✓' : '';
+    var badge = isRec ? '<div style="padding:5px 10px 0;"><span style="font-family:\'DM Mono\',monospace;font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:rgba(200,224,0,0.1);color:var(--lime);border:1px solid rgba(200,224,0,0.2);padding:3px 8px;border-radius:50px;">✦ For You</span></div>' : '';
+    html += '<div class="tpl-card' + selClass + '" id="ms-tpl-' + t.key + '" onclick="msSelectTemplate(\'' + t.key + '\')">'
+      + badge
+      + '<div class="tpl-card-preview"><iframe src="' + t.file + '" scrolling="no" tabindex="-1"></iframe></div>'
+      + '<div class="tpl-card-info">'
+      + '<div class="tpl-card-check">' + chk + '</div>'
+      + '<div class="tpl-card-meta"><div class="tpl-card-name">' + t.name + '</div><div class="tpl-card-vibe">' + t.vibe + '</div></div>'
+      + '</div></div>';
   }
-  grid.innerHTML = html;
+  wrap.innerHTML = html;
 }
 
-function msTplFilter(filter) {
-  // Toggle filter button states
-  var btns = document.querySelectorAll('.tpl-filter');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].className = 'tpl-filter' + (btns[i].textContent.trim().indexOf(filter === 'all' ? 'All' : 'You') !== -1 ? ' active' : '');
+function msSelectTemplate(key) {
+  _ctSelectedTemplate = key;
+  for (var i = 0; i < _ctTemplates.length; i++) {
+    var card = document.getElementById('ms-tpl-' + _ctTemplates[i].key);
+    if (!card) continue;
+    var chkEl = card.querySelector('.tpl-card-check');
+    if (_ctTemplates[i].key === key) {
+      card.className = 'tpl-card selected';
+      if (chkEl) chkEl.textContent = '✓';
+    } else {
+      card.className = 'tpl-card';
+      if (chkEl) chkEl.textContent = '';
+    }
   }
-  msRenderTemplateGrid(filter);
-}
-
-function msSelectTemplate(id) {
-  for (var i = 0; i < MS_TEMPLATES.length; i++) {
-    if (MS_TEMPLATES[i].id === id) {
-      MS_SELECTED_TPL = MS_TEMPLATES[i];
+  for (var j = 0; j < _ctTemplates.length; j++) {
+    if (_ctTemplates[j].key === key) {
+      var iframe = document.getElementById('preview-iframe');
+      var urlEl = document.getElementById('ms-preview-url');
+      if (iframe) iframe.src = _ctTemplates[j].file;
+      if (urlEl) urlEl.textContent = _ctTemplates[j].file;
       break;
     }
   }
-  // Update card selected states
-  var cards = document.querySelectorAll('.tpl-card');
-  for (var j = 0; j < cards.length; j++) {
-    cards[j].className = 'tpl-card';
-  }
-  var sel = document.getElementById('ms-tpl-card-' + id);
-  if (sel) sel.className = 'tpl-card selected';
-  // Enable continue button
-  var btn = document.getElementById('ms-step2-btn');
-  if (btn) btn.disabled = false;
-  // If in split layout, update preview
-  if (MS_STEP >= 4) {
-    var iframe = document.getElementById('ms-preview-iframe');
-    if (iframe && MS_SELECTED_TPL) iframe.src = MS_SELECTED_TPL.file;
-  }
+  // Reset palette when template changes
+  _ctSelectedPalette = '';
+  _ctSelectedPaletteName = 'Original';
+  msRenderPaletteGrid(_ctActivePaletteTab);
 }
 
 // ══════════════════════════════════════════════
 // PALETTE
 // ══════════════════════════════════════════════
-function msPalTab(tab) {
-  _msPalTab = tab;
-  var tabs = ['light', 'dark', 'mono'];
+function msSelectPaletteTab(tab) {
+  _ctActivePaletteTab = tab;
+  var tabs = ['light','dark','mono','custom'];
   for (var i = 0; i < tabs.length; i++) {
-    var btns = document.querySelectorAll('.ms-pal-tab');
-    for (var j = 0; j < btns.length; j++) {
-      if (btns[j].textContent.trim().toLowerCase() === tabs[i]) {
-        btns[j].className = 'ms-pal-tab' + (tabs[i] === tab ? ' active' : '');
-      }
-    }
+    var el = document.getElementById('ms-tab-' + tabs[i]);
+    if (el) el.className = 'pal-tab' + (tabs[i] === tab ? ' active' : '');
   }
-  msRenderPalGrid(tab);
+  msRenderPaletteGrid(tab);
 }
 
-function msRenderPalGrid(tab) {
-  var grid = document.getElementById('ms-pal-grid');
-  if (!grid) return;
-  var palettes = MS_PALETTES[tab] || [];
-  var html = '';
-  for (var i = 0; i < palettes.length; i++) {
-    var pal = palettes[i];
-    var isSel = MS_PAL_NAME === pal.name && MS_PAL_CSS === pal.css;
-    var swatchesHtml = '';
-    for (var k = 0; k < pal.swatches.length; k++) {
-      swatchesHtml += '<div class="ms-pal-swatch" style="background:' + pal.swatches[k] + ';"></div>';
+function msRenderPaletteGrid(tab) {
+  var wrap = document.getElementById('ms-palette-grid-wrap');
+  if (!wrap) return;
+  var tplPalettes = _ctPalettes[_ctSelectedTemplate];
+  if (!tplPalettes) { wrap.innerHTML = ''; return; }
+
+  if (tab === 'custom') {
+    var vars = tplPalettes.customVars || [];
+    var html = '<div class="custom-pal-wrap">';
+    for (var i = 0; i < vars.length; i++) {
+      var varName = vars[i];
+      var inputId = 'ms-cc-input-' + i;
+      var swatchId = 'ms-cc-swatch-' + i;
+      var defColor = _ctCustomVars[varName] || '#D4745A';
+      html += '<div class="custom-pal-item">'
+        + '<div class="custom-pal-swatch" id="' + swatchId + '" style="background:' + defColor + ';" onclick="document.getElementById(\'' + inputId + '\').click()"></div>'
+        + '<input type="color" id="' + inputId + '" value="' + defColor + '" style="position:absolute;opacity:0;pointer-events:none;" onchange="ctCustomColorChange(\'' + varName + '\',this.value,\'' + swatchId + '\')">'
+        + '<div class="custom-pal-label">' + varName + '</div>'
+        + '</div>';
     }
+    html += '</div><button class="btn-apply-custom" onclick="msApplyCustom()">Apply Custom Colors</button>';
+    wrap.innerHTML = html;
+    return;
+  }
+
+  var palettes = tplPalettes[tab] || [];
+  var html = '<div class="palette-grid">';
+  for (var j = 0; j < palettes.length; j++) {
+    var pal = palettes[j];
+    var isSel = (pal.name === _ctSelectedPaletteName && pal.css === _ctSelectedPalette);
+    var selClass = isSel ? ' selected' : '';
+    var checkDisplay = isSel ? 'flex' : 'none';
     var cssEsc = pal.css.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    var nameEsc = pal.name.replace(/'/g,"\\'");
-    html += '<div class="ms-pal-card' + (isSel ? ' selected' : '') + '" onclick="msSelectPalette(\'' + cssEsc + '\',\'' + nameEsc + '\')">'
-      + '<div class="ms-pal-swatches">' + swatchesHtml + '</div>'
-      + '<div class="ms-pal-name">' + pal.name + '</div>'
-      + '<div class="ms-pal-desc">' + pal.desc + '</div>'
+    html += '<div class="palette-card' + selClass + '" onclick="msSelectPalette(\'' + cssEsc + '\',\'' + pal.name.replace(/'/g,"\\'") + '\')">'
+      + '<div class="palette-check" style="display:' + checkDisplay + '">✓</div>'
+      + '<div class="palette-swatches">';
+    for (var k = 0; k < pal.preview.length; k++) {
+      html += '<div class="palette-swatch" style="background:' + pal.preview[k] + ';"></div>';
+    }
+    html += '</div>'
+      + '<div class="palette-card-name">' + pal.name + '</div>'
       + '</div>';
   }
-  grid.innerHTML = html;
+  html += '</div>';
+  wrap.innerHTML = html;
 }
 
-function msSelectPalette(cssStr, name) {
-  MS_PAL_CSS = cssStr;
-  MS_PAL_NAME = name;
-  MS_SELECTED_PAL = cssStr;
-  // Enable continue
-  var btn = document.getElementById('ms-step3-btn');
-  if (btn) btn.disabled = false;
-  // Re-render to show selected state
-  msRenderPalGrid(_msPalTab);
-  // If preview is open, inject palette
-  msInjectPaletteIntoPreview(cssStr);
+function msSelectPalette(cssStr, paletteName) {
+  _ctSelectedPalette = cssStr;
+  _ctSelectedPaletteName = paletteName;
+  msRenderPaletteGrid(_ctActivePaletteTab);
+  ctInjectPaletteIntoIframe(cssStr);
 }
 
-function msInjectPaletteIntoPreview(css) {
-  var iframe = document.getElementById('ms-preview-iframe');
+function msCustomColorChange(varName, value, swatchId) {
+  _ctCustomVars[varName] = value;
+  var swatch = document.getElementById(swatchId);
+  if (swatch) swatch.style.background = value;
+}
+
+function msApplyCustom() {
+  var tplPalettes = _ctPalettes[_ctSelectedTemplate];
+  if (!tplPalettes) return;
+  var vars = tplPalettes.customVars || [];
+  var css = '';
+  for (var i = 0; i < vars.length; i++) {
+    if (_ctCustomVars[vars[i]]) css += vars[i] + ':' + _ctCustomVars[vars[i]] + ';';
+  }
+  _ctSelectedPalette = css;
+  _ctSelectedPaletteName = 'Custom';
+  ctInjectPaletteIntoIframe(css);
+}
+
+function msInjectPaletteIntoIframe(cssOverride) {
+  var iframe = document.getElementById('preview-iframe');
   if (!iframe) return;
   try {
     var doc = iframe.contentDocument || iframe.contentWindow.document;
     var existing = doc.getElementById('builtsy-palette-override');
     if (existing) existing.parentNode.removeChild(existing);
-    if (css) {
+    if (cssOverride) {
       var style = doc.createElement('style');
       style.id = 'builtsy-palette-override';
-      style.textContent = ':root{' + css + '}';
+      style.textContent = ':root{' + cssOverride + '}';
       doc.head.appendChild(style);
     }
   } catch(e) {}
 }
 
 // ══════════════════════════════════════════════
-// REVEAL SPLIT LAYOUT
+// SERVICE BLOCKS
 // ══════════════════════════════════════════════
-function msRevealSplit() {
-  msGoStep(4);
-  // Load template into preview iframe
-  var iframe = document.getElementById('ms-preview-iframe');
-  if (iframe && MS_SELECTED_TPL) {
-    iframe.src = MS_SELECTED_TPL.file;
-    iframe.addEventListener('load', function() {
-      setTimeout(function() { msInjectPaletteIntoPreview(MS_PAL_CSS); }, 80);
-      setTimeout(msApplyAllLive, 120);
-    });
-  }
-  msSetupLivePreview();
+function msToggleSvc(header) {
+  var body = header.nextElementSibling;
+  var chev = header.querySelector('.svc-block-chevron');
+  var isOpen = body.className.indexOf('open') >= 0;
+  body.className = 'svc-block-body' + (isOpen ? '' : ' open');
+  if (chev) chev.className = 'svc-block-chevron' + (isOpen ? '' : ' open');
 }
 
 // ══════════════════════════════════════════════
-// SERVICES
+// POPULAR RATE
 // ══════════════════════════════════════════════
-function msRenderServices() {
-  var wrap = document.getElementById('ms-services-wrap');
-  if (!wrap) return;
-  var html = '';
-  for (var i = 1; i <= 3; i++) {
-    html += '<div style="margin-bottom:12px;">'
-      + '<label class="ms-label">Service ' + i + '</label>'
-      + '<div style="display:flex;gap:8px;margin-bottom:6px;">'
-      + '<input class="ms-input" id="ms-svc' + i + '-name" style="flex:2;" placeholder="Service name" type="text">'
-      + '<input class="ms-input" id="ms-svc' + i + '-price" style="flex:1;" placeholder="$150" type="text">'
-      + '</div>'
-      + '</div>';
-  }
-  wrap.innerHTML = html;
-}
-
-// ══════════════════════════════════════════════
-// PRICING TIERS
-// ══════════════════════════════════════════════
-function msRenderTiers() {
-  var wrap = document.getElementById('ms-tiers-wrap');
-  if (!wrap) return;
-  var labels = ['Starter', 'Standard', 'Premium'];
-  var html = '';
-  for (var i = 1; i <= 3; i++) {
-    html += '<div style="margin-bottom:10px;">'
-      + '<label class="ms-label">Tier ' + i + ' — ' + labels[i-1] + '</label>'
-      + '<div style="display:flex;gap:8px;">'
-      + '<input class="ms-input" id="ms-tier' + i + '-name" style="flex:2;" placeholder="' + labels[i-1] + ' Package" type="text">'
-      + '<input class="ms-input" id="ms-tier' + i + '-price" style="flex:1;" placeholder="$' + (99 * i) + '/mo" type="text">'
-      + '</div>'
-      + '</div>';
-  }
-  wrap.innerHTML = html;
-}
-
-// ══════════════════════════════════════════════
-// INCOME CALCULATOR
-// ══════════════════════════════════════════════
-function msCalcIncome() {
-  var goal = parseFloat(document.getElementById('ms-calc-goal').value) || 0;
-  var units = parseFloat(document.getElementById('ms-calc-units').value) || 1;
-  if (!goal || !units) { document.getElementById('ms-calc-result').textContent = ''; return; }
-  var rate = Math.ceil(goal / units / 5) * 5;
-  var t1 = Math.round(rate * 0.65 / 5) * 5;
-  var t2 = rate;
-  var t3 = Math.round(rate * 1.85 / 5) * 5;
-  document.getElementById('ms-calc-result').textContent = 'Suggested: $' + t1 + ' / $' + t2 + ' / $' + t3;
-}
-
-function msCalcApply() {
-  var goal = parseFloat(document.getElementById('ms-calc-goal').value) || 0;
-  var units = parseFloat(document.getElementById('ms-calc-units').value) || 1;
-  if (!goal || !units) return;
-  var rate = Math.ceil(goal / units / 5) * 5;
-  var t1 = Math.round(rate * 0.65 / 5) * 5;
-  var t2 = rate;
-  var t3 = Math.round(rate * 1.85 / 5) * 5;
-  var u1 = document.getElementById('ms-tier1-price'); if (u1) u1.value = '$' + t1;
-  var u2 = document.getElementById('ms-tier2-price'); if (u2) u2.value = '$' + t2;
-  var u3 = document.getElementById('ms-tier3-price'); if (u3) u3.value = '$' + t3;
-}
-
-// ══════════════════════════════════════════════
-// CHIPS
-// ══════════════════════════════════════════════
-function msRenderChips(containerId, chips, fieldId, mode) {
-  var container = document.getElementById(containerId);
-  if (!container || !chips || !chips.length) return;
-  container.innerHTML = '';
-  for (var i = 0; i < chips.length; i++) {
-    (function(text) {
-      var chip = document.createElement('span');
-      chip.className = 'ms-chip';
-      chip.textContent = text;
-      chip.onclick = function() {
-        var inp = document.getElementById(fieldId);
-        if (!inp) return;
-        if (mode === 'append') {
-          // Toggle in comma-separated list
-          var current = inp.value.trim();
-          var parts = current ? current.split(',').map(function(p){ return p.trim(); }) : [];
-          var idx = parts.indexOf(text);
-          if (idx !== -1) {
-            parts.splice(idx, 1);
-            chip.classList.remove('used');
-          } else {
-            parts.push(text);
-            chip.classList.add('used');
-          }
-          inp.value = parts.join(', ');
-        } else {
-          // Replace mode
-          inp.value = text;
-          var siblings = container.querySelectorAll('.ms-chip');
-          for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('used');
-          chip.classList.add('used');
-        }
-      };
-      container.appendChild(chip);
-    })(chips[i]);
-  }
-}
-
-function msPopulateChips() {
-  if (!MS_INDUSTRY) return;
-  if (MS_INDUSTRY.taglineChips) {
-    msRenderChips('ms-tagline-chips', MS_INDUSTRY.taglineChips, 'ms-tagline', 'replace');
-  }
-  if (MS_INDUSTRY.headlineChips) {
-    msRenderChips('ms-headline-chips', MS_INDUSTRY.headlineChips, 'ms-headline', 'replace');
-  }
-  if (MS_INDUSTRY.credentialChips) {
-    msRenderChips('ms-cred-chips', MS_INDUSTRY.credentialChips, 'ms-credentials', 'append');
-  }
-}
-
-// ══════════════════════════════════════════════
-// ANIMATION PICKERS
-// ══════════════════════════════════════════════
-function msSelectAnim(val) {
-  _msAnim = val;
-  var cards = document.querySelectorAll('#ms-anim-grid .ms-anim-card');
-  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
-  var el = document.getElementById('ms-anim-' + val);
-  if (el) el.classList.add('selected');
-  var modeWrap = document.getElementById('ms-anim-mode-wrap');
-  if (modeWrap) modeWrap.style.display = val === 'none' ? 'none' : 'block';
-  msPushAnimToPreview();
-}
-
-function msSelectAnimMode(val) {
-  _msAnimMode = val;
-  var cards = document.querySelectorAll('#ms-anim-mode-wrap .ms-anim-card');
-  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
-  var el = document.getElementById('ms-mode-' + val);
-  if (el) el.classList.add('selected');
-  msPushAnimToPreview();
-}
-
-function msSelectBurst(val) {
-  _msBurst = val;
-  var cards = document.querySelectorAll('#ms-burst-grid .ms-anim-card');
-  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
-  var el = document.getElementById('ms-burst-' + val);
-  if (el) el.classList.add('selected');
-  var triggerWrap = document.getElementById('ms-burst-trigger-wrap');
-  if (triggerWrap) triggerWrap.style.display = val === 'none' ? 'none' : 'block';
-  msPushAnimToPreview();
-}
-
-function msPushAnimToPreview() {
-  var iframe = document.getElementById('ms-preview-iframe');
-  if (!iframe) return;
-  var doc;
-  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
-  if (!doc || !doc.body) return;
-  doc.body.setAttribute('data-anim', _msAnim);
-  doc.body.setAttribute('data-anim-mode', _msAnimMode);
-  doc.body.setAttribute('data-burst', _msBurst);
-  var burstOn = [];
-  var onForm = document.getElementById('ms-burst-on-form');
-  var onCta = document.getElementById('ms-burst-on-cta');
-  if (onForm && onForm.checked) burstOn.push('form');
-  if (onCta && onCta.checked) burstOn.push('cta');
-  doc.body.setAttribute('data-burst-on', burstOn.join(','));
-  try {
-    if (iframe.contentWindow && iframe.contentWindow.builtsy_initAnim) {
-      iframe.contentWindow.builtsy_initAnim();
+function msUpdatePopular() {
+  var radios = document.querySelectorAll('input[name="ms-popular-tier"]');
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      _ctPopularRate = parseInt(radios[i].value, 10);
+      break;
     }
-  } catch(e) {}
+  }
+  for (var j = 1; j <= 3; j++) {
+    var block = document.getElementById('ms-price-block-' + j);
+    if (!block) continue;
+    var label = block.querySelector('.price-block-label');
+    if (j === _ctPopularRate) {
+      block.className = 'price-block popular';
+      if (label) label.textContent = '★ Most Requested';
+    } else {
+      block.className = 'price-block';
+      if (label) label.textContent = 'Tier ' + j;
+    }
+  }
 }
 
 // ══════════════════════════════════════════════
 // PHOTO ZONES
 // ══════════════════════════════════════════════
-function msInitPhotoZones() {
-  var wrap = document.getElementById('ms-photo-zones');
-  if (!wrap) return;
-  var zones = [
-    { slot: 'hero',    label: 'Hero photo',    desc: 'Your main portrait' },
-    { slot: 'about',   label: 'About photo',   desc: 'Photo in your about section' },
-    { slot: 'gallery', label: 'Gallery photo',  desc: 'Extra photo for your site' }
-  ];
-  var html = '';
+function msBuildPhotoZones() {
+  var container = document.getElementById('ms-photo-zones-container');
+  if (!container) return;
+  var zones = _ctPhotoZones[_ctSelectedTemplate] || [];
+  var heroZones = [];
+  var aboutZones = [];
+  var portZones = [];
+
   for (var i = 0; i < zones.length; i++) {
-    var z = zones[i];
-    var fileId = 'ms-file-' + z.slot;
-    if (MS_PHOTOS[z.slot]) {
-      html += '<div style="border:2px dashed rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:10px;position:relative;">'
-        + '<img src="' + MS_PHOTOS[z.slot] + '" style="width:100%;height:100px;object-fit:cover;display:block;" alt="">'
-        + '<button onclick="msClearPhoto(\'' + z.slot + '\')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:.75rem;cursor:pointer;">&#10005;</button>'
-        + '</div>';
+    if (zones[i].isPort) {
+      portZones.push(zones[i]);
+    } else if (zones[i].isHero) {
+      heroZones.push(zones[i]);
     } else {
-      html += '<div style="border:2px dashed rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;margin-bottom:10px;" onclick="document.getElementById(\'' + fileId + '\').click()">'
-        + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="msHandlePhoto(event,\'' + z.slot + '\')">'
-        + '<p style="font-size:.8rem;color:rgba(255,255,255,0.3);margin-bottom:4px;">' + z.label + '</p>'
-        + '<p style="font-size:.7rem;color:rgba(255,255,255,0.18);">' + z.desc + ' (optional)</p>'
-        + '</div>';
+      aboutZones.push(zones[i]);
     }
   }
-  wrap.innerHTML = html;
+
+  var html = '';
+
+  if (heroZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>';
+    for (var hi = 0; hi < heroZones.length; hi++) {
+      html += ctZoneHTML(heroZones[hi]);
+    }
+  }
+
+  if (aboutZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">About Section</span>';
+    if (aboutZones.length === 1) {
+      html += ctZoneHTML(aboutZones[0]);
+    } else {
+      html += '<div class="upload-grid-2">';
+      for (var ai = 0; ai < aboutZones.length; ai++) {
+        html += '<div>' + ctZoneHTML(aboutZones[ai]) + '</div>';
+      }
+      html += '</div>';
+    }
+  }
+
+  if (portZones.length > 0) {
+    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 8px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Family Avatars</span>';
+    html += '<p style="font-size:.76rem;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.5;">Small circular photos that appear next to each family testimonial.</p>';
+    html += '<div class="upload-grid-3">';
+    for (var pi = 0; pi < portZones.length; pi++) {
+      html += '<div>' + ctZoneHTML(portZones[pi]) + '</div>';
+    }
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
 }
 
-function msHandlePhoto(event, slot) {
-  var input = event.target;
+function msZoneHTML(zone) {
+  var photoData = _ctPhotos[zone.id];
+  var fileId = 'ms-file-' + zone.id;
+  if (photoData) {
+    return '<div class="upload-zone-wrap">'
+      + '<span class="upload-zone-label-top">' + zone.label + '</span>'
+      + '<div class="upload-zone has-photo" id="ms-zone-' + zone.id + '">'
+      + '<img class="upload-thumb" src="' + photoData + '" alt="">'
+      + '<button class="upload-clear" onclick="event.stopPropagation();ctClearPhoto(\'' + zone.id + '\')">×</button>'
+      + '</div>'
+      + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="msHandlePhoto(\'' + zone.id + '\',this)">'
+      + '</div>';
+  }
+  return '<div class="upload-zone-wrap">'
+    + '<span class="upload-zone-label-top">' + zone.label + '</span>'
+    + '<div class="upload-zone" id="ms-zone-' + zone.id + '" onclick="document.getElementById(\'' + fileId + '\').click()">'
+    + '<div class="upload-zone-icon">📷</div>'
+    + '<div class="upload-zone-text"><strong>' + zone.label + '</strong>' + zone.desc + '</div>'
+    + '<button class="upload-zone-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Upload Photo</button>'
+    + '</div>'
+    + '<input type="file" id="' + fileId + '" accept="image/*" style="display:none;" onchange="msHandlePhoto(\'' + zone.id + '\',this)">'
+    + '<p class="upload-optional">Optional &mdash; placeholder shown if skipped</p>'
+    + '</div>';
+}
+
+function msHandlePhoto(zoneId, input) {
   if (!input.files || !input.files[0]) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    MS_PHOTOS[slot] = e.target.result;
-    msInitPhotoZones();
+    _ctPhotos[zoneId] = e.target.result;
+    msBuildPhotoZones();
   };
   reader.readAsDataURL(input.files[0]);
 }
 
-function msClearPhoto(slot) {
-  delete MS_PHOTOS[slot];
-  msInitPhotoZones();
-}
-
-// ══════════════════════════════════════════════
-// LIVE PREVIEW
-// ══════════════════════════════════════════════
-var MS_LIVE_MAP = [
-  { id: 'ms-biz-name', key: 'biz-name' },
-  { id: 'ms-headline', key: 'headline' },
-  { id: 'ms-tagline',  key: 'tagline' }
-];
-
-function msPushToPreview(key, value) {
-  var iframe = document.getElementById('ms-preview-iframe');
-  if (!iframe) return;
-  var doc;
-  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
-  if (!doc || !doc.body) return;
-  var els = doc.querySelectorAll('[data-live="' + key + '"]');
-  for (var i = 0; i < els.length; i++) {
-    if (value) els[i].textContent = value;
-  }
-}
-
-function msApplyAllLive() {
-  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
-    var el = document.getElementById(MS_LIVE_MAP[i].id);
-    if (el && el.value && el.value.trim()) {
-      msPushToPreview(MS_LIVE_MAP[i].key, el.value.trim());
-    }
-  }
-}
-
-function msSetupLivePreview() {
-  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
-    (function(m) {
-      var el = document.getElementById(m.id);
-      if (!el) return;
-      el.addEventListener('input', function() {
-        msPushToPreview(m.key, this.value.trim());
-      });
-    })(MS_LIVE_MAP[i]);
-  }
-  var iframe = document.getElementById('ms-preview-iframe');
-  if (iframe) {
-    iframe.addEventListener('load', function() {
-      setTimeout(msApplyAllLive, 80);
-      setTimeout(function() { msInjectPaletteIntoPreview(MS_PAL_CSS); }, 100);
-      setTimeout(msPushAnimToPreview, 120);
-    });
-  }
+function msClearPhoto(zoneId) {
+  _ctPhotos[zoneId] = null;
+  msBuildPhotoZones();
 }
 
 // ══════════════════════════════════════════════
 // COLLECT FIELDS
 // ══════════════════════════════════════════════
 function msCollect() {
+  var v = function(id) { return (document.getElementById(id) || {}).value || ''; };
   return {
-    ownerName:     v('ms-owner-name'),
-    bizName:       v('ms-biz-name'),
-    location:      v('ms-location'),
-    tagline:       v('ms-tagline'),
-    headline:      v('ms-headline'),
-    bio:           v('ms-bio'),
-    svc1Name:      v('ms-svc1-name'),  svc1Price: v('ms-svc1-price'),
-    svc2Name:      v('ms-svc2-name'),  svc2Price: v('ms-svc2-price'),
-    svc3Name:      v('ms-svc3-name'),  svc3Price: v('ms-svc3-price'),
-    tier1Name:     v('ms-tier1-name'), tier1Price: v('ms-tier1-price'),
-    tier2Name:     v('ms-tier2-name'), tier2Price: v('ms-tier2-price'),
-    tier3Name:     v('ms-tier3-name'), tier3Price: v('ms-tier3-price'),
-    credentials:   v('ms-credentials'),
-    email:         v('ms-email'),
-    phone:         v('ms-phone'),
-    instagram:     v('ms-instagram'),
-    tiktok:        v('ms-tiktok'),
-    linkedin:      v('ms-linkedin'),
-    industry:      MS_INDUSTRY ? MS_INDUSTRY.industry : 'general',
-    industryLabel: MS_INDUSTRY ? MS_INDUSTRY.industryLabel : 'Professional',
-    templateFile:  MS_SELECTED_TPL ? MS_SELECTED_TPL.file : '',
-    templateName:  MS_SELECTED_TPL ? MS_SELECTED_TPL.name : '',
-    palette:       MS_PAL_CSS,
-    paletteName:   MS_PAL_NAME,
-    animType:      _msAnim,
-    animMode:      _msAnimMode,
-    burstType:     _msBurst,
-    burstOnForm:   document.getElementById('ms-burst-on-form') ? document.getElementById('ms-burst-on-form').checked : false,
-    burstOnCta:    document.getElementById('ms-burst-on-cta') ? document.getElementById('ms-burst-on-cta').checked : false,
-    _smLastFields: null,
-    _revisionNote: ''
+    ownerName:      v('ms-owner-name'),
+    businessName:   v('ms-biz-name'),
+    tagline:        v('ms-tagline'),
+    location:       v('ms-location'),
+    handle:         v('ms-handle'),
+    yearsExp:       v('ms-years-exp'),
+    clientsServed:  v('ms-clients-served'),
+    heroHeadline:   v('ms-hero-headline'),
+    heroSub:        v('ms-hero-sub'),
+    bio:            v('ms-bio'),
+    funFacts:       v('ms-fun-facts'),
+    credentials:    v('ms-credentials'),
+    careTypes:      _ctCareTypes.join(', '),
+    svc1Name: v('ms-svc1-name'), svc1Desc: v('ms-svc1-desc'), svc1Tags: v('ms-svc1-tags'),
+    svc2Name: v('ms-svc2-name'), svc2Desc: v('ms-svc2-desc'), svc2Tags: v('ms-svc2-tags'),
+    svc3Name: v('ms-svc3-name'), svc3Desc: v('ms-svc3-desc'), svc3Tags: v('ms-svc3-tags'),
+    svc4Name: v('ms-svc4-name'), svc4Desc: v('ms-svc4-desc'), svc4Tags: v('ms-svc4-tags'),
+    rate1Name: v('ms-rate1-name'), rate1Price: v('ms-rate1-price'), rate1Desc: v('ms-rate1-desc'),
+    rate2Name: v('ms-rate2-name'), rate2Price: v('ms-rate2-price'), rate2Desc: v('ms-rate2-desc'),
+    rate3Name: v('ms-rate3-name'), rate3Price: v('ms-rate3-price'), rate3Desc: v('ms-rate3-desc'),
+    popularRate:    String(_ctPopularRate),
+    serviceArea:    v('ms-service-area'),
+    email:          v('ms-email'),
+    phone:          v('ms-phone'),
+    instagram:      v('ms-instagram'),
+    facebook:       v('ms-facebook'),
+    availability:   v('ms-availability'),
+    paletteCSS:     _ctSelectedPalette,
+    paletteName:    _ctSelectedPaletteName,
+    testiFeatureOn: _ctTestiOn ? 'yes' : '',
+    ftesti1Quote: _ctTestiOn ? v('ms-ftesti1-quote') : '',
+    ftesti1Name:  _ctTestiOn ? v('ms-ftesti1-name')  : '',
+    ftesti1Ctx:   _ctTestiOn ? v('ms-ftesti1-ctx')   : '',
+    ftesti2Quote: _ctTestiOn ? v('ms-ftesti2-quote') : '',
+    ftesti2Name:  _ctTestiOn ? v('ms-ftesti2-name')  : '',
+    ftesti2Ctx:   _ctTestiOn ? v('ms-ftesti2-ctx')   : '',
+    ftesti3Quote: _ctTestiOn ? v('ms-ftesti3-quote') : '',
+    ftesti3Name:  _ctTestiOn ? v('ms-ftesti3-name')  : '',
+    ftesti3Ctx:   _ctTestiOn ? v('ms-ftesti3-ctx')   : '',
+    calendlyUrl:  _ctCalOn   ? (v('ms-calendly-url')     || '') : '',
+    googleFormUrl:_ctFormOn  ? (v('ms-google-form-url')  || '') : '',
+    _animType: _ctAnim,
+    _animMode: _ctAnimMode,
+    _burstType: _ctBurst,
+    _burstOnForm: document.getElementById('ms-burst-on-form') ? document.getElementById('ms-burst-on-form').checked : false,
+    _burstOnCta: document.getElementById('ms-burst-on-cta') ? document.getElementById('ms-burst-on-cta').checked : false
   };
 }
 
 // ══════════════════════════════════════════════
-// SHOW GENERATE SCREEN
-// ══════════════════════════════════════════════
-function msShowGenerate() {
-  // Hide phase 2, show phase 3
-  document.getElementById('ms-phase1').style.display = 'none';
-  document.getElementById('ms-phase2').style.display = 'none';
-  document.getElementById('ms-phase3').style.display = 'flex';
-  MS_STEP = 15;
-  msUpdateProgress(15);
-
-  // Build summary
-  var fields = msCollect();
-  var rows = [
-    { label: 'Template',     val: fields.templateName || '—' },
-    { label: 'Palette',      val: fields.paletteName  || '—' },
-    { label: 'Your name',    val: fields.ownerName    || '—' },
-    { label: 'Business',     val: fields.bizName      || '—' },
-    { label: 'Location',     val: fields.location     || '—' },
-    { label: 'Tagline',      val: fields.tagline      || '—' },
-    { label: 'Headline',     val: fields.headline     || '—' },
-    { label: 'Industry',     val: fields.industryLabel || '—' },
-    { label: 'Email',        val: fields.email        || '—' },
-    { label: 'Service 1',    val: fields.svc1Name ? (fields.svc1Name + (fields.svc1Price ? ' — ' + fields.svc1Price : '')) : '—' },
-    { label: 'Service 2',    val: fields.svc2Name ? (fields.svc2Name + (fields.svc2Price ? ' — ' + fields.svc2Price : '')) : '—' },
-    { label: 'Service 3',    val: fields.svc3Name ? (fields.svc3Name + (fields.svc3Price ? ' — ' + fields.svc3Price : '')) : '—' }
-  ];
-  var summaryEl = document.getElementById('ms-gen-summary');
-  if (summaryEl) {
-    var html = '';
-    for (var i = 0; i < rows.length; i++) {
-      html += '<div class="gen-row">'
-        + '<span class="gen-row-label">' + rows[i].label + '</span>'
-        + '<span class="gen-row-val">' + rows[i].val + '</span>'
-        + '</div>';
-    }
-    summaryEl.innerHTML = html;
-  }
-}
-
-// ══════════════════════════════════════════════
-// INJECT ASSETS INTO GENERATED HTML
+// INJECT ASSETS
 // ══════════════════════════════════════════════
 function msInjectAssets(html) {
-  // Inject palette
-  if (MS_PAL_CSS) {
-    html = html.replace('</head>', '<style id="builtsy-palette">:root{' + MS_PAL_CSS + '}</style>\n</head>');
+  if (_ctSelectedPalette) {
+    html = html.replace('</head>', '<style id="builtsy-palette">:root{' + _ctSelectedPalette + '}</style>\n</head>');
   }
-  // Inject photos
-  for (var photoId in MS_PHOTOS) {
-    if (!MS_PHOTOS[photoId]) continue;
+  var hasPhotos = false;
+  for (var k in _ctPhotos) {
+    if (_ctPhotos[k]) { hasPhotos = true; break; }
+  }
+  if (hasPhotos) {
     try {
       var parser = new DOMParser();
       var doc = parser.parseFromString(html, 'text/html');
-      var img = doc.getElementById(photoId);
-      if (img) {
-        img.src = MS_PHOTOS[photoId];
-        html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+      for (var photoId in _ctPhotos) {
+        if (!_ctPhotos[photoId]) continue;
+        var img = doc.getElementById(photoId);
+        if (img) {
+          img.src = _ctPhotos[photoId];
+          img.style.display = 'block';
+          var zone = img.parentElement;
+          if (zone) {
+            var ph = zone.querySelector('.photo-placeholder');
+            if (ph) ph.style.display = 'none';
+          }
+        }
       }
-    } catch(e) {}
+      html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+    } catch(e) {
+      for (var pId in _ctPhotos) {
+        if (!_ctPhotos[pId]) continue;
+        var re = new RegExp('(<img[^>]*id="' + pId + '"[^>]*src=")[^"]*(")', 'i');
+        html = html.replace(re, '$1' + _ctPhotos[pId] + '$2');
+      }
+    }
   }
-  // Credit bar
-  var bizName = (msCollect().bizName || msCollect().ownerName || 'You').trim();
+
+  // Inject Revenue Booster section before footer
+  if (_ctRBOn && window._ctRevBoosterConfig) {
+    var rbSection = ctBuildRBSection(window._ctRevBoosterConfig);
+    if (rbSection) {
+      if (html.indexOf('<footer') !== -1) {
+        html = html.replace('<footer', rbSection + '\n<footer');
+      } else {
+        html = html.replace('</body>', rbSection + '\n</body>');
+      }
+    }
+  }
+
+  // FAQ section
+  if(_ctFAQOn && _ctFAQConfig && _ctFAQConfig.faqs && _ctFAQConfig.faqs.length){
+    var faqHtml=ctBuildFAQSection(_ctFAQConfig.faqs);
+    if(faqHtml) html=html.replace('<footer',faqHtml+'\n<footer');
+  }
+  // Calendly
+  if(_ctCalOn){
+    var calUrl=(document.getElementById('ms-calendly-url')||{}).value||'';
+    if(calUrl){
+      if(calUrl.indexOf('http')!==0) calUrl='https://'+calUrl;
+      var calEmbed='<section style="padding:60px 40px;text-align:center;background:#fafafa;">'
+        +'<h2 style="font-family:sans-serif;margin-bottom:24px;">Book a Time</h2>'
+        +'<iframe src="'+calUrl+'" style="width:100%;min-width:320px;height:700px;border:none;border-radius:12px;" frameborder="0"></iframe>'
+        +'</section>';
+      html=html.replace('<footer',calEmbed+'\n<footer');
+    }
+  }
+  // Google Form
+  if(_ctFormOn){
+    var gfUrl=(document.getElementById('ms-google-form-url')||{}).value||'';
+    if(gfUrl){
+      var gfEmbed='<section style="padding:60px 40px;text-align:center;background:#fff;">'
+        +'<h2 style="font-family:sans-serif;margin-bottom:24px;">Get in Touch</h2>'
+        +'<iframe src="'+gfUrl+'" style="width:100%;max-width:700px;height:800px;border:none;border-radius:12px;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>'
+        +'</section>';
+      html=html.replace('<footer',gfEmbed+'\n<footer');
+    }
+  }
+  // SMS
+  if(_ctSMSOn && _msSMSConfig && _msSMSConfig.phone){
+    var smsFields='<input type="hidden" name="_smsTo" value="'+_msSMSConfig.phone+'">'
+      +'<input type="hidden" name="_smsSid" value="'+(_msSMSConfig.accountSid||'')+'">'
+      +'<input type="hidden" name="_smsTok" value="'+(_msSMSConfig.authToken||'')+'">'
+      +'<input type="hidden" name="_smsFrom" value="'+(_msSMSConfig.fromNumber||'')+'">'
+      +'<input type="hidden" name="_smsTpl" value="'+(_msSMSConfig.messageTemplate||'').replace(/"/g,'&quot;')+'">';
+    html=html.replace('<form ','<form action="https://builtsy-api-production.up.railway.app/contact-notify" method="POST" ');
+    html=html.replace('data-netlify="true"','');
+    html=html.replace(/(<form[^>]*>)/,'$1\n'+smsFields);
+  }
+
+  // Inject "Made with love" credit bar
+  var bizName = (_ctLastFields.businessName || _ctLastFields.ownerName || 'You').trim();
   var creditBar = '<div id="builtsy-credit" style="text-align:center;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#999;letter-spacing:0.02em;background:transparent;">'
     + 'Made with love for ' + bizName + ' &nbsp;&middot;&nbsp; '
     + 'Built<span style="color:#ee70bc;font-weight:700;">sy</span>'
     + '<span style="color:#C8E000;font-weight:700;">.</span>'
     + '</div>';
   html = html.replace('</body>', creditBar + '\n</body>');
+
+  // Inject GDPR/CCPA cookie consent banner
+  var cookieBanner = '<div id="builtsy-cookie" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a1a1a;color:#f5f5f5;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:sans-serif;font-size:14px;line-height:1.5;">'
+    + '<span>We use cookies to improve your experience and analyze traffic. By continuing, you agree to our '
+    + '<a href="/privacy" style="color:#ee70bc;text-decoration:underline;">Privacy Policy</a>.</span>'
+    + '<div style="display:flex;gap:10px;flex-shrink:0;">'
+    + '<button onclick="document.getElementById(\'builtsy-cookie\').style.display=\'none\';try{localStorage.setItem(\'builtsy-cookie-ok\',\'1\')}catch(e){}" style="background:#ee70bc;color:#fff;border:none;border-radius:6px;padding:9px 22px;font-size:14px;font-weight:700;cursor:pointer;">Accept</button>'
+    + '<button onclick="document.getElementById(\'builtsy-cookie\').style.display=\'none\';try{localStorage.setItem(\'builtsy-cookie-ok\',\'declined\')}catch(e){}" style="background:transparent;color:#aaa;border:1px solid #555;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer;">Decline</button>'
+    + '</div>'
+    + '</div>'
+    + '<script>'
+    + '(function(){try{if(!localStorage.getItem("builtsy-cookie-ok")){var b=document.getElementById("builtsy-cookie");if(b)b.style.display="flex";}}catch(e){}})();'
+    + '<\/script>';
+  html = html.replace('</body>', cookieBanner + '\n</body>');
+
   return html;
 }
 
@@ -1224,37 +1745,34 @@ function msInjectAssets(html) {
 // ══════════════════════════════════════════════
 function msGenerate() {
   var fields = msCollect();
-  _msLastFields = fields;
+  _ctLastFields = fields;
+  var overlay = document.getElementById('ms-overlay');
+  if (overlay) overlay.className = 'gen-overlay active';
+  _ctMsgIdx = 0;
+  _ctProgress = 0;
+  var msgEl = document.getElementById('ms-gen-msg');
+  var barEl = document.getElementById('ms-progress-fill');
+  if (msgEl) msgEl.textContent = _ctGenMsgs[0];
+  if (barEl) barEl.style.width = '0%';
 
-  // Show progress
-  var progressWrap = document.getElementById('ms-gen-progress');
-  var barFill = document.getElementById('ms-gen-bar-fill');
-  var statusEl = document.getElementById('ms-gen-status');
-  var genBtn = document.querySelector('.gen-btn');
-  if (progressWrap) progressWrap.style.display = 'block';
-  if (genBtn) genBtn.disabled = true;
-  if (barFill) barFill.style.width = '0%';
-  if (statusEl) statusEl.textContent = _msGenMsgs[0];
-
-  _msGenProgress = 0;
-  _msGenMsgIdx = 0;
-
-  _msGenInterval = setInterval(function() {
-    _msGenProgress = Math.min(_msGenProgress + 0.8, 92);
-    if (barFill) barFill.style.width = _msGenProgress + '%';
-  }, 400);
-
-  _msGenMsgInterval = setInterval(function() {
-    _msGenMsgIdx = (_msGenMsgIdx + 1) % _msGenMsgs.length;
-    if (statusEl) statusEl.textContent = _msGenMsgs[_msGenMsgIdx];
+  _ctMsgInterval = setInterval(function() {
+    _ctMsgIdx = (_ctMsgIdx + 1) % _ctGenMsgs.length;
+    var el = document.getElementById('ms-gen-msg');
+    if (el) el.textContent = _ctGenMsgs[_ctMsgIdx];
   }, 5000);
+
+  _ctProgressInterval = setInterval(function() {
+    _ctProgress = Math.min(_ctProgress + 0.8, 92);
+    var bar = document.getElementById('ms-progress-fill');
+    if (bar) bar.style.width = _ctProgress + '%';
+  }, 400);
 
   fetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      templateType: MS_SELECTED_TPL ? MS_SELECTED_TPL.id : 'social-media-manager-site',
-      niche: fields.industryLabel || 'professional',
+      templateType: _ctSelectedTemplate,
+      niche: ctBuildNiche(),
       fields: fields
     })
   })
@@ -1275,19 +1793,19 @@ function msGenerate() {
           if (line.startsWith('data: ')) {
             var payload = line.slice(6);
             if (payload === '[DONE]') {
-              msFinishGenerate();
+              ctFinishGenerate();
               return;
             }
             try {
               var data = JSON.parse(payload);
-              if (data.error) { msFinishError(data.error); return; }
+              if (data.error) { ctFinishError(data.error); return; }
               if (data.html) {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-                if (html.length < 200) { msFinishError('Generation returned empty content. Please try again.'); return; }
-                html = msInjectAssets(html);
-                _msHTML = html;
-                msFinishGenerate();
-                msShowOutput(html);
+                if (html.length < 200) { ctFinishError('Generation returned empty content. Please try again.'); return; }
+                html = ctInjectAssets(html);
+                _ctHTML = html;
+                ctFinishGenerate();
+                ctShowOutput(html);
                 return;
               }
             } catch(e) {}
@@ -1299,63 +1817,494 @@ function msGenerate() {
     return pump();
   })
   .catch(function(err) {
-    msFinishError('Connection error: ' + err.message);
+    ctFinishError('Connection error: ' + err.message);
   });
 }
 
 function msFinishGenerate() {
-  clearInterval(_msGenInterval);
-  clearInterval(_msGenMsgInterval);
-  var barFill = document.getElementById('ms-gen-bar-fill');
-  if (barFill) barFill.style.width = '100%';
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.disabled = false;
+  clearInterval(_ctMsgInterval);
+  clearInterval(_ctProgressInterval);
+  var bar = document.getElementById('ms-progress-fill');
+  if (bar) bar.style.width = '100%';
+  setTimeout(function() {
+    var overlay = document.getElementById('ms-overlay');
+    if (overlay) overlay.className = 'gen-overlay';
+  }, 300);
 }
 
 function msFinishError(msg) {
-  msFinishGenerate();
-  var statusEl = document.getElementById('ms-gen-status');
-  if (statusEl) {
-    statusEl.textContent = 'Error: ' + msg;
-    statusEl.style.color = '#fca5a5';
-  }
+  clearInterval(_ctMsgInterval);
+  clearInterval(_ctProgressInterval);
+  var overlay = document.getElementById('ms-overlay');
+  if (overlay) overlay.className = 'gen-overlay';
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'none';
+  var outputPanel = document.getElementById('ms-output-panel');
+  if (outputPanel) { outputPanel.className = 'active'; outputPanel.style.display = 'flex'; }
+  ctShowError(msg);
 }
 
+// ══════════════════════════════════════════════
+// OUTPUT
+// ══════════════════════════════════════════════
 function msShowOutput(html) {
-  // Open in a new tab
-  var blob = new Blob([html], { type: 'text/html' });
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'none';
+  var outputPanel = document.getElementById('ms-output-panel');
+  outputPanel.className = 'active';
+  outputPanel.style.display = 'flex';
+
+  var bizName = (document.getElementById('ms-biz-name') || {}).value || 'Your Site';
+  var t = document.getElementById('ms-output-title');
+  if (t) t.textContent = bizName + ' — ' + _ctSelectedPaletteName + ' — scroll to preview';
+
+  var frame = document.getElementById('ms-output-preview-frame');
+  frame.srcdoc = html;
+
+  // Wire up Revenue Booster interactive calculator once iframe loads
+  frame.onload = function() {
+    try {
+      var win = frame.contentWindow;
+      var doc = win.document;
+      var _rbSession = 0, _rbAddons = {};
+      win._rbCalc = function() {
+        var total = _rbSession;
+        for (var k in _rbAddons) total += _rbAddons[k];
+        var el = doc.getElementById('rb-total');
+        if (el) el.textContent = '$' + total;
+      };
+      win._rbPick = function(el, price) {
+        var cards = doc.querySelectorAll('.rb-session-card');
+        for (var i = 0; i < cards.length; i++) {
+          cards[i].style.borderColor = 'rgba(212,116,90,0.2)';
+          cards[i].style.background  = 'rgba(255,255,255,0.03)';
+        }
+        el.style.borderColor = '#D4745A';
+        el.style.background  = 'rgba(212,116,90,0.08)';
+        _rbSession = price;
+        win._rbCalc();
+      };
+      win._rbToggle = function(idx, price) {
+        var check = doc.getElementById('rb-check-' + idx);
+        if (_rbAddons[idx]) {
+          delete _rbAddons[idx];
+          if (check) { check.style.background = 'transparent'; check.style.borderColor = '#D4745A'; }
+        } else {
+          _rbAddons[idx] = price;
+          if (check) { check.style.background = '#D4745A'; check.style.borderColor = '#D4745A'; }
+        }
+        win._rbCalc();
+      };
+    } catch(e) {}
+  };
+}
+
+function msShowError(msg) {
+  var el = document.getElementById('ms-error');
+  if (el) { el.textContent = msg; el.className = 'output-error active'; }
+}
+
+function msRebuild() {
+  var el = document.getElementById('ms-error');
+  if (el) el.className = 'output-error';
+  msGenerate();
+}
+
+function msStartOver() {
+  var outputPanel = document.getElementById('ms-output-panel');
+  if (outputPanel) { outputPanel.style.display = 'none'; outputPanel.className = ''; }
+  var shell = document.querySelector('.app-shell');
+  if (shell) shell.style.display = 'flex';
+  msGoStep(1);
+}
+
+function msToggleRevise() {
+  var drawer = document.getElementById('ms-revise-drawer');
+  if (!drawer) return;
+  drawer.className = (drawer.className === 'active' ? '' : 'active');
+}
+
+function msRevise() {
+  var note = (document.getElementById('ms-revise-input') || {}).value;
+  if (!note || !note.trim()) return;
+  var drawer = document.getElementById('ms-revise-drawer');
+  if (drawer) drawer.className = '';
+  var overlay = document.getElementById('ms-overlay');
+  if (overlay) overlay.className = 'gen-overlay active';
+  _ctMsgIdx = 0;
+  _ctProgress = 0;
+  var msgEl = document.getElementById('ms-gen-msg');
+  var barEl = document.getElementById('ms-progress-fill');
+  if (msgEl) msgEl.textContent = 'Applying your changes…';
+  if (barEl) barEl.style.width = '0%';
+
+  _ctMsgInterval = setInterval(function() {
+    _ctMsgIdx = (_ctMsgIdx + 1) % _ctGenMsgs.length;
+    var el = document.getElementById('ms-gen-msg');
+    if (el) el.textContent = _ctGenMsgs[_ctMsgIdx];
+  }, 5000);
+
+  _ctProgressInterval = setInterval(function() {
+    _ctProgress = Math.min(_ctProgress + 0.8, 92);
+    var bar = document.getElementById('ms-progress-fill');
+    if (bar) bar.style.width = _ctProgress + '%';
+  }, 400);
+
+  var revisedFields = {};
+  for (var k in _ctLastFields) { revisedFields[k] = _ctLastFields[k]; }
+  revisedFields['_revisionNote'] = note.trim();
+
+  fetch(RAILWAY_URL + '/generate-template-universal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      templateType: _ctSelectedTemplate,
+      niche: ctBuildNiche(),
+      fields: revisedFields
+    })
+  })
+  .then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function pumpRevise() {
+      return reader.read().then(function(result) {
+        if (result.done) return;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var payload = line.slice(6);
+            if (payload === '[DONE]') {
+              ctFinishGenerate();
+              return;
+            }
+            try {
+              var data = JSON.parse(payload);
+              if (data.error) { ctFinishError(data.error); return; }
+              if (data.html) {
+                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+                if (html.length < 200) { ctFinishError('Revision returned empty content. Please try again.'); return; }
+                html = ctInjectAssets(html);
+                _ctHTML = html;
+                var inp = document.getElementById('ms-revise-input');
+                if (inp) inp.value = '';
+                ctFinishGenerate();
+                ctShowOutput(html);
+                return;
+              }
+            } catch(e) {}
+          }
+        }
+        return pumpRevise();
+      });
+    }
+    return pumpRevise();
+  })
+  .catch(function(err) {
+    ctFinishError('Revision error: ' + err.message);
+  });
+}
+
+function msDownload() {
+  if (!_ctHTML) return;
+  var biz = (document.getElementById('ms-biz-name') || {}).value || 'my-site';
+  var slug = biz.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
+  var blob = new Blob([_ctHTML], { type: 'text/html' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  // Also offer download
-  var bizName = v('ms-biz-name') || v('ms-owner-name') || 'my-site';
-  var slug = bizName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 30);
   a.download = slug + '.html';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
-  // Update status
-  var statusEl = document.getElementById('ms-gen-status');
-  if (statusEl) {
-    statusEl.textContent = 'Your site is ready! Download started.';
-    statusEl.style.color = '#a3e635';
-  }
+  URL.revokeObjectURL(url);
 }
 
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
-function msInit() {
-  msRenderTemplateGrid('all');
-  msPalTab('light');
-  msRenderServices();
-  msRenderTiers();
-  msInitPhotoZones();
-  msUpdateProgress(1);
+// ── SMART CHIPS ──────────────────────────────────────────
+var MS_CHIPS = {
+  tagline: {
+    children: [
+      'Trusted In-Home Childcare',
+      'Safe, Nurturing Care for Your Little Ones',
+      'Reliable Care That Feels Like Family',
+      'Where Kids Thrive and Parents Breathe Easy',
+      'Loving Childcare, Right at Home',
+      'Your Village — One Caregiver at a Time'
+    ],
+    senior: [
+      'Compassionate In-Home Senior Care',
+      'Dignified, Loving Care for Your Loved One',
+      'Trusted Companion & In-Home Support',
+      'Quality Senior Care in the Comfort of Home',
+      'Caring for the People Who Cared for You',
+      'Reliable Care, Real Connection'
+    ],
+    pet: [
+      'Loving Care for Your Furry Family',
+      'Your Pet\'s Home Away From Home',
+      'Trusted Pet Care That Feels Like Family',
+      'Happy Pets, Happy Owners',
+      'Professional Care with a Personal Touch',
+      'Safe, Fun, Loving Pet Care'
+    ],
+    default: [
+      'Trusted In-Home Care',
+      'Reliable Care That Feels Like Family',
+      'Professional, Personal, and Always Present',
+      'Care You Can Count On',
+      'Compassionate Care, Right at Home',
+      'Your Trusted Local Caregiver'
+    ]
+  },
+  headline: {
+    children: [
+      'Nurturing Care, Right in Your Home',
+      'The Caregiver Your Family Deserves',
+      'Safe Hands for Your Little Ones',
+      'Where Every Child Feels at Home',
+      'Trusted Care So You Can Breathe Easy',
+      'Love, Play, and Safe Keeping — Every Day'
+    ],
+    senior: [
+      'Compassionate Care at Home',
+      'Dignity, Comfort, and Companionship',
+      'Where Your Loved One Feels at Home',
+      'Trusted Care for Those You Love Most',
+      'Caring for the People Who Matter Most',
+      'Real Support, Real Connection'
+    ],
+    pet: [
+      'Your Pet Is in the Best Hands',
+      'Love and Attention Every Single Day',
+      'A Home Away From Home for Your Pet',
+      'Happy Tails, Stress-Free Owners',
+      'Professional Care with a Personal Touch',
+      'Where Pets Are Truly Family'
+    ],
+    default: [
+      'Nurturing Care, Right in Your Home',
+      'The Caregiver Your Family Deserves',
+      'Trusted, Reliable, and Always There',
+      'Care That Makes a Real Difference',
+      'Your Trusted Local Caregiver',
+      'Professional Care with a Personal Touch'
+    ]
+  },
+  creds: [
+    'Background Checked',
+    'CPR Certified',
+    'First Aid Trained',
+    'Insured & Bonded',
+    'Fully Vaccinated',
+    'Montessori Trained',
+    'Newborn Specialist',
+    'Pet First Aid Certified',
+    'Dementia Care Trained',
+    'Non-smoker',
+    'Own transportation',
+    'References available'
+  ]
+};
+
+function msGetCareKey() {
+  var types = _ctCareTypes || [];
+  if (types.indexOf('Senior') !== -1) return 'senior';
+  if (types.indexOf('Pet') !== -1) return 'pet';
+  if (types.length > 0) return 'children';
+  return 'default';
 }
 
-document.addEventListener('DOMContentLoaded', msInit);
+function msRenderChips(rowId, chips, fieldId, appendMode) {
+  var row = document.getElementById(rowId);
+  if (!row) return;
+  row.innerHTML = '';
+  for (var i = 0; i < chips.length; i++) {
+    (function(text) {
+      var chip = document.createElement('span');
+      chip.className = 'chip-s';
+      chip.textContent = text;
+      chip.onclick = function() {
+        var inp = document.getElementById(fieldId);
+        if (!inp) return;
+        if (appendMode) {
+          var current = inp.value.trim();
+          var parts = current ? current.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+          var idx2 = parts.indexOf(text);
+          if (idx2 === -1) {
+            parts.push(text);
+            chip.classList.add('used');
+          } else {
+            parts.splice(idx2, 1);
+            chip.classList.remove('used');
+          }
+          inp.value = parts.join(', ');
+        } else {
+          inp.value = text;
+          var siblings = row.querySelectorAll('.chip-s');
+          for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('used');
+          chip.classList.add('used');
+        }
+      };
+      row.appendChild(chip);
+    })(chips[i]);
+  }
+}
+
+function msInitChips() {
+  var key = msGetCareKey();
+  msRenderChips('ms-chips-tagline',  MS_CHIPS.tagline[key]  || MS_CHIPS.tagline.default,  'ms-tagline',       false);
+  msRenderChips('ms-chips-headline', MS_CHIPS.headline[key] || MS_CHIPS.headline.default, 'ms-hero-headline', false);
+  msRenderChips('ms-chips-creds',    MS_CHIPS.creds,                                      'ms-credentials',   true);
+}
+
+// ── INCOME CALCULATOR ────────────────────────────────────
+function msCalcIncome() {
+  var goal  = parseFloat(document.getElementById('ms-ig-goal').value) || 0;
+  var hours = parseFloat(document.getElementById('ms-ig-hours').value) || 30;
+  var result = document.getElementById('ms-ig-result');
+  if (!goal || goal < 100) { result.style.display = 'none'; return; }
+  var hoursPerMonth = hours * 4.33;
+  var rate       = Math.ceil(goal / hoursPerMonth);
+  rate           = Math.ceil(rate / 0.5) * 0.5; // round to nearest $0.50
+  var actualMo   = Math.round(rate * hoursPerMonth);
+  var tier1      = Math.max(10, Math.round(rate * 1.15 * 2) / 2); // drop-in higher
+  var tier3      = Math.max(10, Math.round(rate * 0.78 * 2) / 2); // full-time discount
+  document.getElementById('ms-ig-rate').textContent    = '$' + rate.toFixed(2) + '/hr';
+  document.getElementById('ms-ig-monthly').textContent = '$' + actualMo.toLocaleString() + '/mo';
+  document.getElementById('ms-ig-range').textContent   = '$' + tier3.toFixed(0) + ' – $' + tier1.toFixed(0) + '/hr';
+  result.style.display = 'flex';
+}
+
+function msApplyRates() {
+  var goal  = parseFloat(document.getElementById('ms-ig-goal').value) || 0;
+  var hours = parseFloat(document.getElementById('ms-ig-hours').value) || 30;
+  if (!goal || goal < 100) return;
+  var hoursPerMonth = hours * 4.33;
+  var rate  = Math.ceil(goal / hoursPerMonth / 0.5) * 0.5;
+  var tier1 = Math.max(10, Math.round(rate * 1.15 * 2) / 2);
+  var tier2 = rate;
+  var tier3 = Math.max(10, Math.round(rate * 0.78 * 2) / 2);
+  var r1 = document.getElementById('ms-rate1-price');
+  var r2 = document.getElementById('ms-rate2-price');
+  var r3 = document.getElementById('ms-rate3-price');
+  if (r1) r1.value = '$' + tier1.toFixed(0) + '/hr';
+  if (r2) r2.value = '$' + tier2.toFixed(0) + '/hr';
+  if (r3) r3.value = '$' + tier3.toFixed(0) + '/hr';
+  var box = document.querySelector('.ig-box');
+  if (box) {
+    box.style.borderColor = 'rgba(200,224,0,0.5)';
+    setTimeout(function(){ box.style.borderColor = 'rgba(67,97,238,0.2)'; }, 1200);
+  }
+}
+
+// ── LIVE PREVIEW ─────────────────────────────────────────
+var MS_LIVE_MAP = [
+  { id: 'ms-biz-name',      key: 'biz-name' },
+  { id: 'ms-owner-name',    key: 'biz-name' },
+  { id: 'ms-hero-headline', key: 'headline' },
+  { id: 'ms-tagline',       key: 'tagline' }
+];
+
+function msPushToPreview(key, value) {
+  var iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  var doc;
+  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+  if (!doc || !doc.body) return;
+  var els = doc.querySelectorAll('[data-live="' + key + '"]');
+  for (var i = 0; i < els.length; i++) {
+    if (value) els[i].textContent = value;
+  }
+}
+
+function msApplyAllLive() {
+  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
+    var el = document.getElementById(MS_LIVE_MAP[i].id);
+    if (el && el.value && el.value.trim()) {
+      msPushToPreview(MS_LIVE_MAP[i].key, el.value.trim());
+    }
+  }
+}
+
+  // ── ANIMATION PICKERS ──
+  var _ctAnim = 'none', _ctAnimMode = 'ambient', _ctBurst = 'none';
+  function msSelectAnim(val) {
+    _ctAnim = val;
+    document.querySelectorAll('#ct-anim-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ms-anim-' + val);
+    if (el) el.classList.add('selected');
+    document.getElementById('ms-anim-mode-wrap').style.display = val === 'none' ? 'none' : 'block';
+    msPushAnimToPreview();
+  }
+  function msSelectAnimMode(val) {
+    _ctAnimMode = val;
+    document.querySelectorAll('.anim-mode-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ms-mode-' + val);
+    if (el) el.classList.add('selected');
+    msPushAnimToPreview();
+  }
+  function msSelectBurst(val) {
+    _ctBurst = val;
+    document.querySelectorAll('#ct-burst-grid .anim-card').forEach(function(c){c.classList.remove('selected');});
+    var el = document.getElementById('ms-burst-' + val);
+    if (el) el.classList.add('selected');
+    document.getElementById('ms-burst-trigger-wrap').style.display = val === 'none' ? 'none' : 'block';
+    msPushAnimToPreview();
+  }
+  function msPushAnimToPreview() {
+    var iframe = document.getElementById('preview-iframe');
+    if (!iframe) return;
+    var doc;
+    try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
+    if (!doc || !doc.body) return;
+    doc.body.setAttribute('data-anim', _ctAnim);
+    doc.body.setAttribute('data-anim-mode', _ctAnimMode);
+    doc.body.setAttribute('data-burst', _ctBurst);
+    var burstOn = [];
+    if (document.getElementById('ms-burst-on-form') && document.getElementById('ms-burst-on-form').checked) burstOn.push('form');
+    if (document.getElementById('ms-burst-on-cta') && document.getElementById('ms-burst-on-cta').checked) burstOn.push('cta');
+    doc.body.setAttribute('data-burst-on', burstOn.join(','));
+    // Trigger re-init of animation engine in iframe if it exists
+    try {
+      if (iframe.contentWindow && iframe.contentWindow.builtsy_initAnim) {
+        iframe.contentWindow.builtsy_initAnim();
+      }
+    } catch(e) {}
+  }
+
+function msSetupLivePreview() {
+  for (var i = 0; i < MS_LIVE_MAP.length; i++) {
+    (function(m) {
+      var el = document.getElementById(m.id);
+      if (!el) return;
+      el.addEventListener('input', function() {
+        msPushToPreview(m.key, this.value.trim());
+      });
+    })(MS_LIVE_MAP[i]);
+  }
+  var iframe = document.getElementById('preview-iframe');
+  if (iframe) {
+    iframe.addEventListener('load', function() {
+      setTimeout(msApplyAllLive, 80);
+      setTimeout(msPushAnimToPreview, 120);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  msRenderTemplateCards();
+  msSelectPaletteTab('light');
+  msGoStep(1);
+  msSetupLivePreview();
+});
 </script>
 </body>
 </html>
