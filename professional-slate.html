@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --slate:       #2C3E6B;
+      --slate-light: #4A5F9E;
+      --white:       #FFFFFF;
+      --off-white:   #F8F9FC;
+      --light-grey:  #F0F2F7;
+      --dark:        #1A1F2E;
+      --mid:         #5A6170;
+      --border:      #E2E6F0;
+
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --radius-xl:  32px;
+
+      --slate-rgb:       44, 62, 107;
+      --slate-light-rgb: 74, 95, 158;
+      --dark-rgb:        26, 31, 46;
+
+      --shadow-card: 0 2px 16px rgba(var(--slate-rgb),0.08);
+      --shadow-lift: 0 8px 32px rgba(var(--slate-rgb),0.14);
+
+      --transition: 0.22s ease;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--dark);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ── LAYOUT HELPERS ── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      margin-bottom: 14px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 50px;
+      padding: 13px 28px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--slate);
+      color: var(--white);
+      border-color: var(--slate);
+    }
+    .btn-primary:hover {
+      background: var(--slate-light);
+      border-color: var(--slate-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(var(--slate-rgb),0.28);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--slate);
+      border-color: var(--slate);
+    }
+    .btn-outline:hover {
+      background: var(--slate);
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+    .btn-outline-white {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.7);
+    }
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--white);
+    }
+
+    /* ══════════════════════════════════════
+       1. NAV
+    ══════════════════════════════════════ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .nav__logo span {
+      color: var(--slate);
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav__links a {
+      font-size: 14.5px;
+      font-weight: 450;
+      color: var(--mid);
+      transition: color var(--transition);
+    }
+    .nav__links a:hover {
+      color: var(--slate);
+    }
+    .nav__cta {
+      font-size: 14px;
+      padding: 10px 22px;
+    }
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+    .nav__mobile {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 12px 0 20px;
+    }
+    .nav__mobile a {
+      display: block;
+      padding: 13px 28px;
+      font-size: 15px;
+      color: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__mobile a:last-child {
+      border-bottom: none;
+      margin: 12px 28px 0;
+      padding: 0;
+    }
+    .nav__mobile .btn {
+      display: inline-flex;
+      font-size: 14px;
+    }
+
+    /* ══════════════════════════════════════
+       2. HERO
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100svh;
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -160px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(var(--slate-light-rgb),0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+      padding: 80px 0;
+    }
+    .hero__text {
+      max-width: 620px;
+    }
+    .hero__headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: 1.1;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 22px;
+    }
+    .hero__headline em {
+      font-style: italic;
+      color: var(--slate);
+    }
+    .hero__tagline {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--mid);
+      margin-bottom: 38px;
+      max-width: 500px;
+    }
+    .hero__ctas {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mid);
+      box-shadow: 0 1px 6px rgba(var(--slate-rgb),0.06);
+    }
+    .hero__badge .check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: var(--slate);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .hero__photo {
+      position: relative;
+    }
+    .hero__photo-frame {
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(160deg, var(--slate) 0%, var(--slate-light) 50%, #6B82BC 100%);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero__photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 55%, rgba(var(--dark-rgb),0.4) 100%);
+    }
+    .hero__photo-label {
+      position: absolute;
+      bottom: 28px;
+      left: 28px;
+      right: 28px;
+      z-index: 2;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      color: var(--white);
+    }
+    .hero__photo-label strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 17px;
+      margin-bottom: 3px;
+    }
+    .hero__photo-label span {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    /* decorative dot pattern */
+    .hero__photo::before {
+      content: '';
+      position: absolute;
+      top: -24px;
+      right: -24px;
+      width: 120px;
+      height: 120px;
+      background-image: radial-gradient(circle, var(--slate-light) 1.5px, transparent 1.5px);
+      background-size: 14px 14px;
+      opacity: 0.25;
+      border-radius: 8px;
+    }
+    /* thin slate line accent */
+    .hero__photo::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: -20px;
+      width: 80px;
+      height: 80px;
+      border: 3px solid var(--slate);
+      border-radius: var(--radius-md);
+      opacity: 0.18;
+    }
+
+    /* ══════════════════════════════════════
+       3. SOCIAL PROOF STRIP
+    ══════════════════════════════════════ */
+    .stats-strip {
+      background: var(--light-grey);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 38px 0;
+    }
+    .stats-strip__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 0 24px;
+    }
+    .stat-item__number {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      color: var(--slate);
+      line-height: 1;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .stat-item__label {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--mid);
+      letter-spacing: 0.02em;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       4. ABOUT
+    ══════════════════════════════════════ */
+    .about {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .about__inner {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about__photo {
+      position: relative;
+    }
+    .about__photo-frame {
+      border-radius: var(--radius-xl);
+      aspect-ratio: 3 / 4;
+      background: linear-gradient(135deg, var(--light-grey) 0%, var(--border) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+    .about__photo-frame-inner {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, var(--off-white) 0%, var(--light-grey) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about__photo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about__photo-icon svg {
+      opacity: 0.4;
+    }
+    /* thin left border accent */
+    .about__photo::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 40px;
+      bottom: 40px;
+      width: 3px;
+      background: var(--slate);
+      border-radius: 2px;
+      opacity: 0.5;
+    }
+    .about__content {
+    }
+    .about__headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      line-height: 1.2;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .about__bio {
+      font-size: 16.5px;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 32px;
+    }
+    .about__pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+    .about__pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .about__pillar-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(var(--slate-rgb),0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .about__pillar-icon svg {
+      color: var(--slate);
+    }
+    .about__pillar-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .about__pillar-text span {
+      font-size: 14px;
+      color: var(--mid);
+    }
+    .about__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .about__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate);
+    }
+    .about__badge svg {
+      opacity: 0.7;
+    }
+
+    /* ══════════════════════════════════════
+       5. SERVICES
+    ══════════════════════════════════════ */
+    .services {
+      padding: 100px 0;
+      background: var(--off-white);
+    }
+    .services__header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 60px;
+    }
+    .section-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      line-height: 1.2;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+    .services__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px 36px 30px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+    }
+    /* top border accent */
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--slate);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .service-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(var(--slate-rgb),0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--slate);
+    }
+    .service-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .service-card p {
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+    .service-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .service-card__tags span {
+      display: inline-block;
+      background: rgba(var(--slate-rgb),0.07);
+      color: var(--slate);
+      border-radius: 50px;
+      padding: 4px 13px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════
+       6. TESTIMONIALS
+    ══════════════════════════════════════ */
+    .testimonials {
+      padding: 100px 0;
+      background: var(--light-grey);
+    }
+    .testimonials__header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 60px;
+    }
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .testimonial-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lift);
+    }
+    .testimonial-card__quote-mark {
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      line-height: 0.8;
+      color: var(--slate);
+      opacity: 0.18;
+      position: absolute;
+      top: 22px;
+      left: 30px;
+      user-select: none;
+    }
+    .testimonial-card__stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 18px;
+      color: var(--slate);
+      font-size: 14px;
+    }
+    .testimonial-card__text {
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--dark);
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+    .testimonial-card__author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .testimonial-card__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--slate) 0%, var(--slate-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-family: var(--font-serif);
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .testimonial-card__info strong {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .testimonial-card__info span {
+      font-size: 13px;
+      color: var(--mid);
+    }
+
+    /* ══════════════════════════════════════
+       7. RATES
+    ══════════════════════════════════════ */
+    .rates {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .rates__header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 60px;
+    }
+    .rates__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .rate-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .rate-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+    }
+    .rate-card__head {
+      padding: 30px 32px 24px;
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border);
+    }
+    .rate-card__tier {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      margin-bottom: 8px;
+    }
+    .rate-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .rate-card__price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .rate-card__price sup {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-top: 6px;
+    }
+    .rate-card__price strong {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .rate-card__price span {
+      font-size: 14px;
+      color: var(--mid);
+    }
+    .rate-card__desc {
+      font-size: 13.5px;
+      color: var(--mid);
+    }
+    .rate-card__body {
+      padding: 28px 32px 32px;
+      background: var(--white);
+    }
+    .rate-card__features {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      margin-bottom: 28px;
+    }
+    .rate-card__feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--mid);
+    }
+    .rate-card__feature .icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--slate);
+    }
+    /* featured / middle tier */
+    .rate-card--featured {
+      border-color: var(--slate);
+      box-shadow: 0 4px 24px rgba(var(--slate-rgb),0.18);
+      position: relative;
+    }
+    .rate-card--featured .rate-card__head {
+      background: var(--slate);
+      border-bottom-color: rgba(255,255,255,0.15);
+    }
+    .rate-card--featured .rate-card__tier {
+      color: rgba(255,255,255,0.65);
+    }
+    .rate-card--featured .rate-card__name {
+      color: var(--white);
+    }
+    .rate-card--featured .rate-card__price sup,
+    .rate-card--featured .rate-card__price strong {
+      color: var(--white);
+    }
+    .rate-card--featured .rate-card__price span,
+    .rate-card--featured .rate-card__desc {
+      color: rgba(255,255,255,0.65);
+    }
+    .rate-card--featured .rate-card__body {
+      background: var(--off-white);
+    }
+    .rate-card__badge-popular {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--slate-light);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 0 0 10px 10px;
+    }
+
+    /* ══════════════════════════════════════
+       8. CTA BAND
+    ══════════════════════════════════════ */
+    .cta-band {
+      padding: 90px 0;
+      background: var(--slate);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-band::after {
+      content: '';
+      position: absolute;
+      bottom: -150px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-band__inner {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-band__eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 16px;
+    }
+    .cta-band__headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .cta-band__sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════
+       9. FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--dark);
+      padding: 64px 0 36px;
+    }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 32px;
+    }
+    .footer__brand {}
+    .footer__logo {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .footer__logo span {
+      color: var(--slate-light);
+    }
+    .footer__tagline {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .footer__social {
+      display: flex;
+      gap: 10px;
+    }
+    .footer__social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      transition: all var(--transition);
+    }
+    .footer__social a:hover {
+      background: var(--slate);
+      border-color: var(--slate);
+      color: var(--white);
+    }
+    .footer__col-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .footer__col ul li a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      transition: color var(--transition);
+    }
+    .footer__col ul li a:hover {
+      color: var(--white);
+    }
+    .footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer__copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.28);
+    }
+    .footer__legal {
+      display: flex;
+      gap: 20px;
+    }
+    .footer__legal a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.28);
+      transition: color var(--transition);
+    }
+    .footer__legal a:hover {
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1000px) {
+      .hero__inner {
+        grid-template-columns: 1fr 340px;
+        gap: 48px;
+      }
+      .about__inner {
+        grid-template-columns: 340px 1fr;
+        gap: 48px;
+      }
+      .footer__top {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+
+      /* Nav */
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__mobile.is-open { display: flex; }
+
+      /* Hero */
+      .hero { min-height: auto; }
+      .hero__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 0;
+      }
+      .hero__photo { order: -1; }
+      .hero__photo-frame { max-height: 320px; aspect-ratio: auto; }
+      .hero__headline { font-size: 2.4rem; }
+      .hero__tagline { font-size: 16px; }
+
+      /* Stats */
+      .stats-strip__inner { gap: 0; }
+      .stat-divider { display: none; }
+      .stat-item { padding: 16px 20px; flex: 1; min-width: 140px; }
+
+      /* About */
+      .about { padding: 72px 0; }
+      .about__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .about__photo { max-width: 300px; margin: 0 auto; }
+      .about__photo::before { display: none; }
+
+      /* Services */
+      .services { padding: 72px 0; }
+      .services__grid { grid-template-columns: 1fr; }
+
+      /* Testimonials */
+      .testimonials { padding: 72px 0; }
+      .testimonials__grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* Rates */
+      .rates { padding: 72px 0; }
+      .rates__grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      /* CTA Band */
+      .cta-band { padding: 68px 0; }
+
+      /* Footer */
+      .footer__top {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       NAV
+  ═══════════════════════════════════ -->
+  <header class="nav">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="#" class="nav__logo" data-live="biz-name">Meridian <span>Consulting</span></a>
+        <nav class="nav__links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#rates">Rates</a>
+          <a href="#rates" class="btn btn-primary nav__cta">Book a Call</a>
+        </nav>
+        <button class="nav__hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobileNav">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#rates">Rates</a>
+      <a href="#rates" class="btn btn-primary">Book a Call</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════
+       HERO
+  ═══════════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <span class="eyebrow">Business &amp; Executive Coaching</span>
+          <h1 class="hero__headline" data-live="headline">
+            Clarity, <em>Strategy,</em><br>Lasting Results.
+          </h1>
+          <p class="hero__tagline" data-live="tagline">
+            I partner with driven professionals and founders to cut through the noise, sharpen their vision, and build careers and businesses they're proud of.
+          </p>
+          <div class="hero__ctas">
+            <a href="#rates" class="btn btn-primary">Book a Free Discovery Call</a>
+            <a href="#services" class="btn btn-outline">Explore Services</a>
+          </div>
+          <div class="hero__badge">
+            <span class="check">✓</span>
+            200+ Clients Served &nbsp;·&nbsp; Trusted Since 2014
+          </div>
+        </div>
+
+        <div class="hero__photo">
+          <div class="hero__photo-frame">
+            <img id="ps-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />
+            <!-- Photo placeholder — replace src with real photo -->
+          </div>
+          <div class="hero__photo-label">
+            <strong>Alexandra Meridian</strong>
+            <span>Executive Coach &amp; Business Strategist</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SOCIAL PROOF STRIP
+  ═══════════════════════════════════ -->
+  <section class="stats-strip">
+    <div class="container">
+      <div class="stats-strip__inner">
+        <div class="stat-item">
+          <span class="stat-item__number">200+</span>
+          <span class="stat-item__label">Clients Served</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-item__number">10</span>
+          <span class="stat-item__label">Years of Practice</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-item__number">98%</span>
+          <span class="stat-item__label">Client Satisfaction</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-item__number">4.9★</span>
+          <span class="stat-item__label">Average Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════ -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__inner">
+        <div class="about__photo">
+          <div class="about__photo-frame">
+            <img id="ps-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:1;" alt="" />
+            <div class="about__photo-frame-inner">
+              <div class="about__photo-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about__content">
+          <span class="eyebrow">About Me</span>
+          <h2 class="about__headline">
+            A trusted guide for your most important decisions.
+          </h2>
+          <p class="about__bio">
+            With over a decade of experience coaching C-suite executives, entrepreneurs, and high-achieving professionals, I've helped hundreds of people move from feeling stuck or overwhelmed to showing up with confidence, clarity, and real momentum. My approach is direct, warm, and deeply practical — no fluff, just results.
+          </p>
+
+          <div class="about__pillars">
+            <div class="about__pillar">
+              <div class="about__pillar-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <div class="about__pillar-text">
+                <strong>Rooted in real-world experience</strong>
+                <span>I've built and led teams myself — I bring practitioner insight, not just theory.</span>
+              </div>
+            </div>
+            <div class="about__pillar">
+              <div class="about__pillar-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                  <path d="M2 17l10 5 10-5"/>
+                  <path d="M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <div class="about__pillar-text">
+                <strong>Systems-first thinking</strong>
+                <span>We build frameworks that work without you — so you lead, rather than react.</span>
+              </div>
+            </div>
+            <div class="about__pillar">
+              <div class="about__pillar-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </div>
+              <div class="about__pillar-text">
+                <strong>Whole-person coaching</strong>
+                <span>Business success and personal wellbeing aren't separate — we work on both.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about__badges">
+            <span class="about__badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              ICF Certified Coach
+            </span>
+            <span class="about__badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              MBA, Wharton
+            </span>
+            <span class="about__badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Forbes Contributor
+            </span>
+            <span class="about__badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              500+ Hours Trained
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SERVICES
+  ═══════════════════════════════════ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services__header">
+        <span class="eyebrow">How We Work Together</span>
+        <h2 class="section-headline">Services built for where you are now.</h2>
+        <p class="section-sub">Whether you need ongoing accountability or an intensive reset, there's an engagement designed for your goals.</p>
+      </div>
+
+      <div class="services__grid">
+        <!-- Card 1 -->
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3 data-live="svc1-name">1:1 Coaching</h3>
+          <p data-live="svc1-desc">Private, focused sessions tailored entirely to your goals. We work on leadership presence, decision-making, career transitions, and building the habits that sustain long-term success.</p>
+          <div class="service-card__tags" data-live="svc1-tags">
+            <span>Weekly Sessions</span>
+            <span>90-Day Programs</span>
+            <span>Ongoing Support</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 data-live="svc2-name">Group Programs</h3>
+          <p data-live="svc2-desc">Cohort-based learning alongside peers who are navigating similar challenges. Combines peer learning, group coaching, and curriculum to accelerate your growth in a community setting.</p>
+          <div class="service-card__tags" data-live="svc2-tags">
+            <span>8-Week Cohorts</span>
+            <span>Peer Community</span>
+            <span>Live Workshops</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <h3 data-live="svc3-name">Strategy Sessions</h3>
+          <p data-live="svc3-desc">Intensive half-day or full-day engagements for critical decision points — launching something new, navigating a pivot, or needing a clear roadmap before your next big move.</p>
+          <div class="service-card__tags" data-live="svc3-tags">
+            <span>Half-Day</span>
+            <span>Full-Day VIP</span>
+            <span>Deep Dive</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 data-live="svc4-name">Workshops &amp; Talks</h3>
+          <p data-live="svc4-desc">Engaging keynotes and interactive workshops for your team or organization. Topics include high-performance leadership, communication under pressure, and building resilient cultures.</p>
+          <div class="service-card__tags" data-live="svc4-tags">
+            <span>Team Workshops</span>
+            <span>Keynotes</span>
+            <span>Corporate Training</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       TESTIMONIALS
+  ═══════════════════════════════════ -->
+  <section class="testimonials" id="reviews">
+    <div class="container">
+      <div class="testimonials__header">
+        <span class="eyebrow">Client Stories</span>
+        <h2 class="section-headline">Results that speak for themselves.</h2>
+        <p class="section-sub">Real words from real clients — people who showed up, did the work, and changed their trajectory.</p>
+      </div>
+
+      <div class="testimonials__grid">
+        <div class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">Working with Alexandra was the best investment I made in my business. Within 90 days I had more clarity on my direction than I'd had in three years of going it alone.</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="ps-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />M</div>
+            <div class="testimonial-card__info">
+              <strong>Marcus T.</strong>
+              <span>Founder, SaaS Startup</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">She has a rare gift for asking the questions you've been avoiding. Her coaching unlocked a promotion I'd been chasing for two years — and helped me actually enjoy the role once I got it.</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="ps-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />R</div>
+            <div class="testimonial-card__info">
+              <strong>Rachel H.</strong>
+              <span>VP of Product, Fortune 500</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">The group program gave me a community I didn't know I needed. Not only did I hit my revenue goals — I genuinely look forward to showing up for my business every day now.</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="ps-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />J</div>
+            <div class="testimonial-card__info">
+              <strong>James L.</strong>
+              <span>Independent Consultant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       RATES
+  ═══════════════════════════════════ -->
+  <section class="rates" id="rates">
+    <div class="container">
+      <div class="rates__header">
+        <span class="eyebrow">Investment</span>
+        <h2 class="section-headline">Straightforward, transparent pricing.</h2>
+        <p class="section-sub">No hidden fees. No confusing tiers. Choose the level of support that fits your goals and your season.</p>
+      </div>
+
+      <div class="rates__grid">
+        <!-- Tier 1 -->
+        <div class="rate-card">
+          <div class="rate-card__head">
+            <div class="rate-card__tier">Starter</div>
+            <div class="rate-card__name">Clarity Session</div>
+            <div class="rate-card__price">
+              <sup>$</sup><strong>297</strong>
+            </div>
+            <div class="rate-card__desc">One-time 90-minute session</div>
+          </div>
+          <div class="rate-card__body">
+            <ul class="rate-card__features">
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                90-minute deep-dive call
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Custom action plan delivered after
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Recording &amp; session notes
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                1-week email follow-up access
+              </li>
+            </ul>
+            <a href="#" class="btn btn-outline" style="width:100%;justify-content:center;">Book Session</a>
+          </div>
+        </div>
+
+        <!-- Tier 2 (Featured) -->
+        <div class="rate-card rate-card--featured">
+          <div class="rate-card__badge-popular">Most Popular</div>
+          <div class="rate-card__head">
+            <div class="rate-card__tier">Signature</div>
+            <div class="rate-card__name">90-Day Coaching</div>
+            <div class="rate-card__price">
+              <sup>$</sup><strong>2,400</strong><span>/3 mo</span>
+            </div>
+            <div class="rate-card__desc">Bi-weekly sessions + full support</div>
+          </div>
+          <div class="rate-card__body">
+            <ul class="rate-card__features">
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                6 bi-weekly 60-minute sessions
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Personalized 90-day roadmap
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Unlimited email &amp; voice memo support
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Resource library access
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Accountability check-ins
+              </li>
+            </ul>
+            <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="rate-card">
+          <div class="rate-card__head">
+            <div class="rate-card__tier">Premium</div>
+            <div class="rate-card__name">VIP Intensive</div>
+            <div class="rate-card__price">
+              <sup>$</sup><strong>4,800</strong>
+            </div>
+            <div class="rate-card__desc">Full-day private strategy session</div>
+          </div>
+          <div class="rate-card__body">
+            <ul class="rate-card__features">
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                6-hour in-person or virtual day
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Full strategic plan &amp; materials
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                30-day follow-up coaching included
+              </li>
+              <li class="rate-card__feature">
+                <span class="icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                Priority scheduling &amp; direct access
+              </li>
+            </ul>
+            <a href="#" class="btn btn-outline" style="width:100%;justify-content:center;">Enquire Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       CTA BAND
+  ═══════════════════════════════════ -->
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-band__inner">
+        <span class="cta-band__eyebrow">Ready to Begin?</span>
+        <h2 class="cta-band__headline">
+          Your next chapter starts<br>with one conversation.
+        </h2>
+        <p class="cta-band__sub">
+          Book a free 20-minute discovery call. No pressure, no pitch — just an honest conversation about where you are and where you want to go.
+        </p>
+        <a href="#rates" class="btn btn-outline-white">Schedule Your Free Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="footer__logo" data-live="biz-name">Meridian <span>Consulting</span></span>
+          <p class="footer__tagline" data-live="tagline">
+            Helping driven professionals and founders build careers and businesses they're proud of.
+          </p>
+          <div class="footer__social">
+            <a href="#" aria-label="LinkedIn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter / X">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Services</div>
+          <ul>
+            <li><a href="#services">1:1 Coaching</a></li>
+            <li><a href="#services">Group Programs</a></li>
+            <li><a href="#services">Strategy Sessions</a></li>
+            <li><a href="#services">Workshops &amp; Talks</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Company</div>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#reviews">Client Stories</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Contact</div>
+          <ul>
+            <li><a href="#rates">Book a Call</a></li>
+            <li><a href="mailto:hello@meridianconsulting.com">hello@meridian.com</a></li>
+            <li><a href="#">Newsletter</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Meridian Consulting. All rights reserved.</span>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════ -->
+  <script>
+    // Mobile nav toggle
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobileNav');
+      nav.classList.toggle('is-open');
+    }
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav__mobile a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.getElementById('mobileNav').classList.remove('is-open');
+      });
+    });
+
+    // Smooth scroll offset for sticky nav
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Subtle fade-in on scroll
+    (function() {
+      const els = document.querySelectorAll('.service-card, .testimonial-card, .rate-card, .stat-item, .about__pillar');
+      if (!('IntersectionObserver' in window)) return;
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      els.forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(18px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+      });
+    })();
+
+    // Builtsy hooks
+    window.builtsy_initAnim = function() {};
+    window.builtsy_demoBurst = function() {};
+  </script>
+</body>
+</html>

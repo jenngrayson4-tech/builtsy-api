@@ -15,9 +15,12 @@
       --cream2: #F5E6D8;
       --terra: #D4745A;
       --terra2: #B85C42;
+      --terra-rgb: 212, 116, 90;
       --mint: #7DB894;
       --mint2: #5A9E72;
+      --mint-rgb: 125, 184, 148;
       --dark: #2C1810;
+      --dark-rgb: 44, 24, 16;
       --text: #4A3728;
       --text2: #7A6258;
       --white: #FFFFFF;
@@ -59,7 +62,7 @@
     }
 
     #site-nav.scrolled {
-      box-shadow: 0 2px 20px rgba(44, 24, 16, 0.10);
+      box-shadow: 0 2px 20px rgba(var(--dark-rgb), 0.10);
     }
 
     .nav-inner {
@@ -271,13 +274,13 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
       display: inline-block;
-      box-shadow: 0 4px 16px rgba(212, 116, 90, 0.30);
+      box-shadow: 0 4px 16px rgba(var(--terra-rgb), 0.30);
     }
 
     .btn-primary:hover {
       background: var(--terra2);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(212, 116, 90, 0.40);
+      box-shadow: 0 8px 24px rgba(var(--terra-rgb), 0.40);
     }
 
     .btn-ghost {
@@ -322,19 +325,19 @@
     }
 
     .hero-photo-bg {
-      background: linear-gradient(160deg, #D4745A 0%, #C4634A 30%, #A85238 60%, #8B3E2A 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
     }
 
     .about-photo-bg-a {
-      background: linear-gradient(135deg, #E8A88A 0%, #D4745A 50%, #B85C42 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
     }
 
     .about-photo-bg-b {
-      background: linear-gradient(135deg, #F5E6D8 0%, #E8C8A8 50%, #D4A888 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
     }
 
     .port-photo-bg {
-      background: linear-gradient(135deg, #FAF0E8 0%, #F0D8C0 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
     }
 
     .stat-badge {
@@ -344,7 +347,7 @@
       background: var(--white);
       border-radius: 16px;
       padding: 16px 22px;
-      box-shadow: 0 8px 32px rgba(44, 24, 16, 0.15);
+      box-shadow: 0 8px 32px rgba(var(--dark-rgb), 0.15);
       z-index: 10;
     }
 
@@ -447,7 +450,7 @@
       border-radius: 24px;
       overflow: hidden;
       height: 360px;
-      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.12);
+      box-shadow: 0 12px 40px rgba(var(--dark-rgb), 0.12);
     }
 
     .about-photo-a .photo-placeholder {
@@ -463,7 +466,7 @@
       margin-top: -60px;
       position: relative;
       z-index: 2;
-      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.14);
+      box-shadow: 0 12px 40px rgba(var(--dark-rgb), 0.14);
       border: 5px solid var(--white);
     }
 
@@ -521,7 +524,7 @@
     }
 
     .pill-mint {
-      background: rgba(125, 184, 148, 0.18);
+      background: rgba(var(--mint-rgb), 0.18);
       color: var(--mint2);
     }
 
@@ -560,7 +563,7 @@
       background: var(--white);
       border-radius: 24px;
       padding: 36px;
-      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.07);
+      box-shadow: 0 4px 20px rgba(var(--dark-rgb), 0.07);
       transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
       border: 2px solid transparent;
       position: relative;
@@ -568,9 +571,9 @@
     }
 
     .service-card:hover {
-      box-shadow: 0 12px 40px rgba(212, 116, 90, 0.16);
+      box-shadow: 0 12px 40px rgba(var(--terra-rgb), 0.16);
       transform: translateY(-4px);
-      border-color: rgba(212, 116, 90, 0.25);
+      border-color: rgba(var(--terra-rgb), 0.25);
     }
 
     .service-icon {
@@ -688,7 +691,7 @@
       border-radius: 20px;
       padding: 32px;
       border-left: 4px solid var(--terra);
-      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.06);
+      box-shadow: 0 4px 20px rgba(var(--dark-rgb), 0.06);
       display: flex;
       flex-direction: column;
     }
@@ -789,21 +792,21 @@
       background: var(--white);
       border-radius: 24px;
       padding: 40px 36px;
-      box-shadow: 0 4px 20px rgba(44, 24, 16, 0.07);
+      box-shadow: 0 4px 20px rgba(var(--dark-rgb), 0.07);
       border: 2px solid transparent;
       position: relative;
       transition: box-shadow 0.3s, transform 0.2s;
     }
 
     .rate-card:hover {
-      box-shadow: 0 12px 40px rgba(44, 24, 16, 0.12);
+      box-shadow: 0 12px 40px rgba(var(--dark-rgb), 0.12);
       transform: translateY(-3px);
     }
 
     .rate-card.featured {
       border-color: var(--terra);
       padding-top: 52px;
-      box-shadow: 0 8px 36px rgba(212, 116, 90, 0.20);
+      box-shadow: 0 8px 36px rgba(var(--terra-rgb), 0.20);
       transform: scale(1.03);
     }
 
@@ -895,7 +898,7 @@
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: rgba(125, 184, 148, 0.2);
+      background: rgba(var(--mint-rgb), 0.2);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1087,13 +1090,13 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
       align-self: flex-start;
-      box-shadow: 0 4px 16px rgba(212, 116, 90, 0.30);
+      box-shadow: 0 4px 16px rgba(var(--terra-rgb), 0.30);
     }
 
     .btn-submit:hover {
       background: var(--terra2);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(212, 116, 90, 0.40);
+      box-shadow: 0 8px 24px rgba(var(--terra-rgb), 0.40);
     }
 
     .contact-right {
@@ -1125,7 +1128,7 @@
       width: 44px;
       height: 44px;
       border-radius: 12px;
-      background: rgba(212, 116, 90, 0.15);
+      background: rgba(var(--terra-rgb), 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1566,8 +1569,8 @@
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         </div>
-        <h3 class="service-name">Infant &amp; Newborn Care</h3>
-        <p class="service-desc">Specialized, gentle care for babies from birth through 12 months, with a strong focus on secure attachment, feeding support, and predictable sleep routines. I partner closely with parents during the most tender season of their baby's life.</p>
+        <h3 class="service-name" data-live="svc1-name">Infant &amp; Newborn Care</h3>
+        <p class="service-desc" data-live="svc1-desc">Specialized, gentle care for babies from birth through 12 months, with a strong focus on secure attachment, feeding support, and predictable sleep routines. I partner closely with parents during the most tender season of their baby's life.</p>
         <div class="tag-pills">
           <span class="tag">Newborn Specialist</span>
           <span class="tag">Sleep Routines</span>
@@ -1578,8 +1581,8 @@
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
         </div>
-        <h3 class="service-name">Toddler &amp; Preschool</h3>
-        <p class="service-desc">Engaging, Montessori-inspired activities that nurture language, motor development, and social confidence in children ages one through five. Every day is filled with purposeful play, outdoor exploration, and age-appropriate independence.</p>
+        <h3 class="service-name" data-live="svc2-name">Toddler &amp; Preschool</h3>
+        <p class="service-desc" data-live="svc2-desc">Engaging, Montessori-inspired activities that nurture language, motor development, and social confidence in children ages one through five. Every day is filled with purposeful play, outdoor exploration, and age-appropriate independence.</p>
         <div class="tag-pills">
           <span class="tag">Montessori Activities</span>
           <span class="tag">Outdoor Play</span>
@@ -1590,8 +1593,8 @@
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         </div>
-        <h3 class="service-name">After School Care</h3>
-        <p class="service-desc">Reliable pick-up, healthy snacks, homework help, and plenty of downtime for school-age children. I provide structure without rigidity so kids can decompress, recharge, and still feel accomplished before dinner.</p>
+        <h3 class="service-name" data-live="svc3-name">After School Care</h3>
+        <p class="service-desc" data-live="svc3-desc">Reliable pick-up, healthy snacks, homework help, and plenty of downtime for school-age children. I provide structure without rigidity so kids can decompress, recharge, and still feel accomplished before dinner.</p>
         <div class="tag-pills">
           <span class="tag">School Pick-Up</span>
           <span class="tag">Homework Help</span>
@@ -1602,8 +1605,8 @@
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
         </div>
-        <h3 class="service-name">Overnight &amp; Travel Care</h3>
-        <p class="service-desc">Extended coverage for parents traveling for work or a long-awaited getaway. I maintain your children's routines, keep the household steady, and provide full peace of mind so you can be truly present wherever you are.</p>
+        <h3 class="service-name" data-live="svc4-name">Overnight &amp; Travel Care</h3>
+        <p class="service-desc" data-live="svc4-desc">Extended coverage for parents traveling for work or a long-awaited getaway. I maintain your children's routines, keep the household steady, and provide full peace of mind so you can be truly present wherever you are.</p>
         <div class="tag-pills">
           <span class="tag">Overnight Stays</span>
           <span class="tag">Travel Nanny</span>
@@ -2168,6 +2171,7 @@
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

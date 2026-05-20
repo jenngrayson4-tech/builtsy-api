@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuesday Marketing — Bold Creative Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lavender: #9B6FE8;
+    --lavender-rgb: 155, 111, 232;
+    --lavender2: #7A4EC8;
+    --lavender-light: #F0E8FF;
+    --coral-red: #E83820;
+    --coral-red-rgb: 232, 56, 32;
+    --coral-red2: #C82000;
+    --cream: #FFF8F4;
+    --cream-rgb: 255, 248, 244;
+    --warm: #FDF0F0;
+    --warm-rgb: 253, 240, 240;
+    --dark: #180818;
+    --dark-rgb: 24, 8, 24;
+    --text: #280820;
+    --text-soft: #7A5870;
+    --white: #FFFFFF;
+    --radius-pill: 999px;
+    --radius-card: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    line-height: 1.05;
+  }
+
+  em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  img { max-width: 100%; display: block; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 2px solid var(--lavender-light);
+    padding: 0 28px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--lavender);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-soft);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--lavender) !important;
+    color: var(--white) !important;
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    font-weight: 700 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--lavender2) !important; }
+
+  /* Burger */
+  #burger-toggle { display: none; }
+
+  .burger-label {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 200;
+  }
+
+  .burger-label span {
+    display: block;
+    width: 24px;
+    height: 2.5px;
+    background: var(--dark);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  #burger-toggle:checked ~ .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream);
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    z-index: 150;
+  }
+
+  #burger-toggle:checked + .burger-label span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  #burger-toggle:checked + .burger-label span:nth-child(2) { opacity: 0; }
+  #burger-toggle:checked + .burger-label span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--lavender);
+    color: var(--white);
+    padding: 11px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee-scroll 18s linear infinite;
+  }
+
+  .marquee-track span {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0 28px;
+  }
+
+  .marquee-track span::after {
+    content: ' ·';
+    margin-left: 28px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--cream);
+    padding: 88px 28px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-deco {
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: var(--lavender-light);
+    z-index: 0;
+  }
+
+  .hero-bg-deco2 {
+    position: absolute;
+    bottom: -60px; left: 200px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--warm);
+    z-index: 0;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-text { display: flex; flex-direction: column; gap: 20px; max-width: 700px; }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lavender);
+    background: var(--lavender-light);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    color: var(--dark);
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+
+  .hero h1 em {
+    font-size: clamp(3.2rem, 6vw, 5.6rem);
+    color: var(--coral-red);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    color: var(--lavender2);
+    font-weight: 400;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-soft);
+    max-width: 520px;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  .btn-group { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--lavender);
+    color: var(--white);
+    padding: 15px 36px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover { background: var(--lavender2); transform: translateY(-2px); }
+
+  .btn-secondary {
+    border: 2px solid var(--lavender);
+    color: var(--lavender);
+    padding: 13px 34px;
+    border-radius: var(--radius-pill);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover { background: var(--lavender); color: var(--white); }
+
+  /* Polaroid photos */
+  .hero-photos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+  }
+
+  .polaroid {
+    background: var(--white);
+    padding: 10px 10px 28px;
+    box-shadow: 0 4px 20px rgba(var(--dark-rgb),0.1);
+    border-radius: 4px;
+    transform: rotate(3deg);
+    transition: transform 0.3s;
+    width: 140px;
+  }
+
+  .polaroid:nth-child(2) { transform: rotate(-2deg); margin-left: 20px; }
+  .polaroid:nth-child(3) { transform: rotate(4deg); margin-left: -10px; }
+  .polaroid:hover { transform: rotate(0deg) scale(1.04); z-index: 2; }
+
+  .polaroid-img {
+    width: 120px;
+    height: 100px;
+    background: var(--lavender-light);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .polaroid:nth-child(2) .polaroid-img { background: var(--warm); }
+  .polaroid:nth-child(3) .polaroid-img { background: var(--warm); }
+
+  .polaroid-caption {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    text-align: center;
+    color: var(--text-soft);
+    margin-top: 8px;
+  }
+
+  /* ── WAVE ── */
+  .wave-divider { line-height: 0; overflow: hidden; }
+  .wave-divider svg { display: block; width: 100%; }
+
+  /* ── CLIENT BAR ── */
+  .client-bar {
+    background: var(--warm);
+    padding: 32px 28px;
+    text-align: center;
+    border-top: 1px solid rgba(var(--lavender-rgb),0.1);
+    border-bottom: 1px solid rgba(var(--lavender-rgb),0.1);
+  }
+
+  .client-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .client-logos {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .client-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+
+  .client-logo:hover { opacity: 1; }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: var(--cream);
+    padding: 100px 28px;
+  }
+
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: center;
+  }
+
+  .about-photo-wrap {
+    position: relative;
+  }
+
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: var(--lavender-light);
+    border-radius: var(--radius-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--lavender-light) 0%, rgba(var(--coral-red-rgb),0.1) 100%);
+  }
+
+  .about-photo-badge {
+    position: absolute;
+    bottom: -18px;
+    right: -18px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--coral-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .about-text { display: flex; flex-direction: column; gap: 18px; }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral-red);
+  }
+
+  .about-text h2 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: var(--dark);
+    letter-spacing: -0.03em;
+  }
+
+  .about-text p { font-size: 0.95rem; color: var(--text-soft); line-height: 1.85; }
+
+  .credentials-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pill {
+    background: var(--warm);
+    border: 1px solid rgba(var(--lavender-rgb),0.2);
+    color: var(--text-soft);
+    padding: 7px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .pill-lavender {
+    background: var(--lavender-light);
+    border-color: var(--lavender);
+    color: var(--lavender2);
+  }
+
+  /* ── SERVICES ── */
+  .services-section {
+    background: var(--dark);
+    padding: 100px 28px;
+  }
+
+  .section-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .services-section .section-label { color: var(--lavender); }
+
+  .section-title {
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    text-align: center;
+    margin-bottom: 56px;
+    letter-spacing: -0.03em;
+  }
+
+  .services-section .section-title { color: var(--white); }
+
+  .services-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .service-card {
+    border-radius: var(--radius-card);
+    padding: 40px 36px;
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card:hover { transform: translateY(-4px); }
+
+  .service-card.card-lavender { background: var(--lavender); color: var(--white); }
+  .service-card.card-coral { background: var(--coral-red); color: var(--white); }
+  .service-card.card-light { background: var(--lavender-light); color: var(--dark); }
+  .service-card.card-warm { background: var(--warm); color: var(--dark); }
+
+  .service-card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+    line-height: 1;
+    opacity: 0.2;
+    position: absolute;
+    top: 24px;
+    right: 28px;
+  }
+
+  .service-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .service-card.card-lavender h3,
+  .service-card.card-coral h3 { color: var(--white); }
+
+  .service-card.card-light h3,
+  .service-card.card-warm h3 { color: var(--dark); }
+
+  .service-card p {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-card.card-lavender p,
+  .service-card.card-coral p { color: rgba(255,255,255,0.8); }
+
+  .service-card.card-light p,
+  .service-card.card-warm p { color: var(--text-soft); }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tag {
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .card-lavender .tag, .card-coral .tag {
+    background: rgba(255,255,255,0.2);
+    color: var(--white);
+  }
+
+  .card-light .tag {
+    background: rgba(var(--lavender-rgb),0.15);
+    color: var(--lavender2);
+  }
+
+  .card-warm .tag {
+    background: rgba(var(--coral-red-rgb),0.1);
+    color: var(--coral-red);
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    background: var(--lavender-light);
+    padding: 100px 28px;
+  }
+
+  .testimonials-section .section-label { color: var(--lavender2); }
+  .testimonials-section .section-title { color: var(--dark); }
+
+  .testimonials-grid {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    padding: 36px 28px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .testimonial-card:hover { border-color: var(--lavender); }
+
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: var(--lavender);
+    line-height: 0.8;
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  .testimonial-card blockquote {
+    font-size: 0.92rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 24px;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .testimonial-footer { display: flex; align-items: center; gap: 12px; }
+
+  .testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lavender-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--lavender2);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .testimonial-name { font-size: 0.85rem; color: var(--dark); font-weight: 700; }
+  .testimonial-role { font-size: 0.76rem; color: var(--text-soft); }
+  .stars { color: var(--lavender); font-size: 0.85rem; margin-bottom: 2px; }
+
+  /* ── RATES ── */
+  .rates-section {
+    background: var(--cream);
+    padding: 100px 28px;
+  }
+
+  .rates-section .section-label { color: var(--coral-red); }
+  .rates-section .section-title { color: var(--dark); }
+
+  .rates-grid {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .rate-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    padding: 40px 32px;
+    text-align: center;
+    border: 2px solid rgba(var(--lavender-rgb),0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .rate-card:hover { border-color: var(--lavender); box-shadow: 0 8px 40px rgba(var(--lavender-rgb),0.12); }
+
+  .rate-card.featured {
+    border-color: var(--lavender);
+    background: var(--lavender);
+    position: relative;
+  }
+
+  .rate-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--coral-red);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: var(--radius-pill);
+  }
+
+  .rate-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--dark);
+    letter-spacing: -0.01em;
+  }
+
+  .rate-card.featured .rate-name { color: var(--white); }
+
+  .rate-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--lavender);
+    line-height: 1;
+    margin: 16px 0 4px;
+    letter-spacing: -0.03em;
+  }
+
+  .rate-card.featured .rate-price { color: var(--white); }
+
+  .rate-price sup { font-size: 1.4rem; vertical-align: top; margin-top: 8px; }
+  .rate-period { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 24px; }
+  .rate-card.featured .rate-period { color: rgba(255,255,255,0.65); }
+
+  .rate-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  .rate-features li {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .rate-card.featured .rate-features li { color: rgba(255,255,255,0.85); }
+
+  .rate-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--lavender);
+    font-weight: 900;
+  }
+
+  .rate-card.featured .rate-features li::before { color: rgba(255,255,255,0.6); }
+
+  .rate-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid var(--lavender);
+    color: var(--lavender);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .rate-btn:hover { background: var(--lavender); color: var(--white); }
+
+  .rate-card.featured .rate-btn {
+    background: var(--white);
+    color: var(--lavender);
+    border-color: var(--white);
+  }
+
+  .rate-card.featured .rate-btn:hover { background: var(--coral-red); color: var(--white); border-color: var(--coral-red); }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--lavender);
+    padding: 100px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .cta-band::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .cta-band .section-label { color: rgba(255,255,255,0.7); }
+
+  .cta-band h2 {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    color: var(--white);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .cta-band h2 em { color: var(--lavender-light); }
+
+  .cta-band p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-band .btn-group { justify-content: center; position: relative; z-index: 1; }
+
+  .btn-white {
+    background: var(--white);
+    color: var(--lavender2);
+    padding: 15px 36px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-white:hover { background: var(--cream); transform: translateY(-2px); }
+
+  .btn-outline-white {
+    border: 2px solid rgba(255,255,255,0.4);
+    color: var(--white);
+    padding: 13px 34px;
+    border-radius: var(--radius-pill);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 72px 28px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-brand h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-brand h3 span { color: var(--lavender); }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.8;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lavender);
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .footer-col ul a {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.4);
+    transition: color 0.2s;
+  }
+
+  .footer-col ul a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.76rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .burger-label { display: flex; }
+    .nav-links { display: none; }
+
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-photos { flex-direction: row; justify-content: center; }
+    .polaroid { width: 100px; }
+    .polaroid-img { width: 80px; height: 70px; }
+
+    .about-inner { grid-template-columns: 1fr; }
+    .about-photo-badge { display: none; }
+
+    .services-grid { grid-template-columns: 1fr; }
+
+    .testimonials-grid { grid-template-columns: 1fr; }
+
+    .rates-grid { grid-template-columns: 1fr; }
+
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+    .client-logos { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Tuesday<span>.</span></a>
+    <input type="checkbox" id="burger-toggle">
+    <label for="burger-toggle" class="burger-label" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </label>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#rates">Packages</a></li>
+      <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Building brands that don't blend in</span>
+    <span>Stand out or step aside</span>
+    <span>Your brand era starts now</span>
+    <span>Building brands that don't blend in</span>
+    <span>Stand out or step aside</span>
+    <span>Your brand era starts now</span>
+    <span>Building brands that don't blend in</span>
+    <span>Stand out or step aside</span>
+    <span>Your brand era starts now</span>
+    <span>Building brands that don't blend in</span>
+    <span>Stand out or step aside</span>
+    <span>Your brand era starts now</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg-deco"></div>
+  <div class="hero-bg-deco2"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="eyebrow reveal">Brand · Content · Strategy · Design</span>
+      <h1 class="reveal" data-live="headline">Because building your brand shouldn't <em>feel boring.</em></h1>
+      <p class="hero-sub reveal">Let's do this →</p>
+      <p class="reveal" data-live="tagline">I'll help you turn your big ideas into content, offers, and design that actually connect — and make people stop the scroll.</p>
+      <div class="btn-group reveal">
+        <a href="#contact" class="btn-primary">Yes, Let's Go →</a>
+        <a href="#services" class="btn-secondary">See My Work</a>
+      </div>
+    </div>
+    <div class="hero-photos reveal reveal-delay-2">
+      <div class="polaroid">
+        <div class="polaroid-img"><img id="tm-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />✨</div>
+        <div class="polaroid-caption">brand magic</div>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img">🎨</div>
+        <div class="polaroid-caption">content day</div>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img">💡</div>
+        <div class="polaroid-caption">big ideas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENT BAR ── -->
+<div class="client-bar reveal">
+  <span class="client-label">Trusted by brands like</span>
+  <div class="client-logos">
+    <span class="client-logo">Glossier</span>
+    <span class="client-logo">BYRDIE</span>
+    <span class="client-logo">SKIMS</span>
+    <span class="client-logo">Rare Beauty</span>
+    <span class="client-logo">Fenty</span>
+  </div>
+</div>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:var(--warm)">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C480,60 960,0 1440,40 L1440,60 L0,60 Z" fill="var(--cream)"/>
+  </svg>
+</div>
+
+<!-- ── ABOUT ── -->
+<section class="about-section" id="about">
+  <div class="about-inner container">
+    <div class="about-photo-wrap reveal">
+      <div class="about-photo"><img id="tm-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />🎯</div>
+      <div class="about-photo-badge">500+<br>Brands<br>Built</div>
+    </div>
+    <div class="about-text reveal reveal-delay-1">
+      <p class="section-eyebrow">About Tuesday</p>
+      <h2>Bold brands for brave people</h2>
+      <p>I'm the creative director and brand strategist behind Tuesday — a boutique creative studio for brands that want to stand out, not blend in. I work with founders, small businesses, and growing brands who know their vibe but need someone to bring it to life.</p>
+      <p>My philosophy? Your brand should feel like the most magnetic version of you. Not polished into boredom. Not designed by algorithm. Actual personality, on purpose.</p>
+      <div class="credentials-pills">
+        <span class="pill pill-lavender">Forbes Under 30</span>
+        <span class="pill pill-lavender">Webby Award Winner</span>
+        <span class="pill">8+ Years Agency Side</span>
+        <span class="pill">500+ Brands</span>
+        <span class="pill">Team of 6</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:var(--cream)">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,10 C600,60 840,0 1440,40 L1440,60 L0,60 Z" fill="var(--dark)"/>
+  </svg>
+</div>
+
+<!-- ── SERVICES ── -->
+<section class="services-section" id="services">
+  <span class="section-label reveal">What We Do</span>
+  <h2 class="section-title reveal">Our Services</h2>
+  <div class="services-grid">
+
+    <div class="service-card card-lavender reveal">
+      <div class="service-card-num">01</div>
+      <h3 data-live="svc1-name">Brand Strategy</h3>
+      <p data-live="svc1-desc">The foundation everything is built on — your positioning, messaging, voice, and visual identity working together with intention.</p>
+      <div class="service-tags" data-live="svc1-tags">
+        <span class="tag">Positioning</span>
+        <span class="tag">Messaging</span>
+        <span class="tag">Visual Identity</span>
+      </div>
+    </div>
+
+    <div class="service-card card-coral reveal reveal-delay-1">
+      <div class="service-card-num">02</div>
+      <h3 data-live="svc2-name">Content Creation</h3>
+      <p data-live="svc2-desc">Monthly content that sounds like you, looks incredible, and actually drives your business forward — not just vanity metrics.</p>
+      <div class="service-tags" data-live="svc2-tags">
+        <span class="tag">Photo + Video</span>
+        <span class="tag">Copy</span>
+        <span class="tag">Monthly Retainer</span>
+      </div>
+    </div>
+
+    <div class="service-card card-warm reveal reveal-delay-2">
+      <div class="service-card-num">03</div>
+      <h3 data-live="svc3-name">Campaign Design</h3>
+      <p data-live="svc3-desc">Full creative campaigns from concept to launch — copy, visuals, landing pages, and the strategy to make it all land.</p>
+      <div class="service-tags" data-live="svc3-tags">
+        <span class="tag">Concept</span>
+        <span class="tag">Copy + Design</span>
+        <span class="tag">Launch Strategy</span>
+      </div>
+    </div>
+
+    <div class="service-card card-light reveal reveal-delay-3">
+      <div class="service-card-num">04</div>
+      <h3 data-live="svc4-name">Social Media Management</h3>
+      <p data-live="svc4-desc">Done-for-you social presence with a strategic posting calendar, community management, and monthly performance reviews.</p>
+      <div class="service-tags" data-live="svc4-tags">
+        <span class="tag">Done-For-You</span>
+        <span class="tag">Community Mgmt</span>
+        <span class="tag">Monthly Reports</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:var(--dark)">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C400,0 1000,60 1440,20 L1440,60 L0,60 Z" fill="var(--lavender-light)"/>
+  </svg>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials-section">
+  <span class="section-label reveal">Client Love</span>
+  <h2 class="section-title reveal">People are talking.</h2>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <blockquote>"Tuesday completely transformed how our brand shows up. We went from looking like every other indie brand to having a distinct, magnetic aesthetic that clients constantly compliment. Worth every cent."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="tm-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />Z</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Zara M.</div>
+          <div class="testimonial-role">Founder, Bloom Skincare</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-1">
+      <span class="quote-mark">"</span>
+      <blockquote>"Our campaign had a 4.2x ROAS and hundreds of new followers in the first week. The content was stunning, the strategy was airtight, and working with Tuesday felt genuinely fun — rare for an agency."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="tm-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />J</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Jordan P.</div>
+          <div class="testimonial-role">CMO, Vibe Wellness</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-2">
+      <span class="quote-mark">"</span>
+      <blockquote>"I stopped dreading my Instagram because Tuesday handles everything. My engagement tripled in 60 days and I actually sound like myself now — not a generic brand bot. This is the way."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="tm-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />L</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Lily K.</div>
+          <div class="testimonial-role">Creator + Business Owner</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:var(--lavender-light)">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C500,60 940,0 1440,30 L1440,60 L0,60 Z" fill="var(--cream)"/>
+  </svg>
+</div>
+
+<!-- ── RATES ── -->
+<section class="rates-section" id="rates">
+  <span class="section-label reveal">Investment</span>
+  <h2 class="section-title reveal">Pick your package.</h2>
+  <div class="rates-grid">
+
+    <div class="rate-card reveal">
+      <div class="rate-name">Brand Starter</div>
+      <div class="rate-price"><sup>$</sup>2,400</div>
+      <div class="rate-period">one-time project</div>
+      <ul class="rate-features">
+        <li>Brand strategy session</li>
+        <li>Logo + color palette</li>
+        <li>Typography system</li>
+        <li>Brand guidelines doc</li>
+        <li>Social profile templates</li>
+      </ul>
+      <button class="rate-btn">Let's Go</button>
+    </div>
+
+    <div class="rate-card featured reveal reveal-delay-1">
+      <div class="rate-badge">Most Popular</div>
+      <div class="rate-name">Content Retainer</div>
+      <div class="rate-price"><sup>$</sup>2,200</div>
+      <div class="rate-period">per month</div>
+      <ul class="rate-features">
+        <li>20 posts/month curated + written</li>
+        <li>Monthly strategy call</li>
+        <li>Community management</li>
+        <li>Monthly analytics report</li>
+        <li>Unlimited rounds of revisions</li>
+      </ul>
+      <button class="rate-btn">Apply Now</button>
+    </div>
+
+    <div class="rate-card reveal reveal-delay-2">
+      <div class="rate-name">Full Campaign</div>
+      <div class="rate-price"><sup>$</sup>8,500</div>
+      <div class="rate-period">per campaign</div>
+      <ul class="rate-features">
+        <li>Full campaign concept</li>
+        <li>Copy + design + landing page</li>
+        <li>Email sequence (5 emails)</li>
+        <li>Paid ads creative</li>
+        <li>Launch strategy + debrief</li>
+      </ul>
+      <button class="rate-btn">Start a Project</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:var(--cream)">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,0 1080,60 1440,20 L1440,60 L0,60 Z" fill="var(--lavender)"/>
+  </svg>
+</div>
+
+<!-- ── CTA BAND ── -->
+<section class="cta-band" id="contact">
+  <span class="section-label reveal">Ready?</span>
+  <h2 class="reveal">Your brand era starts<br><em>right now.</em></h2>
+  <p class="reveal">Let's build something that makes people stop, look twice, and say "wait, who is that?" — because that's exactly what your brand should do.</p>
+  <div class="btn-group reveal">
+    <a href="#" class="btn-white">Start a Project</a>
+    <a href="#" class="btn-outline-white">Book a Discovery Call</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3 data-live="biz-name">Tuesday<span>.</span></h3>
+      <p data-live="tagline">I'll help you turn your big ideas into content, offers, and design that actually connect — and make people stop the scroll.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Brand Strategy</a></li>
+        <li><a href="#">Content Creation</a></li>
+        <li><a href="#">Campaign Design</a></li>
+        <li><a href="#">Social Media</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Studio</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Start a Project</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Tuesday Creative Studio. All rights reserved.</span>
+    <span>Bold brands. Bold results.</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll Reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Close mobile nav on link click
+  const burgerToggle = document.getElementById('burger-toggle');
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => { burgerToggle.checked = false; });
+  });
+
+  // Marquee duplicate for seamless scroll
+  const track = document.querySelector('.marquee-track');
+  if (track) track.innerHTML += track.innerHTML;
+</script>
+</body>
+</html>

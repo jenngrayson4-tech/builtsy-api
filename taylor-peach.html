@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taylor Peach — Digital Marketing Coach &amp; Content Creator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:           #FDF8F0;
+  --cream-rgb:       253, 248, 240;
+  --peach:           #F58050;
+  --peach-rgb:       245, 128, 80;
+  --peach2:          #D86030;
+  --peach-light:     #FDEADA;
+  --peach-light-rgb: 253, 234, 218;
+  --blush:           #F8D8C8;
+  --terracotta:      #C86840;
+  --terracotta2:     #A84820;
+  --dark:            #1A0E08;
+  --dark-rgb:        26, 14, 8;
+  --text:            #2A180C;
+  --text-rgb:        42, 24, 12;
+  --text-soft:       #8A5840;
+  --text-soft-rgb:   138, 88, 64;
+  --white:           #FFFFFF;
+  --radius-pill: 999px;
+  --radius-card: 20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text);
+}
+h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.1; }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+.playfair { font-family: 'Playfair Display', serif; }
+.italic { font-style: italic; }
+em { font-style: italic; color: var(--peach2); font-family: 'Playfair Display', serif; font-weight: 400; }
+a { text-decoration: none; color: inherit; }
+p { color: var(--text-soft); max-width: 62ch; line-height: 1.8; }
+
+.container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 96px 0; }
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(var(--cream-rgb), 0.97);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(var(--peach-rgb), 0.18);
+}
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--peach2);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--peach2); }
+.nav-cta {
+  background: var(--peach);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--peach2); }
+
+#burger-toggle { display: none; }
+.burger-label {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.burger-label span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--peach2);
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  padding: 24px 32px;
+  gap: 18px;
+  border-top: 1px solid rgba(var(--peach-rgb), 0.15);
+}
+.mobile-menu a { font-size: 1rem; color: var(--text-soft); font-weight: 500; }
+#burger-toggle:checked ~ .mobile-menu { display: flex; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(2) { opacity: 0; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .burger-label { display: flex; }
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  background: var(--peach);
+  padding: 13px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  padding: 0 28px;
+}
+.marquee-track span::after { content: "★"; margin-left: 28px; opacity: 0.5; }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--cream);
+  padding: 72px 0 60px;
+  overflow: hidden;
+}
+.hero-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--peach);
+  border-radius: 2px;
+}
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--terracotta);
+  margin-bottom: 12px;
+  display: block;
+}
+.hero-headline { margin-bottom: 12px; }
+.hero-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--peach2);
+  margin-bottom: 20px;
+  line-height: 1.3;
+  font-weight: 400;
+}
+.hero-tagline {
+  font-size: 1rem;
+  line-height: 1.85;
+  margin-bottom: 36px;
+  max-width: 52ch;
+}
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.btn-peach {
+  background: var(--peach);
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 13px 30px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+  display: inline-block;
+}
+.btn-peach:hover { background: var(--peach2); }
+.btn-outline-peach {
+  color: var(--peach2);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--peach);
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-outline-peach:hover { background: var(--peach); color: var(--white); }
+
+/* Collage */
+.photo-collage {
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.collage-photo {
+  position: absolute;
+  background: var(--blush);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  font-style: italic;
+  box-shadow: 0 12px 40px rgba(var(--text-rgb), 0.12);
+  overflow: hidden;
+}
+.collage-photo::before {
+  content: 'Photo';
+  position: absolute;
+  color: var(--text-soft);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.cp-1 {
+  width: 220px;
+  height: 280px;
+  background: var(--blush);
+  transform: rotate(-4deg) translate(-80px, 20px);
+  z-index: 1;
+}
+.cp-2 {
+  width: 240px;
+  height: 300px;
+  background: var(--peach-light);
+  transform: rotate(2.5deg) translate(40px, -20px);
+  z-index: 3;
+}
+.cp-3 {
+  width: 190px;
+  height: 240px;
+  background: var(--cream);
+  border: 2px solid var(--blush);
+  transform: rotate(-1deg) translate(90px, 60px);
+  z-index: 2;
+}
+/* Decorative stripe element */
+.stripe-badge {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  z-index: 4;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--peach);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(var(--peach-rgb), 0.3);
+}
+.stripe-badge-text {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+/* ── WAVE ── */
+.wave-divider { line-height: 0; overflow: hidden; }
+.wave-divider svg { display: block; width: 100%; }
+
+/* ── ABOUT / PEACH BAND ── */
+.about-band {
+  background: var(--peach);
+  padding: 96px 0;
+  position: relative;
+  overflow: hidden;
+}
+.about-band::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(255,255,255,0.04) 20px,
+    rgba(255,255,255,0.04) 22px
+  );
+  pointer-events: none;
+}
+.about-band-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.about-photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: rgba(255,255,255,0.2);
+  border-radius: var(--radius-card);
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  position: relative;
+  overflow: hidden;
+}
+.about-band-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 16px;
+  display: block;
+}
+.about-band h2 { color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; margin-bottom: 20px; }
+.about-band p { color: rgba(255,255,255,0.82); max-width: none; margin-bottom: 16px; }
+.credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.pill-white {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── WHY ME ── */
+.why-me {
+  background: var(--peach-light);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+.why-me::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 18px,
+    rgba(var(--peach-rgb), 0.07) 18px,
+    rgba(var(--peach-rgb), 0.07) 20px
+  );
+  pointer-events: none;
+}
+.why-me-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.why-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 16px;
+  display: block;
+}
+.why-me h2 { margin-bottom: 24px; font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+.why-me p { margin-bottom: 20px; font-size: 1rem; }
+.why-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.why-list li {
+  font-size: 1rem;
+  color: var(--text-soft);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(var(--peach-rgb), 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  line-height: 1.55;
+}
+.why-list li:last-child { border-bottom: none; }
+.why-list li .check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--peach);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── SERVICES ── */
+.services {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 14px;
+  display: block;
+}
+.section-header h2 { margin-bottom: 12px; }
+.section-header p { margin: 0 auto; text-align: center; max-width: 50ch; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.svc-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 40px 36px;
+  border: 2px solid var(--peach-light);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.svc-card:hover {
+  border-color: var(--peach);
+  box-shadow: 0 10px 40px rgba(var(--peach-rgb), 0.12);
+}
+.svc-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--peach), var(--terracotta));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.svc-card:hover::after { opacity: 1; }
+.svc-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--peach-light);
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  line-height: 1;
+  font-weight: 700;
+  pointer-events: none;
+}
+.svc-icon {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 16px;
+  display: block;
+}
+.svc-card h3 { font-size: 1.4rem; margin-bottom: 14px; color: var(--text); }
+.svc-card p { font-size: 0.95rem; line-height: 1.75; margin-bottom: 20px; max-width: none; }
+.svc-tags {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+}
+
+/* ── PORTFOLIO ── */
+.portfolio {
+  background: var(--blush);
+  padding: 96px 0;
+}
+.portfolio .section-label { color: var(--terracotta); }
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.portfolio-item {
+  aspect-ratio: 4/3;
+  background: var(--white);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-style: italic;
+  font-size: 0.88rem;
+  border: 1px solid rgba(var(--peach-rgb), 0.2);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.portfolio-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(var(--text-rgb), 0.1);
+}
+.portfolio-item.tall {
+  grid-row: span 2;
+  aspect-ratio: unset;
+}
+.portfolio-item-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-top: 8px;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--cream); padding: 96px 0; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.testi-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 36px 28px;
+  border: 2px solid var(--peach-light);
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.testi-card:hover { box-shadow: 0 8px 32px rgba(var(--peach-rgb), 0.1); }
+.testi-card::before {
+  content: '"';
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  color: var(--peach-light);
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+.testi-stars { font-size: 0.9rem; color: var(--peach); letter-spacing: 3px; margin-bottom: 12px; }
+.testi-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.testi-name { font-size: 0.82rem; font-weight: 700; color: var(--text-soft); }
+.testi-role { font-size: 0.78rem; color: var(--peach); margin-top: 4px; }
+
+/* ── RATES ── */
+.rates { background: var(--peach-light); padding: 96px 0; }
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.rate-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 44px 32px;
+  border: 2px solid var(--blush);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.rate-card:hover { box-shadow: 0 8px 32px rgba(245,128,80,0.1); border-color: var(--peach); }
+.rate-card.featured {
+  background: var(--peach2);
+  border-color: var(--peach2);
+}
+.rate-card.featured h3,
+.rate-card.featured .rate-price,
+.rate-card.featured p,
+.rate-card.featured li { color: var(--white) !important; }
+.rate-card.featured .rate-badge { background: rgba(255,255,255,0.2); color: var(--white); }
+.rate-card.featured .rate-cta { background: var(--white); color: var(--peach2); }
+.rate-card.featured .rate-period { color: rgba(255,255,255,0.7) !important; }
+.rate-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--peach-light);
+  color: var(--peach2);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 24px;
+}
+.rate-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.rate-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  color: var(--peach2);
+  line-height: 1;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.rate-price sup { font-size: 1.3rem; vertical-align: super; }
+.rate-period { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 28px; }
+.rate-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.rate-features li {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(var(--peach-rgb), 0.12);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.rate-features li::before { content: "✓"; color: var(--peach); font-size: 0.85rem; flex-shrink: 0; margin-top: 1px; }
+.rate-cta {
+  background: var(--peach);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  transition: background 0.2s;
+}
+.rate-cta:hover { background: var(--peach2); }
+.rate-card.featured .rate-cta:hover { background: var(--peach-light); }
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: var(--terracotta2);
+  padding: 96px 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 18px,
+    rgba(255,255,255,0.04) 18px,
+    rgba(255,255,255,0.04) 20px
+  );
+}
+.cta-band-inner { max-width: 760px; margin: 0 auto; padding: 0 32px; text-align: center; position: relative; z-index: 1; }
+.cta-band h2 {
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.cta-band p { color: rgba(255,255,255,0.75); margin: 0 auto 40px; max-width: 50ch; font-size: 1.05rem; }
+.cta-band .btn-peach { background: var(--white); color: var(--peach2); margin: 0 8px 12px; }
+.cta-band .btn-peach:hover { background: var(--peach-light); }
+.btn-ghost-white {
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid rgba(255,255,255,0.4);
+  display: inline-block;
+  margin: 0 8px 12px;
+  transition: border-color 0.2s;
+}
+.btn-ghost-white:hover { border-color: rgba(255,255,255,0.8); }
+
+/* ── FOOTER ── */
+footer { background: var(--dark); padding: 72px 0 40px; }
+.footer-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 32px;
+}
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--peach-light);
+  margin-bottom: 14px;
+}
+.footer-tagline { font-size: 0.9rem; color: rgba(var(--peach-light-rgb), 0.45); max-width: 28ch; line-height: 1.65; }
+.footer-col h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 18px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { font-size: 0.88rem; color: rgba(var(--peach-light-rgb), 0.45); transition: color 0.2s; }
+.footer-col a:hover { color: var(--peach-light); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(var(--peach-light-rgb), 0.28);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .photo-collage { height: 360px; }
+  .cp-1 { width: 160px; height: 200px; transform: rotate(-4deg) translate(-60px, 10px); }
+  .cp-2 { width: 170px; height: 220px; transform: rotate(2.5deg) translate(30px, -15px); }
+  .cp-3 { width: 140px; height: 175px; transform: rotate(-1deg) translate(65px, 45px); }
+  .about-band-inner { grid-template-columns: 1fr; gap: 40px; }
+  .why-me-inner { grid-template-columns: 1fr; gap: 40px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr 1fr; }
+  .portfolio-item.tall { grid-row: span 1; aspect-ratio: 4/3; }
+  .testi-grid { grid-template-columns: 1fr; gap: 24px; }
+  .rates-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .section { padding: 64px 0; }
+}
+@media (max-width: 480px) {
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+
+/* ── IMPACT STATS ── */
+.impact-band {
+  background: var(--terracotta);
+  padding: 72px 0;
+}
+.impact-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.impact-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--white);
+  display: block;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.impact-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+@media (max-width: 768px) { .impact-inner { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── SERVICES FULL DETAIL ── */
+.services-detail { background: var(--cream); padding: 96px 0; }
+.svc-detail-grid { display: flex; flex-direction: column; gap: 0; margin-top: 48px; }
+.svc-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 56px;
+  padding: 40px 0;
+  border-bottom: 1px solid rgba(var(--peach-rgb), 0.15);
+  align-items: start;
+}
+.svc-detail-row:last-child { border-bottom: none; }
+.svc-detail-meta h3 { font-size: 1.3rem; font-weight: 600; color: var(--peach2); margin-bottom: 8px; }
+.svc-detail-meta .svc-detail-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--peach); }
+.svc-detail-meta .svc-detail-price { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--peach2); margin-top: 12px; font-weight: 700; }
+.svc-detail-content p { font-size: 0.95rem; line-height: 1.8; max-width: none; margin-bottom: 16px; }
+.svc-detail-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 0; }
+.svc-detail-list li { font-size: 0.9rem; color: var(--text-soft); padding: 10px 0; border-bottom: 1px solid rgba(245,128,80,0.12); display: flex; gap: 10px; align-items: flex-start; }
+.svc-detail-list li:last-child { border-bottom: none; }
+.svc-detail-list li::before { content: "✓"; color: var(--peach); font-size: 0.85rem; flex-shrink: 0; margin-top: 1px; }
+@media (max-width: 768px) { .svc-detail-row { grid-template-columns: 1fr; gap: 20px; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <input type="checkbox" id="burger-toggle" hidden>
+  <div class="nav-inner">
+    <div class="nav-logo">Taylor Peach</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#portfolio">Work</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <a class="nav-cta" href="#rates">Let's Work Together</a>
+    <label class="burger-label" for="burger-toggle">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+  <div class="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Work</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#rates">Let's Work Together</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Digital Marketing</span><span>Content Strategy</span><span>Brand Identity</span><span>Social Media Coaching</span><span>Content Creator</span><span>Marketing Audits</span><span>Dream Clients</span>
+    <span>Digital Marketing</span><span>Content Strategy</span><span>Brand Identity</span><span>Social Media Coaching</span><span>Content Creator</span><span>Marketing Audits</span><span>Dream Clients</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow reveal">Digital Marketing · Content Creator · Coach</p>
+      <span class="hero-name reveal reveal-delay-1">— your digital marketing coach</span>
+      <h1 class="hero-headline reveal reveal-delay-1" data-live="headline">
+        Reconnect with your <em>dream clients</em> through content that converts
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">Reconnect with yourself.</p>
+      <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+        I bridge the gap between complex marketing concepts and actionable strategy — so you can build a brand that actually grows.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#services" class="btn-peach">Explore Services</a>
+        <a href="#rates" class="btn-outline-peach">Work With Me</a>
+      </div>
+    </div>
+    <div class="photo-collage reveal reveal-delay-2">
+      <div class="collage-photo cp-1"><img id="tp-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:16px;" alt="" /></div>
+      <div class="collage-photo cp-2"></div>
+      <div class="collage-photo cp-3"></div>
+      <div class="stripe-badge">
+        <span class="stripe-badge-text">Content that converts</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,32 C480,64 960,0 1440,40 L1440,64 L0,64 Z" fill="#F58050"/>
+  </svg>
+</div>
+
+<!-- ABOUT BAND -->
+<section class="about-band" id="about">
+  <div class="about-band-inner">
+    <div class="about-photo reveal"><img id="tp-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />Photo Placeholder</div>
+    <div>
+      <span class="about-band-label reveal">Meet Your Coach</span>
+      <h2 class="reveal reveal-delay-1">Your digital marketing coach &amp; content strategist</h2>
+      <p class="reveal reveal-delay-2">
+        I'm in the digital space daily. It requires more than just great ideas — it requires a proven system. As your coach, I bridge the gap between complex marketing concepts and actionable strategy that you can actually execute.
+      </p>
+      <p class="reveal reveal-delay-3">
+        After building multiple 6-figure content brands myself, I now help coaches, creators, and small business owners do the same — with less overwhelm, more clarity, and content that genuinely connects with the right people.
+      </p>
+      <div class="credentials reveal">
+        <span class="pill-white">Digital Marketing Coach</span>
+        <span class="pill-white">Content Strategist</span>
+        <span class="pill-white">Brand Developer</span>
+        <span class="pill-white">500+ Clients Helped</span>
+        <span class="pill-white">6-Figure Creator</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--peach);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,64 1080,8 1440,44 L1440,64 L0,64 Z" fill="#FDEADA"/>
+  </svg>
+</div>
+
+<!-- WHY ME -->
+<section class="why-me">
+  <div class="why-me-inner">
+    <div>
+      <span class="why-label reveal">Why Work With Me</span>
+      <h2 class="reveal reveal-delay-1">A proven system,<br>not just pretty content</h2>
+      <p class="reveal reveal-delay-2">
+        I'm in the digital space daily. It requires more than just great ideas — it requires a proven system. As your coach, I bridge the gap between complex marketing concepts and actionable strategy.
+      </p>
+      <p class="reveal reveal-delay-3">
+        You'll walk away with a real roadmap, not just inspiration. Every client I work with leaves with a content system they actually understand — and can actually use.
+      </p>
+    </div>
+    <ul class="why-list">
+      <li class="reveal">
+        <span class="check">✓</span>
+        Strategy built around your specific goals, audience, and bandwidth — no cookie-cutter templates
+      </li>
+      <li class="reveal reveal-delay-1">
+        <span class="check">✓</span>
+        Deep expertise in both organic content and digital marketing fundamentals
+      </li>
+      <li class="reveal reveal-delay-2">
+        <span class="check">✓</span>
+        Real-world results: 500+ clients, multiple 6-figure brands, measurable growth
+      </li>
+      <li class="reveal reveal-delay-3">
+        <span class="check">✓</span>
+        Ongoing support and accountability so you never feel alone in the process
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--peach-light);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,44 C480,8 960,60 1440,16 L1440,64 L0,64 Z" fill="#FDF8F0"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services section" id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Services</span>
+      <h2 class="reveal">How I Can Help You Grow</h2>
+      <p class="reveal reveal-delay-1">Every service is designed to give you the strategy, clarity, and confidence to show up consistently and convert.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <span class="svc-num">01</span>
+        <span class="svc-icon">Content Strategy</span>
+        <h3 data-live="svc1-name">Content Strategy</h3>
+        <p data-live="svc1-desc">A custom content roadmap for your brand — what to post, when to post it, and how to make every piece of content work for your goals.</p>
+        <div class="svc-tags" data-live="svc1-tags">Roadmap · Posting Plan · Content Pillars</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <span class="svc-num">02</span>
+        <span class="svc-icon">Brand Identity</span>
+        <h3 data-live="svc2-name">Brand Identity</h3>
+        <p data-live="svc2-desc">Visual and verbal brand development that makes you recognizable and magnetic — from color and typography to voice and tone.</p>
+        <div class="svc-tags" data-live="svc2-tags">Visual · Voice · Tone · Positioning</div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-num">03</span>
+        <span class="svc-icon">Social Coaching</span>
+        <h3 data-live="svc3-name">Social Media Coaching</h3>
+        <p data-live="svc3-desc">1:1 coaching sessions to level up your social presence, growth strategy, and content creation process.</p>
+        <div class="svc-tags" data-live="svc3-tags">1:1 Sessions · Growth · Strategy · Creation</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <span class="svc-num">04</span>
+        <span class="svc-icon">Marketing Audit</span>
+        <h3 data-live="svc4-name">Digital Marketing Audit</h3>
+        <p data-live="svc4-desc">A comprehensive review of your current digital marketing — what's working, what's not, and exactly what to prioritize next.</p>
+        <div class="svc-tags" data-live="svc4-tags">Full Audit · Action Plan · Priorities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT BAND -->
+<div class="impact-band">
+  <div class="impact-inner">
+    <div class="reveal">
+      <span class="impact-num">500+</span>
+      <span class="impact-label">Happy Clients</span>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <span class="impact-num">3x</span>
+      <span class="impact-label">Avg Follower Growth</span>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <span class="impact-num">6-Fig</span>
+      <span class="impact-label">Brands Built</span>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <span class="impact-num">★4.9</span>
+      <span class="impact-label">Client Rating</span>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES DETAIL -->
+<section class="services-detail">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span class="section-label reveal">Service Details</span>
+      <h2 class="reveal reveal-delay-1">What's Included in Each Service</h2>
+    </div>
+    <div class="svc-detail-grid">
+      <div class="svc-detail-row reveal">
+        <div class="svc-detail-meta">
+          <div class="svc-detail-tag">Strategy</div>
+          <h3>Content Strategy</h3>
+          <div class="svc-detail-price">From $397</div>
+        </div>
+        <div class="svc-detail-content">
+          <p>A content strategy session goes far beyond "what to post." We dig into your audience psychology, your brand positioning, your content pillars, and your growth goals — then build a living, breathing roadmap that tells you exactly what to create, when, and why.</p>
+          <ul class="svc-detail-list">
+            <li>Full audience and competitor analysis</li>
+            <li>Content pillars and messaging framework</li>
+            <li>90-day content calendar with post ideas</li>
+            <li>Platform-specific optimization recommendations</li>
+            <li>Content batching and workflow guide</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc-detail-row reveal">
+        <div class="svc-detail-meta">
+          <div class="svc-detail-tag">Brand</div>
+          <h3>Brand Identity</h3>
+          <div class="svc-detail-price">From $897</div>
+        </div>
+        <div class="svc-detail-content">
+          <p>Your brand is so much more than a logo. It's the feeling someone gets when they land on your page — the instant recognition that says "this is exactly who I was looking for." We build that from the ground up: visual identity, verbal identity, and the strategic positioning that makes you magnetic.</p>
+          <ul class="svc-detail-list">
+            <li>Brand discovery workshop and positioning strategy</li>
+            <li>Color palette, typography, and visual direction</li>
+            <li>Brand voice guide and messaging framework</li>
+            <li>Canva template library (10 branded templates)</li>
+            <li>Full brand guidelines document</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,60 1080,10 1440,48 L1440,64 L0,64 Z" fill="#F8D8C8"/>
+  </svg>
+</div>
+
+<!-- PORTFOLIO -->
+<section class="portfolio section" id="portfolio">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="color:var(--terracotta);">Our Recent Work</span>
+      <h2 class="reveal">OUR RECENT WORK</h2>
+      <p class="reveal reveal-delay-1">Real results from real clients — here's a glimpse at what we've built together.</p>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item tall reveal">
+        <div>
+          <div style="font-size:0.8rem;font-style:italic;">Photo / Work Sample</div>
+          <div class="portfolio-item-label">Brand Identity</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal reveal-delay-1">
+        <div>
+          <div style="font-size:0.8rem;font-style:italic;">Photo / Work Sample</div>
+          <div class="portfolio-item-label">Content Strategy</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal reveal-delay-2">
+        <div>
+          <div style="font-size:0.8rem;font-style:italic;">Photo / Work Sample</div>
+          <div class="portfolio-item-label">Social Growth</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal">
+        <div>
+          <div style="font-size:0.8rem;font-style:italic;">Photo / Work Sample</div>
+          <div class="portfolio-item-label">Marketing Audit</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal reveal-delay-1">
+        <div>
+          <div style="font-size:0.8rem;font-style:italic;">Photo / Work Sample</div>
+          <div class="portfolio-item-label">Coaching Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--blush);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,64 960,12 1440,44 L1440,64 L0,64 Z" fill="#FDF8F0"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Testimonials</span>
+      <h2 class="reveal">Kind Words From Happy Clients</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Working with Taylor completely transformed how I show up online. Within 3 months, my following doubled and I booked 5 dream clients — I was blown away."</p>
+        <div class="testi-name">Brianna Fox</div>
+        <div class="testi-role">Life Coach & Content Creator</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The content strategy session alone was worth 10x the investment. I finally understand what I'm doing and why — and the results are showing up everywhere."</p>
+        <div class="testi-name">Jasmine Park</div>
+        <div class="testi-role">Online Business Owner</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I'd been stuck with my brand for two years. After the brand identity work with Taylor, I have total clarity — and the prettiest brand I've ever seen. So worth it."</p>
+        <div class="testi-name">Megan Carr</div>
+        <div class="testi-role">Wellness Brand Founder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,56 1080,8 1440,48 L1440,64 L0,64 Z" fill="#F58050"/>
+  </svg>
+</div>
+
+<!-- STATS BAND -->
+<div style="background:var(--peach);padding:64px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;">
+      <div class="reveal">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">500+</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.75);">Happy Clients</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">6-Fig</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.75);">Brands Built</div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">★4.9</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.75);">Average Rating</div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">3x</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.75);">Avg. Follower Growth</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--peach);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,64 960,10 1440,44 L1440,64 L0,64 Z" fill="#FDF8F0"/>
+  </svg>
+</div>
+
+<!-- PROCESS -->
+<section style="background:var(--cream);padding:96px 0;" id="process">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-label reveal">How It Works</span>
+      <h2 class="reveal reveal-delay-1">From Stuck to Scaling in 4 Steps</h2>
+      <p class="reveal reveal-delay-2" style="margin:0 auto;max-width:50ch;text-align:center;">A simple, intentional process built to give you clarity and momentum from session one.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;">
+      <div style="content:'';position:absolute;top:26px;left:12.5%;right:12.5%;height:2px;background:var(--peach-light);z-index:0;"></div>
+      <div class="reveal" style="text-align:center;padding:0 20px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--peach);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--white);font-weight:700;">01</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:10px;">Discovery Call</h4>
+        <p style="font-size:0.88rem;line-height:1.7;">We get to know each other, talk about your goals, and map out the best path forward together.</p>
+      </div>
+      <div class="reveal reveal-delay-1" style="text-align:center;padding:0 20px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--peach);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--white);font-weight:700;">02</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:10px;">Strategy &amp; Audit</h4>
+        <p style="font-size:0.88rem;line-height:1.7;">I dive deep into your current brand, content, and marketing to find the gaps and the opportunities.</p>
+      </div>
+      <div class="reveal reveal-delay-2" style="text-align:center;padding:0 20px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--peach);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--white);font-weight:700;">03</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:10px;">Build &amp; Implement</h4>
+        <p style="font-size:0.88rem;line-height:1.7;">We build your content system, brand foundation, and strategy — then I help you put it into action.</p>
+      </div>
+      <div class="reveal reveal-delay-3" style="text-align:center;padding:0 20px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--peach);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--white);font-weight:700;">04</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:10px;">Grow &amp; Scale</h4>
+        <p style="font-size:0.88rem;line-height:1.7;">With a proven system in place, you're equipped to keep growing — with support available whenever you need it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,44 C360,12 1080,56 1440,20 L1440,64 L0,64 Z" fill="#FDEADA"/>
+  </svg>
+</div>
+
+<!-- WHO THIS IS FOR -->
+<section style="background:var(--peach-light);padding:96px 0;" id="who">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-label reveal">Who This Is For</span>
+      <h2 class="reveal reveal-delay-1">Made for the creative entrepreneur</h2>
+      <p class="reveal reveal-delay-2" style="margin:0 auto;max-width:52ch;text-align:center;">If any of this sounds like you, you're in exactly the right place.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1120px;margin:0 auto;">
+      <div class="reveal" style="background:var(--white);border-radius:var(--radius-card);padding:36px 28px;border:2px solid var(--blush);">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:var(--peach-light);margin-bottom:16px;display:block;font-weight:700;">01</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:12px;">The Coach or Course Creator</h4>
+        <p style="font-size:0.9rem;line-height:1.75;max-width:none;">You have knowledge, passion, and an offer — but your content strategy doesn't reflect the quality of what you deliver. That ends here.</p>
+      </div>
+      <div class="reveal reveal-delay-1" style="background:var(--white);border-radius:var(--radius-card);padding:36px 28px;border:2px solid var(--blush);">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:var(--peach-light);margin-bottom:16px;display:block;font-weight:700;">02</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:12px;">The Product-Based Small Biz</h4>
+        <p style="font-size:0.9rem;line-height:1.75;max-width:none;">You make something beautiful and you know people need it — but getting it in front of the right audience feels like a full-time job on top of your full-time job.</p>
+      </div>
+      <div class="reveal reveal-delay-2" style="background:var(--white);border-radius:var(--radius-card);padding:36px 28px;border:2px solid var(--blush);">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:var(--peach-light);margin-bottom:16px;display:block;font-weight:700;">03</div>
+        <h4 style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:12px;">The Aspiring Content Creator</h4>
+        <p style="font-size:0.9rem;line-height:1.75;max-width:none;">You're building your platform and your personal brand from the ground up, and you want to do it with intention — not just copying what everyone else is doing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--peach-light);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,28 C480,60 960,10 1440,44 L1440,64 L0,64 Z" fill="#FDF8F0"/>
+  </svg>
+</div>
+
+<!-- FEATURED IN / PRESS -->
+<div style="background:var(--cream);padding:56px 0;border-top:1px solid rgba(var(--peach-rgb),0.12);">
+  <div class="container">
+    <p class="reveal" style="font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-soft);text-align:center;opacity:0.6;margin-bottom:28px;">As Seen In</p>
+    <div class="reveal reveal-delay-1" style="display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(var(--text-soft-rgb),0.35);font-weight:700;">Forbes</span>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(var(--text-soft-rgb),0.35);font-weight:700;">Business Insider</span>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(var(--text-soft-rgb),0.35);font-weight:700;">Later Media</span>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(var(--text-soft-rgb),0.35);font-weight:700;">Creator Economy</span>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(var(--text-soft-rgb),0.35);font-weight:700;">Social Media Today</span>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE BAND -->
+<div style="background:var(--terracotta);padding:72px 0;">
+  <div style="max-width:760px;margin:0 auto;padding:0 32px;text-align:center;">
+    <blockquote class="reveal" style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.5rem,3.5vw,2.3rem);color:var(--white);line-height:1.5;margin-bottom:24px;font-weight:400;">"Your dream clients are already out there. You just need content that helps them find you — and a brand they can't forget."</blockquote>
+    <cite class="reveal reveal-delay-1" style="font-size:0.82rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(var(--peach-light-rgb),0.6);font-style:normal;">— Taylor Peach</cite>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--terracotta);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,56 1080,8 1440,44 L1440,64 L0,64 Z" fill="#FDF8F0"/>
+  </svg>
+</div>
+
+<!-- NEWSLETTER -->
+<div style="background:var(--cream);padding:72px 0;">
+  <div style="max-width:620px;margin:0 auto;padding:0 32px;text-align:center;">
+    <h3 class="reveal" style="font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:var(--peach2);margin-bottom:14px;font-weight:700;">The Content Compass</h3>
+    <p class="reveal reveal-delay-1" style="color:var(--text-soft);margin:0 auto 28px;font-size:0.95rem;max-width:46ch;">Weekly tips, strategies, and honest reflections on digital marketing and content creation. Join 12,000+ creative entrepreneurs.</p>
+    <div class="reveal reveal-delay-2" style="display:flex;gap:8px;max-width:440px;margin:0 auto;">
+      <input type="email" placeholder="your@email.com" style="flex:1;background:var(--white);border:2px solid var(--peach-light);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;padding:12px 18px;border-radius:var(--radius-pill);outline:none;">
+      <button style="background:var(--peach);color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;padding:12px 24px;border:none;border-radius:var(--radius-pill);cursor:pointer;white-space:nowrap;transition:background 0.2s;">Subscribe</button>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,64 960,10 1440,44 L1440,64 L0,64 Z" fill="#FDEADA"/>
+  </svg>
+</div>
+
+<!-- FAQ -->
+<section style="background:var(--peach-light);padding:96px 0;" id="faq">
+  <div class="container">
+    <h2 class="reveal" style="margin-bottom:48px;">Frequently Asked Questions</h2>
+    <div style="max-width:760px;display:flex;flex-direction:column;gap:0;">
+      <div style="border-bottom:1px solid rgba(var(--peach-rgb),0.25);" class="reveal">
+        <div style="font-size:1.1rem;font-weight:600;color:var(--text);padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:default;">How quickly will I see results? <span style="color:var(--peach);font-size:1.3rem;">+</span></div>
+        <p style="font-size:0.95rem;color:var(--text-soft);line-height:1.8;padding-bottom:20px;max-width:none;">Most clients start to see meaningful shifts within the first month — clarity on what to post, a brand that feels cohesive, and a system that actually reduces the overwhelm. Follower growth and revenue results vary, but clients who implement consistently typically see 2–3x growth within 90 days.</p>
+      </div>
+      <div style="border-bottom:1px solid rgba(var(--peach-rgb),0.25);" class="reveal">
+        <div style="font-size:1.1rem;font-weight:600;color:var(--text);padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:default;">Do I need a large following to work with you? <span style="color:var(--peach);font-size:1.3rem;">+</span></div>
+        <p style="font-size:0.95rem;color:var(--text-soft);line-height:1.8;padding-bottom:20px;max-width:none;">Not at all. In fact, many of my clients are starting from scratch or have small but engaged audiences. The strategy we build together is designed to work whether you have 500 followers or 50,000. What matters more than your current size is your commitment to showing up consistently.</p>
+      </div>
+      <div style="border-bottom:1px solid rgba(var(--peach-rgb),0.25);" class="reveal">
+        <div style="font-size:1.1rem;font-weight:600;color:var(--text);padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:default;">What platform do you specialize in? <span style="color:var(--peach);font-size:1.3rem;">+</span></div>
+        <p style="font-size:0.95rem;color:var(--text-soft);line-height:1.8;padding-bottom:20px;max-width:none;">I work across Instagram, TikTok, and Pinterest — the platforms where visual content and lifestyle brands tend to thrive most. That said, the content strategy principles I teach are platform-agnostic. We'll always start with where your audience actually is and build from there.</p>
+      </div>
+      <div class="reveal">
+        <div style="font-size:1.1rem;font-weight:600;color:var(--text);padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:default;">Is there a payment plan option? <span style="color:var(--peach);font-size:1.3rem;">+</span></div>
+        <p style="font-size:0.95rem;color:var(--text-soft);line-height:1.8;padding-bottom:20px;max-width:none;">Yes! Payment plans are available for all packages over $500. I want this work to be accessible to the coaches and creators who are ready for it — not just those who can pay in full upfront. Reach out and we'll find a plan that works for your situation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--peach-light);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,56 1080,8 1440,48 L1440,64 L0,64 Z" fill="#FDEADA"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates section" id="rates">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Investment</span>
+      <h2 class="reveal">Ready to Grow?</h2>
+      <p class="reveal reveal-delay-1">Every package is designed to give you strategy, clarity, and real results. Payment plans available on all packages.</p>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <span class="rate-badge">Starter</span>
+        <h3>The Audit</h3>
+        <div class="rate-price"><sup>$</sup>397</div>
+        <p class="rate-period">One-time investment</p>
+        <ul class="rate-features">
+          <li>Full digital marketing audit</li>
+          <li>Written findings report</li>
+          <li>90-minute review call</li>
+          <li>30-day priority action plan</li>
+          <li>30-day email follow-up</li>
+        </ul>
+        <a href="#" class="rate-cta">Book Your Audit</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <span class="rate-badge">Most Popular</span>
+        <h3>Content &amp; Brand</h3>
+        <div class="rate-price"><sup>$</sup>1,497</div>
+        <p class="rate-period">Complete brand &amp; strategy package</p>
+        <ul class="rate-features">
+          <li>Full brand identity development</li>
+          <li>Custom content strategy</li>
+          <li>3 months of content planning</li>
+          <li>Two 60-min coaching calls</li>
+          <li>Canva templates included</li>
+          <li>2 weeks of Voxer support</li>
+        </ul>
+        <a href="#" class="rate-cta">Get Started</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <span class="rate-badge">VIP</span>
+        <h3>1:1 Coaching</h3>
+        <div class="rate-price"><sup>$</sup>2,997</div>
+        <p class="rate-period">3-month coaching container</p>
+        <ul class="rate-features">
+          <li>Six 60-min coaching sessions</li>
+          <li>Full brand &amp; content strategy</li>
+          <li>Monthly content planning calls</li>
+          <li>Unlimited Voxer coaching</li>
+          <li>Custom template library</li>
+          <li>Priority scheduling always</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2 class="reveal">Your dream clients are already out there looking for you.</h2>
+    <p class="reveal reveal-delay-1">Let's build the strategy that helps them find you — and the brand that makes them stay. Your time is now.</p>
+    <div class="reveal reveal-delay-2">
+      <a href="#rates" class="btn-peach">Work With Me</a>
+      <a href="#services" class="btn-ghost-white">See My Services</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand" data-live="biz-name">Taylor Peach</div>
+        <p class="footer-tagline" data-live="tagline">Reconnect with your dream clients through content that converts.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Content Strategy</a></li>
+          <li><a href="#">Brand Identity</a></li>
+          <li><a href="#">Social Media Coaching</a></li>
+          <li><a href="#">Digital Marketing Audit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Work Samples</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Pinterest</a></li>
+          <li><a href="#">hello@taylorpeach.co</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Taylor Peach. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beauty Bloom | Esthetician & Skincare Studio</title>
+  <meta name="description" content="Luxurious facials, lash extensions, brow shaping, and personalized skincare consultations. Glow-giving treatments tailored just for you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ==================== CSS VARIABLES ==================== */
+    :root {
+      --rose: #D4607A;
+      --rose-light: #F2A0B0;
+      --blush: #FAE8EE;
+      --cream: #FFF8F5;
+      --dark: #1C0A12;
+      --mid: #6B3040;
+      --white: #FFFFFF;
+      --text: #3A1520;
+      --text-soft: #8A5565;
+      --rose-rgb: 212, 96, 122;
+      --rose-light-rgb: 242, 160, 176;
+      --blush-rgb: 250, 232, 238;
+      --cream-rgb: 255, 248, 245;
+      --border: rgba(var(--rose-rgb), 0.15);
+      --shadow: 0 8px 40px rgba(28, 10, 18, 0.10);
+      --shadow-sm: 0 4px 20px rgba(28, 10, 18, 0.07);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ==================== TYPOGRAPHY ==================== */
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+    }
+
+    h1 { font-size: clamp(2.6rem, 5vw, 4.2rem); font-weight: 700; }
+    h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 600; }
+    h3 { font-size: clamp(1.3rem, 2vw, 1.65rem); font-weight: 600; }
+    h4 { font-size: 1.1rem; font-weight: 600; }
+
+    p { font-size: 1rem; }
+
+    .serif-italic {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    /* ==================== BUTTONS ==================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .btn-rose {
+      background: var(--rose);
+      color: var(--white);
+      box-shadow: 0 4px 18px rgba(var(--rose-rgb), 0.4);
+    }
+
+    .btn-rose:hover {
+      background: var(--mid);
+      box-shadow: 0 6px 24px rgba(107, 48, 64, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--rose);
+      border: 2px solid var(--rose);
+    }
+
+    .btn-outline:hover {
+      background: var(--rose);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-white {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.7);
+    }
+
+    .btn-outline-white:hover {
+      background: var(--white);
+      color: var(--rose);
+      transform: translateY(-2px);
+    }
+
+    /* ==================== NAV ==================== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(var(--cream-rgb), 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s ease;
+    }
+
+    nav.scrolled {
+      box-shadow: 0 4px 24px rgba(28, 10, 18, 0.10);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo span {
+      color: var(--rose);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.93rem;
+      font-weight: 500;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 50px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--blush);
+      color: var(--rose);
+    }
+
+    .nav-cta {
+      margin-left: 8px;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ==================== HERO ==================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      padding: 100px 0 80px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(var(--rose-light-rgb), 0.18) 0%, transparent 65%),
+                  radial-gradient(ellipse 50% 40% at 10% 20%, rgba(var(--blush-rgb), 0.6) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blush);
+      color: var(--rose);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--rose);
+      border-radius: 50%;
+    }
+
+    .hero-headline {
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .hero-tagline {
+      font-size: 1.15rem;
+      color: var(--text-soft);
+      margin-bottom: 38px;
+      max-width: 440px;
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-photo {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 4/5;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(var(--rose-rgb), 0.35);
+    }
+
+    .hero-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(40,40,50,0.3) 100%);
+    }
+
+    .hero-photo-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .hero-photo-inner svg {
+      width: 52px;
+      height: 52px;
+      opacity: 0.8;
+    }
+
+    .hero-photo-inner span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-photo-badge {
+      position: absolute;
+      bottom: -16px;
+      right: -16px;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .hero-photo-badge .badge-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--blush);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rose);
+      font-size: 1.1rem;
+    }
+
+    .hero-photo-badge .badge-text strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .hero-photo-badge .badge-text span {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .hero-float-pill {
+      position: absolute;
+      top: 28px;
+      left: -20px;
+      background: var(--white);
+      border-radius: 50px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--mid);
+      z-index: 10;
+    }
+
+    .hero-float-pill .pip {
+      width: 8px;
+      height: 8px;
+      background: #5cb85c;
+      border-radius: 50%;
+    }
+
+    /* ==================== WAVE DIVIDERS ==================== */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* ==================== ABOUT ==================== */
+    .about {
+      background: var(--white);
+      padding: 100px 0;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .about-photo-zone {
+      position: relative;
+    }
+
+    .about-photo-main {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .about-photo-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-photo-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .about-photo-placeholder svg {
+      width: 44px;
+      height: 44px;
+      opacity: 0.75;
+    }
+
+    .about-photo-accent {
+      position: absolute;
+      bottom: -24px;
+      right: -24px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--blush);
+      border: 6px solid var(--white);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-photo-accent-inner {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-photo-accent-inner svg {
+      width: 36px;
+      height: 36px;
+      color: white;
+      opacity: 0.85;
+    }
+
+    .about-deco-line {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px dashed var(--rose-light);
+      opacity: 0.5;
+    }
+
+    .about-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blush);
+      color: var(--rose);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    .about-heading {
+      margin-bottom: 18px;
+      color: var(--dark);
+    }
+
+    .about-text {
+      color: var(--text-soft);
+      margin-bottom: 28px;
+      font-size: 1.05rem;
+    }
+
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--blush);
+      color: var(--mid);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 50px;
+      border: 1px solid rgba(var(--rose-rgb), 0.2);
+    }
+
+    .trust-badge svg {
+      width: 14px;
+      height: 14px;
+      color: var(--rose);
+      flex-shrink: 0;
+    }
+
+    /* ==================== SERVICES ==================== */
+    .services {
+      background: var(--cream);
+      padding: 100px 0 60px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blush);
+      color: var(--rose);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      color: var(--dark);
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .service-card-bar {
+      height: 5px;
+    }
+
+    .service-card:nth-child(1) .service-card-bar { background: linear-gradient(90deg, var(--rose-light), var(--rose)); }
+    .service-card:nth-child(2) .service-card-bar { background: linear-gradient(90deg, var(--rose), var(--mid)); }
+    .service-card:nth-child(3) .service-card-bar { background: linear-gradient(90deg, rgba(var(--rose-light-rgb), 0.5), var(--rose-light)); }
+    .service-card:nth-child(4) .service-card-bar { background: linear-gradient(90deg, var(--mid), var(--rose)); }
+
+    .service-card-body {
+      padding: 30px 30px 26px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--blush);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      color: var(--rose);
+    }
+
+    .service-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .service-card-body h4 {
+      margin-bottom: 10px;
+      color: var(--dark);
+      font-size: 1.15rem;
+    }
+
+    .service-card-body p {
+      color: var(--text-soft);
+      font-size: 0.93rem;
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 18px;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .service-tags span {
+      background: var(--blush);
+      color: var(--mid);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 50px;
+    }
+
+    /* ==================== REVIEWS ==================== */
+    .reviews {
+      background: var(--blush);
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .review-card::before {
+      content: '\201C';
+      position: absolute;
+      top: -10px;
+      right: 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 7rem;
+      color: var(--blush);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .stars {
+      display: flex;
+      gap: 3px;
+    }
+
+    .stars svg {
+      width: 18px;
+      height: 18px;
+      color: #FFBC45;
+      fill: currentColor;
+    }
+
+    .review-quote {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .review-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .review-author-info strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .review-author-info span {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    /* ==================== RATES ==================== */
+    .rates {
+      background: var(--cream);
+      padding: 100px 0;
+    }
+
+    .rates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .rate-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px 30px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.28s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rate-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .rate-card.featured {
+      background: var(--rose);
+      color: var(--white);
+      box-shadow: 0 16px 60px rgba(var(--rose-rgb), 0.45);
+      transform: scale(1.04);
+    }
+
+    .rate-card.featured:hover {
+      transform: scale(1.04) translateY(-5px);
+    }
+
+    .rate-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: 18px;
+      right: -28px;
+      background: var(--white);
+      color: var(--rose);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 36px;
+      transform: rotate(35deg);
+    }
+
+    .rate-tier {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 8px;
+    }
+
+    .rate-card.featured .rate-tier {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .rate-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .rate-card.featured .rate-name {
+      color: var(--white);
+    }
+
+    .rate-tagline {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      margin-bottom: 24px;
+    }
+
+    .rate-card.featured .rate-tagline {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .rate-price {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .rate-price .currency {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--mid);
+      line-height: 1.8;
+    }
+
+    .rate-price .amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .rate-price .duration {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.8;
+    }
+
+    .rate-card.featured .rate-price .currency,
+    .rate-card.featured .rate-price .amount,
+    .rate-card.featured .rate-price .duration {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .rate-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .rate-card.featured .rate-divider {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .rate-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .rate-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .rate-card.featured .rate-features li {
+      color: rgba(255,255,255,0.85);
+    }
+
+    .rate-features li svg {
+      width: 16px;
+      height: 16px;
+      color: var(--rose);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .rate-card.featured .rate-features li svg {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .rate-btn-wrap {
+      text-align: center;
+    }
+
+    .rate-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .rate-card.featured .rate-btn-rose {
+      background: var(--white);
+      color: var(--rose);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    }
+
+    .rate-card.featured .rate-btn-rose:hover {
+      background: var(--blush);
+    }
+
+    /* ==================== CONTACT CTA ==================== */
+    .contact-cta {
+      background: linear-gradient(135deg, var(--mid) 0%, var(--rose) 60%, var(--rose-light) 100%);
+      padding: 90px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .contact-cta .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-cta h2 {
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .contact-cta p {
+      color: rgba(255,255,255,0.82);
+      font-size: 1.1rem;
+      margin-bottom: 36px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-cta-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ==================== FOOTER ==================== */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.6);
+      padding: 52px 0 36px;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand .footer-logo span {
+      color: var(--rose-light);
+      font-style: italic;
+    }
+
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 280px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--rose-light);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom p {
+      font-size: 0.82rem;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-social a {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: all 0.22s ease;
+    }
+
+    .footer-social a:hover {
+      border-color: var(--rose-light);
+      color: var(--rose-light);
+      background: rgba(var(--rose-rgb), 0.1);
+    }
+
+    .footer-social a svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ==================== MOBILE NAV DRAWER ==================== */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    .mobile-nav-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 10, 18, 0.5);
+    }
+
+    .mobile-nav-drawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--white);
+      padding: 80px 28px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-nav-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--dark);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .mobile-nav-drawer a {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .mobile-nav-drawer a:hover {
+      color: var(--rose);
+    }
+
+    .mobile-nav-drawer .btn {
+      margin-top: 14px;
+      justify-content: center;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+
+      .nav-hamburger { display: flex; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero-photo-wrap { order: -1; }
+
+      .hero-photo {
+        max-width: 100%;
+        aspect-ratio: 4/3;
+      }
+
+      .hero-photo-badge {
+        bottom: -14px;
+        right: 0;
+      }
+
+      .hero-float-pill {
+        left: 0;
+      }
+
+      .hero { padding: 90px 0 60px; }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 44px;
+      }
+
+      .about-photo-accent {
+        display: none;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rates-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rate-card.featured {
+        transform: none;
+      }
+
+      .rate-card.featured:hover {
+        transform: translateY(-5px);
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .animate-fade-up {
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.22s; }
+    .delay-3 { animation-delay: 0.34s; }
+    .delay-4 { animation-delay: 0.46s; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAV ==================== -->
+  <nav id="main-nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo"><span data-live="biz-name">Beauty Bloom</span></a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#rates">Rates</a></li>
+          <li class="nav-cta"><a href="#contact" class="btn btn-rose">Get in Touch</a></li>
+        </ul>
+        <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-drawer">
+      <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">&#x2715;</button>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#rates">Rates</a>
+      <a href="#contact" class="btn btn-rose">Get in Touch</a>
+    </div>
+  </div>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <!-- Text Side -->
+        <div class="hero-text">
+          <div class="hero-eyebrow animate-fade-up">Licensed Esthetician</div>
+          <h1 class="hero-headline animate-fade-up delay-1" data-live="headline">
+            Reveal Your Most<br><em class="serif-italic">Luminous</em> Skin
+          </h1>
+          <p class="hero-tagline animate-fade-up delay-2" data-live="tagline">
+            Luxurious facials, lash extensions, and personalized skincare rituals crafted to make you glow from the inside out.
+          </p>
+          <div class="hero-ctas animate-fade-up delay-3">
+            <a href="#contact" class="btn btn-rose">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Book a Session
+            </a>
+            <a href="#services" class="btn btn-outline">Explore Services</a>
+          </div>
+        </div>
+
+        <!-- Photo Side -->
+        <div class="hero-photo-wrap animate-fade-up delay-2">
+          <div class="hero-float-pill animate-float">
+            <span class="pip"></span> Now booking May & June
+          </div>
+          <div class="hero-photo">
+            <img id="bb-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:20px;" alt="" />
+            <div class="hero-photo-inner">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2" color="white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>YOUR PHOTO HERE</span>
+            </div>
+          </div>
+          <div class="hero-photo-badge">
+            <div class="badge-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--rose)"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            </div>
+            <div class="badge-text">
+              <strong>500+ Happy Clients</strong>
+              <span>5.0 Average Rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Hero → About -->
+  <div class="wave-divider" style="background:var(--white); margin-top:-2px;">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 C360,70 1080,0 1440,50 L1440,0 Z" fill="var(--cream)"/>
+    </svg>
+  </div>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-inner">
+        <!-- Photo Zone -->
+        <div class="about-photo-zone">
+          <div class="about-deco-line"></div>
+          <div class="about-photo-main">
+            <img id="bb-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:20px;z-index:1;" alt="" />
+            <div class="about-photo-placeholder">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2" color="white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>YOUR PHOTO HERE</span>
+            </div>
+          </div>
+          <div class="about-photo-accent">
+            <div class="about-photo-accent-inner">
+              <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Side -->
+        <div class="about-content">
+          <div class="about-eyebrow">About Me</div>
+          <h2 class="about-heading">
+            Skin Care is<br><em class="serif-italic">Self Care</em>
+          </h2>
+          <p class="about-text">
+            Hi, I'm Sophia — a licensed esthetician with over 8 years of experience helping clients unlock their natural radiance. I believe every face tells a story, and every treatment should feel like a ritual. My studio is your sanctuary — a place to slow down, breathe deeply, and let your skin do the glowing.
+          </p>
+          <p class="about-text" style="margin-bottom: 30px;">
+            I specialize in customized skincare protocols, precision brow artistry, and Hollywood lash extensions. Whether you're treating yourself or preparing for a milestone moment, I'm here to make you feel genuinely beautiful.
+          </p>
+          <div class="trust-badges">
+            <span class="trust-badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              Licensed Esthetician
+            </span>
+            <span class="trust-badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              8+ Years Experience
+            </span>
+            <span class="trust-badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+              5-Star Rated
+            </span>
+            <span class="trust-badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              500+ Happy Clients
+            </span>
+            <span class="trust-badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-linecap="round"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+              Flexible Scheduling
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: About → Services -->
+  <div class="wave-divider" style="background:var(--cream); margin-top:-2px;">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,50 C480,0 960,70 1440,20 L1440,0 L0,0 Z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- ==================== SERVICES ==================== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">What I Offer</div>
+        <h2 class="section-heading">
+          Treatments Made<br><em class="serif-italic">for You</em>
+        </h2>
+        <p class="section-sub">Every service is customized to your skin's unique needs and your personal beauty goals.</p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Card 1: Facial -->
+        <div class="service-card">
+          <div class="service-card-bar"></div>
+          <div class="service-card-body">
+            <div class="service-icon">
+              <!-- Facial / sparkle icon -->
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
+              </svg>
+            </div>
+            <h4 data-live="svc1-name">Signature Facial</h4>
+            <p data-live="svc1-desc">A deeply personalized 60-minute facial experience. Cleanse, exfoliate, extract, and hydrate — leaving your skin visibly brighter, smoother, and radiant. Perfect for all skin types.</p>
+            <div class="service-tags" data-live="svc1-tags">
+              <span>60 min</span>
+              <span>All Skin Types</span>
+              <span>Deep Cleanse</span>
+              <span>Hydrating</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Lash Extensions -->
+        <div class="service-card">
+          <div class="service-card-bar"></div>
+          <div class="service-card-body">
+            <div class="service-icon">
+              <!-- Eye icon -->
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <h4 data-live="svc2-name">Lash Extensions</h4>
+            <p data-live="svc2-desc">Wake up effortlessly gorgeous. Individual lash extensions applied with precision for a full, fluttery look. Choose from classic, hybrid, or volume sets — totally customized to your eye shape.</p>
+            <div class="service-tags" data-live="svc2-tags">
+              <span>90–120 min</span>
+              <span>Classic</span>
+              <span>Hybrid</span>
+              <span>Volume</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Brow Shaping -->
+        <div class="service-card">
+          <div class="service-card-bar"></div>
+          <div class="service-card-body">
+            <div class="service-icon">
+              <!-- Brow / arch icon -->
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.745 7C7.1 4.5 10.5 3 14 3s6.9 1.5 9.255 4M3 12c0 1.5.3 3 .88 4.33M20.12 16.33A9.97 9.97 0 0021 12"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" opacity="0"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10c2-3 5-4 7-4s5 1 7 4"/>
+              </svg>
+            </div>
+            <h4 data-live="svc3-name">Brow Shaping & Tinting</h4>
+            <p data-live="svc3-desc">Frame your face with perfectly sculpted brows. Expert waxing, threading, or lamination paired with custom tinting to define your arches and complement your features beautifully.</p>
+            <div class="service-tags" data-live="svc3-tags">
+              <span>30–45 min</span>
+              <span>Wax &amp; Thread</span>
+              <span>Lamination</span>
+              <span>Tinting</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Skincare Consultation -->
+        <div class="service-card">
+          <div class="service-card-bar"></div>
+          <div class="service-card-body">
+            <div class="service-icon">
+              <!-- Clipboard / consultation icon -->
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              </svg>
+            </div>
+            <h4 data-live="svc4-name">Skincare Consultation</h4>
+            <p data-live="svc4-desc">A dedicated one-on-one session to analyze your skin, understand your lifestyle, and build a custom skincare routine that truly works. Includes product recommendations and a personalized home-care plan.</p>
+            <div class="service-tags" data-live="svc4-tags">
+              <span>45 min</span>
+              <span>Skin Analysis</span>
+              <span>Custom Routine</span>
+              <span>Product Guide</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Services → Reviews -->
+  <div class="wave-divider" style="background:var(--blush); margin-top:-2px;">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,70 1080,0 1440,40 L1440,0 L0,0 Z" fill="var(--cream)"/>
+    </svg>
+  </div>
+
+  <!-- ==================== REVIEWS ==================== -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Client Love</div>
+        <h2 class="section-heading">
+          What My Clients<br><em class="serif-italic">Are Saying</em>
+        </h2>
+        <p class="section-sub">Real words from real clients who came in for a treatment and left glowing.</p>
+      </div>
+
+      <div class="reviews-grid">
+
+        <!-- Review 1 -->
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <p class="review-quote">"I've tried so many estheticians over the years, but Sophia is truly on another level. My skin has never looked this healthy and I get compliments constantly. She's genuinely gifted at what she does."</p>
+          <div class="review-author">
+            <div class="review-avatar" style="position:relative;overflow:hidden;"><img id="bb-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />A</div>
+            <div class="review-author-info">
+              <strong>Alexis Monroe</strong>
+              <span>Regular Facial Client</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <p class="review-quote">"My lash extensions look absolutely incredible — so natural yet so glamorous. Everyone keeps asking if they're real! The studio is gorgeous, the vibe is so relaxing, and Sophia makes you feel completely at ease."</p>
+          <div class="review-author">
+            <div class="review-avatar" style="position:relative;overflow:hidden;"><img id="bb-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />M</div>
+            <div class="review-author-info">
+              <strong>Madison Tran</strong>
+              <span>Lash Extension Client</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <p class="review-quote">"The skincare consultation changed everything for me. I finally understand my skin and have a routine that actually works. Sophia is so knowledgeable, patient, and genuinely cares about your results."</p>
+          <div class="review-author">
+            <div class="review-avatar" style="position:relative;overflow:hidden;"><img id="bb-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />C</div>
+            <div class="review-author-info">
+              <strong>Chloe Hartman</strong>
+              <span>Skincare Consultation</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Reviews → Rates -->
+  <div class="wave-divider" style="background:var(--cream); margin-top:-2px;">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C480,0 960,70 1440,20 L1440,0 L0,0 Z" fill="var(--blush)"/>
+    </svg>
+  </div>
+
+  <!-- ==================== RATES ==================== -->
+  <section class="rates" id="rates">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Investment in You</div>
+        <h2 class="section-heading">
+          Simple,<br><em class="serif-italic">Transparent Pricing</em>
+        </h2>
+        <p class="section-sub">Each tier is designed to give you exactly what you need — no hidden fees, no surprises.</p>
+      </div>
+
+      <div class="rates-grid">
+
+        <!-- Tier 1: Glow Starter -->
+        <div class="rate-card">
+          <div class="rate-tier">Essential</div>
+          <div class="rate-name">Glow Starter</div>
+          <div class="rate-tagline">Perfect for first-time clients</div>
+          <div class="rate-price">
+            <span class="currency">$</span>
+            <span class="amount">75</span>
+            <span class="duration">&nbsp;/ session</span>
+          </div>
+          <div class="rate-divider"></div>
+          <ul class="rate-features">
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              45-min Express Facial
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Basic Brow Shaping
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Skin Type Assessment
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Product Recommendations
+            </li>
+          </ul>
+          <div class="rate-btn-wrap">
+            <a href="#contact" class="btn btn-outline rate-btn">Book Now</a>
+          </div>
+        </div>
+
+        <!-- Tier 2: Radiance Ritual (Featured) -->
+        <div class="rate-card featured">
+          <div class="rate-tier">Signature</div>
+          <div class="rate-name">Radiance Ritual</div>
+          <div class="rate-tagline">Our most-loved treatment</div>
+          <div class="rate-price">
+            <span class="currency">$</span>
+            <span class="amount">145</span>
+            <span class="duration">&nbsp;/ session</span>
+          </div>
+          <div class="rate-divider"></div>
+          <ul class="rate-features">
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Full 60-min Signature Facial
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Classic Lash Set
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Brow Shape &amp; Tint
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Skincare Consultation
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Personalized Home Routine
+            </li>
+          </ul>
+          <div class="rate-btn-wrap">
+            <a href="#contact" class="btn btn-rose rate-btn rate-btn-rose">Book Now</a>
+          </div>
+        </div>
+
+        <!-- Tier 3: Bloom Full Experience -->
+        <div class="rate-card">
+          <div class="rate-tier">Luxe</div>
+          <div class="rate-name">Full Bloom</div>
+          <div class="rate-tagline">The complete transformation</div>
+          <div class="rate-price">
+            <span class="currency">$</span>
+            <span class="amount">240</span>
+            <span class="duration">&nbsp;/ session</span>
+          </div>
+          <div class="rate-divider"></div>
+          <ul class="rate-features">
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              90-min Luxury Facial
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Volume Lash Extensions
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Brow Lamination &amp; Tint
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Deep Skincare Analysis
+            </li>
+            <li>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Priority Booking Access
+            </li>
+          </ul>
+          <div class="rate-btn-wrap">
+            <a href="#contact" class="btn btn-outline rate-btn">Book Now</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Rates → CTA -->
+  <div class="wave-divider" style="background:var(--rose); margin-top:-2px;">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,30 C360,70 1080,0 1440,45 L1440,0 L0,0 Z" fill="var(--cream)"/>
+    </svg>
+  </div>
+
+  <!-- ==================== CONTACT CTA ==================== -->
+  <section class="contact-cta" id="contact">
+    <div class="container">
+      <h2>Ready to <em style="font-style:italic;">Bloom?</em></h2>
+      <p>Book your session today and take the first step toward the glowing, confident skin you deserve.</p>
+      <div class="contact-cta-btns">
+        <a href="tel:+15555550100" class="btn" style="background:white; color:var(--rose); box-shadow: 0 4px 18px rgba(0,0,0,0.15);">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          Call to Book
+        </a>
+        <a href="mailto:hello@beautybloom.com" class="btn btn-outline-white">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Send a Message
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo"><span data-live="biz-name">Beauty Bloom</span></a>
+          <p class="footer-tagline" data-live="tagline">Luxurious facials, lash extensions, and personalized skincare rituals crafted to make you glow from the inside out.</p>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#rates">Rates</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 <span data-live="biz-name">Beauty Bloom</span>. All rights reserved.</p>
+        <div class="footer-social">
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <!-- TikTok -->
+          <a href="#" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.53V6.75a4.85 4.85 0 01-1.02-.06z"/>
+            </svg>
+          </a>
+          <!-- Facebook -->
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ==================== NAV SCROLL SHADOW ==================== */
+    const mainNav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    /* ==================== MOBILE NAV ==================== */
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileNavClose = document.getElementById('mobile-nav-close');
+
+    function openMobileNav() {
+      mobileNav.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', openMobileNav);
+    mobileNavOverlay.addEventListener('click', closeMobileNav);
+    mobileNavClose.addEventListener('click', closeMobileNav);
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMobileNav);
+    });
+
+    /* ==================== INTERSECTION OBSERVER ANIMATIONS ==================== */
+    const observerOpts = { threshold: 0.12, rootMargin: '0px 0px -40px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOpts);
+
+    document.querySelectorAll('.service-card, .review-card, .rate-card, .about-inner, .trust-badge').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(28px)';
+      el.style.transition = `opacity 0.6s ease ${i * 0.07}s, transform 0.6s ease ${i * 0.07}s`;
+      observer.observe(el);
+    });
+
+    /* ==================== BUILTSY HOOKS ==================== */
+    window.builtsy_initAnim = function(){};
+    window.builtsy_demoBurst = function(){};
+  </script>
+</body>
+</html>

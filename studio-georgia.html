@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio GEORGIA — Creative Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:       #FAF8F4;
+    --cream-rgb:   250, 248, 244;
+    --warm:        #F2EAD8;
+    --taupe:       #C8B090;
+    --taupe-rgb:   200, 176, 144;
+    --taupe2:      #A89070;
+    --mocha:       #6B5040;
+    --mocha-rgb:   107, 80, 64;
+    --dark:        #1C1410;
+    --text:        #2C1C10;
+    --text-soft:   #8A7060;
+    --white:       #FFFFFF;
+    --radius-pill: 999px;
+    --radius-card: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--warm);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: var(--dark);
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+  .nav-logo .serif-italic {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    color: var(--mocha);
+  }
+  .nav-logo .sans-bold {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--mocha); }
+  .nav-links .cta-link {
+    background: var(--dark);
+    color: var(--cream) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .nav-links .cta-link:hover { background: var(--mocha); }
+
+  /* burger */
+  .burger-checkbox { display: none; }
+  .burger-label {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .burger-label span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--dark);
+    transition: all 0.3s;
+  }
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--warm);
+    padding: 1.5rem 5%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--warm);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .burger-label { display: flex; }
+    .burger-checkbox:checked ~ .mobile-menu { display: flex; }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--dark);
+    color: var(--taupe);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 28s linear infinite;
+    gap: 0;
+  }
+  .marquee-track span {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0 2.5rem;
+    font-weight: 500;
+  }
+  .marquee-track .dot {
+    color: var(--taupe);
+    padding: 0;
+    opacity: 0.5;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 7rem 5% 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .hero-text { order: 1; }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe2);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: #C4C2BE;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--dark);
+    margin-bottom: 1.75rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--mocha);
+  }
+
+  .hero-tagline {
+    font-size: 1.0625rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    font-weight: 400;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: background 0.25s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--mocha); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--dark);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border: 1.5px solid var(--taupe);
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--dark); background: #DDDBD8; }
+
+  .hero-photos {
+    order: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding-top: 2rem;
+  }
+  .hero-photo-tall {
+    grid-row: span 2;
+    background: #DDDBD8;
+    border-radius: var(--radius-card);
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--taupe);
+    position: relative;
+  }
+  .hero-photo-sq {
+    background: #C4C2BE;
+    border-radius: var(--radius-card);
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+  }
+  .photo-placeholder-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 4rem 5% 3rem;
+      gap: 2.5rem;
+    }
+    .hero-photos { grid-template-columns: 1fr 1fr; }
+    .hero-photo-tall { aspect-ratio: 4/5; }
+  }
+
+  /* ── WAVE DIVIDER ── */
+  .wave-divider { display: block; width: 100%; line-height: 0; overflow: hidden; }
+  .wave-divider svg { display: block; width: 100%; }
+
+  /* ── STATEMENT ── */
+  .statement-section {
+    background: #DDDBD8;
+    padding: 5rem 5%;
+    text-align: center;
+  }
+  .statement-section .label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe2);
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  .statement-large {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--dark);
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .statement-large em { font-style: italic; color: var(--mocha); }
+  .statement-large strong { font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-family: 'DM Sans', sans-serif; font-size: 0.75em; }
+  .statement-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--mocha);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ── ABOUT ── */
+  .about-section {
+    padding: 6rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-photo-wrap {
+    position: relative;
+  }
+  .about-photo {
+    background: #DDDBD8;
+    border-radius: var(--radius-card);
+    aspect-ratio: 4/5;
+    border: 1px solid var(--taupe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo-accent {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    background: #C4C2BE;
+    border-radius: var(--radius-card);
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .about-text .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe2);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .about-text .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: #C4C2BE;
+  }
+
+  .about-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+  }
+  .about-text h2 em { font-style: italic; color: var(--mocha); }
+
+  .credentials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .pill {
+    background: #DDDBD8;
+    border: 1px solid var(--taupe);
+    color: var(--mocha);
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .about-text p {
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 768px) {
+    .about-section {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 4rem 5%;
+    }
+  }
+
+  /* ── SERVICES ── */
+  .services-section {
+    background: var(--dark);
+    padding: 6rem 5%;
+  }
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+
+  .services-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .services-header .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .services-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .services-header h2 em { font-style: italic; color: var(--taupe); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(var(--taupe-rgb), 0.2);
+    border-left: 1px solid rgba(var(--taupe-rgb), 0.2);
+  }
+  .service-card {
+    padding: 2.5rem;
+    border-bottom: 1px solid rgba(var(--taupe-rgb), 0.2);
+    border-right: 1px solid rgba(var(--taupe-rgb), 0.2);
+    transition: background 0.3s;
+  }
+  .service-card:hover { background: rgba(var(--taupe-rgb), 0.06); }
+
+  .service-number {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--taupe);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    display: block;
+    opacity: 0.7;
+  }
+  .service-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .service-card p {
+    color: rgba(var(--cream-rgb), 0.55);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .service-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--taupe);
+    border: 1px solid rgba(var(--taupe-rgb), 0.3);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem; }
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    padding: 6rem 5%;
+    background: var(--cream);
+  }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+
+  .section-header-center {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .section-header-center .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe2);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .section-header-center h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .section-header-center h2 em { font-style: italic; color: var(--mocha); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border: 1px solid var(--warm);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    color: var(--taupe);
+    line-height: 1;
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    opacity: 0.4;
+  }
+  .testimonial-card blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    font-weight: 400;
+  }
+  .testimonial-client {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .client-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #DDDBD8;
+    border: 1px solid var(--taupe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--mocha);
+    flex-shrink: 0;
+  }
+  .client-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  .client-title {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+  }
+  .stars { color: var(--taupe); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 0.2rem; }
+
+  @media (max-width: 768px) {
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── RATES ── */
+  .rates-section {
+    background: #DDDBD8;
+    padding: 6rem 5%;
+  }
+  .rates-inner { max-width: 1100px; margin: 0 auto; }
+
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .rate-card {
+    background: var(--white);
+    border: 1px solid var(--taupe);
+    border-radius: var(--radius-card);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .rate-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(var(--mocha-rgb), 0.12); }
+  .rate-card.featured {
+    background: var(--dark);
+    border-color: var(--dark);
+  }
+  .rate-card.featured .rate-name,
+  .rate-card.featured .rate-price,
+  .rate-card.featured .rate-desc,
+  .rate-card.featured .rate-features li { color: var(--cream); }
+  .rate-card.featured .rate-features li::before { color: var(--taupe); }
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--taupe2);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.9rem;
+    border-radius: var(--radius-pill);
+  }
+  .rate-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 0.75rem;
+  }
+  .rate-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 500;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .rate-price sup { font-size: 1.5rem; vertical-align: top; margin-top: 0.6rem; display: inline-block; }
+  .rate-price span { font-size: 0.9rem; font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--text-soft); }
+  .rate-desc {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .rate-features {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+  .rate-features li {
+    font-size: 0.85rem;
+    color: var(--text);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--warm);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .rate-features li::before { content: '→'; color: var(--taupe2); font-size: 0.75rem; }
+  .rate-card .btn-primary { width: 100%; text-align: center; }
+  .rate-card.featured .btn-primary { background: var(--taupe2); }
+  .rate-card.featured .btn-primary:hover { background: #C4C2BE; }
+
+  @media (max-width: 768px) {
+    .rates-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--mocha);
+    padding: 5rem 5%;
+    text-align: center;
+  }
+  .cta-band .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .cta-band h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-band h2 em { font-style: italic; }
+  .cta-band p {
+    color: rgba(var(--cream-rgb), 0.65);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-band-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-warm {
+    background: #C4C2BE;
+    color: var(--dark);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-warm:hover { background: var(--cream); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--taupe);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border: 1.5px solid rgba(var(--taupe-rgb), 0.5);
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--taupe); background: rgba(200,176,144,0.1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    padding: 4rem 5% 2.5rem;
+    color: rgba(var(--cream-rgb), 0.5);
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(var(--taupe-rgb), 0.12);
+  }
+  .footer-brand .nav-logo { color: var(--cream); margin-bottom: 1rem; display: block; text-decoration: none; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(var(--cream-rgb), 0.35);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a {
+    text-decoration: none;
+    color: rgba(var(--cream-rgb), 0.5);
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--taupe); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom a { color: var(--taupe); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+
+  /* ── REVEAL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── UTILITY ── */
+  .container { max-width: 1200px; margin: 0 auto; }
+  .text-center { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <span class="serif-italic">Studio </span><span class="sans-bold">Georgia</span>
+  </a>
+  <input type="checkbox" id="burger" class="burger-checkbox">
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#contact" class="cta-link">Start a Project</a></li>
+  </ul>
+  <label for="burger" class="burger-label" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#rates">Rates</a>
+    <a href="#contact">Start a Project</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Brand Identity</span><span class="dot">·</span>
+    <span>Website Design</span><span class="dot">·</span>
+    <span>Brand Strategy</span><span class="dot">·</span>
+    <span>Content Direction</span><span class="dot">·</span>
+    <span>Visual Systems</span><span class="dot">·</span>
+    <span>Clarity First</span><span class="dot">·</span>
+    <span>Editorial Design</span><span class="dot">·</span>
+    <span>Brand Identity</span><span class="dot">·</span>
+    <span>Website Design</span><span class="dot">·</span>
+    <span>Brand Strategy</span><span class="dot">·</span>
+    <span>Content Direction</span><span class="dot">·</span>
+    <span>Visual Systems</span><span class="dot">·</span>
+    <span>Clarity First</span><span class="dot">·</span>
+    <span>Editorial Design</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="eyebrow reveal">Creative Agency · Brand · Strategy · Web</div>
+    <h1 class="reveal reveal-delay-1" data-live="headline">
+      You already have something solid. What's missing is how <em>clearly</em> it comes across.
+    </h1>
+    <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+      We help you define your message, build your brand, and design a website that works — all of it cohesive, strategic, and unmistakably you.
+    </p>
+    <div class="hero-ctas reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">Start Your Project</a>
+      <a href="#services" class="btn-outline">See Our Work</a>
+    </div>
+  </div>
+  <div class="hero-photos reveal reveal-delay-2">
+    <div class="hero-photo-tall">
+      <img id="sg-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+      <span class="photo-placeholder-label">Photo</span>
+    </div>
+    <div class="hero-photo-sq">
+      <span class="photo-placeholder-label" style="color:var(--cream);opacity:0.6;">Photo</span>
+    </div>
+    <div class="hero-photo-sq" style="background:var(--mocha); opacity:0.25;">
+      <span class="photo-placeholder-label" style="color:var(--cream);opacity:0.6;">Photo</span>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#F2EAD8"/>
+  </svg>
+</div>
+
+<!-- STATEMENT SECTION -->
+<section class="statement-section">
+  <div class="label reveal">The Studio GEORGIA Belief</div>
+  <p class="statement-large reveal reveal-delay-1">
+    <strong>You</strong> <em>already</em> <strong>HAVE SOMETHING SOLID.</strong> WHAT'S MISSING IS HOW <em>clearly</em> IT COMES ACROSS.
+  </p>
+  <p class="statement-sub reveal reveal-delay-2">Your brand is not the problem. The lack of structure and clarity is.</p>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#F2EAD8;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 56L60 48C120 40 240 24 360 20C480 16 600 24 720 32C840 40 960 48 1080 48C1200 48 1320 40 1380 36L1440 32V0H0V56Z" fill="#FAF8F4"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-photo-wrap reveal">
+    <div class="about-photo">
+      <img id="sg-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+      <span class="photo-placeholder-label">Team Photo</span>
+    </div>
+    <div class="about-photo-accent"></div>
+  </div>
+  <div class="about-text">
+    <div class="section-label reveal">About the Studio</div>
+    <h2 class="reveal reveal-delay-1">We build brands that are <em>built to last</em></h2>
+    <div class="credentials reveal reveal-delay-2">
+      <span class="pill">Brand Strategy</span>
+      <span class="pill">Visual Identity</span>
+      <span class="pill">Web Design</span>
+      <span class="pill">8+ Years</span>
+      <span class="pill">130+ Clients</span>
+      <span class="pill">Full-Service Studio</span>
+    </div>
+    <p class="reveal reveal-delay-2">
+      We help you define your brand from scratch and design a website and visual system that is on-brand and designed for long-term. The result is a brand that is easier to understand, and more focused on what's actually important to your target audience.
+    </p>
+    <p class="reveal reveal-delay-3">
+      Studio GEORGIA was founded on a simple belief: clarity is a design decision. Every project we take on begins with listening, then strategy, then the creative work that makes your message land with the people who matter most to your business.
+    </p>
+    <p class="reveal reveal-delay-3">
+      We're a small, focused studio. That means you work directly with the people doing the work — not an account manager — and every detail gets the attention it deserves.
+    </p>
+    <a href="#contact" class="btn-primary reveal reveal-delay-4" style="margin-top:0.75rem; display:inline-block;">Work With Us</a>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#1C1410"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <div>
+        <div class="section-label reveal">What We Do</div>
+        <h2 class="reveal reveal-delay-1">Services built for <em>real outcomes</em></h2>
+      </div>
+      <a href="#contact" class="btn-warm reveal">Get a Quote</a>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-number">01</span>
+        <h3 data-live="svc1-name">Brand Identity</h3>
+        <p data-live="svc1-desc">A complete visual identity system — logo, typography, color palette, and brand guidelines that make every touchpoint consistent.</p>
+        <div class="service-tags" data-live="svc1-tags">
+          <span class="service-tag">Logo Design</span>
+          <span class="service-tag">Typography</span>
+          <span class="service-tag">Color System</span>
+          <span class="service-tag">Guidelines</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-number">02</span>
+        <h3 data-live="svc2-name">Website Design</h3>
+        <p data-live="svc2-desc">Custom websites built to convert — strategic structure, beautiful design, and copy that speaks directly to your ideal client.</p>
+        <div class="service-tags" data-live="svc2-tags">
+          <span class="service-tag">UX Strategy</span>
+          <span class="service-tag">Visual Design</span>
+          <span class="service-tag">Copywriting</span>
+          <span class="service-tag">Launch</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-number">03</span>
+        <h3 data-live="svc3-name">Brand Strategy</h3>
+        <p data-live="svc3-desc">Positioning, messaging, and clarity work that defines who you are, who you serve, and why you're the obvious choice.</p>
+        <div class="service-tags" data-live="svc3-tags">
+          <span class="service-tag">Positioning</span>
+          <span class="service-tag">Messaging</span>
+          <span class="service-tag">Audience</span>
+          <span class="service-tag">Voice</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <span class="service-number">04</span>
+        <h3 data-live="svc4-name">Content Direction</h3>
+        <p data-live="svc4-desc">Visual and written direction for your brand content — so every post, page, and piece of collateral tells the same story.</p>
+        <div class="service-tags" data-live="svc4-tags">
+          <span class="service-tag">Art Direction</span>
+          <span class="service-tag">Copywriting</span>
+          <span class="service-tag">Social</span>
+          <span class="service-tag">Collateral</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#1C1410;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 56L60 48C120 40 240 24 360 20C480 16 600 24 720 32C840 40 960 48 1080 48C1200 48 1320 40 1380 36L1440 32V0H0V56Z" fill="#FAF8F4"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="testimonials-inner">
+    <div class="section-header-center">
+      <div class="section-label reveal">Client Stories</div>
+      <h2 class="reveal reveal-delay-1">What clients say about <em>working with us</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Studio GEORGIA completely transformed how I show up online. Before working with them, I had a logo and a website — but no real brand. Now everything feels intentional, cohesive, and genuinely like me."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">M</div>
+          <div>
+            <div class="client-name">Margaux L.</div>
+            <div class="client-title">Interior Designer, Paris</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The strategy session alone was worth every penny. They helped me articulate exactly who I serve and what makes me different — in a way I never could have done on my own. The website was the cherry on top."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">C</div>
+          <div>
+            <div class="client-name">Claire D.</div>
+            <div class="client-title">Executive Coach</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I came to them with a business that was doing well but looked scrappy. Six weeks later I had a full identity system, a website I'm proud to send people to, and a brand guide my whole team actually uses."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">T</div>
+          <div>
+            <div class="client-name">Thomas R.</div>
+            <div class="client-title">Founder, Rowan Co.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#F2EAD8"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates-section" id="rates">
+  <div class="rates-inner">
+    <div class="section-header-center">
+      <div class="section-label reveal" style="color:var(--taupe2);">Investment</div>
+      <h2 class="reveal reveal-delay-1" style="color:var(--dark);">Straightforward packages. <em>Real results.</em></h2>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <div class="rate-name">Clarity Sprint</div>
+        <div class="rate-price"><sup>$</sup>2,400</div>
+        <div class="rate-desc">Brand strategy + foundation for small business owners who need direction fast.</div>
+        <ul class="rate-features">
+          <li>Brand strategy session</li>
+          <li>Messaging framework</li>
+          <li>Positioning statement</li>
+          <li>Logo concepts (2)</li>
+          <li>Color + type palette</li>
+          <li>1 revision round</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Get Started</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <div class="featured-badge">Most Popular</div>
+        <div class="rate-name" style="color:var(--taupe);">Full Brand Studio</div>
+        <div class="rate-price"><sup>$</sup>5,800</div>
+        <div class="rate-desc">Complete brand identity + website for growing businesses ready to show up properly.</div>
+        <ul class="rate-features">
+          <li>Everything in Clarity Sprint</li>
+          <li>Full identity system</li>
+          <li>Brand guidelines doc</li>
+          <li>5-page website design</li>
+          <li>Copywriting support</li>
+          <li>3 revision rounds</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Get Started</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <div class="rate-name">Full Ecosystem</div>
+        <div class="rate-price"><sup>$</sup>9,500</div>
+        <div class="rate-desc">Brand + web + content direction for established brands ready for a full transformation.</div>
+        <ul class="rate-features">
+          <li>Everything in Full Brand</li>
+          <li>Content strategy</li>
+          <li>10-page website design</li>
+          <li>Social brand kit</li>
+          <li>Collateral design (3 pieces)</li>
+          <li>60-day post-launch support</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="contact">
+  <div class="section-label reveal">Ready When You Are</div>
+  <h2 class="reveal reveal-delay-1">Let's make your brand as strong as <em>your work</em></h2>
+  <p class="reveal reveal-delay-2">We take on a limited number of projects each quarter. If you're ready to invest in clarity, let's talk.</p>
+  <div class="cta-band-buttons reveal reveal-delay-3">
+    <a href="mailto:hello@studiogeorgia.com" class="btn-warm">Start a Conversation</a>
+    <a href="#rates" class="btn-ghost">View Packages</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <span class="serif-italic" style="color:var(--taupe);">Studio </span><span class="sans-bold" style="color:var(--cream);">Georgia</span>
+        </a>
+        <p>A result-focused creative agency helping brands communicate with clarity, intention, and impact.</p>
+        <p data-live="biz-name" style="margin-top:0.75rem; font-size:0.8rem; color:rgba(var(--cream-rgb),0.3);">Studio GEORGIA</p>
+      </div>
+      <div class="footer-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Process</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Brand Identity</a></li>
+          <li><a href="#services">Website Design</a></li>
+          <li><a href="#services">Brand Strategy</a></li>
+          <li><a href="#services">Content Direction</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Pinterest</a></li>
+          <li><a href="mailto:hello@studiogeorgia.com">hello@studiogeorgia.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Studio GEORGIA. All rights reserved.</span>
+      <span data-live="tagline" style="font-style:italic; color:rgba(var(--cream-rgb),0.3);">Clarity is a design decision.</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+</body>
+</html>

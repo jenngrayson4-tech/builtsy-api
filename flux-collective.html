@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flux Collective — Not Your Average Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:      #0C0C0A;
+  --black-rgb:  12, 12, 10;
+  --surface: #181816;
+  --surface2: #222220;
+  --lime:       #B8D800;
+  --lime-rgb:   184, 216, 0;
+  --lime2: #98B800;
+  --lavender: #A888E8;
+  --lavender2: #8868C8;
+  --cream: #F8F4EC;
+  --text:       #EEE8DC;
+  --text-rgb:   238, 232, 220;
+  --text-soft: rgba(var(--text-rgb), 0.55);
+  --mid: rgba(var(--text-rgb), 0.2);
+  --radius-pill: 6px;
+  --radius-card: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+h1 { font-size: clamp(3rem, 8vw, 7rem); }
+h2 { font-size: clamp(2rem, 5vw, 4rem); }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+.italic-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1em;
+  text-transform: none;
+  letter-spacing: 0;
+}
+em { font-style: normal; color: var(--lime); }
+a { text-decoration: none; color: inherit; }
+p { color: var(--text-soft); line-height: 1.75; max-width: 62ch; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+.section { padding: 100px 0; }
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(var(--black-rgb), 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--mid);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+.nav-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.nav-logo span { color: var(--lime); }
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--lime); }
+.nav-cta {
+  background: var(--lime);
+  color: var(--black);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--lime2); }
+
+#burger-toggle { display: none; }
+.burger-label {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.burger-label span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  transition: all 0.3s;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--surface);
+  padding: 24px 40px;
+  gap: 18px;
+  border-top: 1px solid var(--mid);
+}
+.mobile-menu a { font-size: 0.95rem; color: var(--text-soft); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+#burger-toggle:checked ~ .mobile-menu { display: flex; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(2) { opacity: 0; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .burger-label { display: flex; }
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  background: var(--surface);
+  border-top: 1px solid var(--mid);
+  border-bottom: 1px solid var(--mid);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 25s linear infinite;
+}
+.marquee-track span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  padding: 0 32px;
+}
+.marquee-track span.lime { color: var(--lime); }
+.marquee-track span::after { content: " /"; margin-left: 28px; color: var(--mid); }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--black);
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(var(--lime-rgb), 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--lime);
+}
+.hero-headline {
+  margin-bottom: 28px;
+  line-height: 1.0;
+}
+.hero-tagline {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 50ch;
+  color: var(--text-soft);
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn-lime {
+  background: var(--lime);
+  color: var(--black);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+  display: inline-block;
+}
+.btn-lime:hover { background: var(--lime2); }
+.btn-ghost-dark {
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--mid);
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-ghost-dark:hover { border-color: rgba(238,232,220,0.5); color: var(--text); }
+.hero-photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: var(--lime);
+  color: var(--black);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── WAVE ── */
+.wave-divider { line-height: 0; overflow: hidden; }
+.wave-divider svg { display: block; width: 100%; }
+
+/* ── CLIENT LOGOS ── */
+.logos-band {
+  background: var(--surface);
+  padding: 40px 0;
+  border-top: 1px solid var(--mid);
+  border-bottom: 1px solid var(--mid);
+}
+.logos-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.logos-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-align: center;
+  margin-bottom: 28px;
+}
+.logos-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+.logo-item {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--text-rgb), 0.35);
+  transition: color 0.2s;
+}
+.logo-item:hover { color: rgba(var(--text-rgb), 0.7); }
+
+/* ── PROBLEM SECTION ── */
+.problem {
+  background: var(--surface);
+  padding: 100px 0;
+}
+.problem-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.problem h2 { color: var(--text); margin-bottom: 32px; }
+.problem-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.problem-list li {
+  font-size: 1rem;
+  color: var(--text-soft);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--mid);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  line-height: 1.5;
+}
+.problem-list li:last-child { border-bottom: none; }
+.problem-list li::before {
+  content: '→';
+  color: var(--lime);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.problem-visual {
+  background: var(--surface2);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--mid);
+  padding: 48px;
+  text-align: center;
+}
+.problem-visual-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 24px;
+}
+.problem-visual p { font-size: 0.95rem; margin: 0 auto; max-width: 36ch; text-align: center; }
+
+/* ── STATS ── */
+.stats {
+  background: var(--black);
+  padding: 100px 0;
+}
+.stats-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lime);
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.stats-label::before, .stats-label::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--lime);
+}
+.stats h2 { text-align: center; margin-bottom: 56px; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.stat-card {
+  background: var(--surface);
+  padding: 48px 32px;
+  text-align: center;
+  border: 1px solid var(--mid);
+  transition: border-color 0.2s, background 0.2s;
+}
+.stat-card:hover {
+  border-color: rgba(var(--lime-rgb), 0.3);
+  background: var(--surface2);
+}
+.stat-num {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
+  color: var(--lime);
+  line-height: 1;
+  margin-bottom: 8px;
+  display: block;
+}
+.stat-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+/* ── ABOUT / TEAM ── */
+.team {
+  background: var(--surface);
+  padding: 100px 0;
+}
+.team-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  margin-bottom: 16px;
+  display: block;
+}
+.team h2 { margin-bottom: 56px; }
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.team-card { text-align: center; }
+.team-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--surface2);
+  border-radius: 50%;
+  border: 2px solid var(--mid);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  transition: border-color 0.2s;
+}
+.team-card:hover .team-photo { border-color: var(--lime); }
+.team-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.team-role {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lavender);
+}
+
+/* ── SERVICES ── */
+.services {
+  background: var(--black);
+  padding: 100px 0;
+}
+.services h2 { margin-bottom: 56px; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+.svc-card {
+  background: var(--surface);
+  padding: 48px 40px;
+  border: 1px solid var(--mid);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: default;
+}
+.svc-card:hover {
+  background: var(--surface2);
+  border-color: rgba(var(--lime-rgb), 0.2);
+}
+.svc-num {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 4rem;
+  color: rgba(var(--lime-rgb), 0.08);
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  line-height: 1;
+}
+.svc-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lime);
+  border: 1px solid rgba(var(--lime-rgb), 0.3);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 20px;
+}
+.svc-card h3 {
+  font-size: 1.5rem;
+  color: var(--text);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.svc-card p {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  max-width: 48ch;
+}
+.svc-card-footer {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.svc-tags { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; color: var(--lavender); }
+
+/* ── VALUES ── */
+.values-band {
+  background: var(--lime);
+  padding: 80px 0;
+}
+.values-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.value-item { text-align: center; }
+.value-item h3 {
+  font-size: 1.1rem;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.value-item p {
+  font-size: 0.88rem;
+  color: rgba(var(--black-rgb), 0.65);
+  max-width: 22ch;
+  margin: 0 auto;
+}
+.values-divider {
+  width: 1px;
+  height: 48px;
+  background: rgba(var(--black-rgb), 0.2);
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  background: var(--surface);
+  padding: 100px 0;
+}
+.testimonials h2 { margin-bottom: 56px; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.testi-card {
+  background: var(--surface2);
+  padding: 40px 32px;
+  border: 1px solid var(--mid);
+}
+.testi-stars { font-size: 0.85rem; color: var(--lime); letter-spacing: 4px; margin-bottom: 20px; }
+.testi-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.testi-name { font-size: 0.82rem; font-weight: 700; color: var(--lime); letter-spacing: 0.1em; text-transform: uppercase; }
+.testi-role { font-size: 0.78rem; color: var(--text-soft); margin-top: 4px; }
+
+/* ── RATES ── */
+.rates { background: var(--black); padding: 100px 0; }
+.rates h2 { margin-bottom: 12px; }
+.rates-subtitle { font-size: 1rem; color: var(--text-soft); margin-bottom: 56px; max-width: none; }
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.rate-card {
+  background: var(--surface);
+  padding: 44px 32px;
+  border: 1px solid var(--mid);
+  position: relative;
+  transition: border-color 0.2s;
+}
+.rate-card:hover { border-color: rgba(184,216,0,0.2); }
+.rate-card.featured {
+  background: var(--surface2);
+  border-color: rgba(var(--lime-rgb), 0.4);
+}
+.rate-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--lime);
+  color: var(--black);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 24px;
+}
+.rate-card:not(.featured) .rate-badge {
+  background: var(--surface2);
+  color: var(--text-soft);
+  border: 1px solid var(--mid);
+}
+.rate-card h3 { color: var(--text); margin-bottom: 12px; font-size: 1.3rem; }
+.rate-price {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 3.5rem;
+  color: var(--lime);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -0.03em;
+}
+.rate-price sup { font-size: 1.4rem; vertical-align: super; }
+.rate-period { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 28px; }
+.rate-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.rate-features li {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--mid);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rate-features li::before { content: "//"; color: var(--lime); font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.rate-cta {
+  background: var(--lime);
+  color: var(--black);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  transition: background 0.2s;
+}
+.rate-cta:hover { background: var(--lime2); }
+.rate-card:not(.featured) .rate-cta {
+  background: transparent;
+  color: var(--text-soft);
+  border: 1px solid var(--mid);
+}
+.rate-card:not(.featured) .rate-cta:hover {
+  border-color: rgba(var(--lime-rgb), 0.4);
+  color: var(--lime);
+}
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: var(--lime);
+  padding: 100px 0;
+}
+.cta-band-inner { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+.cta-band h2 {
+  color: var(--black);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin-bottom: 24px;
+  line-height: 1.0;
+}
+.cta-band p { color: rgba(12,12,10,0.65); margin-bottom: 40px; font-size: 1.05rem; max-width: 50ch; }
+.btn-dark {
+  background: var(--black);
+  color: var(--lime);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-right: 16px;
+  margin-bottom: 12px;
+  transition: opacity 0.2s;
+}
+.btn-dark:hover { opacity: 0.85; }
+.btn-ghost-lime {
+  color: var(--black);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid rgba(var(--black-rgb), 0.3);
+  display: inline-block;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.btn-ghost-lime:hover { border-color: var(--black); }
+
+/* ── FOOTER ── */
+footer { background: var(--surface); border-top: 1px solid var(--mid); padding: 72px 0 40px; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--mid);
+  margin-bottom: 32px;
+}
+.footer-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.footer-brand span { color: var(--lime); }
+.footer-tagline { font-size: 0.9rem; color: var(--text-soft); max-width: 28ch; line-height: 1.65; }
+.footer-col h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 18px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { font-size: 0.88rem; color: var(--text-soft); transition: color 0.2s; }
+.footer-col a:hover { color: var(--text); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(var(--text-rgb), 0.25);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .problem-inner { grid-template-columns: 1fr; gap: 48px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; gap: 2px; }
+  .rates-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .values-inner { flex-direction: column; }
+  .values-divider { width: 48px; height: 1px; }
+  .section { padding: 64px 0; }
+  .container { padding: 0 24px; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+
+/* ── SERVICE DEEP DIVE ── */
+.service-detail { background: var(--black); padding: 100px 0; }
+.service-detail h2 { margin-bottom: 56px; }
+.service-expand-list { display: flex; flex-direction: column; gap: 0; }
+.service-expand-item {
+  border-bottom: 1px solid var(--mid);
+  padding: 40px 0;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 64px;
+  align-items: start;
+}
+.service-expand-item:last-child { border-bottom: none; }
+.service-expand-meta { position: sticky; top: 90px; }
+.service-expand-num { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 4rem; color: rgba(var(--lime-rgb), 0.07); line-height: 1; margin-bottom: -16px; display: block; }
+.service-expand-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); border: 1px solid rgba(184,216,0,0.3); padding: 4px 12px; border-radius: var(--radius-pill); display: inline-block; margin-bottom: 16px; }
+.service-expand-meta h3 { font-size: 1.5rem; color: var(--text); text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 12px; }
+.service-expand-price { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--lime); letter-spacing: -0.02em; }
+.service-expand-content p { font-size: 0.95rem; color: var(--text-soft); line-height: 1.8; margin-bottom: 20px; max-width: none; }
+.service-expand-deliverables { list-style: none; margin-top: 24px; }
+.service-expand-deliverables li {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--mid);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.service-expand-deliverables li:last-child { border-bottom: none; }
+.service-expand-deliverables li::before { content: "//"; color: var(--lime); font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+@media (max-width: 768px) {
+  .service-expand-item { grid-template-columns: 1fr; gap: 24px; }
+  .service-expand-meta { position: static; }
+}
+
+/* ── NEWSLETTER ── */
+.newsletter-dark { background: var(--surface); padding: 72px 0; border-top: 1px solid var(--mid); }
+.newsletter-dark-inner { max-width: 620px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.newsletter-dark h3 { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 1.8rem; color: var(--text); text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 14px; }
+.newsletter-dark span { color: var(--lime); }
+.newsletter-dark p { color: var(--text-soft); margin: 0 auto 28px; font-size: 0.95rem; max-width: 46ch; }
+.newsletter-dark-form { display: flex; gap: 8px; max-width: 440px; margin: 0 auto; }
+.newsletter-dark-input { flex: 1; background: var(--surface2); border: 1px solid var(--mid); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 12px 18px; border-radius: var(--radius-pill); outline: none; }
+.newsletter-dark-input::placeholder { color: var(--text-soft); }
+.newsletter-dark-btn { background: var(--lime); color: var(--black); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 24px; border: none; border-radius: var(--radius-pill); cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+.newsletter-dark-btn:hover { background: var(--lime2); }
+@media (max-width: 768px) { .newsletter-dark-form { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <input type="checkbox" id="burger-toggle" hidden>
+  <div class="nav-inner">
+    <div class="nav-logo">Flux<span>.</span>Collective</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#stats">Results</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#testimonials">Client Love</a></li>
+    </ul>
+    <a class="nav-cta" href="#rates">Work With Us</a>
+    <label class="burger-label" for="burger-toggle">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+  <div class="mobile-menu">
+    <a href="#services">Services</a>
+    <a href="#stats">Results</a>
+    <a href="#team">Team</a>
+    <a href="#testimonials">Client Love</a>
+    <a href="#rates">Work With Us</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="lime">Not your average agency</span>
+    <span>We operate on three core principles</span>
+    <span class="lime">Built for the bold</span>
+    <span>Social Media · Influencer Strategy · Content Production</span>
+    <span class="lime">100+ Creative Empires</span>
+    <span>The numbers don't lie</span>
+    <span class="lime">Not your average agency</span>
+    <span>We operate on three core principles</span>
+    <span class="lime">Built for the bold</span>
+    <span>Social Media · Influencer Strategy · Content Production</span>
+    <span class="lime">100+ Creative Empires</span>
+    <span>The numbers don't lie</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow reveal">Social Media · Influencer Strategy · Content Production</p>
+      <h1 class="hero-headline reveal reveal-delay-1" data-live="headline">
+        Not your<br>average <em>agency.</em>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+        We're the secret weapon behind 100+ creative empires — strategy, content, and culture that actually moves the needle.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#rates" class="btn-lime">Work With Us</a>
+        <a href="#services" class="btn-ghost-dark">See Our Services</a>
+      </div>
+    </div>
+    <div class="hero-photo reveal reveal-delay-2">
+      <img id="fl-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+      Photo Placeholder
+      <div class="hero-photo-label">Glossier · BYRDIE · SKIMS</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENT LOGOS -->
+<div class="logos-band">
+  <div class="logos-inner">
+    <p class="logos-label reveal">Trusted By</p>
+    <div class="logos-row reveal reveal-delay-1">
+      <span class="logo-item">Glossier</span>
+      <span class="logo-item">BYRDIE</span>
+      <span class="logo-item">SKIMS</span>
+      <span class="logo-item">Fenty</span>
+      <span class="logo-item">OUAI</span>
+      <span class="logo-item">Revolve</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem section">
+  <div class="problem-inner container">
+    <div>
+      <h2 class="reveal">Is this your creative journey?</h2>
+      <ul class="problem-list">
+        <li class="reveal">You're posting consistently but not growing — and you're exhausted by the effort.</li>
+        <li class="reveal reveal-delay-1">You know you need more structure to scale, but you don't know where to start.</li>
+        <li class="reveal reveal-delay-2">Your content looks good but isn't converting — the strategy piece is missing.</li>
+        <li class="reveal reveal-delay-3">You're ready to invest in strategy that actually works and drives real revenue.</li>
+      </ul>
+    </div>
+    <div class="problem-visual reveal reveal-delay-2">
+      <p class="problem-visual-headline">"We're not just another agency throwing pretty pictures."</p>
+      <p>We build the strategic foundation that makes every single piece of content work harder — and then we make it look extraordinary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,48 1080,0 1440,24 L1440,48 L0,48 Z" fill="#0C0C0A"/>
+  </svg>
+</div>
+
+<!-- STATS -->
+<section class="stats section" id="stats">
+  <div class="container">
+    <div class="stats-label reveal">The Numbers Don't Lie</div>
+    <h2 class="reveal reveal-delay-1">Results that speak<br><span class="italic-serif">for themselves</span></h2>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <span class="stat-num">$30M+</span>
+        <span class="stat-label">Client Revenue Driven</span>
+      </div>
+      <div class="stat-card reveal reveal-delay-1">
+        <span class="stat-num">90%</span>
+        <span class="stat-label">Avg. Client Retention</span>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <span class="stat-num">100+</span>
+        <span class="stat-label">Creative Empires Built</span>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <span class="stat-num">4.8x</span>
+        <span class="stat-label">Average ROI on Content</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--black);">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,12 C480,48 960,0 1440,32 L1440,48 L0,48 Z" fill="#181816"/>
+  </svg>
+</div>
+
+<!-- TEAM -->
+<section class="team section" id="team">
+  <div class="container">
+    <span class="team-label reveal">Our People</span>
+    <h2 class="reveal reveal-delay-1">Meet the Team</h2>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-photo">Photo</div>
+        <div class="team-name">Jordan Blake</div>
+        <div class="team-role">Founder & Strategy</div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-photo">Photo</div>
+        <div class="team-name">Camille Voss</div>
+        <div class="team-role">Creative Director</div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-photo">Photo</div>
+        <div class="team-name">Marcus Chen</div>
+        <div class="team-role">Influencer Lead</div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-photo">Photo</div>
+        <div class="team-name">Zara Osei</div>
+        <div class="team-role">Head of Production</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C360,0 1080,48 1440,12 L1440,48 L0,48 Z" fill="#0C0C0A"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services section" id="services">
+  <div class="container">
+    <h2 class="reveal">What We Do</h2>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <div class="svc-num">01</div>
+        <div class="svc-tag">Influencer</div>
+        <h3 data-live="svc1-name">Influencer Strategy</h3>
+        <p data-live="svc1-desc">Full-funnel influencer marketing from creator identification to campaign reporting — partnerships that drive real revenue.</p>
+        <div class="svc-tags" data-live="svc1-tags">Creator ID · Campaign Mgmt · Reporting · ROI Tracking</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <div class="svc-num">02</div>
+        <div class="svc-tag">Content</div>
+        <h3 data-live="svc2-name">Content Production</h3>
+        <p data-live="svc2-desc">Scroll-stopping content strategy and production for brands that want to own their niche on social.</p>
+        <div class="svc-tags" data-live="svc2-tags">Strategy · Production · Editing · Distribution</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-num">03</div>
+        <div class="svc-tag" style="color:var(--lavender);border-color:rgba(168,136,232,0.3);">Strategy</div>
+        <h3 data-live="svc3-name">Brand Strategy</h3>
+        <p data-live="svc3-desc">We don't just make you look good — we build the strategic foundation that makes every piece of content work harder.</p>
+        <div class="svc-tags" data-live="svc3-tags">Positioning · Messaging · Identity · Content Framework</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <div class="svc-num">04</div>
+        <div class="svc-tag" style="color:var(--lavender);border-color:rgba(168,136,232,0.3);">DFY</div>
+        <h3 data-live="svc4-name">Social Media Management</h3>
+        <p data-live="svc4-desc">Done-for-you social presence with strategy, creation, community management, and monthly analytics reporting.</p>
+        <div class="svc-tags" data-live="svc4-tags">Full-Service · Community · Analytics · Monthly Reports</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES BAND -->
+<div class="values-band">
+  <div class="values-inner">
+    <div class="value-item reveal">
+      <h3>Radical Transparency</h3>
+      <p>You'll always know exactly what we're doing and why — no black boxes here.</p>
+    </div>
+    <div class="values-divider"></div>
+    <div class="value-item reveal reveal-delay-1">
+      <h3>Proximity to Style</h3>
+      <p>We live and breathe culture so your brand stays ahead of it, always.</p>
+    </div>
+    <div class="values-divider"></div>
+    <div class="value-item reveal reveal-delay-2">
+      <h3>Human-First Approach</h3>
+      <p>Every strategy starts with real people, real communities, real impact.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials section" id="testimonials">
+  <div class="container">
+    <h2 class="reveal">What Our Clients Say</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Flux completely changed our social game. We went from 12K followers to 380K in 8 months and our revenue followed. They are the real deal."</p>
+        <div class="testi-name">Kayla M.</div>
+        <div class="testi-role">Founder, Beauty Brand</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The influencer campaigns they ran for us outperformed every other channel by 4x. They understand the ecosystem in a way nobody else does."</p>
+        <div class="testi-name">Diego R.</div>
+        <div class="testi-role">CMO, DTC Fashion Label</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Not a single wasted dollar. Every piece of content they make has a clear strategic reason for existing. That's rare — and it's why we've renewed three times."</p>
+        <div class="testi-name">Priya K.</div>
+        <div class="testi-role">Director of Growth, Skincare Co.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C480,48 960,0 1440,36 L1440,48 L0,48 Z" fill="#0C0C0A"/>
+  </svg>
+</div>
+
+<!-- NOT FOR EVERYONE -->
+<section style="background:var(--black);padding:100px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;max-width:1200px;margin:0 auto;">
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;" class="reveal">This is for you if</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:36px;font-size:clamp(1.8rem,3.5vw,2.8rem);">Built for the bold.</h2>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div class="reveal" style="padding:18px 0;border-bottom:1px solid var(--mid);display:flex;gap:16px;align-items:flex-start;">
+            <span style="color:var(--lime);font-size:0.85rem;font-weight:700;flex-shrink:0;margin-top:2px;">→</span>
+            <p style="font-size:0.95rem;max-width:none;line-height:1.65;color:var(--text-soft);">You're a product-based or personal brand ready to invest in strategy that drives real, measurable growth</p>
+          </div>
+          <div class="reveal reveal-delay-1" style="padding:18px 0;border-bottom:1px solid var(--mid);display:flex;gap:16px;align-items:flex-start;">
+            <span style="color:var(--lime);font-size:0.85rem;font-weight:700;flex-shrink:0;margin-top:2px;">→</span>
+            <p style="font-size:0.95rem;max-width:none;line-height:1.65;color:var(--text-soft);">You know your brand deserves a presence that reflects your actual quality — not just aesthetics, but performance</p>
+          </div>
+          <div class="reveal reveal-delay-2" style="padding:18px 0;border-bottom:1px solid var(--mid);display:flex;gap:16px;align-items:flex-start;">
+            <span style="color:var(--lime);font-size:0.85rem;font-weight:700;flex-shrink:0;margin-top:2px;">→</span>
+            <p style="font-size:0.95rem;max-width:none;line-height:1.65;color:var(--text-soft);">You want a partner who understands culture, not just algorithms — and builds content that lasts</p>
+          </div>
+          <div class="reveal reveal-delay-3" style="padding:18px 0;display:flex;gap:16px;align-items:flex-start;">
+            <span style="color:var(--lime);font-size:0.85rem;font-weight:700;flex-shrink:0;margin-top:2px;">→</span>
+            <p style="font-size:0.95rem;max-width:none;line-height:1.65;color:var(--text-soft);">You're ready to invest properly, trust the process, and play for keeps — not just a one-month boost</p>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--mid);border-radius:var(--radius-card);padding:48px;" class="reveal reveal-delay-2">
+        <h3 style="font-size:1.4rem;color:var(--text);margin-bottom:20px;text-transform:uppercase;letter-spacing:-0.01em;">Our Three Core Principles</h3>
+        <div style="display:flex;flex-direction:column;gap:28px;">
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Principle 01</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);text-transform:uppercase;margin-bottom:8px;">Radical Transparency</div>
+            <p style="font-size:0.9rem;max-width:none;line-height:1.65;color:var(--text-soft);">No smoke, no mirrors. You'll always know exactly what we're doing, why we're doing it, and what it's producing.</p>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lavender);margin-bottom:8px;">Principle 02</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);text-transform:uppercase;margin-bottom:8px;">Proximity to Style</div>
+            <p style="font-size:0.9rem;max-width:none;line-height:1.65;color:var(--text-soft);">We live inside culture. Our team is made up of genuine enthusiasts who understand the landscape because we're part of it.</p>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Principle 03</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);text-transform:uppercase;margin-bottom:8px;">Human-First Approach</div>
+            <p style="font-size:0.9rem;max-width:none;line-height:1.65;color:var(--text-soft);">Every strategy starts with real people and real communities. Impact-driven content that connects before it converts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY BAND -->
+<section style="background:var(--black);padding:100px 0;" id="work">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px;">
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;">Selected Work</div>
+        <h2 class="reveal" style="font-size:clamp(2rem,4vw,3.2rem);">Results We've Driven</h2>
+      </div>
+      <a href="#" class="btn-ghost-dark reveal" style="white-space:nowrap;">View All Case Studies</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div class="reveal" style="background:var(--surface);border:1px solid var(--mid);padding:40px 32px;position:relative;overflow:hidden;transition:background 0.2s;">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:16px;">Beauty Brand</div>
+        <div style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:2.5rem;color:var(--lime);letter-spacing:-0.02em;line-height:1;margin-bottom:8px;">+380K</div>
+        <div style="font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-soft);margin-bottom:20px;">Followers in 8 months</div>
+        <p style="font-size:0.9rem;color:var(--text-soft);line-height:1.7;max-width:none;">Full-service social media management + influencer strategy for an indie beauty brand. Organic growth + 4.2x revenue increase.</p>
+      </div>
+      <div class="reveal reveal-delay-1" style="background:var(--surface);border:1px solid var(--mid);padding:40px 32px;position:relative;overflow:hidden;">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lavender);margin-bottom:16px;">DTC Fashion</div>
+        <div style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:2.5rem;color:var(--lavender);letter-spacing:-0.02em;line-height:1;margin-bottom:8px;">$4.8M</div>
+        <div style="font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-soft);margin-bottom:20px;">Revenue from influencer campaigns</div>
+        <p style="font-size:0.9rem;color:var(--text-soft);line-height:1.7;max-width:none;">Multi-tier influencer strategy across macro, micro, and nano creators. 6-month campaign resulting in record quarterly revenue.</p>
+      </div>
+      <div class="reveal reveal-delay-2" style="background:var(--surface);border:1px solid var(--mid);padding:40px 32px;position:relative;overflow:hidden;">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:16px;">Skincare Brand</div>
+        <div style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:2.5rem;color:var(--lime);letter-spacing:-0.02em;line-height:1;margin-bottom:8px;">90%</div>
+        <div style="font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-soft);margin-bottom:20px;">Increase in engagement rate</div>
+        <p style="font-size:0.9rem;color:var(--text-soft);line-height:1.7;max-width:none;">Content strategy overhaul + brand voice development. Repositioned from generic skincare to cult-status niche with a passionate community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section style="background:var(--surface);padding:100px 0;" id="process">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1200px;margin:0 auto;">
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lavender);margin-bottom:14px;" class="reveal">Our Process</div>
+        <h2 class="reveal reveal-delay-1">How we build empires, step by step</h2>
+        <p class="reveal reveal-delay-2" style="margin-top:20px;font-size:1rem;margin-bottom:0;">No guesswork. No vague deliverables. Just a clear, repeatable process that we've refined across 100+ brands — and that we're obsessive about executing exceptionally.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;" class="reveal reveal-delay-2">
+        <div style="padding:24px 0;border-bottom:1px solid var(--mid);display:flex;gap:20px;align-items:flex-start;">
+          <span style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--lime);flex-shrink:0;width:36px;line-height:1;">01</span>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:6px;">Discovery &amp; Strategy</div>
+            <p style="font-size:0.88rem;max-width:none;line-height:1.65;">Deep dive into your brand, audience, goals, and competitive landscape. We leave nothing on the table.</p>
+          </div>
+        </div>
+        <div style="padding:24px 0;border-bottom:1px solid var(--mid);display:flex;gap:20px;align-items:flex-start;">
+          <span style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--lime);flex-shrink:0;width:36px;line-height:1;">02</span>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:6px;">Content &amp; Creator Plan</div>
+            <p style="font-size:0.88rem;max-width:none;line-height:1.65;">We map out your content calendar, creator roster, and campaign architecture — then we build it.</p>
+          </div>
+        </div>
+        <div style="padding:24px 0;border-bottom:1px solid var(--mid);display:flex;gap:20px;align-items:flex-start;">
+          <span style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--lime);flex-shrink:0;width:36px;line-height:1;">03</span>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:6px;">Execute &amp; Optimize</div>
+            <p style="font-size:0.88rem;max-width:none;line-height:1.65;">We execute, monitor, and iterate constantly. Weekly reporting keeps you in the loop, always.</p>
+          </div>
+        </div>
+        <div style="padding:24px 0;display:flex;gap:20px;align-items:flex-start;">
+          <span style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--lime);flex-shrink:0;width:36px;line-height:1;">04</span>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:6px;">Scale &amp; Reinvest</div>
+            <p style="font-size:0.88rem;max-width:none;line-height:1.65;">What works gets amplified. What doesn't gets cut. We're relentless about finding what moves the needle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C480,48 960,0 1440,36 L1440,48 L0,48 Z" fill="#0C0C0A"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates section" id="rates">
+  <div class="container">
+    <h2 class="reveal">Ready to Scale?</h2>
+    <p class="rates-subtitle reveal reveal-delay-1">Choose the engagement level that matches where you want to go. All packages include onboarding, strategy, and reporting.</p>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <span class="rate-badge">Foundation</span>
+        <h3>Starter Package</h3>
+        <div class="rate-price"><sup>$</sup>2,500</div>
+        <p class="rate-period">Per month, 3-month minimum</p>
+        <ul class="rate-features">
+          <li>Social media strategy</li>
+          <li>12 posts/month (1 platform)</li>
+          <li>Community management</li>
+          <li>Monthly analytics report</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <span class="rate-badge">Most Popular</span>
+        <h3>Growth Package</h3>
+        <div class="rate-price"><sup>$</sup>6,500</div>
+        <p class="rate-period">Per month, 3-month minimum</p>
+        <ul class="rate-features">
+          <li>Full social media management</li>
+          <li>Content production (3 platforms)</li>
+          <li>Influencer strategy & sourcing</li>
+          <li>2 influencer partnerships/mo</li>
+          <li>Weekly performance review</li>
+          <li>Dedicated account strategist</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <span class="rate-badge">Full Service</span>
+        <h3>Scale Package</h3>
+        <div class="rate-price"><sup>$</sup>12,000</div>
+        <p class="rate-period">Per month, custom contract</p>
+        <ul class="rate-features">
+          <li>Everything in Growth</li>
+          <li>Brand strategy overhaul</li>
+          <li>Full influencer campaign mgmt</li>
+          <li>Paid social integration</li>
+          <li>Custom content production</li>
+          <li>Executive strategy calls</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE DEEP DIVE -->
+<section class="service-detail">
+  <div class="container">
+    <h2 class="reveal">Inside Our Services</h2>
+    <div class="service-expand-list">
+      <div class="service-expand-item">
+        <div class="service-expand-meta">
+          <span class="service-expand-num">01</span>
+          <div class="service-expand-tag">Influencer</div>
+          <h3>Influencer Strategy</h3>
+          <div class="service-expand-price">From $2,500/mo</div>
+        </div>
+        <div class="service-expand-content reveal">
+          <p>Our influencer strategy service is end-to-end — from identifying the right creators for your brand to managing relationships, briefing content, reviewing deliverables, and tracking every dollar of return. We work with macro, micro, and nano-influencers depending on your goals and budget.</p>
+          <p>Every campaign is built around a clear KPI framework: awareness, engagement, conversions, or all three. We don't just match you with influencers who "look right" — we build partnerships that perform.</p>
+          <ul class="service-expand-deliverables">
+            <li>Creator identification and vetting (10–50 creators per campaign)</li>
+            <li>Contract negotiation and relationship management</li>
+            <li>Full creative brief and content approval workflow</li>
+            <li>Real-time campaign reporting dashboard access</li>
+            <li>Post-campaign performance analysis and learnings report</li>
+          </ul>
+        </div>
+      </div>
+      <div class="service-expand-item">
+        <div class="service-expand-meta">
+          <span class="service-expand-num">02</span>
+          <div class="service-expand-tag" style="color:var(--lavender);border-color:rgba(168,136,232,0.3);">Content</div>
+          <h3>Content Production</h3>
+          <div class="service-expand-price">From $3,500/mo</div>
+        </div>
+        <div class="service-expand-content reveal reveal-delay-1">
+          <p>We produce content that earns attention — not just fills a feed. Our production process begins with a deep content audit and audience analysis, then moves into strategy, creative direction, production, and publishing.</p>
+          <p>Whether you need short-form video for TikTok, editorial-quality imagery for Instagram, or a full multi-platform content calendar, our team handles it all with obsessive attention to quality and strategic intention behind every piece.</p>
+          <ul class="service-expand-deliverables">
+            <li>Monthly content strategy and calendar planning</li>
+            <li>Original content creation across video, photo, and copy</li>
+            <li>Platform-native formatting for each channel</li>
+            <li>Community management and response handling</li>
+            <li>Monthly analytics report with actionable insights</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ DARK -->
+<section style="background:var(--surface);padding:100px 0;" id="faq">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start;max-width:1200px;margin:0 auto;">
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;" class="reveal">FAQ</div>
+        <h2 class="reveal reveal-delay-1" style="font-size:clamp(1.8rem,3.5vw,3rem);margin-bottom:20px;">Questions we get a lot.</h2>
+        <p class="reveal reveal-delay-2" style="font-size:1rem;">Can't find your answer here? <a href="#" style="color:var(--lime);border-bottom:1px solid rgba(184,216,0,0.3);">Send us a message.</a></p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div class="reveal" style="padding:24px 0;border-bottom:1px solid var(--mid);">
+          <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">What industries do you work with? <span style="color:var(--lime);font-weight:400;">+</span></div>
+          <p style="font-size:0.9rem;max-width:none;line-height:1.75;">We specialize in beauty, fashion, lifestyle, and wellness brands — categories where culture, community, and content intersect most powerfully. We've also worked with food & beverage, fitness, and DTC consumer brands with great results.</p>
+        </div>
+        <div class="reveal" style="padding:24px 0;border-bottom:1px solid var(--mid);">
+          <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">What's your minimum contract length? <span style="color:var(--lime);font-weight:400;">+</span></div>
+          <p style="font-size:0.9rem;max-width:none;line-height:1.75;">We require a 3-month minimum for all retainer engagements. Great social media strategy takes time to build, optimize, and compound — we've found 3 months is the minimum needed to show meaningful results. Most clients renew for 6–12 months.</p>
+        </div>
+        <div class="reveal" style="padding:24px 0;border-bottom:1px solid var(--mid);">
+          <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">Do you work with startups and emerging brands? <span style="color:var(--lime);font-weight:400;">+</span></div>
+          <p style="font-size:0.9rem;max-width:none;line-height:1.75;">Yes — some of our most exciting work has been with early-stage brands. If you're pre-revenue or pre-launch, our Starter Package is designed specifically for brands in the building phase. We love being part of something from the beginning.</p>
+        </div>
+        <div class="reveal" style="padding:24px 0;">
+          <div style="font-size:0.95rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">How do you measure success? <span style="color:var(--lime);font-weight:400;">+</span></div>
+          <p style="font-size:0.9rem;max-width:none;line-height:1.75;">We define success around your actual business goals — revenue, community growth, engagement quality, influencer ROI, or brand awareness. Every client gets a custom KPI dashboard so you can see exactly what's working and how it connects to your bottom line.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER DARK -->
+<div class="newsletter-dark">
+  <div class="newsletter-dark-inner">
+    <h3 class="reveal">The Flux <span>Brief</span></h3>
+    <p class="reveal reveal-delay-1">Weekly intelligence on influencer marketing, social trends, and what's actually working right now. Read by 20,000+ brand builders and growing.</p>
+    <div class="newsletter-dark-form reveal reveal-delay-2">
+      <input class="newsletter-dark-input" type="email" placeholder="work@yourbrand.com">
+      <button class="newsletter-dark-btn">Subscribe</button>
+    </div>
+    <p class="reveal" style="font-size:0.75rem;color:rgba(var(--text-rgb),0.25);margin-top:16px;">No spam. Unsubscribe any time. We respect your inbox.</p>
+  </div>
+</div>
+
+<!-- AWARDS BAND -->
+<div style="background:var(--surface2);padding:44px 0;border-top:1px solid var(--mid);border-bottom:1px solid var(--mid);">
+  <div class="container">
+    <div style="display:flex;justify-content:center;align-items:center;gap:64px;flex-wrap:wrap;">
+      <div class="reveal" style="text-align:center;">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;">Shorty Awards</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text);">Best Influencer Campaign 2024</div>
+      </div>
+      <div style="width:1px;height:36px;background:var(--mid);"></div>
+      <div class="reveal reveal-delay-1" style="text-align:center;">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;">Inc. Magazine</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text);">Top Social Media Agency 2024</div>
+      </div>
+      <div style="width:1px;height:36px;background:var(--mid);"></div>
+      <div class="reveal reveal-delay-2" style="text-align:center;">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;">Digiday</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text);">Best Content Strategy Team 2023</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2 class="reveal">Stop blending in.<br>Start winning.</h2>
+    <p class="reveal reveal-delay-1">100+ brands have trusted Flux to move the needle. Let's make you the next success story.</p>
+    <div class="reveal reveal-delay-2">
+      <a href="#rates" class="btn-dark">Apply to Work With Us</a>
+      <a href="#services" class="btn-ghost-lime">See Our Services</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand" data-live="biz-name">Flux<span>.</span>Collective</div>
+        <p class="footer-tagline" data-live="tagline">Not your average agency — strategy, content, and culture that actually moves the needle.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Influencer Strategy</a></li>
+          <li><a href="#">Content Production</a></li>
+          <li><a href="#">Brand Strategy</a></li>
+          <li><a href="#">Social Media Mgmt</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">hello@fluxcollective.co</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Flux Collective. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

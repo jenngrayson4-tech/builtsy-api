@@ -10,11 +10,13 @@
     :root {
       --pink: #FF1D8C;
       --pink2: #FF6BB5;
+      --pink-rgb: 255, 29, 140;
       --pink-light: #FFE8F4;
       --bg: #FFFAFA;
       --cream: #FFF0F7;
       --dark: #1A0A12;
       --dark2: #2D1020;
+      --shadow-rgb: 80, 0, 40;
       --yellow: #FFE566;
       --text: #1A0A12;
     }
@@ -58,10 +60,10 @@
       border: none;
       cursor: pointer;
       transition: transform 0.18s, box-shadow 0.18s;
-      box-shadow: 0 4px 18px rgba(255,29,140,0.28);
+      box-shadow: 0 4px 18px rgba(var(--pink-rgb), 0.28);
       letter-spacing: 0.01em;
     }
-    .btn-pink:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,29,140,0.38); }
+    .btn-pink:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(var(--pink-rgb), 0.38); }
     .btn-outline {
       display: inline-block;
       background: transparent;
@@ -186,7 +188,7 @@
       font-size: 0.9rem;
       color: var(--pink);
       margin-bottom: 22px;
-      box-shadow: 0 2px 12px rgba(255,29,140,0.12);
+      box-shadow: 0 2px 12px rgba(var(--pink-rgb), 0.12);
     }
     .hero-badge .dot {
       width: 8px; height: 8px;
@@ -250,7 +252,7 @@
       aspect-ratio: 1/1;
       border-radius: 50%;
       border: 6px solid var(--pink);
-      box-shadow: 0 0 0 12px var(--pink-light), 0 20px 60px rgba(255,29,140,0.22);
+      box-shadow: 0 0 0 12px var(--pink-light), 0 20px 60px rgba(var(--pink-rgb), 0.22);
       overflow: hidden;
       position: relative;
     }
@@ -261,7 +263,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, var(--pink-light) 0%, #ffd0eb 60%, var(--pink2) 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
       gap: 12px;
       color: var(--pink);
     }
@@ -339,7 +341,7 @@
       background: #fff;
       border-radius: 16px;
       padding: 20px 24px;
-      box-shadow: 0 2px 14px rgba(255,29,140,0.08);
+      box-shadow: 0 2px 14px rgba(var(--pink-rgb), 0.08);
       border-left: 5px solid var(--pink);
     }
     .pain-check {
@@ -464,10 +466,10 @@
       background: #fff;
       border-radius: 20px;
       padding: 32px 28px;
-      box-shadow: 0 6px 30px rgba(80,0,40,0.13);
+      box-shadow: 0 6px 30px rgba(var(--shadow-rgb), 0.13);
       transition: transform 0.22s, box-shadow 0.22s;
     }
-    .service-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(80,0,40,0.2); }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(var(--shadow-rgb), 0.2); }
     .service-icon { font-size: 1.6rem; margin-bottom: 14px; }
     .service-name {
       font-family: 'Nunito', sans-serif;
@@ -512,13 +514,13 @@
       background: #fff;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(255,29,140,0.08);
+      box-shadow: 0 4px 20px rgba(var(--pink-rgb), 0.08);
       transition: transform 0.22s, box-shadow 0.22s;
       cursor: default;
     }
     .port-card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 16px 40px rgba(255,29,140,0.22);
+      box-shadow: 0 16px 40px rgba(var(--pink-rgb), 0.22);
     }
     .port-photo-zone {
       width: 100%;
@@ -632,12 +634,12 @@
       border: 2px solid var(--pink-light);
       text-align: left;
       position: relative;
-      box-shadow: 0 4px 20px rgba(255,29,140,0.07);
+      box-shadow: 0 4px 20px rgba(var(--pink-rgb), 0.07);
     }
     .pricing-card.popular {
       background: var(--pink);
       border-color: var(--pink);
-      box-shadow: 0 16px 50px rgba(255,29,140,0.32);
+      box-shadow: 0 16px 50px rgba(var(--pink-rgb), 0.32);
       transform: scale(1.04);
     }
     .popular-badge {
@@ -1142,9 +1144,9 @@
     <!-- Card 1 -->
     <div class="service-card">
       <div class="service-icon" style="font-size:1.6rem;font-weight:900;color:var(--pink);margin-bottom:14px;">SM</div>
-      <h3 class="service-name">Social Media Management</h3>
-      <p class="service-desc">Full-service management of your Instagram, TikTok, and Pinterest. I handle content creation, scheduling, community management, and monthly reporting so you can stay in your zone of genius.</p>
-      <div class="service-tags">
+      <h3 class="service-name" data-live="svc1-name">Social Media Management</h3>
+      <p class="service-desc" data-live="svc1-desc">Full-service management of your Instagram, TikTok, and Pinterest. I handle content creation, scheduling, community management, and monthly reporting so you can stay in your zone of genius.</p>
+      <div class="service-tags" data-live="svc1-tags">
         <span class="tag">Instagram</span>
         <span class="tag">TikTok</span>
         <span class="tag">Pinterest</span>
@@ -1154,9 +1156,9 @@
     <!-- Card 2 -->
     <div class="service-card">
       <div class="service-icon" style="font-size:1.6rem;font-weight:900;color:var(--pink);margin-bottom:14px;">VID</div>
-      <h3 class="service-name">Reels & Short-Form Video</h3>
-      <p class="service-desc">Scroll-stopping Reels and TikToks scripted, filmed-directed (or guided if you film), edited, and optimized for maximum reach. Trending audios, hooks that hook, and CTAs that convert.</p>
-      <div class="service-tags">
+      <h3 class="service-name" data-live="svc2-name">Reels & Short-Form Video</h3>
+      <p class="service-desc" data-live="svc2-desc">Scroll-stopping Reels and TikToks scripted, filmed-directed (or guided if you film), edited, and optimized for maximum reach. Trending audios, hooks that hook, and CTAs that convert.</p>
+      <div class="service-tags" data-live="svc2-tags">
         <span class="tag">Video Editing</span>
         <span class="tag">Trending Audio</span>
         <span class="tag">Hook Writing</span>
@@ -1166,9 +1168,9 @@
     <!-- Card 3 -->
     <div class="service-card">
       <div class="service-icon" style="font-size:1.6rem;font-weight:900;color:var(--pink);margin-bottom:14px;">STR</div>
-      <h3 class="service-name">Content Strategy & Audit</h3>
-      <p class="service-desc">A deep-dive into your current presence, your audience, your competitors, and your goals — resulting in a custom 90-day content roadmap you (or I) can execute right away.</p>
-      <div class="service-tags">
+      <h3 class="service-name" data-live="svc3-name">Content Strategy & Audit</h3>
+      <p class="service-desc" data-live="svc3-desc">A deep-dive into your current presence, your audience, your competitors, and your goals — resulting in a custom 90-day content roadmap you (or I) can execute right away.</p>
+      <div class="service-tags" data-live="svc3-tags">
         <span class="tag">90-Day Roadmap</span>
         <span class="tag">Competitor Analysis</span>
         <span class="tag">Content Pillars</span>
@@ -1178,9 +1180,9 @@
     <!-- Card 4 -->
     <div class="service-card">
       <div class="service-icon" style="font-size:1.6rem;font-weight:900;color:var(--pink);margin-bottom:14px;">BRD</div>
-      <h3 class="service-name">Brand & Feed Aesthetic</h3>
-      <p class="service-desc">Cohesive visual identity for your feed — custom templates, color palette, typography guide, and a look that's instantly recognizable in a crowded scroll. Your brand, but make it iconic.</p>
-      <div class="service-tags">
+      <h3 class="service-name" data-live="svc4-name">Brand & Feed Aesthetic</h3>
+      <p class="service-desc" data-live="svc4-desc">Cohesive visual identity for your feed — custom templates, color palette, typography guide, and a look that's instantly recognizable in a crowded scroll. Your brand, but make it iconic.</p>
+      <div class="service-tags" data-live="svc4-tags">
         <span class="tag">Canva Templates</span>
         <span class="tag">Color Palette</span>
         <span class="tag">Feed Planning</span>
@@ -1228,7 +1230,7 @@
     <div class="port-card">
       <div class="port-photo-zone" id="bp-port-2-zone">
         <img id="bp-port-2-photo" src="" alt="Portfolio 2" style="display:none;width:100%;height:100%;object-fit:cover;" />
-        <div class="photo-placeholder" style="background:linear-gradient(135deg,#ffe8f4,#ffd0eb);">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg, #E0E0E2 0%, #C8C8CC 100%);">
           <span class="ph-icon">✨</span>
           <span class="ph-label">Client work photo</span>
         </div>
@@ -1248,7 +1250,7 @@
     <div class="port-card">
       <div class="port-photo-zone" id="bp-port-3-zone">
         <img id="bp-port-3-photo" src="" alt="Portfolio 3" style="display:none;width:100%;height:100%;object-fit:cover;" />
-        <div class="photo-placeholder" style="background:linear-gradient(135deg,#fff3e0,#ffd0eb);">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg, #E0E0E2 0%, #C8C8CC 100%);">
           <span class="ph-icon">🍋</span>
           <span class="ph-label">Client work photo</span>
         </div>
@@ -1622,7 +1624,7 @@
   window.onscroll = function() {
     var nav = document.getElementById('main-nav');
     if (window.scrollY > 10) {
-      nav.style.boxShadow = '0 4px 24px rgba(255,29,140,0.1)';
+      nav.style.boxShadow = '0 4px 24px rgba(var(--pink-rgb),0.1)';
     } else {
       nav.style.boxShadow = 'none';
     }
@@ -1864,6 +1866,7 @@
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

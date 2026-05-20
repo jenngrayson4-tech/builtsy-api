@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WYLDE — We Make Brands Burn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A08;
+    --black-rgb: 10,10,8;
+    --surface: #161614;
+    --surface2: #201E1C;
+    --surface2-rgb: 32,30,28;
+    --lime: #C4E000;
+    --lime-rgb: 196,224,0;
+    --lime2: #A0C000;
+    --coral: #E84828;
+    --coral2: #C83010;
+    --cream: #F8F4EC;
+    --text: #F0EAE0;
+    --text-rgb: 240,234,224;
+    --text-soft: rgba(var(--text-rgb),0.55);
+    --mid: rgba(var(--text-rgb),0.25);
+    --radius-pill: 8px;
+    --radius-card: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(var(--black-rgb),0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(var(--text-rgb),0.08);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo .logo-accent { color: var(--lime); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links .cta-link {
+    background: var(--coral);
+    color: var(--cream) !important;
+    padding: 0.55rem 1.3rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+  .nav-links .cta-link:hover { background: var(--coral2); }
+
+  .burger-checkbox { display: none; }
+  .burger-label {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .burger-label span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    transition: all 0.3s;
+  }
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid rgba(var(--text-rgb),0.08);
+    padding: 1.5rem 5%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(var(--text-rgb),0.08);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .burger-label { display: flex; }
+    .burger-checkbox:checked ~ .mobile-menu { display: flex; }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--lime);
+    color: var(--black);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0 2rem;
+    font-weight: 700;
+  }
+  .marquee-track .dot {
+    color: var(--black);
+    opacity: 0.4;
+    padding: 0;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 8rem 5% 6rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--coral);
+  }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .hero h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    font-weight: 900;
+    line-height: 0.92;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--coral);
+  }
+
+  .hero-sub {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+  .hero-tagline {
+    font-size: 1rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .hero-photo-placeholder {
+    background: var(--surface);
+    border: 1px solid rgba(var(--text-rgb),0.1);
+    border-radius: var(--radius-card);
+    aspect-ratio: 3/4;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-photo-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--coral);
+  }
+  .hero-photo-placeholder span {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: var(--coral);
+    color: var(--cream);
+    padding: 0.9rem 2.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--coral2); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    padding: 0.9rem 2.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1.5px solid rgba(var(--text-rgb),0.25);
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--text); background: rgba(var(--text-rgb),0.05); }
+
+  @media (max-width: 768px) {
+    .hero { padding: 5rem 5% 4rem; }
+    .hero-layout { grid-template-columns: 1fr; }
+    .hero-photo-placeholder { width: 100%; aspect-ratio: 16/9; }
+    .hero-sub { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-ctas { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    background: var(--surface);
+    border-top: 1px solid rgba(var(--text-rgb),0.08);
+    border-bottom: 1px solid rgba(var(--text-rgb),0.08);
+    padding: 2.5rem 5%;
+  }
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat-item { text-align: center; }
+  .stat-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--lime);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label-lime {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--lime);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .section-label-coral {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  /* ── BUILT DIFFERENT STATEMENT ── */
+  .statement-section {
+    padding: 7rem 5%;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .statement-large {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 6.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    color: var(--text);
+  }
+  .statement-large .accent-lime { color: var(--lime); }
+  .statement-large .accent-coral { color: var(--coral); }
+  .statement-desc {
+    font-size: 1.0625rem;
+    color: var(--text-soft);
+    max-width: 560px;
+    margin-top: 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* ── WAVE DIVIDER ── */
+  .wave-divider { display: block; width: 100%; line-height: 0; overflow: hidden; }
+  .wave-divider svg { display: block; width: 100%; }
+
+  /* ── SERVICES ── */
+  .services-section {
+    background: var(--surface);
+    padding: 6rem 5%;
+  }
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .services-header h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(var(--text-rgb),0.08);
+  }
+  .service-card {
+    background: var(--surface2);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card:hover { background: rgba(var(--surface2-rgb),0.8); }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--lime);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+  .service-card:hover::before { transform: scaleY(1); }
+
+  .service-num {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--lime);
+    margin-bottom: 1.5rem;
+    display: block;
+    text-transform: uppercase;
+  }
+  .service-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .service-card p {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lime2);
+    border: 1px solid rgba(var(--lime-rgb),0.25);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem; }
+  }
+
+  /* ── PORTFOLIO GRID ── */
+  .portfolio-section {
+    padding: 6rem 5%;
+    background: var(--black);
+  }
+  .portfolio-inner { max-width: 1200px; margin: 0 auto; }
+  .portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .portfolio-header h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: rgba(var(--text-rgb),0.06);
+  }
+  .portfolio-item {
+    background: var(--surface);
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .portfolio-item:hover { transform: scale(0.98); }
+  .portfolio-item-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(var(--text-rgb),0.3);
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .portfolio-item-number {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    font-size: 0.6rem;
+    font-weight: 900;
+    color: var(--lime);
+    letter-spacing: 0.12em;
+  }
+  .portfolio-item-info { position: relative; z-index: 1; }
+  .portfolio-item-client {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 0.25rem;
+  }
+  .portfolio-item-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    .portfolio-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: var(--surface);
+    padding: 6rem 5%;
+  }
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-photo {
+    background: var(--surface2);
+    border: 1px solid rgba(var(--text-rgb),0.08);
+    border-radius: var(--radius-card);
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--coral);
+  }
+  .about-photo span {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .about-text .section-label-coral { margin-bottom: 1.5rem; }
+  .about-text h2 {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 0.95;
+    margin-bottom: 1.75rem;
+  }
+  .about-text h2 .lime { color: var(--lime); }
+  .about-text p {
+    font-size: 0.9375rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+  .about-creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+  }
+  .cred-pill {
+    background: rgba(var(--text-rgb),0.06);
+    border: 1px solid rgba(var(--text-rgb),0.12);
+    color: var(--text-soft);
+    padding: 0.35rem 0.9rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    background: var(--black);
+    padding: 6rem 5%;
+  }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: var(--surface);
+    border: 1px solid rgba(var(--text-rgb),0.07);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+  }
+  .testimonial-card .quote-mark {
+    font-size: 3.5rem;
+    color: var(--lime);
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 0.75rem;
+    opacity: 0.8;
+  }
+  .testimonial-card blockquote {
+    font-size: 0.9375rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+    font-weight: 400;
+  }
+  .testimonial-client {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .client-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid rgba(var(--text-rgb),0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: var(--lime);
+    flex-shrink: 0;
+  }
+  .client-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .client-title { font-size: 0.75rem; color: var(--text-soft); }
+  .star-rating { color: var(--coral); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 1rem; }
+
+  @media (max-width: 768px) {
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── RATES ── */
+  .rates-section {
+    background: var(--surface);
+    padding: 6rem 5%;
+  }
+  .rates-inner { max-width: 1100px; margin: 0 auto; }
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .rate-card {
+    background: var(--surface2);
+    border: 1px solid rgba(var(--text-rgb),0.08);
+    border-radius: var(--radius-card);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .rate-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+  .rate-card.featured {
+    background: var(--lime);
+    border-color: var(--lime);
+  }
+  .rate-card.featured .rate-name,
+  .rate-card.featured .rate-price,
+  .rate-card.featured .rate-desc,
+  .rate-card.featured .rate-features li { color: var(--black); }
+  .rate-card.featured .rate-features li::before { color: var(--black); }
+  .rate-card.featured .rate-price span { color: rgba(var(--black-rgb),0.6); }
+
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--coral);
+    color: var(--cream);
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.9rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .rate-name {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 0.75rem;
+  }
+  .rate-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .rate-price sup { font-size: 1.4rem; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
+  .rate-price span { font-size: 0.85rem; font-weight: 500; color: var(--text-soft); }
+  .rate-desc { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 1.5rem; line-height: 1.5; }
+  .rate-features { list-style: none; margin-bottom: 2rem; }
+  .rate-features li {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(var(--text-rgb),0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .rate-features li::before { content: '→'; color: var(--lime); font-size: 0.75rem; font-weight: 700; }
+  .rate-card.featured .rate-features li { border-bottom-color: rgba(var(--black-rgb),0.1); }
+
+  .btn-lime {
+    background: var(--lime);
+    color: var(--black);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-lime:hover { background: var(--lime2); transform: translateY(-1px); }
+  .btn-dark {
+    background: var(--black);
+    color: var(--text);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-dark:hover { background: var(--surface2); }
+
+  @media (max-width: 768px) {
+    .rates-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--lime);
+    padding: 6rem 5%;
+    text-align: center;
+  }
+  .cta-band .section-label-dark {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(var(--black-rgb),0.55);
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+  .cta-band h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+  .cta-band h2 .coral { color: var(--coral); }
+  .cta-band p {
+    color: rgba(var(--black-rgb),0.65);
+    font-size: 1.0625rem;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+  }
+  .cta-band-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-cta-dark {
+    background: var(--black);
+    color: var(--lime);
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-cta-dark:hover { background: var(--surface); }
+  .btn-cta-coral {
+    background: var(--coral);
+    color: var(--cream);
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-cta-coral:hover { background: var(--coral2); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--black);
+    border-top: 1px solid rgba(var(--text-rgb),0.06);
+    padding: 4rem 5% 2.5rem;
+    color: var(--text-soft);
+  }
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(var(--text-rgb),0.06);
+  }
+  .footer-brand .nav-logo { display: block; margin-bottom: 1rem; font-size: 1.3rem; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(var(--text-rgb),0.25);
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a {
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--lime); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom a { color: var(--lime); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">WY<span class="logo-accent">L</span>DE</a>
+  <input type="checkbox" id="burger" class="burger-checkbox">
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#contact" class="cta-link">Start a Project</a></li>
+  </ul>
+  <label for="burger" class="burger-label" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="mobile-menu">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#rates">Rates</a>
+    <a href="#contact">Start a Project</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>We make brands burn</span><span class="dot">·</span>
+    <span>Built different by design</span><span class="dot">·</span>
+    <span>Creative that converts</span><span class="dot">·</span>
+    <span>Dominate your category</span><span class="dot">·</span>
+    <span>Strategy. Story. Fire.</span><span class="dot">·</span>
+    <span>We make brands burn</span><span class="dot">·</span>
+    <span>Built different by design</span><span class="dot">·</span>
+    <span>Creative that converts</span><span class="dot">·</span>
+    <span>Dominate your category</span><span class="dot">·</span>
+    <span>Strategy. Story. Fire.</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-eyebrow reveal">Creative Agency · Branding · Strategy</div>
+  <div class="hero-layout">
+    <div>
+      <h1 class="reveal reveal-delay-1" data-live="headline">We Make Brands <em>Burn</em></h1>
+      <div class="hero-sub">
+        <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+          WYLDE is a full-spectrum creative agency obsessed with building brand worlds that don't just compete — they dominate.
+        </p>
+        <div class="hero-ctas reveal reveal-delay-3">
+          <a href="#contact" class="btn-primary">Start a Project</a>
+          <a href="#work" class="btn-outline">See Our Work</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-photo-placeholder reveal reveal-delay-2">
+      <img id="wa-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+      <span>Campaign Photo</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-value">340+</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-value">98%</div>
+      <div class="stat-label">Client Retention</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-value">7</div>
+      <div class="stat-label">Years of Focus</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-value">22</div>
+      <div class="stat-label">Awards Won</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATEMENT -->
+<section class="statement-section">
+  <div class="reveal" style="margin-bottom:1rem;">
+    <div class="section-label-lime">Our Philosophy</div>
+  </div>
+  <div class="statement-large reveal reveal-delay-1">
+    <span class="accent-lime">BUILT</span> DIFFERENT,<br>BY <span class="accent-coral">DESIGN</span>
+  </div>
+  <p class="statement-desc reveal reveal-delay-2">
+    We don't do average. Every brand we build is architected to cut through noise, stop thumbs, and make your audience feel something. That's not an accident — it's methodology.
+  </p>
+  <div style="margin-top:2.5rem;" class="reveal reveal-delay-3">
+    <a href="#services" class="btn-primary">See How We Work</a>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#161614"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <div>
+        <div class="section-label-lime reveal">What We Build</div>
+        <h2 class="reveal reveal-delay-1">OUR SERVICES</h2>
+      </div>
+      <a href="#contact" class="btn-primary reveal">Work With Us</a>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <h3 data-live="svc1-name">Brand Identity</h3>
+        <p data-live="svc1-desc">We build brands from the ground up — strategy, logo, color, type, and the visual language that makes you impossible to forget.</p>
+        <div class="service-tags" data-live="svc1-tags">
+          <span class="service-tag">Strategy</span>
+          <span class="service-tag">Logo</span>
+          <span class="service-tag">Visual System</span>
+          <span class="service-tag">Guidelines</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">02</span>
+        <h3 data-live="svc2-name">Campaign Creative</h3>
+        <p data-live="svc2-desc">Launch campaigns that stop thumbs and drive action — concept, copy, design, and production all under one roof.</p>
+        <div class="service-tags" data-live="svc2-tags">
+          <span class="service-tag">Concept</span>
+          <span class="service-tag">Copywriting</span>
+          <span class="service-tag">Design</span>
+          <span class="service-tag">Production</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-num">03</span>
+        <h3 data-live="svc3-name">Digital Design</h3>
+        <p data-live="svc3-desc">Websites, landing pages, and digital experiences designed to convert — beautiful by default, strategic by intention.</p>
+        <div class="service-tags" data-live="svc3-tags">
+          <span class="service-tag">Web Design</span>
+          <span class="service-tag">Landing Pages</span>
+          <span class="service-tag">UX</span>
+          <span class="service-tag">Dev</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <span class="service-num">04</span>
+        <h3 data-live="svc4-name">Motion & Film</h3>
+        <p data-live="svc4-desc">From brand films to social content — we produce moving image that captures attention and tells your story in seconds.</p>
+        <div class="service-tags" data-live="svc4-tags">
+          <span class="service-tag">Brand Film</span>
+          <span class="service-tag">Social Video</span>
+          <span class="service-tag">Animation</span>
+          <span class="service-tag">Post</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#161614;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 56L60 48C120 40 240 24 360 20C480 16 600 24 720 32C840 40 960 48 1080 48C1200 48 1320 40 1380 36L1440 32V0H0V56Z" fill="#0A0A08"/>
+  </svg>
+</div>
+
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="work">
+  <div class="portfolio-inner">
+    <div class="portfolio-header">
+      <div>
+        <div class="section-label-coral reveal">Portfolio</div>
+        <h2 class="reveal reveal-delay-1">SELECTED WORK</h2>
+      </div>
+      <a href="#" class="btn-outline reveal" style="white-space:nowrap;">View All →</a>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item reveal">
+        <div class="portfolio-item-number">01</div>
+        <div class="portfolio-item-label">Project Photo</div>
+        <div class="portfolio-item-info">
+          <div class="portfolio-item-client">Noma Studio</div>
+          <div class="portfolio-item-title">Brand Identity</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal reveal-delay-1" style="background:#1A1816;">
+        <div class="portfolio-item-number">02</div>
+        <div class="portfolio-item-label">Project Photo</div>
+        <div class="portfolio-item-info">
+          <div class="portfolio-item-client">Fern Collective</div>
+          <div class="portfolio-item-title">Campaign</div>
+        </div>
+      </div>
+      <div class="portfolio-item reveal reveal-delay-2" style="background:#141210;">
+        <div class="portfolio-item-number">03</div>
+        <div class="portfolio-item-label">Project Photo</div>
+        <div class="portfolio-item-info">
+          <div class="portfolio-item-client">Lux Hotels</div>
+          <div class="portfolio-item-title">Digital & Film</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-photo reveal">
+      <img id="wa-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+      <span>Team / Studio Photo</span>
+    </div>
+    <div class="about-text">
+      <div class="section-label-coral reveal">About WYLDE</div>
+      <h2 class="reveal reveal-delay-1">WE'RE THE AGENCY BRANDS COME TO WHEN <span class="lime">AVERAGE ISN'T AN OPTION</span></h2>
+      <div class="about-creds reveal reveal-delay-2">
+        <span class="cred-pill">7+ Years</span>
+        <span class="cred-pill">340+ Projects</span>
+        <span class="cred-pill">22 Awards</span>
+        <span class="cred-pill">Full Service</span>
+        <span class="cred-pill">In-House Studio</span>
+      </div>
+      <p class="reveal reveal-delay-2">
+        WYLDE was built on one belief: the best brands aren't discovered, they're engineered. We combine strategic rigor with creative fire to build brand worlds that feel inevitable — and make the competition feel irrelevant.
+      </p>
+      <p class="reveal reveal-delay-3">
+        Our team of designers, strategists, writers, and filmmakers operates as a single unit. No hand-offs. No dropped balls. Just focused, collaborative work that produces results that last.
+      </p>
+      <a href="#contact" class="btn-primary reveal reveal-delay-4" style="margin-top:0.5rem;">Start a Project</a>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#161614;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#0A0A08"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="testimonials-inner">
+    <div class="section-header">
+      <div class="section-label-lime reveal">Client Words</div>
+      <h2 class="reveal reveal-delay-1">WHAT THEY SAY</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="quote-mark">"</div>
+        <div class="star-rating">★★★★★</div>
+        <blockquote>"WYLDE didn't just build us a brand — they built us a weapon. Our rebrand drove a 60% increase in inbound leads in the first quarter after launch. Insane."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">J</div>
+          <div>
+            <div class="client-name">Jordan K.</div>
+            <div class="client-title">CEO, Kinect Technologies</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="quote-mark">"</div>
+        <div class="star-rating">★★★★★</div>
+        <blockquote>"Every other agency gave us polished presentations. WYLDE gave us a point of view. They challenged our assumptions and the result was something we genuinely couldn't have imagined on our own."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">A</div>
+          <div>
+            <div class="client-name">Anya P.</div>
+            <div class="client-title">CMO, Veldt Apparel</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="quote-mark">"</div>
+        <div class="star-rating">★★★★★</div>
+        <blockquote>"The campaign they built for our launch generated more buzz than our last five years of marketing combined. They understand culture and they understand conversion. That's a rare combination."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">M</div>
+          <div>
+            <div class="client-name">Marcus W.</div>
+            <div class="client-title">Founder, Raze Athletics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#161614"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates-section" id="rates">
+  <div class="rates-inner">
+    <div class="section-header-center" style="text-align:center; margin-bottom:0;">
+      <div class="section-label-lime reveal">Investment</div>
+      <h2 class="reveal reveal-delay-1" style="font-size:clamp(2rem,4vw,3.5rem); font-weight:900; text-transform:uppercase; letter-spacing:-0.02em; color:var(--text); margin-bottom:0.5rem; line-height:1;">PACKAGES &amp; PRICING</h2>
+      <p class="reveal reveal-delay-2" style="color:var(--text-soft); font-size:0.9375rem; max-width:500px; margin:0 auto;">Straight talk. No fluff. Here's what working with WYLDE looks like.</p>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <div class="rate-name">Spark</div>
+        <div class="rate-price"><sup>$</sup>3,800</div>
+        <div class="rate-desc">Brand identity foundation for startups and new ventures ready to launch with intention.</div>
+        <ul class="rate-features">
+          <li>Brand strategy session</li>
+          <li>Logo + icon design</li>
+          <li>Color + type system</li>
+          <li>Brand guidelines (20pp)</li>
+          <li>2 revision rounds</li>
+          <li>Digital brand kit</li>
+        </ul>
+        <a href="#contact" class="btn-lime">Get Started</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <div class="featured-badge">Most Requested</div>
+        <div class="rate-name">Ignite</div>
+        <div class="rate-price"><sup>$</sup>7,500</div>
+        <div class="rate-desc">Full brand + digital presence for growing businesses ready to make noise in their market.</div>
+        <ul class="rate-features">
+          <li>Everything in Spark</li>
+          <li>Full identity system</li>
+          <li>Website (up to 6 pages)</li>
+          <li>Campaign concept (1)</li>
+          <li>Social brand kit</li>
+          <li>3 revision rounds</li>
+        </ul>
+        <a href="#contact" class="btn-dark">Get Started</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <div class="rate-name">Inferno</div>
+        <div class="rate-price"><sup>$</sup>15,000</div>
+        <div class="rate-desc">Full brand ecosystem + campaign + film for brands ready to dominate their category.</div>
+        <ul class="rate-features">
+          <li>Everything in Ignite</li>
+          <li>Campaign creative (3 concepts)</li>
+          <li>Brand film (60 sec)</li>
+          <li>Full website (up to 12 pages)</li>
+          <li>Motion brand kit</li>
+          <li>90-day support retainer</li>
+        </ul>
+        <a href="#contact" class="btn-lime">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="contact">
+  <div class="section-label-dark reveal">Ready to Burn?</div>
+  <h2 class="reveal reveal-delay-1">LET'S BUILD<br>SOMETHING <span class="coral">IMPOSSIBLE</span></h2>
+  <p class="reveal reveal-delay-2">We take on 6 new brand projects per quarter. Spots fill fast. If you're serious about building something that lasts — let's talk.</p>
+  <div class="cta-band-btns reveal reveal-delay-3">
+    <a href="mailto:burn@wylde.studio" class="btn-cta-dark">Start a Project</a>
+    <a href="#work" class="btn-cta-coral">See Our Work</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="color:var(--text);">WY<span style="color:var(--lime);">L</span>DE</a>
+        <p>A full-spectrum creative agency obsessed with building brand worlds that dominate. Based everywhere. Working globally.</p>
+        <p data-live="biz-name" style="margin-top:0.75rem; font-size:0.78rem; color:rgba(var(--text-rgb),0.2);">WYLDE Agency</p>
+      </div>
+      <div class="footer-col">
+        <h4>Agency</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Brand Identity</a></li>
+          <li><a href="#services">Campaign Creative</a></li>
+          <li><a href="#services">Digital Design</a></li>
+          <li><a href="#services">Motion & Film</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Behance</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:burn@wylde.studio">burn@wylde.studio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 WYLDE. All rights reserved.</span>
+      <span data-live="tagline" style="color:rgba(var(--text-rgb),0.2); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">We Make Brands Burn</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healing Horizons — Therapy & Wellness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #5A9060;
+    --sage-rgb: 90,144,96;
+    --sage2: #3A7040;
+    --sage-light: #D8EDD8;
+    --sage-pale: #EEF8EE;
+    --cream: #FAFDF8;
+    --white: #FFFFFF;
+    --dark: #0E1E10;
+    --text: #1E2E18;
+    --text-soft: #5A7858;
+    --mid: #8AAA88;
+    --radius-pill: 999px;
+    --radius-card: 24px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    box-shadow: 0 1px 0 rgba(var(--sage-rgb),0.1);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: 'Lora', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--sage2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-logo .logo-leaf {
+    width: 28px;
+    height: 28px;
+    background: var(--sage-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--sage2); }
+  .nav-links .cta-link {
+    background: var(--sage);
+    color: var(--white) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .nav-links .cta-link:hover { background: var(--sage2); }
+
+  .burger-checkbox { display: none; }
+  .burger-label {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .burger-label span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--sage2);
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--sage-light);
+    padding: 1.5rem 5%;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 8px 24px rgba(var(--sage-rgb),0.1);
+  }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--sage-light);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .burger-label { display: flex; }
+    .burger-checkbox:checked ~ .mobile-menu { display: flex; }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--sage);
+    color: var(--white);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    padding: 0 2rem;
+    font-weight: 500;
+  }
+  .marquee-track .dot {
+    color: rgba(255,255,255,0.5);
+    padding: 0;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 5rem 5% 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-photo-col { display: flex; justify-content: center; }
+  .hero-photo-blob {
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: 4/5;
+    background: var(--sage-light);
+    border-radius: 60% 40% 50% 50% / 55% 55% 45% 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid rgba(var(--sage-rgb),0.15);
+  }
+  .hero-photo-blob .ph-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+  .hero-photo-accent-pill {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background: var(--white);
+    border-radius: var(--radius-pill);
+    padding: 0.6rem 1.2rem;
+    box-shadow: 0 8px 24px rgba(var(--sage-rgb),0.15);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--sage2);
+    white-space: nowrap;
+    border: 1px solid var(--sage-light);
+  }
+
+  .hero-text .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-text .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--sage);
+    border-radius: 2px;
+  }
+
+  .hero-text h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--sage2);
+  }
+
+  .hero-tagline {
+    font-size: 1.0625rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+    max-width: 460px;
+  }
+
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--sage);
+    color: var(--white);
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.25s, transform 0.2s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--sage2); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--sage2);
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid var(--sage-light);
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--sage); background: var(--sage-pale); }
+
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 3.5rem 5% 3rem;
+    }
+    .hero-photo-col { order: -1; }
+    .hero-photo-blob { max-width: 280px; margin: 0 auto; }
+  }
+
+  /* ── WAVE ── */
+  .wave-divider { display: block; width: 100%; line-height: 0; overflow: hidden; }
+  .wave-divider svg { display: block; width: 100%; }
+
+  /* ── TRUST STRIP ── */
+  .trust-strip {
+    background: var(--sage-pale);
+    padding: 1.75rem 5%;
+    border-top: 1px solid var(--sage-light);
+    border-bottom: 1px solid var(--sage-light);
+  }
+  .trust-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-soft);
+  }
+  .trust-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(var(--sage-rgb),0.1);
+    flex-shrink: 0;
+  }
+
+  /* ── APPROACH SECTION ── */
+  .approach-section {
+    padding: 6rem 5%;
+    background: var(--white);
+    text-align: center;
+  }
+  .approach-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-h2 em { font-style: italic; color: var(--sage2); }
+
+  .section-sub {
+    font-size: 1rem;
+    color: var(--text-soft);
+    max-width: 560px;
+    margin: 0 auto 3.5rem;
+    line-height: 1.75;
+  }
+
+  .approach-circles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .approach-circle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .approach-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    border: 3px solid rgba(var(--sage-rgb),0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .approach-circle:hover { border-color: var(--sage); transform: scale(1.04); }
+  .approach-circle .ph {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+  .approach-number {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: var(--sage);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .approach-label {
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--dark);
+    text-align: center;
+  }
+  .approach-desc {
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .approach-circles { grid-template-columns: 1fr; max-width: 280px; }
+  }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: var(--cream);
+    padding: 6rem 5%;
+  }
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-text { order: 1; }
+  .about-photo-col { order: 2; display: flex; justify-content: center; }
+  .about-photo {
+    background: var(--sage-light);
+    border-radius: var(--radius-card);
+    aspect-ratio: 4/5;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(var(--sage-rgb),0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo .ph-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+  .about-photo-badge {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    border-radius: var(--radius-card);
+    padding: 0.75rem 1.25rem;
+    box-shadow: 0 8px 24px rgba(var(--sage-rgb),0.15);
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid var(--sage-light);
+  }
+  .badge-number {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--sage2);
+    line-height: 1;
+  }
+  .badge-label { font-size: 0.7rem; color: var(--text-soft); font-weight: 500; }
+
+  .about-text .section-label { margin-bottom: 0.75rem; }
+  .credentials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1.75rem;
+  }
+  .pill {
+    background: var(--sage-pale);
+    border: 1.5px solid var(--sage-light);
+    color: var(--sage2);
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .about-text p {
+    font-size: 0.9375rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-text { order: 2; }
+    .about-photo-col { order: 1; }
+  }
+
+  /* ── SERVICES ── */
+  .services-section {
+    background: var(--white);
+    padding: 6rem 5%;
+  }
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .service-card {
+    background: var(--sage-pale);
+    border: 1.5px solid var(--sage-light);
+    border-radius: var(--radius-card);
+    padding: 2.5rem;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--sage-light);
+    transition: background 0.3s;
+  }
+  .service-card:hover::before { background: var(--sage); }
+  .service-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(var(--sage-rgb),0.12); }
+
+  .service-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 12px rgba(var(--sage-rgb),0.1);
+    border: 2px solid var(--sage-light);
+  }
+  .service-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+  }
+  .service-card p {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-tag {
+    font-size: 0.72rem;
+    color: var(--sage2);
+    background: var(--white);
+    border: 1px solid var(--sage-light);
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem; }
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    background: var(--sage-pale);
+    padding: 6rem 5%;
+  }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(var(--sage-rgb),0.07);
+    border: 1px solid var(--sage-light);
+  }
+  .quote-leaf {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--sage);
+    opacity: 0.6;
+  }
+  .quote-open {
+    font-family: 'Lora', serif;
+    font-size: 3.5rem;
+    color: var(--sage-light);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .testimonial-card blockquote {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  .stars { color: var(--sage); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .testimonial-client { display: flex; align-items: center; gap: 0.75rem; }
+  .client-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    border: 2px solid rgba(var(--sage-rgb),0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sage2);
+    flex-shrink: 0;
+  }
+  .client-name { font-size: 0.875rem; font-weight: 600; color: var(--dark); }
+  .client-title { font-size: 0.75rem; color: var(--text-soft); }
+
+  @media (max-width: 768px) {
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── RATES ── */
+  .rates-section {
+    background: var(--white);
+    padding: 6rem 5%;
+  }
+  .rates-inner { max-width: 1100px; margin: 0 auto; }
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .rate-card {
+    background: var(--cream);
+    border: 2px solid var(--sage-light);
+    border-radius: var(--radius-card);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+    text-align: center;
+  }
+  .rate-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(var(--sage-rgb),0.12); }
+  .rate-card.featured {
+    background: var(--sage2);
+    border-color: var(--sage2);
+  }
+  .rate-card.featured .rate-name,
+  .rate-card.featured .rate-price,
+  .rate-card.featured .rate-desc { color: rgba(255,255,255,0.9); }
+  .rate-card.featured .rate-features li { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.15); }
+  .rate-card.featured .rate-features li::before { color: rgba(255,255,255,0.7); }
+  .featured-badge {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--sage);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .rate-icon {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .rate-name {
+    font-family: 'Lora', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+  .rate-price {
+    font-family: 'Lora', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: var(--sage2);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+  .rate-card.featured .rate-price { color: var(--white); }
+  .rate-price sup { font-size: 1.3rem; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
+  .rate-price span { font-size: 0.9rem; font-weight: 400; color: var(--text-soft); font-family: 'DM Sans', sans-serif; }
+  .rate-desc { font-size: 0.83rem; color: var(--text-soft); margin-bottom: 1.5rem; line-height: 1.5; }
+  .rate-features { list-style: none; margin-bottom: 2rem; text-align: left; }
+  .rate-features li {
+    font-size: 0.85rem;
+    color: var(--text);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--sage-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .rate-features li::before { content: '✓'; color: var(--sage); font-weight: 700; font-size: 0.8rem; flex-shrink: 0; }
+  .rate-card .btn-primary { width: 100%; text-align: center; font-size: 0.875rem; }
+  .btn-white {
+    background: var(--white);
+    color: var(--sage2);
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.25s;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-white:hover { background: var(--sage-pale); }
+
+  @media (max-width: 768px) {
+    .rates-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--sage);
+    padding: 5.5rem 5%;
+    text-align: center;
+  }
+  .cta-band .section-label { color: rgba(255,255,255,0.65); margin-bottom: 1rem; }
+  .cta-band h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-band h2 em { font-style: italic; }
+  .cta-band p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+  .cta-band-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-cta-white {
+    background: var(--white);
+    color: var(--sage2);
+    padding: 0.9rem 2.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-cta-white:hover { background: var(--cream); }
+  .btn-cta-outline-white {
+    background: transparent;
+    color: var(--white);
+    padding: 0.9rem 2.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid rgba(255,255,255,0.45);
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  .btn-cta-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    padding: 4rem 5% 2.5rem;
+    color: rgba(255,255,255,0.5);
+  }
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-logo {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--sage-light); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom a { color: var(--sage-light); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <span class="logo-leaf">🌿</span>
+    Healing Horizons
+  </a>
+  <input type="checkbox" id="burger" class="burger-checkbox">
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#contact" class="cta-link">Get In Touch</a></li>
+  </ul>
+  <label for="burger" class="burger-label" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#approach">Approach</a>
+    <a href="#services">Services</a>
+    <a href="#rates">Rates</a>
+    <a href="#contact">Get In Touch</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Rooted in presence</span><span class="dot">·</span>
+    <span>Grounded in compassion</span><span class="dot">·</span>
+    <span>Here for your healing</span><span class="dot">·</span>
+    <span>Safe space to grow</span><span class="dot">·</span>
+    <span>Your journey, your pace</span><span class="dot">·</span>
+    <span>Rooted in presence</span><span class="dot">·</span>
+    <span>Grounded in compassion</span><span class="dot">·</span>
+    <span>Here for your healing</span><span class="dot">·</span>
+    <span>Safe space to grow</span><span class="dot">·</span>
+    <span>Your journey, your pace</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-photo-col">
+    <div class="hero-photo-blob">
+      <img id="hh-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />
+      <span class="ph-label">Therapist Photo</span>
+      <div class="hero-photo-accent-pill">500+ Lives Changed ✨</div>
+    </div>
+  </div>
+  <div class="hero-text">
+    <div class="eyebrow reveal">Therapy · Counseling · Wellness</div>
+    <h1 class="reveal reveal-delay-1" data-live="headline">
+      Feeling Overwhelmed and <em>Stuck in Life?</em>
+    </h1>
+    <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+      At Healing Horizons, I believe in your potential for growth and renewal. Let us support you in uncovering your true self.
+    </p>
+    <div class="hero-ctas reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">Book a Free Consultation</a>
+      <a href="#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item reveal">
+      <div class="trust-icon">🔒</div>
+      <span>Fully Confidential</span>
+    </div>
+    <div class="trust-item reveal reveal-delay-1">
+      <div class="trust-icon">🎓</div>
+      <span>Licensed Therapist</span>
+    </div>
+    <div class="trust-item reveal reveal-delay-2">
+      <div class="trust-icon">💚</div>
+      <span>Trauma-Informed Care</span>
+    </div>
+    <div class="trust-item reveal reveal-delay-3">
+      <div class="trust-icon">🌐</div>
+      <span>In-Person & Online</span>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#FFFFFF"/>
+  </svg>
+</div>
+
+<!-- APPROACH SECTION -->
+<section class="approach-section" id="approach">
+  <div class="approach-inner">
+    <div class="section-label reveal">My Approach</div>
+    <h2 class="section-h2 reveal reveal-delay-1">A holistic path to <em>lasting change</em></h2>
+    <p class="section-sub reveal reveal-delay-2">
+      I believe in a holistic and client-centered approach to therapy. My methods are designed to empower you on your journey to wellness, focusing on your unique experiences and needs.
+    </p>
+    <div class="approach-circles">
+      <div class="approach-circle-item reveal">
+        <div class="approach-circle">
+          <div class="approach-number">1</div>
+          <span class="ph">Photo</span>
+        </div>
+        <div class="approach-label">1-on-1 Therapy</div>
+        <div class="approach-desc">Private sessions tailored entirely to you and your healing journey.</div>
+      </div>
+      <div class="approach-circle-item reveal reveal-delay-1">
+        <div class="approach-circle" style="background:var(--sage-pale);">
+          <div class="approach-number">2</div>
+          <span class="ph">Photo</span>
+        </div>
+        <div class="approach-label">Couples Therapy</div>
+        <div class="approach-desc">Strengthen your relationship with evidence-based communication tools.</div>
+      </div>
+      <div class="approach-circle-item reveal reveal-delay-2">
+        <div class="approach-circle" style="background:#E8F5E8;">
+          <div class="approach-number">3</div>
+          <span class="ph">Photo</span>
+        </div>
+        <div class="approach-label">Wellness Workshop</div>
+        <div class="approach-desc">Group healing experiences that build community and shared growth.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#FFFFFF;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 56L60 48C120 40 240 24 360 20C480 16 600 24 720 32C840 40 960 48 1080 48C1200 48 1320 40 1380 36L1440 32V0H0V56Z" fill="#FAFDF8"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-label reveal">About Me</div>
+      <h2 class="section-h2 reveal reveal-delay-1" style="text-align:left; font-size:clamp(1.8rem,3.2vw,2.6rem);">
+        Here to walk beside you — not ahead of you
+      </h2>
+      <div class="credentials reveal reveal-delay-2">
+        <span class="pill">Licensed LMFT</span>
+        <span class="pill">CBT Certified</span>
+        <span class="pill">Trauma-Informed</span>
+        <span class="pill">10+ Years</span>
+        <span class="pill">500+ Clients</span>
+      </div>
+      <p class="reveal reveal-delay-2">
+        I'm a licensed therapist who has spent over a decade helping individuals, couples, and groups navigate life's most challenging chapters. My approach is warm, evidence-based, and always centered on your unique story.
+      </p>
+      <p class="reveal reveal-delay-3">
+        I believe that healing isn't linear — and that the bravest thing you can do is ask for support. In our work together, you'll find a safe, non-judgmental space to explore what's holding you back and start building the life you genuinely want.
+      </p>
+      <p class="reveal reveal-delay-3">
+        Whether you're dealing with anxiety, depression, relationship challenges, or a major life transition, I'm here to help you find your footing — one session at a time.
+      </p>
+      <a href="#contact" class="btn-primary reveal reveal-delay-4" style="margin-top:0.75rem; display:inline-block;">Schedule a Consultation</a>
+    </div>
+    <div class="about-photo-col">
+      <div class="about-photo">
+        <img id="hh-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+        <span class="ph-label">Therapist Photo</span>
+        <div class="about-photo-badge">
+          <div class="badge-number">10+</div>
+          <div class="badge-label">Years Experience</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#FAFDF8;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#FFFFFF"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="services-inner">
+    <div style="text-align:center;">
+      <div class="section-label reveal">How I Can Help</div>
+      <h2 class="section-h2 reveal reveal-delay-1">Services designed for <em>your healing</em></h2>
+      <p class="section-sub reveal reveal-delay-2">Every path to healing is different. Choose the support that fits where you are right now.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🌱</div>
+        <h3 data-live="svc1-name">Individual Therapy</h3>
+        <p data-live="svc1-desc">One-on-one sessions in a safe, confidential space to work through anxiety, depression, trauma, and life transitions at your own pace.</p>
+        <div class="service-tags" data-live="svc1-tags">
+          <span class="service-tag">Anxiety</span>
+          <span class="service-tag">Depression</span>
+          <span class="service-tag">Trauma</span>
+          <span class="service-tag">Life Transitions</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">💑</div>
+        <h3 data-live="svc2-name">Couples Counseling</h3>
+        <p data-live="svc2-desc">Strengthen your relationship with evidence-based tools for communication, conflict resolution, and deeper emotional connection.</p>
+        <div class="service-tags" data-live="svc2-tags">
+          <span class="service-tag">Communication</span>
+          <span class="service-tag">Conflict</span>
+          <span class="service-tag">Intimacy</span>
+          <span class="service-tag">Reconnection</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🧘</div>
+        <h3 data-live="svc3-name">Wellness Coaching</h3>
+        <p data-live="svc3-desc">Goal-oriented coaching to help you build healthy habits, manage stress, and create the life you genuinely want to be living.</p>
+        <div class="service-tags" data-live="svc3-tags">
+          <span class="service-tag">Goal Setting</span>
+          <span class="service-tag">Habits</span>
+          <span class="service-tag">Stress</span>
+          <span class="service-tag">Life Design</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">🤝</div>
+        <h3 data-live="svc4-name">Group Sessions</h3>
+        <p data-live="svc4-desc">Supportive group therapy creating community and shared healing — sometimes knowing you're not alone makes all the difference.</p>
+        <div class="service-tags" data-live="svc4-tags">
+          <span class="service-tag">Community</span>
+          <span class="service-tag">Shared Healing</span>
+          <span class="service-tag">Support</span>
+          <span class="service-tag">Peer Groups</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#FFFFFF;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 56L60 48C120 40 240 24 360 20C480 16 600 24 720 32C840 40 960 48 1080 48C1200 48 1320 40 1380 36L1440 32V0H0V56Z" fill="#EEF8EE"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="testimonials-inner">
+    <div style="text-align:center;">
+      <div class="section-label reveal">Client Stories</div>
+      <h2 class="section-h2 reveal reveal-delay-1">Healing is <em>possible</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <div class="quote-open">"</div>
+        <blockquote>"Coming to therapy felt terrifying. Within just a few sessions, I felt truly heard for the first time in years. The progress I've made in 6 months still amazes me."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">S</div>
+          <div>
+            <div class="client-name">Sarah M.</div>
+            <div class="client-title">Individual Therapy Client</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <div class="quote-open">"</div>
+        <blockquote>"My partner and I were on the verge of separating. The couples work we did here genuinely saved our relationship. We communicate better now than we ever have."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">D</div>
+          <div>
+            <div class="client-name">David & Priya R.</div>
+            <div class="client-title">Couples Counseling Clients</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <div class="quote-open">"</div>
+        <blockquote>"The group sessions completely changed my perspective. Knowing other people were going through similar things — and seeing them grow — gave me so much strength and hope."</blockquote>
+        <div class="testimonial-client">
+          <div class="client-avatar">L</div>
+          <div>
+            <div class="client-name">Layla T.</div>
+            <div class="client-title">Group Sessions Client</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:#EEF8EE;">
+  <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 0L60 8C120 16 240 32 360 36C480 40 600 32 720 24C840 16 960 8 1080 8C1200 8 1320 16 1380 20L1440 24V56H0V0Z" fill="#FFFFFF"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates-section" id="rates">
+  <div class="rates-inner">
+    <div style="text-align:center;">
+      <div class="section-label reveal">Invest in Yourself</div>
+      <h2 class="section-h2 reveal reveal-delay-1">Transparent, <em>accessible</em> pricing</h2>
+      <p class="section-sub reveal reveal-delay-2">Sliding scale options available. Reach out — your wellbeing comes first.</p>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <div class="rate-icon">🌱</div>
+        <div class="rate-name">Single Session</div>
+        <div class="rate-price"><sup>$</sup>150<span>/session</span></div>
+        <div class="rate-desc">Pay-as-you-go individual therapy sessions with no commitment required.</div>
+        <ul class="rate-features">
+          <li>50-minute session</li>
+          <li>Individual therapy</li>
+          <li>Session notes provided</li>
+          <li>Secure video or in-person</li>
+          <li>Flexible scheduling</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Book a Session</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <div class="featured-badge">Most Popular</div>
+        <div class="rate-icon">🌿</div>
+        <div class="rate-name">Monthly Plan</div>
+        <div class="rate-price"><sup>$</sup>480<span>/month</span></div>
+        <div class="rate-desc">Four sessions per month with priority scheduling and continuity of care.</div>
+        <ul class="rate-features">
+          <li>4 sessions/month</li>
+          <li>Priority scheduling</li>
+          <li>Between-session support</li>
+          <li>Progress check-ins</li>
+          <li>Resource library access</li>
+          <li>Save $120/month</li>
+        </ul>
+        <a href="#contact" class="btn-white">Get Started</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <div class="rate-icon">🌳</div>
+        <div class="rate-name">Couples Plan</div>
+        <div class="rate-price"><sup>$</sup>210<span>/session</span></div>
+        <div class="rate-desc">75-minute couples sessions designed for depth, reconnection, and lasting change.</div>
+        <ul class="rate-features">
+          <li>75-minute sessions</li>
+          <li>Both partners included</li>
+          <li>Individual check-ins</li>
+          <li>Exercises + tools</li>
+          <li>Secure & confidential</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Book Together</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="contact">
+  <div class="section-label reveal">Take the First Step</div>
+  <h2 class="reveal reveal-delay-1">You don't have to figure this out <em>alone</em></h2>
+  <p class="reveal reveal-delay-2">A free 20-minute consultation is always available for new clients. Let's talk about what you're carrying and how I can help.</p>
+  <div class="cta-band-btns reveal reveal-delay-3">
+    <a href="tel:+15555550100" class="btn-cta-white">Book Free Consultation</a>
+    <a href="mailto:hello@healinghorizons.com" class="btn-cta-outline-white">Send a Message</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">🌿 Healing Horizons</a>
+        <p>A safe, compassionate space for individual, couples, and group therapy. Helping you find your footing — one session at a time.</p>
+        <p data-live="biz-name" style="margin-top:0.75rem; font-size:0.78rem; color:rgba(255,255,255,0.2);">Healing Horizons Therapy</p>
+      </div>
+      <div class="footer-col">
+        <h4>Practice</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#approach">Approach</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#rates">Rates</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Individual Therapy</a></li>
+          <li><a href="#services">Couples Counseling</a></li>
+          <li><a href="#services">Wellness Coaching</a></li>
+          <li><a href="#services">Group Sessions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Psychology Today</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="mailto:hello@healinghorizons.com">hello@healinghorizons.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Healing Horizons. All rights reserved.</span>
+      <span data-live="tagline" style="font-style:italic; color:rgba(255,255,255,0.2);">Rooted in presence. Here for your healing.</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+</body>
+</html>

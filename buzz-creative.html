@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-live="biz-name">Buzz Creative Studio</title>
+  <meta name="description" content="A creative studio built for the next generation of brands. Brand identity, website design, content strategy, and campaign creative." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400;1,700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────────── */
+    :root {
+      --black:       #0A0A0A;
+      --black-rgb:   10, 10, 10;
+      --surface:     #141414;
+      --surface2:    #1E1E1E;
+      --lime:        #C8E000;
+      --lime-rgb:    200, 224, 0;
+      --lime2:       #A8C000;
+      --cream:       #F5F0E8;
+      --text:        #F0EDE4;
+      --text-rgb:    240, 237, 228;
+      --text-soft:   rgba(var(--text-rgb), 0.6);
+      --mid:         #888880;
+      --radius-pill: 999px;
+      --radius-card: 12px;
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(var(--black-rgb), 0.92);
+      border-bottom: 1px solid rgba(var(--lime-rgb), 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav__logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav__logo span { color: var(--lime); }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav__links a:hover { color: var(--lime); }
+
+    .nav__cta {
+      background: var(--lime) !important;
+      color: var(--black) !important;
+      padding: 9px 22px;
+      border-radius: var(--radius-pill);
+      font-weight: 700 !important;
+      font-size: 0.8rem !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .nav__cta:hover {
+      background: var(--lime2) !important;
+      transform: translateY(-1px);
+    }
+
+    .nav__toggle { display: none; }
+    .nav__burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav__burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    @media (max-width: 768px) {
+      .nav__burger { display: flex; }
+      .nav__links {
+        position: fixed;
+        inset: 64px 0 0 0;
+        background: var(--black);
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        transform: translateX(100%);
+        transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+        z-index: 99;
+      }
+      .nav__links a { font-size: 1.1rem; }
+      .nav__toggle:checked ~ .nav__inner .nav__links { transform: translateX(0); }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(2) { opacity: 0; }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+
+    /* ─── MARQUEE STRIP ─────────────────────────────────────── */
+    .marquee-strip {
+      background: var(--lime);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 9px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-strip__track {
+      display: inline-flex;
+      animation: marquee-scroll 22s linear infinite;
+    }
+
+    .marquee-strip__track span { padding: 0 28px; }
+
+    .marquee-dot {
+      color: rgba(var(--black-rgb), 0.4);
+      margin: 0 4px;
+    }
+
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    .hero {
+      min-height: calc(100vh - 64px - 36px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 100px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 55%;
+      height: 100%;
+      background: radial-gradient(ellipse 80% 80% at 70% 40%, rgba(var(--lime-rgb), 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .hero__headline {
+      font-family: 'Bebas Neue', 'DM Sans', sans-serif;
+      font-size: clamp(3.8rem, 9vw, 8rem);
+      font-weight: 400;
+      color: var(--text);
+      max-width: 820px;
+      margin-bottom: 24px;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+    }
+
+    .hero__headline em {
+      color: var(--lime);
+      font-style: italic;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 0.78em;
+      line-height: 1;
+    }
+
+    .hero__tagline {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+      max-width: 500px;
+      margin-bottom: 44px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 34px;
+      border-radius: var(--radius-pill);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn--lime {
+      background: var(--lime);
+      color: var(--black);
+      box-shadow: 0 4px 24px rgba(var(--lime-rgb), 0.3);
+    }
+
+    .btn--lime:hover {
+      background: var(--lime2);
+      box-shadow: 0 8px 36px rgba(var(--lime-rgb), 0.4);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(var(--text-rgb), 0.2);
+    }
+
+    .btn--outline:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    .hero__layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 60px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero__photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: var(--radius-card);
+      background: linear-gradient(160deg, var(--surface2) 0%, #2a2a00 50%, var(--surface) 100%);
+      border: 1px solid rgba(var(--lime-rgb), 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(var(--lime-rgb), 0.06) 0%, transparent 60%);
+    }
+
+    .hero__photo-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .hero__photo-icon {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+
+    .hero__photo-label {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── WAVE DIVIDER ──────────────────────────────────────── */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* ─── SECTION SHARED ────────────────────────────────────── */
+    .section { padding: 100px 0; }
+
+    .section--surface { background: var(--surface); }
+    .section--surface2 { background: var(--surface2); }
+
+    .section__label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section__heading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: var(--text);
+      line-height: 1.05;
+    }
+
+    .section__heading em {
+      font-style: italic;
+      color: var(--lime);
+      font-weight: 900;
+    }
+
+    .section__sub {
+      font-size: 1rem;
+      color: var(--text-soft);
+      font-weight: 300;
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    /* ─── ABOUT ─────────────────────────────────────────────── */
+    .about__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about__visual {
+      position: relative;
+    }
+
+    .about__photo {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-card);
+      background: linear-gradient(160deg, var(--surface2) 0%, #1a1a00 60%, var(--surface) 100%);
+      border: 1px solid rgba(var(--lime-rgb), 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about__photo-icon {
+      font-size: 4rem;
+      display: block;
+      opacity: 0.6;
+    }
+
+    .about__photo-label {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .about__accent {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--lime);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .about__story {
+      font-size: 1.05rem;
+      color: rgba(var(--text-rgb), 0.75);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .about__credentials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .credential-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      color: var(--text-soft);
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(var(--lime-rgb), 0.15);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .credential-pill:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    .credential-pill .pill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lime);
+      flex-shrink: 0;
+    }
+
+    /* ─── SERVICES ──────────────────────────────────────────── */
+    .services__header {
+      margin-bottom: 60px;
+    }
+
+    .services__list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 44px 48px;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 40px;
+      align-items: start;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.25s, border-color 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--lime);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .service-card:hover {
+      background: var(--surface2);
+      border-color: rgba(var(--lime-rgb), 0.15);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-card__num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      color: var(--lime);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .service-card__name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .service-card__desc {
+      font-size: 0.97rem;
+      color: var(--text-soft);
+      line-height: 1.8;
+      margin-bottom: 18px;
+      max-width: 560px;
+    }
+
+    .service-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .service-card__tags span {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(var(--lime-rgb), 0.08);
+      color: var(--lime);
+      border: 1px solid rgba(var(--lime-rgb), 0.2);
+    }
+
+    .service-card__arrow {
+      font-size: 1.5rem;
+      color: var(--lime);
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      margin-top: 4px;
+    }
+
+    .service-card:hover .service-card__arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* ─── TESTIMONIALS ──────────────────────────────────────── */
+    .testimonials__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .testimonials__header .section__sub { margin: 0 auto; }
+
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(200,224,0,0.2);
+      transform: translateY(-4px);
+    }
+
+    .testimonial-card__quote-mark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.5rem;
+      line-height: 0.8;
+      color: var(--lime);
+      margin-bottom: 16px;
+      display: block;
+      opacity: 0.7;
+    }
+
+    .testimonial-card__text {
+      font-size: 0.97rem;
+      color: rgba(var(--text-rgb), 0.75);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .testimonial-card__footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-card__avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--surface2), #2a2a00);
+      border: 1px solid rgba(var(--lime-rgb), 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--lime);
+      flex-shrink: 0;
+    }
+
+    .testimonial-card__name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .testimonial-card__stars {
+      font-size: 0.75rem;
+      color: var(--lime);
+      letter-spacing: 2px;
+    }
+
+    /* ─── RATES ─────────────────────────────────────────────── */
+    .rates__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .rates__header .section__sub { margin: 0 auto; }
+
+    .rates__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .rate-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 40px 32px;
+      border: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      position: relative;
+      transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+    }
+
+    .rate-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200,224,0,0.2);
+    }
+
+    .rate-card--featured {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: var(--black);
+      transform: scale(1.04);
+    }
+
+    .rate-card--featured:hover {
+      transform: scale(1.04) translateY(-4px);
+      box-shadow: 0 20px 60px rgba(var(--lime-rgb), 0.25);
+    }
+
+    .rate-card--featured h3,
+    .rate-card--featured p { color: var(--black); }
+
+    .rate-card__badge {
+      display: none;
+      background: var(--black);
+      color: var(--lime);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 20px;
+    }
+
+    .rate-card--featured .rate-card__badge { display: inline-block; }
+
+    .rate-card__tier {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: var(--text-soft);
+    }
+
+    .rate-card--featured .rate-card__tier { color: rgba(var(--black-rgb), 0.6); }
+
+    .rate-card__price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.5rem;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .rate-card--featured .rate-card__price { color: var(--black); }
+
+    .rate-card__price sup {
+      font-size: 1.6rem;
+      vertical-align: super;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+    }
+
+    .rate-card__per {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .rate-card--featured .rate-card__per { color: rgba(var(--black-rgb), 0.55); }
+
+    .rate-card__divider {
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin: 0 0 24px;
+    }
+
+    .rate-card--featured .rate-card__divider { background: rgba(var(--black-rgb), 0.12); }
+
+    .rate-card__features {
+      list-style: none;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .rate-card__features li {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      padding: 7px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .rate-card--featured .rate-card__features li { color: rgba(var(--black-rgb), 0.75); }
+
+    .rate-card__features li::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23C8E000'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E") center/contain no-repeat;
+      margin-top: 3px;
+    }
+
+    .rate-card--featured .rate-card__features li::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%230A0A0A'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .rate-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn--dark {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn--dark:hover {
+      background: #2a2a2a;
+      border-color: rgba(var(--lime-rgb), 0.3);
+    }
+
+    .btn--black {
+      background: var(--black);
+      color: var(--lime);
+      box-shadow: none;
+    }
+
+    .btn--black:hover {
+      background: #0f0f0f;
+      box-shadow: 0 4px 20px rgba(var(--lime-rgb), 0.2);
+    }
+
+    /* ─── CTA BAND ──────────────────────────────────────────── */
+    .cta-band {
+      background: var(--lime);
+      padding: 100px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(var(--black-rgb), 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-band__content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-band__label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(var(--black-rgb), 0.5);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .cta-band__heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 400;
+      color: var(--black);
+      margin-bottom: 16px;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-band__sub {
+      font-size: 1rem;
+      color: rgba(var(--black-rgb), 0.6);
+      margin-bottom: 40px;
+      line-height: 1.8;
+      font-weight: 400;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-band__actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn--cta-primary {
+      background: var(--black);
+      color: var(--lime);
+      box-shadow: 0 4px 20px rgba(var(--black-rgb), 0.3);
+    }
+
+    .btn--cta-primary:hover {
+      background: var(--surface);
+      box-shadow: 0 8px 32px rgba(var(--black-rgb), 0.4);
+    }
+
+    .btn--cta-outline {
+      background: transparent;
+      color: var(--black);
+      border: 2px solid rgba(var(--black-rgb), 0.3);
+    }
+
+    .btn--cta-outline:hover {
+      border-color: var(--black);
+      background: rgba(var(--black-rgb), 0.06);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer {
+      background: var(--surface);
+      padding: 60px 32px 36px;
+      color: var(--text-soft);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer__inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .footer__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .footer__brand .footer__logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .footer__logo span { color: var(--lime); }
+
+    .footer__brand .footer__tagline {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      font-weight: 300;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    .footer__col-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .footer__col-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer__col-links a {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      transition: color 0.2s;
+    }
+
+    .footer__col-links a:hover { color: var(--lime); }
+
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer__copy {
+      font-size: 0.78rem;
+      color: rgba(var(--text-rgb), 0.3);
+    }
+
+    .footer__copy a {
+      color: rgba(var(--lime-rgb), 0.5);
+      transition: color 0.2s;
+    }
+
+    .footer__copy a:hover { color: var(--lime); }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── MOBILE RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero__layout { grid-template-columns: 1fr; }
+      .hero__photo { max-width: 380px; aspect-ratio: 4/3; }
+      .testimonials__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 68px 0; }
+      .container { padding: 0 20px; }
+      .hero { padding: 60px 0 48px; }
+
+      .about__inner { grid-template-columns: 1fr; gap: 40px; }
+      .about__visual { display: none; }
+
+      .service-card {
+        grid-template-columns: 60px 1fr;
+        padding: 28px 24px;
+      }
+      .service-card__arrow { display: none; }
+
+      .testimonials__grid { grid-template-columns: 1fr; }
+
+      .rates__grid { grid-template-columns: 1fr; }
+      .rate-card--featured { transform: none; order: -1; }
+      .rate-card--featured:hover { transform: translateY(-4px); }
+
+      .footer__top { flex-direction: column; }
+      .footer__links { gap: 36px; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__headline { font-size: 3.2rem; }
+      .hero__actions { flex-direction: column; align-items: flex-start; }
+      .cta-band__actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- NAV                                                     -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <nav class="nav">
+    <input type="checkbox" class="nav__toggle" id="nav-toggle" aria-hidden="true" />
+    <div class="nav__inner container">
+
+      <a href="#" class="nav__logo" data-live="biz-name">
+        Buzz<span>.</span>
+      </a>
+
+      <label class="nav__burger" for="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+      <ul class="nav__links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Work</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#rates">Pricing</a></li>
+        <li><a href="#contact" class="nav__cta">Let's Talk</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MARQUEE STRIP                                           -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-strip__track">
+      <span>Your brand, ready to take flight <span class="marquee-dot">·</span></span>
+      <span>Creative Studio <span class="marquee-dot">·</span></span>
+      <span>Brand Design <span class="marquee-dot">·</span></span>
+      <span>Web &amp; Content <span class="marquee-dot">·</span></span>
+      <span>Your brand, ready to take flight <span class="marquee-dot">·</span></span>
+      <span>Creative Studio <span class="marquee-dot">·</span></span>
+      <span>Brand Design <span class="marquee-dot">·</span></span>
+      <span>Web &amp; Content <span class="marquee-dot">·</span></span>
+      <span>Your brand, ready to take flight <span class="marquee-dot">·</span></span>
+      <span>Creative Studio <span class="marquee-dot">·</span></span>
+      <span>Brand Design <span class="marquee-dot">·</span></span>
+      <span>Web &amp; Content <span class="marquee-dot">·</span></span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HERO                                                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero__layout">
+
+        <div class="hero__text">
+          <span class="hero__eyebrow reveal">Creative Studio · Brand Design · Web</span>
+
+          <h1 class="hero__headline reveal" data-live="headline">
+            A Creative Studio Built for the <em>Next Generation</em> of Brands
+          </h1>
+
+          <p class="hero__tagline reveal" data-live="tagline">
+            We help modern businesses build scroll-stopping brands, strategic websites, and content that actually connects.
+          </p>
+
+          <div class="hero__actions reveal">
+            <a href="#services" class="btn btn--lime">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg>
+              See Our Work
+            </a>
+            <a href="#contact" class="btn btn--outline">Start a Project</a>
+          </div>
+        </div>
+
+        <div class="hero__photo reveal">
+          <img id="bz-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+          <div class="hero__photo-inner">
+            <span class="hero__photo-icon">⚡</span>
+            <p class="hero__photo-label">Your photo here</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#141414"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- ABOUT                                                   -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section section--surface" id="about">
+    <div class="container">
+      <div class="about__inner">
+
+        <div class="about__visual reveal">
+          <div class="about__photo">
+            <img id="bz-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />
+            <span class="about__photo-icon">🎨</span>
+            <span class="about__photo-label">Studio photo</span>
+          </div>
+          <div class="about__accent"></div>
+        </div>
+
+        <div class="about__content reveal">
+          <span class="section__label">About the Studio</span>
+          <h2 class="section__heading">We build brands that <em>refuse to blend in</em></h2>
+
+          <p class="about__story">
+            We're a boutique creative studio obsessed with one thing: making brands that people actually remember. Whether you're launching from zero or scaling an established business, we bring the strategy, the taste, and the grit to make your brand impossible to ignore.
+          </p>
+          <p class="about__story">
+            No cookie-cutter templates. No offshore hand-offs. Every project is built with intention — by a small, focused team that cares deeply about the work we put into the world.
+          </p>
+
+          <div class="about__credentials">
+            <span class="credential-pill"><span class="pill-dot"></span>Brand Strategy</span>
+            <span class="credential-pill"><span class="pill-dot"></span>Visual Identity</span>
+            <span class="credential-pill"><span class="pill-dot"></span>Web Design &amp; Dev</span>
+            <span class="credential-pill"><span class="pill-dot"></span>Content Systems</span>
+            <span class="credential-pill"><span class="pill-dot"></span>Campaign Creative</span>
+            <span class="credential-pill"><span class="pill-dot"></span>150+ Brands Built</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C360,70 720,0 1080,50 C1260,70 1380,20 1440,20 L1440,80 L0,80 Z" fill="#0A0A0A"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SERVICES                                                -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section" id="services">
+    <div class="container">
+
+      <div class="services__header reveal">
+        <span class="section__label">What We Do</span>
+        <h2 class="section__heading">Services built for<br/><em>real results</em></h2>
+        <p class="section__sub">Every offering is designed to move the needle — not just look good.</p>
+      </div>
+
+      <div class="services__list">
+
+        <div class="service-card reveal">
+          <div class="service-card__num">01</div>
+          <div>
+            <h3 class="service-card__name" data-live="svc1-name">Brand Identity</h3>
+            <p class="service-card__desc" data-live="svc1-desc">We build visual identities from the ground up — strategy, logo, color, type, and every touchpoint that makes your brand unmistakable.</p>
+            <div class="service-card__tags" data-live="svc1-tags">
+              <span>Logo Design</span>
+              <span>Brand Guidelines</span>
+              <span>Color &amp; Type</span>
+            </div>
+          </div>
+          <div class="service-card__arrow">→</div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-card__num">02</div>
+          <div>
+            <h3 class="service-card__name" data-live="svc2-name">Website Design</h3>
+            <p class="service-card__desc" data-live="svc2-desc">Conversion-optimized, visually stunning websites that work as hard as you do — built for growth, not just looks.</p>
+            <div class="service-card__tags" data-live="svc2-tags">
+              <span>Web Design</span>
+              <span>Development</span>
+              <span>SEO Ready</span>
+            </div>
+          </div>
+          <div class="service-card__arrow">→</div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-card__num">03</div>
+          <div>
+            <h3 class="service-card__name" data-live="svc3-name">Content Strategy</h3>
+            <p class="service-card__desc" data-live="svc3-desc">Stop guessing what to post. We build content systems that generate ideas, stay consistent, and actually reach your people.</p>
+            <div class="service-card__tags" data-live="svc3-tags">
+              <span>Social Strategy</span>
+              <span>Content Systems</span>
+              <span>Copywriting</span>
+            </div>
+          </div>
+          <div class="service-card__arrow">→</div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-card__num">04</div>
+          <div>
+            <h3 class="service-card__name" data-live="svc4-name">Campaign Creative</h3>
+            <p class="service-card__desc" data-live="svc4-desc">Launch campaigns that land — from concept to execution, we produce creative that drives real results for your business.</p>
+            <div class="service-card__tags" data-live="svc4-tags">
+              <span>Ad Creative</span>
+              <span>Campaign Strategy</span>
+              <span>Launches</span>
+            </div>
+          </div>
+          <div class="service-card__arrow">→</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C180,20 360,80 540,40 C720,0 900,70 1080,40 C1260,10 1380,60 1440,40 L1440,80 L0,80 Z" fill="#141414"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- TESTIMONIALS                                            -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section section--surface" id="reviews">
+    <div class="container">
+
+      <div class="testimonials__header reveal">
+        <span class="section__label">Client Love</span>
+        <h2 class="section__heading">Don't take our <em>word for it</em></h2>
+        <p class="section__sub">Real results from real brands we've had the privilege of working with.</p>
+      </div>
+
+      <div class="testimonials__grid">
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">Working with this studio completely transformed how people perceive our brand. We went from being invisible to being the first name clients mention. The ROI was almost immediate.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="bz-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />K</div>
+            <div>
+              <p class="testimonial-card__name">Kayla M. — Founder, Rove Studio</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">They didn't just build us a website. They built us an entire brand ecosystem. The strategy, the visuals, the copy — everything felt like it was made specifically for who we are and where we're going.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="bz-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />D</div>
+            <div>
+              <p class="testimonial-card__name">Devon R. — CEO, Pulse Digital</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">I've worked with three agencies before this. Nothing compares. The attention to detail, the communication, and the final creative were all next level. We're booking again for our next product launch.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="bz-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />A</div>
+            <div>
+              <p class="testimonial-card__name">Alexis T. — Creative Director, Luma Co.</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C320,80 640,0 960,50 C1120,75 1320,10 1440,30 L1440,80 L0,80 Z" fill="#0A0A0A"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- RATES                                                   -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section" id="rates">
+    <div class="container">
+
+      <div class="rates__header reveal">
+        <span class="section__label">Investment</span>
+        <h2 class="section__heading">Choose your <em>package</em></h2>
+        <p class="section__sub">Transparent pricing. No surprises. Just great creative work that moves your brand forward.</p>
+      </div>
+
+      <div class="rates__grid">
+
+        <div class="rate-card reveal">
+          <p class="rate-card__tier">Single Project</p>
+          <p class="rate-card__price"><sup>$</sup>1,500</p>
+          <p class="rate-card__per">starting from</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>One focused deliverable</li>
+            <li>2 revision rounds</li>
+            <li>Brand files included</li>
+            <li>2-week turnaround</li>
+          </ul>
+          <a href="#contact" class="btn btn--dark">Get a Quote</a>
+        </div>
+
+        <div class="rate-card rate-card--featured reveal">
+          <span class="rate-card__badge">Most Popular</span>
+          <p class="rate-card__tier">Brand Bundle</p>
+          <p class="rate-card__price"><sup>$</sup>4,800</p>
+          <p class="rate-card__per">full brand build</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>Brand identity system</li>
+            <li>5-page website</li>
+            <li>Content strategy setup</li>
+            <li>Brand guidelines doc</li>
+            <li>3 rounds of revisions</li>
+          </ul>
+          <a href="#contact" class="btn btn--black">Start the Project</a>
+        </div>
+
+        <div class="rate-card reveal">
+          <p class="rate-card__tier">Full Retainer</p>
+          <p class="rate-card__price"><sup>$</sup>2,200</p>
+          <p class="rate-card__per">per month</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>Ongoing creative support</li>
+            <li>Monthly content creation</li>
+            <li>Campaign management</li>
+            <li>Priority turnaround</li>
+            <li>Weekly strategy calls</li>
+          </ul>
+          <a href="#contact" class="btn btn--dark">Apply Now</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C200,10 400,70 600,30 C800,-10 1000,70 1200,30 C1320,10 1400,50 1440,40 L1440,80 L0,80 Z" fill="#C8E000"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- CTA BAND                                                -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="cta-band" id="contact">
+    <div class="cta-band__content reveal">
+      <span class="cta-band__label">Ready to Build?</span>
+      <h2 class="cta-band__heading">Your brand deserves to be unforgettable</h2>
+      <p class="cta-band__sub">
+        Let's build something that stops the scroll, builds trust, and actually drives your business forward. Spots are limited — reach out today.
+      </p>
+      <div class="cta-band__actions">
+        <a href="mailto:hello@buzzcreative.co" class="btn btn--cta-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Start a Project
+        </a>
+        <a href="#rates" class="btn btn--cta-outline">View Pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- FOOTER                                                  -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__inner">
+
+      <div class="footer__top">
+
+        <div class="footer__brand">
+          <a href="#" class="footer__logo" data-live="biz-name">
+            Buzz<span>.</span>
+          </a>
+          <p class="footer__tagline" data-live="tagline">
+            A creative studio built for the next generation of brands.
+          </p>
+        </div>
+
+        <div class="footer__links">
+          <div>
+            <p class="footer__col-title">Services</p>
+            <ul class="footer__col-links">
+              <li><a href="#services">Brand Identity</a></li>
+              <li><a href="#services">Website Design</a></li>
+              <li><a href="#services">Content Strategy</a></li>
+              <li><a href="#services">Campaign Creative</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__col-title">Studio</p>
+            <ul class="footer__col-links">
+              <li><a href="#about">About</a></li>
+              <li><a href="#reviews">Reviews</a></li>
+              <li><a href="#rates">Pricing</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__col-title">Follow</p>
+            <ul class="footer__col-links">
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">LinkedIn</a></li>
+              <li><a href="#">Dribbble</a></li>
+              <li><a href="#">Behance</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">
+          &copy; 2026 <span data-live="biz-name">Buzz Creative Studio</span>. All rights reserved.
+          Built with <a href="#">Builtsy</a>.
+        </p>
+        <p class="footer__copy">
+          <a href="#">Privacy</a> &nbsp;&middot;&nbsp; <a href="#">Terms</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCRIPT                                                  -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('visible'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      els.forEach(function (el) { observer.observe(el); });
+    })();
+
+    window.builtsy_initAnim = function () {};
+    window.builtsy_demoBurst = function () {};
+  </script>
+
+</body>
+</html>

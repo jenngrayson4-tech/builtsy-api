@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kindred Wellness — Therapy &amp; Counseling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FBF7F0;
+  --cream-rgb: 251,247,240;
+  --warm: #F2E8D8;
+  --caramel: #C48A50;
+  --caramel-rgb: 196,138,80;
+  --caramel2: #A86A30;
+  --brown: #6B4020;
+  --brown-rgb: 107,64,32;
+  --brown2: #4A2C10;
+  --dark: #1E1008;
+  --text: #2C1808;
+  --text-soft: #806040;
+  --mid: #C0A880;
+  --white: #FFFFFF;
+  --radius-pill: 999px;
+  --radius-card: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Lora', serif;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--brown2);
+}
+h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); }
+h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); }
+p { color: var(--text-soft); max-width: 62ch; }
+em { font-style: italic; color: var(--caramel2); }
+a { text-decoration: none; color: inherit; }
+
+.container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 96px 0; }
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(var(--cream-rgb),0.97);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(var(--caramel-rgb),0.2);
+}
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  font-family: 'Lora', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--brown2);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.85rem;
+  letter-spacing: 0.07em;
+  color: var(--text-soft);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--caramel2); }
+.nav-cta {
+  background: var(--caramel);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--caramel2); }
+
+#burger-toggle { display: none; }
+.burger-label {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.burger-label span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--brown2);
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  padding: 24px 32px;
+  gap: 20px;
+  border-top: 1px solid rgba(var(--caramel-rgb),0.15);
+}
+.mobile-menu a { font-size: 1rem; color: var(--text-soft); }
+#burger-toggle:checked ~ .mobile-menu { display: flex; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(2) { opacity: 0; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .burger-label { display: flex; }
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  background: var(--caramel);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 32s linear infinite;
+}
+.marquee-track span {
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  padding: 0 28px;
+}
+.marquee-track span::after { content: "·"; margin-left: 28px; opacity: 0.6; }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO ── */
+.hero-photo-full {
+  width: 100%;
+  height: 520px;
+  background: linear-gradient(135deg, var(--warm) 0%, var(--mid) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brown2);
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo-full::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(30,16,8,0.18);
+}
+.hero-photo-label {
+  position: relative;
+  z-index: 2;
+  color: var(--cream);
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.hero-text-section {
+  background: var(--warm);
+  padding: 72px 0;
+}
+.hero-text-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.hero-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 20px;
+}
+.hero-headline { margin-bottom: 24px; }
+.hero-tagline {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin-bottom: 36px;
+  max-width: 52ch;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn-pill {
+  background: var(--caramel);
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 13px 30px;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s;
+  display: inline-block;
+}
+.btn-pill:hover { background: var(--caramel2); }
+.btn-outline {
+  color: var(--caramel2);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--caramel);
+  transition: all 0.2s;
+  display: inline-block;
+}
+.btn-outline:hover { background: var(--caramel); color: var(--white); }
+.hero-statement-wrap {
+  background: var(--brown2);
+  padding: 40px;
+  border-radius: var(--radius-card);
+}
+.hero-statement {
+  font-family: 'Lora', serif;
+  font-size: 1.7rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+.hero-statement-sub {
+  font-size: 0.88rem;
+  color: rgba(var(--cream-rgb),0.65);
+  line-height: 1.7;
+  max-width: 36ch;
+}
+
+/* ── WAVE ── */
+.wave-divider { line-height: 0; overflow: hidden; }
+.wave-divider svg { display: block; width: 100%; }
+
+/* ── PROBLEM BAND ── */
+.problem-band {
+  background: var(--dark);
+  padding: 80px 0;
+}
+.problem-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+.problem-band h2 {
+  color: var(--cream);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-style: italic;
+  margin-bottom: 48px;
+}
+.problem-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: left;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.problem-list li {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  color: rgba(var(--cream-rgb),0.8);
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(var(--caramel-rgb),0.2);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.problem-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--caramel);
+  flex-shrink: 0;
+}
+
+/* ── ABOUT ── */
+.about { background: var(--cream); padding: 96px 0; }
+.about-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--warm);
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(var(--caramel-rgb),0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-family: 'Lora', serif;
+  font-style: italic;
+  position: relative;
+  overflow: hidden;
+}
+.about-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 16px;
+  display: block;
+}
+.about-content h2 { margin-bottom: 24px; }
+.about-content p { margin-bottom: 18px; font-size: 1rem; }
+.credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.pill {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--caramel2);
+  border: 1.5px solid rgba(var(--caramel-rgb),0.4);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── SERVICES ── */
+.services { background: var(--warm); padding: 96px 0; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header .section-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 14px;
+  display: block;
+}
+.section-header h2 { margin-bottom: 12px; }
+.section-header p { margin: 0 auto; text-align: center; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.svc-card {
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 40px 36px;
+  border: 1px solid rgba(var(--caramel-rgb),0.18);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.svc-card:hover {
+  box-shadow: 0 8px 32px rgba(var(--caramel-rgb),0.12);
+}
+.svc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--caramel);
+}
+.svc-icon {
+  font-family: 'Lora', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 20px;
+}
+.svc-card h3 { font-size: 1.4rem; margin-bottom: 14px; color: var(--brown2); }
+.svc-card p { font-size: 0.95rem; line-height: 1.75; margin-bottom: 20px; }
+.svc-tags {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--caramel2);
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--cream); padding: 96px 0; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 56px;
+}
+.testi-card {
+  background: var(--warm);
+  border-radius: var(--radius-card);
+  padding: 36px 28px;
+  border: 1px solid rgba(var(--caramel-rgb),0.18);
+}
+.testi-stars { font-size: 1rem; color: var(--caramel); letter-spacing: 3px; margin-bottom: 18px; }
+.testi-quote {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--brown2);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.testi-name { font-size: 0.82rem; font-weight: 600; color: var(--text-soft); letter-spacing: 0.06em; }
+.testi-role { font-size: 0.78rem; color: var(--mid); margin-top: 4px; }
+
+/* ── RATES ── */
+.rates { background: var(--warm); padding: 96px 0; }
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.rate-card {
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 44px 32px;
+  border: 1px solid rgba(var(--caramel-rgb),0.2);
+  transition: box-shadow 0.2s;
+}
+.rate-card:hover { box-shadow: 0 8px 32px rgba(var(--caramel-rgb),0.12); }
+.rate-card.featured {
+  background: var(--caramel2);
+  border-color: var(--caramel2);
+}
+.rate-card.featured h3,
+.rate-card.featured .rate-price,
+.rate-card.featured p,
+.rate-card.featured li { color: var(--cream) !important; }
+.rate-card.featured .rate-badge { background: rgba(255,255,255,0.2); color: var(--cream); }
+.rate-card.featured .rate-cta { background: var(--cream); color: var(--caramel2); }
+.rate-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--warm);
+  color: var(--caramel2);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 24px;
+}
+.rate-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.rate-price {
+  font-family: 'Lora', serif;
+  font-size: 3rem;
+  color: var(--caramel2);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.rate-price sup { font-size: 1.2rem; vertical-align: super; }
+.rate-period { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 28px; }
+.rate-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.rate-features li {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(var(--caramel-rgb),0.12);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.rate-features li::before { content: "✓"; color: var(--caramel); font-size: 0.85rem; flex-shrink: 0; margin-top: 1px; }
+.rate-cta {
+  background: var(--caramel);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  transition: background 0.2s;
+}
+.rate-cta:hover { background: var(--caramel2); }
+.rate-card.featured .rate-cta:hover { background: var(--warm); }
+
+/* ── CTA BAND ── */
+.cta-band { background: var(--brown2); padding: 96px 0; }
+.cta-band-inner { max-width: 700px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.cta-band h2 { color: var(--cream); font-size: clamp(2rem, 4.5vw, 3.2rem); font-style: italic; margin-bottom: 20px; }
+.cta-band p { color: rgba(var(--cream-rgb),0.7); margin: 0 auto 40px; font-size: 1.05rem; max-width: 50ch; }
+.cta-band .btn-pill { background: var(--caramel); margin: 0 8px 12px; }
+.cta-band .btn-outline { border-color: rgba(var(--cream-rgb),0.4); color: var(--cream); margin: 0 8px 12px; }
+.cta-band .btn-outline:hover { background: rgba(var(--cream-rgb),0.1); }
+
+/* ── FOOTER ── */
+footer { background: var(--dark); padding: 72px 0 40px; }
+.footer-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 32px;
+}
+.footer-brand {
+  font-family: 'Lora', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+.footer-tagline { font-size: 0.9rem; color: rgba(var(--cream-rgb),0.45); max-width: 28ch; line-height: 1.65; }
+.footer-col h4 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { font-size: 0.88rem; color: rgba(var(--cream-rgb),0.45); transition: color 0.2s; }
+.footer-col a:hover { color: var(--cream); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(var(--cream-rgb),0.28);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── PROCESS ── */
+.process { background: var(--warm); padding: 96px 0; }
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  position: relative;
+}
+.process-grid::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: rgba(var(--caramel-rgb),0.2);
+}
+.process-step { text-align: center; padding: 0 20px; }
+.process-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 2px solid rgba(var(--caramel-rgb),0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+  position: relative;
+  z-index: 1;
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--caramel2);
+}
+.process-step h4 { font-size: 1.1rem; font-style: italic; margin-bottom: 10px; color: var(--brown2); }
+.process-step p { font-size: 0.88rem; line-height: 1.7; }
+
+/* ── APPROACH ── */
+.approach { background: var(--cream); padding: 96px 0; }
+.approach-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.approach h2 { margin-bottom: 24px; }
+.approach p { margin-bottom: 18px; font-size: 1rem; }
+.approach-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pillar {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(var(--caramel-rgb),0.18);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.pillar:last-child { border-bottom: none; }
+.pillar-num {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--caramel);
+  flex-shrink: 0;
+  line-height: 1;
+  width: 36px;
+}
+.pillar h4 { font-size: 1.05rem; color: var(--brown2); margin-bottom: 6px; }
+.pillar p { font-size: 0.9rem; max-width: none; line-height: 1.65; }
+
+/* ── RESOURCE SIDEBAR / GUIDES ── */
+.resources { background: var(--warm); padding: 96px 0; }
+.resources-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 72px;
+  align-items: start;
+}
+.resources-intro .section-label { margin-bottom: 14px; }
+.resources-intro h2 { margin-bottom: 20px; font-size: clamp(1.6rem, 3vw, 2.4rem); }
+.resources-intro p { font-size: 1rem; margin-bottom: 28px; }
+.resource-grid { display: flex; flex-direction: column; gap: 20px; }
+.resource-card {
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 28px 28px;
+  border: 1px solid rgba(var(--caramel-rgb),0.2);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+.resource-card:hover { box-shadow: 0 6px 24px rgba(var(--caramel-rgb),0.1); }
+.resource-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--warm);
+  border: 1px solid rgba(var(--caramel-rgb),0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.resource-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--caramel); margin-bottom: 6px; }
+.resource-card h4 { font-size: 1.05rem; color: var(--brown2); margin-bottom: 8px; font-family: 'Lora', serif; font-weight: 600; }
+.resource-card p { font-size: 0.88rem; max-width: none; line-height: 1.65; }
+
+/* ── FAQ ── */
+.faq { background: var(--cream); padding: 96px 0; }
+.faq h2 { text-align: center; margin-bottom: 56px; }
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid rgba(var(--caramel-rgb),0.2); }
+.faq-question {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--brown2);
+  padding: 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  cursor: default;
+}
+.faq-question::after { content: '+'; font-size: 1.3rem; color: var(--caramel); flex-shrink: 0; font-style: normal; }
+.faq-answer { font-size: 0.95rem; color: var(--text-soft); line-height: 1.8; padding-bottom: 22px; max-width: none; }
+
+/* ── NEWSLETTER ── */
+.newsletter-band { background: var(--caramel); padding: 72px 0; }
+.newsletter-inner { max-width: 620px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.newsletter-band h3 { font-family: 'Lora', serif; font-style: italic; font-size: 2rem; color: var(--white); margin-bottom: 14px; font-weight: 600; }
+.newsletter-band p { color: rgba(255,255,255,0.8); margin: 0 auto 28px; font-size: 0.95rem; max-width: 48ch; }
+.newsletter-form { display: flex; gap: 8px; max-width: 440px; margin: 0 auto; }
+.newsletter-input {
+  flex: 1;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  outline: none;
+}
+.newsletter-input::placeholder { color: rgba(255,255,255,0.55); }
+.newsletter-btn {
+  background: var(--brown2);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.newsletter-btn:hover { opacity: 0.85; }
+
+/* ── QUOTE BAND ── */
+.quote-band { background: var(--brown2); padding: 72px 0; }
+.quote-band-inner { max-width: 800px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.quote-band blockquote {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  color: var(--cream);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+.quote-band cite { font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(var(--cream-rgb),0.45); font-style: normal; }
+
+/* ── SPECIALTIES DEEP DIVE ── */
+.specialties-detail {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.specialties-detail h2 { margin-bottom: 12px; }
+.specialties-detail .section-intro { margin-bottom: 48px; }
+.specialty-expand {
+  border-bottom: 1px solid rgba(var(--caramel-rgb),0.18);
+  padding: 32px 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  align-items: start;
+}
+.specialty-expand:last-child { border-bottom: none; }
+.specialty-title-col h3 { font-size: 1.3rem; color: var(--caramel2); font-style: italic; margin-bottom: 8px; }
+.specialty-title-col .specialty-who { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--caramel); }
+.specialty-detail-col p { font-size: 0.95rem; line-height: 1.8; margin-bottom: 16px; max-width: none; }
+.specialty-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.specialty-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--caramel2);
+  border: 1px solid rgba(var(--caramel-rgb),0.3);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+}
+@media (max-width: 768px) {
+  .specialty-expand { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-text-inner { grid-template-columns: 1fr; gap: 40px; }
+  .about-inner { grid-template-columns: 1fr; gap: 40px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; gap: 24px; }
+  .rates-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; }
+  .section { padding: 64px 0; }
+  .hero-photo-full { height: 320px; }
+  .process-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .process-grid::before { display: none; }
+  .approach-inner { grid-template-columns: 1fr; gap: 40px; }
+  .resources-inner { grid-template-columns: 1fr; gap: 40px; }
+  .newsletter-form { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .footer-top { grid-template-columns: 1fr; }
+}
+
+/* ── PRESS / FEATURED ── */
+.press-band {
+  background: var(--warm);
+  padding: 56px 0;
+  border-top: 1px solid rgba(var(--caramel-rgb),0.12);
+}
+.press-label {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 28px;
+  opacity: 0.65;
+}
+.press-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.press-logo {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(var(--brown-rgb),0.3);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.press-logo:hover { color: var(--caramel); }
+
+/* ── INSURANCE INFO BAND ── */
+.insurance-band {
+  background: var(--brown2);
+  padding: 72px 0;
+}
+.insurance-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.insurance-band h3 {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.9rem;
+  color: var(--cream);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.insurance-band p { color: rgba(var(--cream-rgb),0.7); font-size: 1rem; margin-bottom: 16px; max-width: none; }
+.insurance-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.insurance-list li {
+  font-size: 0.9rem;
+  color: rgba(var(--cream-rgb),0.65);
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.insurance-list li:last-child { border-bottom: none; }
+.insurance-list li::before { content: "✓"; color: var(--caramel); font-size: 0.85rem; flex-shrink: 0; margin-top: 1px; }
+@media (max-width: 768px) {
+  .insurance-inner { grid-template-columns: 1fr; gap: 40px; }
+  .press-logos { gap: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <input type="checkbox" id="burger-toggle" hidden>
+  <div class="nav-inner">
+    <div class="nav-logo">Kindred Wellness</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Therapy</a></li>
+      <li><a href="#testimonials">Stories</a></li>
+      <li><a href="#rates">Investment</a></li>
+    </ul>
+    <a class="nav-cta" href="#rates">Book Now</a>
+    <label class="burger-label" for="burger-toggle">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+  <div class="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#services">Therapy</a>
+    <a href="#testimonials">Stories</a>
+    <a href="#rates">Investment</a>
+    <a href="#rates">Book Now</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Individual Therapy</span><span>Anxiety & Burnout</span><span>Couples Therapy</span><span>Life Transitions</span><span>Trauma Support</span><span>Grief Counseling</span><span>Somatic Work</span><span>Healing</span>
+    <span>Individual Therapy</span><span>Anxiety & Burnout</span><span>Couples Therapy</span><span>Life Transitions</span><span>Trauma Support</span><span>Grief Counseling</span><span>Somatic Work</span><span>Healing</span>
+  </div>
+</div>
+
+<!-- HERO PHOTO FULL WIDTH -->
+<div class="hero-photo-full">
+  <img id="kw-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:2;" alt="" />
+  <span class="hero-photo-label">Hero Photo Placeholder</span>
+</div>
+
+<!-- HERO TEXT -->
+<section class="hero-text-section">
+  <div class="hero-text-inner">
+    <div>
+      <p class="hero-eyebrow reveal">Therapy · Counseling · Specialties · Resources</p>
+      <h1 class="hero-headline reveal reveal-delay-1" data-live="headline">
+        Therapy that helps you breathe, together we'll let down what <em>weighs you.</em>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+        I know what it's like out there. The expectations. The noise. The old patterns that keep running — it can feel impossible to hear your own voice above it all.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#rates" class="btn-pill">Book Now</a>
+        <a href="#services" class="btn-outline">Explore Therapy</a>
+      </div>
+    </div>
+    <div class="hero-statement-wrap reveal reveal-delay-2">
+      <p class="hero-statement">"Find your footing. Then find yourself."</p>
+      <p class="hero-statement-sub">A warm, non-judgmental space to process what's heavy, rediscover who you are, and move forward with clarity.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--warm);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,32 C360,0 1080,64 1440,28 L1440,64 L0,64 Z" fill="#1E1008"/>
+  </svg>
+</div>
+
+<!-- PROBLEM BAND -->
+<div class="problem-band">
+  <div class="problem-inner">
+    <h2 class="reveal">You don't have to carry it all.</h2>
+    <ul class="problem-list">
+      <li class="reveal">The Silent Burnout — when exhaustion runs so deep you've forgotten what rest feels like</li>
+      <li class="reveal reveal-delay-1">The Old Loop — patterns and stories that repeat no matter how hard you try to break them</li>
+      <li class="reveal reveal-delay-2">The Shift — when life changes and you're not sure who you are on the other side</li>
+      <li class="reveal reveal-delay-3">The Inner Critic — the voice that keeps you small, safe, and stuck</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--dark);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C480,64 960,0 1440,44 L1440,64 L0,64 Z" fill="#FBF7F0"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-photo reveal"><img id="kw-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />Photo Placeholder</div>
+    <div class="about-content">
+      <span class="about-label reveal">Meet Your Therapist</span>
+      <h2 class="reveal reveal-delay-1">A space built on warmth, trust, and real healing</h2>
+      <p class="reveal reveal-delay-2">
+        I believe in therapy that feels like breathing — not performing. My approach is warm, relational, and grounded in evidence-based practice. Together we'll make sense of what you're carrying and find a path forward that actually fits your life.
+      </p>
+      <p class="reveal reveal-delay-3">
+        I specialize in anxiety, burnout, life transitions, and the kind of chronic stress that sneaks up so slowly you don't notice it until you're completely depleted. Whether you've been in therapy before or you're coming for the first time — you belong here.
+      </p>
+      <p class="reveal reveal-delay-4">
+        My sessions are telehealth-based, which means you can access care from the comfort of your own space — no commute, no waiting rooms, just you and the work.
+      </p>
+      <div class="credentials reveal">
+        <span class="pill">Licensed Therapist (LCSW)</span>
+        <span class="pill">Trauma-Informed</span>
+        <span class="pill">CBT Certified</span>
+        <span class="pill">Somatic Therapy</span>
+        <span class="pill">ACT Practitioner</span>
+        <span class="pill">Telehealth Specialist</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,48 C360,10 1080,60 1440,16 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services section" id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Specialties</span>
+      <h2 class="reveal">Ways I Can Help</h2>
+      <p class="reveal reveal-delay-1">Every approach is tailored to you — because your story is unlike anyone else's.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <div class="svc-icon">01 · Individual</div>
+        <h3 data-live="svc1-name">Individual Therapy</h3>
+        <p data-live="svc1-desc">Private, personalized sessions in a warm and non-judgmental space to process, heal, and grow — at exactly your own pace.</p>
+        <div class="svc-tags" data-live="svc1-tags">Weekly · Bi-Weekly · 50-Minute Sessions</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <div class="svc-icon">02 · Specialty</div>
+        <h3 data-live="svc2-name">Anxiety &amp; Burnout</h3>
+        <p data-live="svc2-desc">Specialized support for chronic stress, overwhelm, and burnout — practical tools and compassionate guidance for sustainable recovery.</p>
+        <div class="svc-tags" data-live="svc2-tags">CBT · ACT · Somatic · Nervous System</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon">03 · Transitions</div>
+        <h3 data-live="svc3-name">Life Transitions</h3>
+        <p data-live="svc3-desc">Support through major shifts — career changes, relationship endings, loss, and the hard in-between spaces that don't always have names.</p>
+        <div class="svc-tags" data-live="svc3-tags">Grief · Identity · Change · Meaning</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <div class="svc-icon">04 · Couples</div>
+        <h3 data-live="svc4-name">Couples Therapy</h3>
+        <p data-live="svc4-desc">A safe space for partners to understand each other more deeply, rebuild trust, and strengthen the foundation of their relationship.</p>
+        <div class="svc-tags" data-live="svc4-tags">Communication · Trust · Intimacy · Reconnection</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--warm);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,10 960,56 1440,20 L1440,64 L0,64 Z" fill="#FBF7F0"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Client Stories</span>
+      <h2 class="reveal">Voices from the Journey</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Kindred Wellness gave me the courage to breathe again. I finally feel like myself."</p>
+        <div class="testi-name">Danielle Minton</div>
+        <div class="testi-role">Marketing Director, Chicago</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I came in so depleted I didn't recognize myself. Now I understand why I got there — and I have real tools to stay well. Best decision I ever made."</p>
+        <div class="testi-name">Priya Sharma</div>
+        <div class="testi-role">Pediatric Nurse, Atlanta</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The couples work we did here saved our marriage. We actually understand each other now. The sessions were hard — and so, so worth it."</p>
+        <div class="testi-name">Marcus &amp; Jenna Okafor</div>
+        <div class="testi-role">Couples, Seattle</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,60 1080,10 1440,48 L1440,64 L0,64 Z" fill="#C48A50"/>
+  </svg>
+</div>
+
+<!-- STATS BAND -->
+<div style="background:var(--caramel);padding:64px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;">
+      <div class="reveal">
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">500+</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);">Clients Supported</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">8+</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);">Years in Practice</div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">★4.9</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);">Average Rating</div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:3rem;color:var(--white);line-height:1;margin-bottom:8px;">100%</div>
+        <div style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);">Telehealth Access</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--caramel);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,8 960,56 1440,16 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- WHAT TO EXPECT -->
+<section style="background:var(--warm);padding:96px 0;" id="expect">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:72px;align-items:start;max-width:1120px;margin:0 auto;">
+      <div>
+        <span class="about-label reveal">What to Expect</span>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom:24px;">What your first few sessions look like</h2>
+        <p class="reveal reveal-delay-2" style="margin-bottom:18px;font-size:1rem;">There's often a lot of uncertainty about starting therapy — what to say, how it works, whether it's "supposed to" feel a certain way. Here's the honest version.</p>
+        <p class="reveal reveal-delay-3" style="margin-bottom:18px;font-size:1rem;">Session one is mostly a conversation. I'll ask about what's been going on, your background, and what you're hoping to get out of our work together. You don't need to prepare anything or "perform" being in distress.</p>
+        <p class="reveal" style="margin-bottom:18px;font-size:1rem;">Sessions two and three tend to feel a bit less structured — we're still getting to know each other, noticing what themes keep showing up, beginning to build the framework of our work. By session four or five, most clients report feeling a meaningful shift.</p>
+        <p class="reveal" style="font-size:1rem;">This is a relationship. It builds over time. The more honest you're able to be, the more useful it becomes.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;" class="reveal reveal-delay-2">
+        <div style="background:var(--cream);border-radius:var(--radius-card);padding:28px;border:1px solid rgba(var(--caramel-rgb),0.18);">
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--caramel);margin-bottom:10px;">Session 1–2</div>
+          <h4 style="font-family:'Lora',serif;font-size:1.1rem;color:var(--brown2);margin-bottom:8px;">Getting to Know Each Other</h4>
+          <p style="font-size:0.9rem;max-width:none;">Open conversation, history, goals. Low pressure, no agenda. Just showing up and beginning.</p>
+        </div>
+        <div style="background:var(--cream);border-radius:var(--radius-card);padding:28px;border:1px solid rgba(var(--caramel-rgb),0.18);">
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--caramel);margin-bottom:10px;">Session 3–6</div>
+          <h4 style="font-family:'Lora',serif;font-size:1.1rem;color:var(--brown2);margin-bottom:8px;">Patterns Emerge, Work Begins</h4>
+          <p style="font-size:0.9rem;max-width:none;">We start to identify the loops, the patterns, the places where real change is possible. This is where the work gets interesting.</p>
+        </div>
+        <div style="background:var(--cream);border-radius:var(--radius-card);padding:28px;border:1px solid rgba(var(--caramel-rgb),0.18);">
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--caramel);margin-bottom:10px;">Session 7+</div>
+          <h4 style="font-family:'Lora',serif;font-size:1.1rem;color:var(--brown2);margin-bottom:8px;">Depth, Momentum, Change</h4>
+          <p style="font-size:0.9rem;max-width:none;">Real shifts begin to consolidate. You start bringing new tools into your life. The work becomes something you carry with you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--warm);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,60 1080,10 1440,48 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates section" id="rates">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Investment</span>
+      <h2 class="reveal">Choose Your Path to Healing</h2>
+      <p class="reveal reveal-delay-1">Sliding scale available. Superbills provided for out-of-network reimbursement.</p>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <span class="rate-badge">Getting Started</span>
+        <h3>Consultation</h3>
+        <div class="rate-price"><sup>$</sup>0</div>
+        <p class="rate-period">15-minute free call</p>
+        <ul class="rate-features">
+          <li>Get to know each other</li>
+          <li>Share what brings you in</li>
+          <li>Ask your questions</li>
+          <li>No commitment required</li>
+        </ul>
+        <a href="#" class="rate-cta">Book Free Call</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <span class="rate-badge">Most Chosen</span>
+        <h3>Ongoing Therapy</h3>
+        <div class="rate-price"><sup>$</sup>165</div>
+        <p class="rate-period">Per 50-minute session</p>
+        <ul class="rate-features">
+          <li>Weekly or bi-weekly sessions</li>
+          <li>Personalized treatment plan</li>
+          <li>Between-session resources</li>
+          <li>Superbill for insurance</li>
+          <li>Secure telehealth platform</li>
+          <li>Flexible scheduling</li>
+        </ul>
+        <a href="#" class="rate-cta">Book Now</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <span class="rate-badge">Deep Work</span>
+        <h3>Intensive Package</h3>
+        <div class="rate-price"><sup>$</sup>720</div>
+        <p class="rate-period">5-session package</p>
+        <ul class="rate-features">
+          <li>Five 50-minute sessions</li>
+          <li>Focused treatment arc</li>
+          <li>Progress check-in at session 3</li>
+          <li>Email support between sessions</li>
+          <li>Custom resource library</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="quote-band">
+  <div class="quote-band-inner">
+    <blockquote class="reveal">"Healing isn't a straight line. It's a spiral — and every time you return to a familiar place, you see it with new eyes."</blockquote>
+    <cite class="reveal reveal-delay-1">— Kindred Wellness</cite>
+  </div>
+</div>
+
+<!-- SPECIALTIES DEEP DIVE -->
+<section class="specialties-detail">
+  <div class="container">
+    <span class="section-label reveal" style="display:block;">A Closer Look</span>
+    <h2 class="reveal reveal-delay-1">Deep Expertise, Personalized Care</h2>
+    <p class="section-intro reveal reveal-delay-2">Every specialty I offer is grounded in evidence-based practice and shaped by years of clinical experience. Here's a closer look at what each area of care involves.</p>
+    <div class="specialty-expand reveal">
+      <div class="specialty-title-col">
+        <h3>Individual Therapy</h3>
+        <div class="specialty-who">For anyone ready to do the work</div>
+      </div>
+      <div class="specialty-detail-col">
+        <p>Individual therapy is a private, confidential space for you to explore what's going on beneath the surface. Whether you're navigating a specific challenge or simply sensing that something needs to shift, our work together will be tailored entirely to you.</p>
+        <p>Sessions are 50 minutes and held weekly or bi-weekly via telehealth. We'll build a treatment plan together in our first few sessions — flexible enough to evolve as you do.</p>
+        <div class="specialty-tags">
+          <span class="specialty-tag">CBT</span>
+          <span class="specialty-tag">ACT</span>
+          <span class="specialty-tag">Somatic</span>
+          <span class="specialty-tag">Telehealth</span>
+          <span class="specialty-tag">Weekly or Bi-Weekly</span>
+        </div>
+      </div>
+    </div>
+    <div class="specialty-expand reveal">
+      <div class="specialty-title-col">
+        <h3>Anxiety &amp; Burnout</h3>
+        <div class="specialty-who">For the chronically exhausted</div>
+      </div>
+      <div class="specialty-detail-col">
+        <p>Anxiety and burnout are among the most common — and most misunderstood — presentations I see. Many clients have been "managing" for years before seeking support, often not recognizing how much the chronic stress has been costing them.</p>
+        <p>We'll work to understand the root causes of your anxiety or burnout, reduce symptoms with evidence-based tools, and build a sustainable foundation for long-term wellbeing — not just crisis management.</p>
+        <div class="specialty-tags">
+          <span class="specialty-tag">Nervous System Regulation</span>
+          <span class="specialty-tag">Mindfulness</span>
+          <span class="specialty-tag">CBT</span>
+          <span class="specialty-tag">Boundary Work</span>
+        </div>
+      </div>
+    </div>
+    <div class="specialty-expand reveal">
+      <div class="specialty-title-col">
+        <h3>Life Transitions</h3>
+        <div class="specialty-who">For the in-between spaces</div>
+      </div>
+      <div class="specialty-detail-col">
+        <p>Career changes, relationship endings, moving, loss, becoming a parent, leaving a parent — life transitions don't always have tidy names, but they all share a common thread: the disorientation of not knowing yet who you'll be on the other side.</p>
+        <p>Therapy during transitions offers a grounding space to process grief, clarify values, and make meaning out of change — so you can move through it with intention, not just survive it.</p>
+        <div class="specialty-tags">
+          <span class="specialty-tag">Grief &amp; Loss</span>
+          <span class="specialty-tag">Identity</span>
+          <span class="specialty-tag">Career Transitions</span>
+          <span class="specialty-tag">Meaning-Making</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,32 C480,64 960,8 1440,40 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- PROCESS -->
+<section class="process section" id="process">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">How It Works</span>
+      <h2 class="reveal">Getting Started is Simple</h2>
+      <p class="reveal reveal-delay-1">No complicated intake forms or long waiting lists — just an easy, human process to get you the support you need.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <div class="process-circle">01</div>
+        <h4>Free Consultation</h4>
+        <p>Book a free 15-minute call so we can get to know each other and make sure it feels like a good fit.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-circle">02</div>
+        <h4>Intake & Match</h4>
+        <p>Complete a brief intake form so I can understand your history, goals, and what kind of support you're looking for.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-circle">03</div>
+        <h4>First Session</h4>
+        <p>Your first session is a deep intake — no pressure, no agenda. We start from wherever feels right for you.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-circle">04</div>
+        <h4>Ongoing Work</h4>
+        <p>From there, we build a rhythm and a relationship — showing up week after week in service of your healing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--warm);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,28 C360,60 1080,10 1440,44 L1440,64 L0,64 Z" fill="#FBF7F0"/>
+  </svg>
+</div>
+
+<!-- APPROACH -->
+<section class="approach section">
+  <div class="approach-inner">
+    <div>
+      <span class="about-label reveal">My Approach</span>
+      <h2 class="reveal reveal-delay-1">Therapy rooted in warmth, evidence, and real relationship</h2>
+      <p class="reveal reveal-delay-2">
+        I believe the most important factor in therapy isn't any particular technique — it's the quality of the relationship. Everything else builds on that foundation of trust, safety, and genuine care.
+      </p>
+      <p class="reveal reveal-delay-3">
+        My work draws from Cognitive Behavioral Therapy (CBT), Acceptance and Commitment Therapy (ACT), and somatic-informed approaches — always adapted to what's most useful for you, not applied in a one-size-fits-all way.
+      </p>
+    </div>
+    <div class="approach-pillars reveal">
+      <div class="pillar">
+        <span class="pillar-num">01</span>
+        <div>
+          <h4>Person-Centered Foundation</h4>
+          <p>You are the expert on your own life. My role is to provide the conditions for your natural capacity for growth to unfold — not to tell you who to be.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">02</span>
+        <div>
+          <h4>Evidence-Based Methods</h4>
+          <p>I draw from CBT, ACT, and somatic practices — modalities with strong research support, adapted to fit your individual needs and temperament.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">03</span>
+        <div>
+          <h4>Whole-Person Perspective</h4>
+          <p>Your mental health doesn't exist in a vacuum — it's connected to your relationships, work, body, and sense of meaning. We look at the whole picture.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">04</span>
+        <div>
+          <h4>Culturally Responsive Care</h4>
+          <p>I am committed to culturally responsive, inclusive, and affirming practice for people of all backgrounds, identities, and experiences.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,44 C480,8 960,56 1440,12 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- RESOURCES -->
+<section class="resources section">
+  <div class="resources-inner">
+    <div class="resources-intro">
+      <span class="section-label reveal">Free Resources</span>
+      <h2 class="reveal reveal-delay-1">Guides for your journey</h2>
+      <p class="reveal reveal-delay-2">Free tools and reflections to support you between sessions — or before you're ready to begin.</p>
+      <a href="#" class="btn-pill reveal reveal-delay-3" style="font-size:0.85rem;padding:11px 24px;">See All Resources</a>
+    </div>
+    <div class="resource-grid">
+      <div class="resource-card reveal">
+        <div class="resource-icon">📋</div>
+        <div>
+          <div class="resource-label">Worksheet</div>
+          <h4>The Weekly Check-In</h4>
+          <p>A simple, 5-minute self-reflection practice to track your emotional weather and notice patterns over time.</p>
+        </div>
+      </div>
+      <div class="resource-card reveal reveal-delay-1">
+        <div class="resource-icon">🎧</div>
+        <div>
+          <div class="resource-label">Audio Guide</div>
+          <h4>5-Minute Grounding Practice</h4>
+          <p>A short somatic grounding exercise to use when anxiety spikes or you feel disconnected from your body.</p>
+        </div>
+      </div>
+      <div class="resource-card reveal reveal-delay-2">
+        <div class="resource-icon">📖</div>
+        <div>
+          <div class="resource-label">Reading Guide</div>
+          <h4>Understanding Burnout</h4>
+          <p>A plain-language overview of chronic burnout — what it is, how it develops, and what actually helps.</p>
+        </div>
+      </div>
+      <div class="resource-card reveal reveal-delay-3">
+        <div class="resource-icon">✉️</div>
+        <div>
+          <div class="resource-label">Email Series</div>
+          <h4>7 Days of Nervous System Care</h4>
+          <p>A free week-long email series with one practical tool each day to support your nervous system regulation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--warm);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,56 1080,8 1440,44 L1440,64 L0,64 Z" fill="#FBF7F0"/>
+  </svg>
+</div>
+
+<!-- FAQ -->
+<section class="faq section">
+  <div class="container">
+    <h2 class="reveal">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-question">Do you take insurance?</div>
+        <p class="faq-answer">I am currently out-of-network with all insurance plans, but I provide superbills after each session so you can seek reimbursement from your insurer directly. Many PPO plans reimburse a significant portion of out-of-network mental health costs. I'm happy to help you understand how to submit a claim.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">How long does therapy take?</div>
+        <p class="faq-answer">There's no one-size-fits-all answer — it depends on what you're working through and how you're feeling over time. Some clients work with me for a focused 8–12 weeks on a specific issue. Others choose to work together for a year or more on deeper patterns. We check in regularly about how the work is going and adjust accordingly.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Are sessions fully confidential?</div>
+        <p class="faq-answer">Yes. Everything you share in therapy is protected by law and professional ethics. There are a small number of specific legal exceptions (such as imminent risk of harm) which I explain fully in our first session — but in practice, what you share stays between us.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">What if I've never been to therapy before?</div>
+        <p class="faq-answer">You're in good company — many of my clients come in having never done this before. First-time therapy can feel vulnerable and uncertain, and that's completely normal. Our first session is designed to be easy, conversational, and low-pressure. You don't need to know what to say or how therapy "works." That's my job.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">What if I want to stop therapy?</div>
+        <p class="faq-answer">You can stop therapy at any time — there's no obligation or penalty. In fact, it's considered healthy and part of the process to discuss this openly together. We can plan a thoughtful ending, or simply pause if you need a break. The door is always open to return.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C480,64 960,12 1440,44 L1440,64 L0,64 Z" fill="#F2E8D8"/>
+  </svg>
+</div>
+
+<!-- PRESS -->
+<div class="press-band">
+  <div class="container">
+    <p class="press-label reveal">Featured In</p>
+    <div class="press-logos reveal reveal-delay-1">
+      <span class="press-logo">Psychology Today</span>
+      <span class="press-logo">Verywell Mind</span>
+      <span class="press-logo">The Gottman Institute</span>
+      <span class="press-logo">Headspace</span>
+      <span class="press-logo">Therapy Brands</span>
+    </div>
+  </div>
+</div>
+
+<!-- INSURANCE BAND -->
+<div class="insurance-band">
+  <div class="insurance-inner">
+    <div>
+      <h3 class="reveal">Insurance &amp; Payment Options</h3>
+      <p class="reveal reveal-delay-1">I believe cost should never be the reason someone goes without mental health support. Here's how I make this work accessible.</p>
+      <p class="reveal reveal-delay-2">I provide superbills after every session — a detailed receipt that many PPO plans will reimburse partially or fully. I also offer a sliding scale for clients who demonstrate financial need.</p>
+      <a href="#rates" class="btn-pill reveal reveal-delay-3" style="font-size:0.85rem;padding:11px 28px;background:var(--caramel);margin-top:8px;">View Rates</a>
+    </div>
+    <ul class="insurance-list reveal reveal-delay-2">
+      <li>Superbills provided after every session for insurance reimbursement</li>
+      <li>Most PPO insurance plans reimburse out-of-network mental health care</li>
+      <li>Sliding scale available — ask during your free consultation</li>
+      <li>HSA and FSA accounts accepted for payment</li>
+      <li>No hidden fees — your session rate is all you pay</li>
+      <li>Payment plans available for intensive packages</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--brown2);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,64 1080,8 1440,44 L1440,64 L0,64 Z" fill="#C48A50"/>
+  </svg>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-band">
+  <div class="newsletter-inner">
+    <h3 class="reveal">The Weekly Warmth</h3>
+    <p class="reveal reveal-delay-1">A gentle newsletter for your mental health journey — practical tools, research-backed insights, and honest reflections every Tuesday.</p>
+    <div class="newsletter-form reveal reveal-delay-2">
+      <input class="newsletter-input" type="email" placeholder="your@email.com">
+      <button class="newsletter-btn">Subscribe</button>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--caramel);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,60 1080,8 1440,40 L1440,64 L0,64 Z" fill="#4A2C10"/>
+  </svg>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2 class="reveal">You deserve to feel like yourself again.</h2>
+    <p class="reveal reveal-delay-1">Taking the first step is often the hardest. A free consultation is waiting — no pressure, no commitment, just a conversation.</p>
+    <div class="reveal reveal-delay-2">
+      <a href="#rates" class="btn-pill">Book a Free Call</a>
+      <a href="#services" class="btn-outline">Explore Specialties</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand" data-live="biz-name">Kindred Wellness</div>
+        <p class="footer-tagline" data-live="tagline">Therapy that helps you breathe, together we'll let down what weighs you.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Therapy</h4>
+        <ul>
+          <li><a href="#">Individual Sessions</a></li>
+          <li><a href="#">Anxiety &amp; Burnout</a></li>
+          <li><a href="#">Life Transitions</a></li>
+          <li><a href="#">Couples Therapy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Psychology Today</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">hello@kindredwellness.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kindred Wellness. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service · HIPAA Notice</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

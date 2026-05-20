@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-live="biz-name">Ofirelle Aesthetics</title>
+  <meta name="description" content="Advanced aesthetics, beautifully done. Personalized treatments designed to enhance your natural radiance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────────── */
+    :root {
+      --ivory:         #FAFAF6;
+      --ivory-rgb:     250, 250, 246;
+      --cream:         #F5F0E8;
+      --cream-rgb:     245, 240, 232;
+      --warm-white:    #FFFFFF;
+      --charcoal:      #1A1614;
+      --charcoal-rgb:  26, 22, 20;
+      --dark:          #0E0C0A;
+      --mid:           #5A5450;
+      --gold:          #C4A060;
+      --gold-rgb:      196, 160, 96;
+      --gold-light:    rgba(var(--gold-rgb), 0.15);
+      --text:          #2A2420;
+      --text-soft:     #6A6058;
+      --border:        rgba(var(--charcoal-rgb), 0.12);
+      --radius-pill:   999px;
+      --radius-card:   4px;
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--charcoal);
+      line-height: 1.15;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(var(--ivory-rgb),0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .nav__logo span {
+      color: var(--gold);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-soft);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+
+    .nav__links a:hover { color: var(--charcoal); }
+
+    .nav__cta {
+      background: transparent !important;
+      color: var(--charcoal) !important;
+      padding: 8px 22px;
+      border: 1px solid var(--charcoal) !important;
+      border-radius: 0 !important;
+      font-size: 0.72rem !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.16em !important;
+      text-transform: uppercase !important;
+      transition: background 0.25s, color 0.25s !important;
+    }
+
+    .nav__cta:hover {
+      background: var(--charcoal) !important;
+      color: var(--ivory) !important;
+    }
+
+    .nav__toggle { display: none; }
+    .nav__burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav__burger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--charcoal);
+      transition: all 0.25s;
+    }
+
+    @media (max-width: 768px) {
+      .nav__burger { display: flex; }
+      .nav__links {
+        position: fixed;
+        inset: 70px 0 0 0;
+        background: var(--ivory);
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        transform: translateX(100%);
+        transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+        z-index: 99;
+      }
+      .nav__links a { font-size: 0.9rem; }
+      .nav__toggle:checked ~ .nav__inner .nav__links { transform: translateX(0); }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(2) { opacity: 0; }
+      .nav__toggle:checked ~ .nav__inner .nav__burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    }
+
+    /* ─── THIN DECORATIVE BAND (replaces marquee for luxury feel) */
+    .deco-band {
+      background: var(--charcoal);
+      color: rgba(var(--cream-rgb),0.55);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.7rem;
+      font-style: italic;
+      letter-spacing: 0.3em;
+      text-align: center;
+      padding: 8px 20px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .deco-band__track {
+      display: inline-flex;
+      animation: marquee-scroll 32s linear infinite;
+    }
+
+    .deco-band__track span { padding: 0 40px; }
+
+    .deco-dot {
+      color: var(--gold);
+      margin: 0 6px;
+    }
+
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 70px - 34px);
+      position: relative;
+    }
+
+    .hero__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 64px 80px 40px;
+      max-width: 640px;
+      margin-left: auto;
+    }
+
+    .hero__eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .hero__headline {
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .hero__headline em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--charcoal);
+    }
+
+    .hero__rule {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin: 24px 0;
+    }
+
+    .hero__tagline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text-soft);
+      max-width: 400px;
+      margin-bottom: 44px;
+      font-weight: 300;
+      line-height: 1.85;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s;
+      border-radius: 0;
+    }
+
+    .btn--charcoal {
+      background: var(--charcoal);
+      color: var(--ivory);
+    }
+
+    .btn--charcoal:hover {
+      background: var(--dark);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--charcoal);
+      border: 1px solid var(--charcoal);
+    }
+
+    .btn--outline:hover {
+      background: var(--charcoal);
+      color: var(--ivory);
+    }
+
+    .hero__visual {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__photo {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      background: linear-gradient(180deg, var(--cream) 0%, #D8C8B8 50%, #A89080 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__photo-icon {
+      font-size: 3.5rem;
+      opacity: 0.45;
+      display: block;
+    }
+
+    .hero__photo-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: rgba(var(--charcoal-rgb),0.4);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── WAVE DIVIDER ──────────────────────────────────────── */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* ─── THIN LINE DIVIDER ──────────────────────────────────── */
+    .line-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .line-divider--gold {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.4;
+    }
+
+    /* ─── SECTION SHARED ────────────────────────────────────── */
+    .section { padding: 96px 0; }
+
+    .section--cream { background: var(--cream); }
+    .section--dark { background: var(--charcoal); }
+    .section--ivory { background: var(--ivory); }
+
+    .section__label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .section__heading {
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      margin-bottom: 20px;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+
+    .section__heading em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .section__sub {
+      font-size: 0.97rem;
+      color: var(--text-soft);
+      font-weight: 300;
+      max-width: 520px;
+      line-height: 1.85;
+    }
+
+    /* ─── ABOUT ─────────────────────────────────────────────── */
+    .about__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about__visual { position: relative; }
+
+    .about__photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, var(--cream) 0%, #C8B8A8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about__photo-icon {
+      font-size: 3.5rem;
+      opacity: 0.4;
+      display: block;
+    }
+
+    .about__photo-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: rgba(var(--charcoal-rgb),0.4);
+    }
+
+    .about__story {
+      font-size: 1.02rem;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+
+    .about__credentials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    .credential-pill {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      padding: 6px 16px 6px 0;
+      margin-right: 16px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .credential-pill::before {
+      content: '—';
+      color: var(--gold);
+      margin-right: 8px;
+      font-style: normal;
+    }
+
+    /* ─── SERVICES ──────────────────────────────────────────── */
+    .services__header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .services__header .section__sub { margin: 0 auto; }
+
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      padding: 48px 44px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .service-card:nth-child(even) { border-right: none; }
+    .service-card:nth-child(3),
+    .service-card:nth-child(4) { border-bottom: none; }
+
+    .service-card:hover {
+      background: var(--cream);
+    }
+
+    .service-card__num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .service-card__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      margin-bottom: 14px;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+
+    .service-card__desc {
+      font-size: 0.92rem;
+      color: var(--text-soft);
+      line-height: 1.85;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .service-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .service-card__tags span {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+    }
+
+    .service-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-top: 20px;
+      border-bottom: 1px solid var(--charcoal);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .service-card__link:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    /* ─── TESTIMONIALS ──────────────────────────────────────── */
+    .testimonials__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .testimonials__header .section__sub { margin: 0 auto; }
+
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .testimonial-card {
+      background: var(--ivory);
+      padding: 40px 36px;
+      position: relative;
+    }
+
+    .testimonial-card__quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      line-height: 0.8;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: block;
+      opacity: 0.5;
+    }
+
+    .testimonial-card__text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem;
+      color: var(--text);
+      line-height: 1.8;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .testimonial-card__footer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testimonial-card__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--mid);
+      flex-shrink: 0;
+    }
+
+    .testimonial-card__name {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      letter-spacing: 0.06em;
+    }
+
+    .testimonial-card__stars {
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    /* ─── RATES ─────────────────────────────────────────────── */
+    .rates__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .rates__header .section__sub { margin: 0 auto; }
+
+    .rates__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .rate-card {
+      padding: 44px 36px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .rate-card:last-child { border-right: none; }
+
+    .rate-card:hover { background: var(--cream); }
+
+    .rate-card--featured {
+      background: var(--charcoal);
+      border-color: var(--charcoal);
+      transform: none;
+    }
+
+    .rate-card--featured:hover { background: var(--dark); }
+
+    .rate-card--featured .rate-card__tier,
+    .rate-card--featured .rate-card__per,
+    .rate-card--featured .rate-card__price,
+    .rate-card--featured .rate-card__features li { color: rgba(var(--cream-rgb),0.75); }
+
+    .rate-card--featured .rate-card__price { color: var(--ivory); }
+    .rate-card--featured .rate-card__divider { background: rgba(var(--cream-rgb),0.1); }
+
+    .rate-card__badge {
+      display: none;
+      background: var(--gold);
+      color: var(--charcoal);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      border-radius: 0;
+    }
+
+    .rate-card--featured .rate-card__badge { display: inline-block; }
+
+    .rate-card__tier {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      color: var(--text-soft);
+    }
+
+    .rate-card__price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+
+    .rate-card__price sup {
+      font-size: 1.4rem;
+      vertical-align: super;
+    }
+
+    .rate-card__per {
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .rate-card__divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 24px;
+    }
+
+    .rate-card__features {
+      list-style: none;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .rate-card__features li {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      padding: 7px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-bottom: 1px solid rgba(var(--charcoal-rgb),0.05);
+      font-weight: 300;
+    }
+
+    .rate-card__features li::before {
+      content: '—';
+      color: var(--gold);
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      margin-top: 2px;
+    }
+
+    .rate-card--featured .rate-card__features li::before { color: rgba(var(--gold-rgb),0.8); }
+    .rate-card--featured .rate-card__features li { border-color: rgba(var(--cream-rgb),0.06); }
+
+    .rate-card .btn {
+      width: 100%;
+      justify-content: center;
+      font-size: 0.68rem;
+    }
+
+    .btn--charcoal-outline {
+      background: transparent;
+      color: var(--charcoal);
+      border: 1px solid var(--charcoal);
+    }
+
+    .btn--charcoal-outline:hover {
+      background: var(--charcoal);
+      color: var(--ivory);
+    }
+
+    .btn--ivory {
+      background: var(--ivory);
+      color: var(--charcoal);
+    }
+
+    .btn--ivory:hover { background: var(--warm-white); }
+
+    /* ─── CTA BAND ──────────────────────────────────────────── */
+    .cta-band {
+      background: var(--charcoal);
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 80% at 20% 50%, rgba(var(--gold-rgb),0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 70% at 80% 50%, rgba(var(--gold-rgb),0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-band__content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .cta-band__label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cta-band__heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      font-weight: 300;
+      color: var(--ivory);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .cta-band__heading em {
+      font-style: italic;
+      color: rgba(var(--gold-rgb),0.85);
+    }
+
+    .cta-band__sub {
+      font-size: 0.97rem;
+      color: rgba(var(--cream-rgb),0.55);
+      margin-bottom: 44px;
+      line-height: 1.85;
+      font-weight: 300;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-band__actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn--ivory-outline {
+      background: transparent;
+      color: var(--ivory);
+      border: 1px solid rgba(var(--cream-rgb),0.3);
+    }
+
+    .btn--ivory-outline:hover {
+      border-color: var(--ivory);
+      background: rgba(var(--cream-rgb),0.06);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer {
+      background: var(--dark);
+      padding: 60px 40px 36px;
+      color: rgba(var(--cream-rgb),0.4);
+    }
+
+    .footer__inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .footer__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .footer__brand .footer__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .footer__logo span { color: var(--gold); }
+
+    .footer__brand .footer__tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88rem;
+      font-style: italic;
+      color: rgba(var(--cream-rgb),0.38);
+      letter-spacing: 0.04em;
+    }
+
+    .footer__links { display: flex; gap: 60px; flex-wrap: wrap; }
+
+    .footer__col-title {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      margin-bottom: 18px;
+    }
+
+    .footer__col-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer__col-links a {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: rgba(var(--cream-rgb),0.38);
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .footer__col-links a:hover { color: var(--gold); }
+
+    .footer__bottom {
+      border-top: 1px solid rgba(var(--cream-rgb),0.07);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer__copy {
+      font-size: 0.72rem;
+      color: rgba(var(--cream-rgb),0.22);
+      letter-spacing: 0.04em;
+    }
+
+    .footer__copy a {
+      color: rgba(var(--gold-rgb),0.45);
+      transition: color 0.2s;
+    }
+
+    .footer__copy a:hover { color: var(--gold); }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── MOBILE RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__visual { min-height: 400px; }
+      .hero__content { padding: 60px 40px; max-width: 100%; margin: 0; }
+      .testimonials__grid { grid-template-columns: 1fr 1fr; background: none; gap: 1px; }
+      .rates__grid { grid-template-columns: 1fr; border: none; gap: 1px; background: var(--border); }
+      .rate-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .rate-card:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      .container { padding: 0 24px; }
+
+      .about__inner { grid-template-columns: 1fr; gap: 40px; }
+      .about__visual { display: none; }
+
+      .services__grid { grid-template-columns: 1fr; }
+      .service-card:nth-child(even) { border-right: 1px solid var(--border); }
+      .service-card:nth-child(3) { border-bottom: 1px solid var(--border); }
+
+      .testimonials__grid { grid-template-columns: 1fr; }
+
+      .footer__top { flex-direction: column; }
+      .footer__links { gap: 36px; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__headline { font-size: 2.8rem; }
+      .hero__actions { flex-direction: column; align-items: flex-start; }
+      .cta-band__actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- NAV                                                     -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <nav class="nav">
+    <input type="checkbox" class="nav__toggle" id="nav-toggle" aria-hidden="true" />
+    <div class="nav__inner container">
+
+      <a href="#" class="nav__logo" data-live="biz-name">
+        Ofirelle<span>.</span>
+      </a>
+
+      <label class="nav__burger" for="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+      <ul class="nav__links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Treatments</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#rates">Investment</a></li>
+        <li><a href="#book" class="nav__cta">Book a Consultation</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- THIN DECO BAND                                          -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="deco-band" aria-hidden="true">
+    <div class="deco-band__track">
+      <span>Advanced aesthetics, beautifully done <span class="deco-dot">·</span></span>
+      <span>Science meets artistry <span class="deco-dot">·</span></span>
+      <span>Natural results, lasting confidence <span class="deco-dot">·</span></span>
+      <span>Advanced aesthetics, beautifully done <span class="deco-dot">·</span></span>
+      <span>Science meets artistry <span class="deco-dot">·</span></span>
+      <span>Natural results, lasting confidence <span class="deco-dot">·</span></span>
+      <span>Advanced aesthetics, beautifully done <span class="deco-dot">·</span></span>
+      <span>Science meets artistry <span class="deco-dot">·</span></span>
+      <span>Natural results, lasting confidence <span class="deco-dot">·</span></span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HERO                                                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="hero" id="home">
+
+    <div class="hero__content">
+      <span class="hero__eyebrow reveal">Aesthetics · Treatments · Results</span>
+
+      <h1 class="hero__headline reveal" data-live="headline">
+        Advanced <em>beauty,</em><br/>beautifully done
+      </h1>
+
+      <div class="hero__rule reveal"></div>
+
+      <p class="hero__tagline reveal" data-live="tagline">
+        Where science meets artistry. Personalized treatments designed to enhance your natural radiance.
+      </p>
+
+      <div class="hero__actions reveal">
+        <a href="#book" class="btn btn--charcoal">Book a Consultation</a>
+        <a href="#services" class="btn btn--outline">View Treatments</a>
+      </div>
+    </div>
+
+    <div class="hero__visual reveal">
+      <div class="hero__photo">
+        <img id="of-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />
+        <span class="hero__photo-icon">✦</span>
+        <span class="hero__photo-label">Your photo here</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Thin line divider -->
+  <div class="line-divider--gold" style="margin: 0;"></div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- ABOUT                                                   -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about__inner">
+
+        <div class="about__visual reveal">
+          <div class="about__photo">
+            <img id="of-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />
+            <span class="about__photo-icon">✦</span>
+            <span class="about__photo-caption">Practitioner portrait</span>
+          </div>
+        </div>
+
+        <div class="about__content reveal">
+          <span class="section__label">The Practice</span>
+          <h2 class="section__heading">Where <em>precision</em><br/>meets artistry</h2>
+
+          <p class="about__story">
+            With over a decade of advanced training and thousands of treatments performed, I founded Ofirelle on a singular belief: true aesthetic medicine requires both clinical excellence and an artistic eye. Every face is unique — every treatment should be too.
+          </p>
+          <p class="about__story">
+            My approach is always natural-first. The goal is never to change you, but to refresh and restore — delivering results that are visible, but never obvious. You should look like yourself, only rested, refined, and radiant.
+          </p>
+
+          <div class="about__credentials">
+            <span class="credential-pill">Board-Certified Aesthetic Physician</span>
+            <span class="credential-pill">Advanced Injector Training, London</span>
+            <span class="credential-pill">Laser &amp; Energy Device Specialist</span>
+            <span class="credential-pill">Member, AAFPRS</span>
+            <span class="credential-pill">10+ Years Clinical Experience</span>
+            <span class="credential-pill">5,000+ Procedures Performed</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="line-divider"></div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SERVICES                                                -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section section--ivory" id="services">
+    <div class="container">
+
+      <div class="services__header reveal">
+        <span class="section__label">Treatments</span>
+        <h2 class="section__heading">Our <em>signature</em> services</h2>
+        <p class="section__sub">Each treatment is tailored to your unique anatomy, goals, and skin type. No two treatment plans are ever the same.</p>
+      </div>
+
+      <div class="services__grid">
+
+        <div class="service-card reveal">
+          <span class="service-card__num">I.</span>
+          <h3 class="service-card__name" data-live="svc1-name">Injectables &amp; Fillers</h3>
+          <p class="service-card__desc" data-live="svc1-desc">Precision placement of dermal fillers and neurotoxins for natural, refreshed results that move with you.</p>
+          <div class="service-card__tags" data-live="svc1-tags">
+            <span>Botox &amp; Dysport</span>
+            <span>Dermal Fillers</span>
+            <span>Lip Enhancement</span>
+          </div>
+          <a href="#book" class="service-card__link">Book Treatment →</a>
+        </div>
+
+        <div class="service-card reveal">
+          <span class="service-card__num">II.</span>
+          <h3 class="service-card__name" data-live="svc2-name">Skin Rejuvenation</h3>
+          <p class="service-card__desc" data-live="svc2-desc">Advanced laser, chemical peel, and resurfacing treatments to reveal smoother, clearer, younger-looking skin.</p>
+          <div class="service-card__tags" data-live="svc2-tags">
+            <span>Laser Resurfacing</span>
+            <span>Chemical Peels</span>
+            <span>Microneedling</span>
+          </div>
+          <a href="#book" class="service-card__link">Book Treatment →</a>
+        </div>
+
+        <div class="service-card reveal">
+          <span class="service-card__num">III.</span>
+          <h3 class="service-card__name" data-live="svc3-name">Body Contouring</h3>
+          <p class="service-card__desc" data-live="svc3-desc">Non-invasive body sculpting and skin tightening treatments tailored to your goals and lifestyle.</p>
+          <div class="service-card__tags" data-live="svc3-tags">
+            <span>CoolSculpting</span>
+            <span>Skin Tightening</span>
+            <span>Cellulite Reduction</span>
+          </div>
+          <a href="#book" class="service-card__link">Book Treatment →</a>
+        </div>
+
+        <div class="service-card reveal">
+          <span class="service-card__num">IV.</span>
+          <h3 class="service-card__name" data-live="svc4-name">Signature Facials</h3>
+          <p class="service-card__desc" data-live="svc4-desc">Medical-grade facials combining cutting-edge technology with luxury ingredients for visible, lasting results.</p>
+          <div class="service-card__tags" data-live="svc4-tags">
+            <span>HydraFacial MD</span>
+            <span>Oxygen Therapy</span>
+            <span>LED Light Therapy</span>
+          </div>
+          <a href="#book" class="service-card__link">Book Treatment →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="line-divider"></div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- TESTIMONIALS                                            -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section section--cream" id="reviews">
+    <div class="container">
+
+      <div class="testimonials__header reveal">
+        <span class="section__label">Client Experiences</span>
+        <h2 class="section__heading">Words from our <em>clients</em></h2>
+        <p class="section__sub">Authentic reviews from patients who trust us with their most important feature — their face.</p>
+      </div>
+
+      <div class="testimonials__grid">
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">I've seen many practitioners and nothing compares to the level of artistry here. My results look completely natural — my friends think I've been on holiday, not that I've had anything done. That's exactly what I wanted.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="of-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />V</div>
+            <div>
+              <p class="testimonial-card__name">Victoria H.</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">The consultation was as valuable as the treatment itself. She took an hour to truly understand what I wanted and to explain exactly what would work best for my skin. The results exceeded every expectation.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="of-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />S</div>
+            <div>
+              <p class="testimonial-card__name">Sarah M.</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <span class="testimonial-card__quote-mark">"</span>
+          <p class="testimonial-card__text">I was nervous about injectables for the first time. The attention to detail and care throughout the entire process was extraordinary. Six months later and I still love what I see in the mirror every single morning.</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__avatar" style="position:relative;overflow:hidden;"><img id="of-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />C</div>
+            <div>
+              <p class="testimonial-card__name">Charlotte L.</p>
+              <p class="testimonial-card__stars">★★★★★</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="line-divider"></div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- RATES                                                   -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="section" id="rates">
+    <div class="container">
+
+      <div class="rates__header reveal">
+        <span class="section__label">Investment</span>
+        <h2 class="section__heading">Transparent <em>pricing</em></h2>
+        <p class="section__sub">All treatments begin with a complimentary consultation. Your bespoke treatment plan is created before any commitment is made.</p>
+      </div>
+
+      <div class="rates__grid">
+
+        <div class="rate-card reveal">
+          <p class="rate-card__tier">Single Treatment</p>
+          <p class="rate-card__price"><sup>$</sup>350</p>
+          <p class="rate-card__per">starting from</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>One treatment of choice</li>
+            <li>Complimentary consultation</li>
+            <li>Post-treatment protocol</li>
+            <li>14-day follow-up included</li>
+          </ul>
+          <a href="#book" class="btn btn--charcoal-outline">Book Now</a>
+        </div>
+
+        <div class="rate-card rate-card--featured reveal">
+          <span class="rate-card__badge">Recommended</span>
+          <p class="rate-card__tier">Treatment Package</p>
+          <p class="rate-card__price"><sup>$</sup>1,200</p>
+          <p class="rate-card__per">series of four</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>Four tailored treatments</li>
+            <li>Custom skincare protocol</li>
+            <li>Priority scheduling</li>
+            <li>Quarterly reviews included</li>
+            <li>Preferred client pricing</li>
+          </ul>
+          <a href="#book" class="btn btn--ivory">Begin Your Journey</a>
+        </div>
+
+        <div class="rate-card reveal">
+          <p class="rate-card__tier">Annual Membership</p>
+          <p class="rate-card__price"><sup>$</sup>3,600</p>
+          <p class="rate-card__per">per year</p>
+          <div class="rate-card__divider"></div>
+          <ul class="rate-card__features">
+            <li>Unlimited maintenance treatments</li>
+            <li>Annual aesthetic plan</li>
+            <li>Exclusive member events</li>
+            <li>20% off all add-ons</li>
+            <li>Same-day appointments</li>
+          </ul>
+          <a href="#book" class="btn btn--charcoal-outline">Learn More</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- CTA BAND                                                -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="cta-band" id="book">
+    <div class="cta-band__content reveal">
+      <span class="cta-band__label">Begin Your Journey</span>
+      <h2 class="cta-band__heading">You deserve to look as <em>radiant</em> as you feel</h2>
+      <p class="cta-band__sub">
+        Every journey begins with a conversation. Book your complimentary consultation and we'll create a treatment plan designed exclusively for you.
+      </p>
+      <div class="cta-band__actions">
+        <a href="mailto:hello@ofirelle.com" class="btn btn--ivory">
+          Book a Consultation
+        </a>
+        <a href="#services" class="btn btn--ivory-outline">View Treatments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- FOOTER                                                  -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__inner">
+
+      <div class="footer__top">
+
+        <div class="footer__brand">
+          <a href="#" class="footer__logo" data-live="biz-name">
+            Ofirelle<span>.</span>
+          </a>
+          <p class="footer__tagline" data-live="tagline">
+            Where science meets artistry.
+          </p>
+        </div>
+
+        <div class="footer__links">
+          <div>
+            <p class="footer__col-title">Treatments</p>
+            <ul class="footer__col-links">
+              <li><a href="#services">Injectables &amp; Fillers</a></li>
+              <li><a href="#services">Skin Rejuvenation</a></li>
+              <li><a href="#services">Body Contouring</a></li>
+              <li><a href="#services">Signature Facials</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__col-title">Clinic</p>
+            <ul class="footer__col-links">
+              <li><a href="#about">About</a></li>
+              <li><a href="#reviews">Reviews</a></li>
+              <li><a href="#rates">Pricing</a></li>
+              <li><a href="#book">Book Now</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__col-title">Connect</p>
+            <ul class="footer__col-links">
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">RealSelf</a></li>
+              <li><a href="mailto:hello@ofirelle.com">Email</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">
+          &copy; 2026 <span data-live="biz-name">Ofirelle Aesthetics</span>. All rights reserved.
+          Built with <a href="#">Builtsy</a>.
+        </p>
+        <p class="footer__copy">
+          <a href="#">Privacy</a> &nbsp;&middot;&nbsp; <a href="#">Terms</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCRIPT                                                  -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('visible'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      els.forEach(function (el) { observer.observe(el); });
+    })();
+
+    window.builtsy_initAnim = function () {};
+    window.builtsy_demoBurst = function () {};
+  </script>
+
+</body>
+</html>

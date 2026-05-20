@@ -11,6 +11,7 @@
 --cream:#FAF8F4;
 --cream2:#F2EEE6;
 --pink:#E8458A;
+--pink-rgb:232,69,138;
 --pink-light:#F7D0E3;
 --pink-pale:#FEF0F6;
 --dark:#1A1A1A;
@@ -41,11 +42,11 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6
 .btn-pink{background:var(--pink);color:white;padding:14px 32px;border:none;font-family:var(--sans);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px}
 .btn-ghost{background:none;border:none;color:var(--dark);font-size:13px;letter-spacing:0.08em;cursor:pointer;display:flex;align-items:center;gap:8px}
 .btn-ghost span{width:24px;height:1px;background:var(--dark);display:inline-block}
-.hero-right{position:relative;overflow:hidden;background:linear-gradient(135deg,#E8D8E2 0%,#D4C4D0 100%);display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.35);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;min-height:88vh}
+.hero-right{position:relative;overflow:hidden;background:linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.35);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;min-height:88vh}
 .hero-badge{position:absolute;bottom:48px;left:0;background:var(--cream);padding:20px 28px;border-left:3px solid var(--pink)}
 .hero-badge-num{font-family:var(--serif);font-size:48px;line-height:1;font-weight:700;color:var(--pink)}
 .hero-badge-text{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid)}
-.aura{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(232,69,138,0.12) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+.aura{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(var(--pink-rgb),0.12) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
 
 /* PRESS BAR */
 .press-bar{background:var(--pink);padding:16px 0;overflow:hidden}
@@ -57,8 +58,8 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6
 /* ABOUT SPLIT */
 .about{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:70vh}
 .about-photos{position:relative;background:var(--cream2);min-height:520px}
-.about-photo-a{background:linear-gradient(135deg,#DDD0D8,#C8BAC4);position:absolute;top:40px;left:40px;width:62%;height:52%;display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.3);font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
-.about-photo-b{background:linear-gradient(135deg,#C8BAC4,#B8AABC);position:absolute;bottom:40px;right:0;width:52%;height:44%;display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.3);font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
+.about-photo-a{background:linear-gradient(160deg, #DEDEE0 0%, #C6C6CA 42%, #B0B0B4 100%);position:absolute;top:40px;left:40px;width:62%;height:52%;display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.3);font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
+.about-photo-b{background:linear-gradient(135deg, #E0E0E2 0%, #C8C8CC 100%);position:absolute;bottom:40px;right:0;width:52%;height:44%;display:flex;align-items:center;justify-content:center;color:rgba(100,60,80,0.3);font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
 .about-content{padding:100px 80px 100px 60px;display:flex;flex-direction:column;justify-content:center}
 .section-label{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--pink);margin-bottom:20px}
 .about-title{font-family:var(--serif);font-size:48px;line-height:1.1;margin-bottom:28px;font-weight:400}
@@ -142,7 +143,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6
 .step-num{font-family:var(--serif);font-size:64px;color:rgba(232,69,138,0.2);line-height:1;margin-bottom:16px;font-weight:700}
 .step-title{font-family:var(--serif);font-size:20px;color:white;margin-bottom:12px;font-weight:400}
 .step-text{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.8}
-.step-connector{position:absolute;top:32px;right:-20px;width:40px;height:1px;background:rgba(232,69,138,0.3)}
+.step-connector{position:absolute;top:32px;right:-20px;width:40px;height:1px;background:rgba(var(--pink-rgb),0.3)}
 
 /* CONTACT */
 .contact{background:var(--cream2);padding:100px 60px}
@@ -300,12 +301,12 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
   <div class="accordion">
     <div class="acc-item">
       <button class="acc-header open" onclick="toggleAcc(this)">
-        <span class="acc-name">Social Media Management</span>
+        <span class="acc-name" data-live="svc1-name">Social Media Management</span>
         <span class="acc-icon open">+</span>
       </button>
-      <div class="acc-body open">
+      <div class="acc-body open" data-live="svc1-desc">
         Full-service management of your Instagram, TikTok, and Pinterest. Content calendar, caption writing, scheduling, and monthly analytics report — all handled.
-        <div class="acc-tags">
+        <div class="acc-tags" data-live="svc1-tags">
           <span class="acc-tag">Instagram</span>
           <span class="acc-tag">TikTok</span>
           <span class="acc-tag">Pinterest</span>
@@ -315,12 +316,12 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
     </div>
     <div class="acc-item">
       <button class="acc-header" onclick="toggleAcc(this)">
-        <span class="acc-name">Content Creation</span>
+        <span class="acc-name" data-live="svc2-name">Content Creation</span>
         <span class="acc-icon">+</span>
       </button>
-      <div class="acc-body">
+      <div class="acc-body" data-live="svc2-desc">
         On-brand graphics, Reels scripts, carousel designs, and story templates. Delivered ready-to-post every week.
-        <div class="acc-tags">
+        <div class="acc-tags" data-live="svc2-tags">
           <span class="acc-tag">Graphics</span>
           <span class="acc-tag">Reels</span>
           <span class="acc-tag">Carousels</span>
@@ -330,12 +331,12 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
     </div>
     <div class="acc-item">
       <button class="acc-header" onclick="toggleAcc(this)">
-        <span class="acc-name">Brand Strategy Call</span>
+        <span class="acc-name" data-live="svc3-name">Brand Strategy Call</span>
         <span class="acc-icon">+</span>
       </button>
-      <div class="acc-body">
+      <div class="acc-body" data-live="svc3-desc">
         A 90-minute intensive where we audit your current presence, identify gaps, and build a 90-day content roadmap custom to your business goals.
-        <div class="acc-tags">
+        <div class="acc-tags" data-live="svc3-tags">
           <span class="acc-tag">Audit</span>
           <span class="acc-tag">90-Day Plan</span>
           <span class="acc-tag">1:1 Call</span>
@@ -344,12 +345,12 @@ footer{background:var(--dark);padding:60px;color:white;display:flex;justify-cont
     </div>
     <div class="acc-item">
       <button class="acc-header" onclick="toggleAcc(this)">
-        <span class="acc-name">Video &amp; Photo Direction</span>
+        <span class="acc-name" data-live="svc4-name">Video &amp; Photo Direction</span>
         <span class="acc-icon">+</span>
       </button>
-      <div class="acc-body">
+      <div class="acc-body" data-live="svc4-desc">
         Creative direction for your brand shoot — shot list, mood board, styling guidance, and post-production art direction so every image is on-brand.
-        <div class="acc-tags">
+        <div class="acc-tags" data-live="svc4-tags">
           <span class="acc-tag">Mood Boards</span>
           <span class="acc-tag">Shot Lists</span>
           <span class="acc-tag">Art Direction</span>
@@ -827,6 +828,7 @@ function setTesti(i, dot) {
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

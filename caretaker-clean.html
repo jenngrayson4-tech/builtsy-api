@@ -11,8 +11,10 @@
     :root {
       --navy:   #1B3A6B;
       --navy2:  #142D55;
+      --navy-rgb: 27, 58, 107;
       --blue:   #3B82F6;
       --blue2:  #2563EB;
+      --blue-rgb: 59, 130, 246;
       --sky:    #EFF6FF;
       --bg:     #FFFFFF;
       --light:  #F8FAFC;
@@ -118,7 +120,7 @@
     .photo-placeholder {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #BFDBFE 0%, #93C5FD 40%, #60A5FA 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
       border-radius: inherit;
       position: absolute;
       inset: 0;
@@ -295,7 +297,7 @@
       padding-bottom: 110%;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(27, 58, 107, 0.18);
+      box-shadow: 0 20px 60px rgba(var(--navy-rgb), 0.18);
     }
 
     .hero-photo-box .photo-placeholder {
@@ -461,7 +463,7 @@
       border-radius: 16px;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 10px 40px rgba(27,58,107,0.12);
+      box-shadow: 0 10px 40px rgba(var(--navy-rgb), 0.12);
     }
 
     .about-photo-b {
@@ -471,7 +473,7 @@
       overflow: hidden;
       position: relative;
       margin-left: auto;
-      box-shadow: 0 10px 40px rgba(27,58,107,0.12);
+      box-shadow: 0 10px 40px rgba(var(--navy-rgb), 0.12);
     }
 
     .about-photo-a img,
@@ -515,7 +517,7 @@
     }
 
     .service-card:hover {
-      box-shadow: 0 8px 28px rgba(27,58,107,0.12);
+      box-shadow: 0 8px 28px rgba(var(--navy-rgb), 0.12);
       transform: translateY(-2px);
     }
 
@@ -664,7 +666,7 @@
       background: var(--white);
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 2px 16px rgba(27,58,107,0.08);
+      box-shadow: 0 2px 16px rgba(var(--navy-rgb), 0.08);
     }
 
     .testi-stars {
@@ -752,11 +754,11 @@
       transition: box-shadow 0.2s;
     }
 
-    .rate-card:hover { box-shadow: 0 8px 32px rgba(27,58,107,0.1); }
+    .rate-card:hover { box-shadow: 0 8px 32px rgba(var(--navy-rgb), 0.1); }
 
     .rate-card.featured {
       border-color: var(--navy);
-      box-shadow: 0 8px 32px rgba(27,58,107,0.12);
+      box-shadow: 0 8px 32px rgba(var(--navy-rgb), 0.12);
     }
 
     .rate-badge {
@@ -915,7 +917,7 @@
     .detail-icon {
       width: 38px;
       height: 38px;
-      background: rgba(59,130,246,0.15);
+      background: rgba(var(--blue-rgb), 0.15);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -950,8 +952,8 @@
 
     .response-note {
       margin-top: 28px;
-      background: rgba(59,130,246,0.1);
-      border: 1px solid rgba(59,130,246,0.25);
+      background: rgba(var(--blue-rgb), 0.1);
+      border: 1px solid rgba(var(--blue-rgb), 0.25);
       border-radius: 10px;
       padding: 16px 20px;
       font-size: 14px;
@@ -1325,11 +1327,11 @@
     <div class="services-grid">
 
       <div class="service-card">
-        <div class="service-name">Infant &amp; Baby Care</div>
-        <p class="service-desc">
+        <div class="service-name" data-live="svc1-name">Infant &amp; Baby Care</div>
+        <p class="service-desc" data-live="svc1-desc">
           Specialized care for newborns through 18 months. I provide feeding support, sleep schedule assistance, and a calm, nurturing environment that gives new parents real peace of mind. Overnight and live-in care available.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc1-tags">
           <span class="tag">Newborns</span>
           <span class="tag">Sleep Schedules</span>
           <span class="tag">Overnight</span>
@@ -1338,11 +1340,11 @@
       </div>
 
       <div class="service-card">
-        <div class="service-name">Children Ages 2–10</div>
-        <p class="service-desc">
+        <div class="service-name" data-live="svc2-name">Children Ages 2–10</div>
+        <p class="service-desc" data-live="svc2-desc">
           Engaging, age-appropriate activities, homework support, outdoor time, and healthy meals. I work closely with parents to follow established routines and household rules, making sure kids feel secure even when you're away.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc2-tags">
           <span class="tag">Toddlers</span>
           <span class="tag">School-Age</span>
           <span class="tag">Activities</span>
@@ -1351,11 +1353,11 @@
       </div>
 
       <div class="service-card">
-        <div class="service-name">After School &amp; Activities</div>
-        <p class="service-desc">
+        <div class="service-name" data-live="svc3-name">After School &amp; Activities</div>
+        <p class="service-desc" data-live="svc3-desc">
           School pickup, homework help, snacks, and transportation to sports, music, or tutoring. I keep kids on schedule and parents informed. Available Monday through Friday starting at 2:30 PM in most cases.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc3-tags">
           <span class="tag">School Pickup</span>
           <span class="tag">Homework Help</span>
           <span class="tag">Scheduling</span>
@@ -1364,11 +1366,11 @@
       </div>
 
       <div class="service-card">
-        <div class="service-name">Senior Companionship Care</div>
-        <p class="service-desc">
+        <div class="service-name" data-live="svc4-name">Senior Companionship Care</div>
+        <p class="service-desc" data-live="svc4-desc">
           Compassionate, non-medical care for elderly adults who benefit from reliable daily companionship, light household assistance, errand support, and transportation to appointments. Dementia-friendly approach available.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc4-tags">
           <span class="tag">Companionship</span>
           <span class="tag">Errands</span>
           <span class="tag">Appointment Transport</span>
@@ -1947,6 +1949,7 @@
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

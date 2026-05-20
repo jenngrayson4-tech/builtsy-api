@@ -15,6 +15,7 @@
       --dark2: #0F2424;
       --accent: #E8458A;
       --accent2: #FF6BAC;
+      --accent-rgb: 232, 69, 138;
       --cream: #FAF8F4;
       --cream2: #F0EBE1;
       --text: #1A1A1A;
@@ -106,7 +107,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      background: linear-gradient(135deg, #d4c9b8 0%, #c4b9a5 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
       color: #8a7d6e;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.8rem;
@@ -216,7 +217,7 @@
       top: -120px; right: -80px;
       width: 520px; height: 520px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,69,138,0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, transparent 70%);
       pointer-events: none;
     }
     .hero-inner {
@@ -240,7 +241,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent2);
-      border: 1px solid rgba(232,69,138,0.4);
+      border: 1px solid rgba(var(--accent-rgb), 0.4);
       border-radius: 2px;
       padding: 5px 12px;
       margin-bottom: 24px;
@@ -1266,14 +1267,14 @@
     <!-- Accordion Item 1 -->
     <div class="accordion-item active" id="acc-1">
       <button class="accordion-trigger" onclick="toggleAccordion('acc-1')" aria-expanded="true">
-        <span class="accordion-title">Social Media Strategy</span>
+        <span class="accordion-title" data-live="svc1-name">Social Media Strategy</span>
         <span class="accordion-icon">−</span>
       </button>
       <div class="accordion-body">
-        <p class="accordion-desc">
+        <p class="accordion-desc" data-live="svc1-desc">
           A comprehensive, brand-specific roadmap that tells you exactly what to post, when to post it, and why — backed by competitor analysis, audience research, and platform algorithm expertise. You'll walk away with a 90-day content calendar, channel-specific benchmarks, and a voice guide your whole team can use.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc1-tags">
           <span class="service-tag">Brand Audit</span>
           <span class="service-tag">Content Pillars</span>
           <span class="service-tag">90-Day Roadmap</span>
@@ -1286,14 +1287,14 @@
     <!-- Accordion Item 2 -->
     <div class="accordion-item" id="acc-2">
       <button class="accordion-trigger" onclick="toggleAccordion('acc-2')" aria-expanded="false">
-        <span class="accordion-title">Content Creation &amp; Direction</span>
+        <span class="accordion-title" data-live="svc2-name">Content Creation &amp; Direction</span>
         <span class="accordion-icon">+</span>
       </button>
       <div class="accordion-body">
-        <p class="accordion-desc">
+        <p class="accordion-desc" data-live="svc2-desc">
           Scroll-stopping visuals and captions that sound like you — except elevated. I handle creative direction, copy, short-form video scripting, and graphic design coordination so your feed looks like the brand you've always imagined. Monthly content batches delivered ready to schedule.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc2-tags">
           <span class="service-tag">Caption Copywriting</span>
           <span class="service-tag">Reels Scripting</span>
           <span class="service-tag">Graphic Direction</span>
@@ -1306,14 +1307,14 @@
     <!-- Accordion Item 3 -->
     <div class="accordion-item" id="acc-3">
       <button class="accordion-trigger" onclick="toggleAccordion('acc-3')" aria-expanded="false">
-        <span class="accordion-title">Community Management</span>
+        <span class="accordion-title" data-live="svc3-name">Community Management</span>
         <span class="accordion-icon">+</span>
       </button>
       <div class="accordion-body">
-        <p class="accordion-desc">
+        <p class="accordion-desc" data-live="svc3-desc">
           Your audience deserves real engagement, not automated replies. I manage your DMs, comments, and story interactions daily — nurturing relationships, handling brand inquiries, and turning followers into loyal customers. Includes weekly sentiment reporting and a monthly community health summary.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc3-tags">
           <span class="service-tag">Daily Engagement</span>
           <span class="service-tag">DM Management</span>
           <span class="service-tag">Comment Moderation</span>
@@ -1326,14 +1327,14 @@
     <!-- Accordion Item 4 -->
     <div class="accordion-item" id="acc-4">
       <button class="accordion-trigger" onclick="toggleAccordion('acc-4')" aria-expanded="false">
-        <span class="accordion-title">Analytics &amp; Growth Consulting</span>
+        <span class="accordion-title" data-live="svc4-name">Analytics &amp; Growth Consulting</span>
         <span class="accordion-icon">+</span>
       </button>
       <div class="accordion-body">
-        <p class="accordion-desc">
+        <p class="accordion-desc" data-live="svc4-desc">
           Data that actually makes sense. Monthly performance reports that go beyond vanity metrics — linking social activity to real business outcomes like website traffic, email sign-ups, and revenue attribution. Includes a monthly strategy refinement call to keep your content evolving with the algorithm.
         </p>
-        <div class="service-tags">
+        <div class="service-tags" data-live="svc4-tags">
           <span class="service-tag">Monthly Reporting</span>
           <span class="service-tag">Growth Audits</span>
           <span class="service-tag">A/B Testing</span>
@@ -1982,6 +1983,7 @@
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

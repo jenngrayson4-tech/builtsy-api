@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alchemist Wellness — Holistic Health Coaching for Women</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ivory: #F8F4EC;
+  --cream: #F0E8D8;
+  --cream-rgb: 240,232,216;
+  --earth: #8A6840;
+  --earth-rgb: 138,104,64;
+  --earth2: #6A4C28;
+  --earth2-rgb: 106,76,40;
+  --earth3: #4A3018;
+  --olive: #7A8460;
+  --olive2: #5A6440;
+  --dark: #201408;
+  --text: #2C1C0C;
+  --text-soft: #806040;
+  --white: #FFFFFF;
+  --radius-pill: 999px;
+  --radius-card: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ivory);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--earth3);
+}
+h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); font-style: italic; }
+h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-style: italic; }
+h3 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); }
+p { font-size: 1.05rem; color: var(--text-soft); max-width: 60ch; }
+em { font-style: italic; color: var(--earth2); }
+a { text-decoration: none; color: inherit; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 96px 0; }
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ivory);
+  border-bottom: 1px solid rgba(var(--earth-rgb),0.18);
+  padding: 0 32px;
+}
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--earth3);
+  letter-spacing: 0.02em;
+}
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--earth2); }
+.nav-cta {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--earth2);
+  border-bottom: 1px solid var(--earth2);
+  padding-bottom: 2px;
+  transition: opacity 0.2s;
+}
+.nav-cta:hover { opacity: 0.7; }
+
+/* Burger */
+#burger-toggle { display: none; }
+.burger-label {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.burger-label span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--earth3);
+  transition: all 0.3s;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--ivory);
+  padding: 24px 32px;
+  gap: 20px;
+  border-top: 1px solid rgba(var(--earth-rgb),0.18);
+}
+.mobile-menu a {
+  font-size: 1rem;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+#burger-toggle:checked ~ .mobile-menu { display: flex; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(2) { opacity: 0; }
+#burger-toggle:checked ~ .nav-inner .burger-label span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .burger-label { display: flex; }
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  background: var(--cream);
+  border-top: 1px solid rgba(var(--earth-rgb),0.2);
+  border-bottom: 1px solid rgba(var(--earth-rgb),0.2);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track span {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--earth);
+  padding: 0 32px;
+  letter-spacing: 0.04em;
+}
+.marquee-track span::after {
+  content: "·";
+  margin-left: 32px;
+  color: var(--earth2);
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--ivory);
+  padding: 80px 0 60px;
+}
+.hero-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.hero-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 24px;
+}
+.hero-headline {
+  margin-bottom: 24px;
+}
+.hero-tagline {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  color: var(--text-soft);
+  max-width: 50ch;
+}
+.hero-ctas {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--earth2);
+  border-bottom: 1px solid var(--earth2);
+  padding-bottom: 3px;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.65; }
+.btn-secondary {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  border: 1px solid rgba(var(--earth-rgb),0.35);
+  padding: 10px 24px;
+  border-radius: var(--radius-card);
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--earth);
+  color: var(--earth2);
+}
+.hero-photo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-photo {
+  width: 420px;
+  height: 520px;
+  background: var(--cream);
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  border: 2px solid rgba(var(--earth-rgb),0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--earth);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border-radius: inherit;
+  border: 1px solid rgba(var(--earth-rgb),0.2);
+}
+
+/* ── WAVE SVG ── */
+.wave-divider { line-height: 0; overflow: hidden; }
+.wave-divider svg { display: block; width: 100%; }
+
+/* ── ABOUT ── */
+.about {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.about-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-photo {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: var(--ivory);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--earth-rgb),0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--earth);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  position: relative;
+  overflow: hidden;
+}
+.about-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 20px;
+}
+.about-content h2 { margin-bottom: 24px; }
+.about-content p { margin-bottom: 20px; }
+.credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+.pill {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--earth2);
+  border: 1px solid rgba(var(--earth2-rgb),0.35);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+}
+
+/* ── SERVICES ── */
+.services {
+  background: var(--ivory);
+  padding: 96px 0;
+}
+.section-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 16px;
+  display: block;
+}
+.services h2 { text-align: center; margin-bottom: 8px; }
+.services .section-intro {
+  text-align: center;
+  margin: 0 auto 60px;
+  font-size: 1rem;
+  color: var(--text-soft);
+  max-width: 50ch;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.svc-card {
+  padding: 40px 32px;
+  border-right: 1px solid rgba(var(--earth-rgb),0.2);
+  position: relative;
+}
+.svc-card:last-child { border-right: none; }
+.svc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--olive);
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+  display: block;
+}
+.svc-card h3 {
+  font-size: 1.3rem;
+  font-style: italic;
+  margin-bottom: 16px;
+  color: var(--earth3);
+}
+.svc-card p { font-size: 0.92rem; line-height: 1.75; margin-bottom: 20px; }
+.svc-tags {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--olive2);
+  text-transform: uppercase;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.testimonials h2 { text-align: center; margin-bottom: 64px; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+.testi-card {
+  text-align: center;
+  padding: 16px;
+}
+.testi-stars {
+  font-size: 0.9rem;
+  color: var(--earth);
+  margin-bottom: 20px;
+  letter-spacing: 4px;
+}
+.testi-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--earth3);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.testi-name {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.testi-role {
+  font-size: 0.78rem;
+  color: var(--olive);
+  margin-top: 4px;
+}
+
+/* ── RATES ── */
+.rates {
+  background: var(--ivory);
+  padding: 96px 0;
+}
+.rates h2 { text-align: center; margin-bottom: 8px; }
+.rates .section-intro { text-align: center; margin: 0 auto 56px; max-width: 50ch; }
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.rate-card {
+  border: 1px solid rgba(var(--earth-rgb),0.25);
+  padding: 48px 32px;
+  border-radius: var(--radius-card);
+  position: relative;
+}
+.rate-card.featured {
+  background: var(--earth3);
+  border-color: var(--earth3);
+}
+.rate-card.featured h3,
+.rate-card.featured .rate-price,
+.rate-card.featured p,
+.rate-card.featured li {
+  color: var(--cream) !important;
+}
+.rate-card.featured .rate-badge {
+  background: var(--earth);
+  color: var(--cream);
+}
+.rate-badge {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--cream);
+  color: var(--earth2);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 24px;
+}
+.rate-card h3 {
+  font-size: 1.5rem;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.rate-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  color: var(--earth2);
+  margin-bottom: 8px;
+}
+.rate-price sup { font-size: 1.2rem; vertical-align: top; margin-top: 10px; display: inline-block; }
+.rate-period { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 28px; }
+.rate-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.rate-features li {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(var(--earth-rgb),0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rate-features li::before { content: "—"; color: var(--earth); }
+.rate-cta {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--earth2);
+  border-bottom: 1px solid var(--earth2);
+  padding-bottom: 3px;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.rate-cta:hover { opacity: 0.65; }
+.rate-card.featured .rate-cta {
+  color: var(--cream);
+  border-color: var(--cream);
+}
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: var(--earth3);
+  padding: 96px 0;
+}
+.cta-band-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+.cta-band h2 {
+  color: var(--cream);
+  margin-bottom: 20px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.cta-band p {
+  color: rgba(var(--cream-rgb),0.75);
+  margin: 0 auto 40px;
+  font-size: 1.05rem;
+  max-width: 50ch;
+}
+.btn-light {
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream);
+  border-bottom: 1px solid var(--cream);
+  padding-bottom: 3px;
+  transition: opacity 0.2s;
+  display: inline-block;
+  margin: 0 20px;
+}
+.btn-light:hover { opacity: 0.65; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  padding: 64px 0 40px;
+}
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 36px;
+}
+.footer-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+.footer-tagline {
+  font-size: 0.9rem;
+  color: rgba(var(--cream-rgb),0.5);
+  max-width: 28ch;
+  line-height: 1.6;
+}
+.footer-col h4 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a {
+  font-size: 0.88rem;
+  color: rgba(var(--cream-rgb),0.5);
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--cream); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: rgba(var(--cream-rgb),0.3);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── JOURNAL / BLOG PREVIEW ── */
+.journal {
+  background: var(--ivory);
+  padding: 96px 0;
+}
+.journal h2 { text-align: center; margin-bottom: 8px; }
+.journal .section-intro { text-align: center; margin: 0 auto 56px; }
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.journal-card {
+  border-bottom: 1px solid rgba(var(--earth-rgb),0.2);
+  padding-bottom: 32px;
+}
+.journal-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 14px;
+  display: block;
+}
+.journal-card h3 {
+  font-size: 1.3rem;
+  font-style: italic;
+  margin-bottom: 12px;
+  color: var(--earth3);
+  line-height: 1.3;
+}
+.journal-card p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px; }
+.journal-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--earth2);
+  border-bottom: 1px solid var(--earth2);
+  padding-bottom: 2px;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.journal-link:hover { opacity: 0.65; }
+
+/* ── FAQ ── */
+.faq {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.faq h2 { text-align: center; margin-bottom: 56px; }
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.faq-item {
+  border-bottom: 1px solid rgba(var(--earth-rgb),0.2);
+}
+.faq-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--earth3);
+  padding: 24px 0;
+  cursor: default;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.faq-question::after {
+  content: '—';
+  font-size: 1rem;
+  color: var(--earth);
+  flex-shrink: 0;
+}
+.faq-answer {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+  padding-bottom: 24px;
+  max-width: none;
+}
+
+/* ── PROCESS ── */
+.process {
+  background: var(--ivory);
+  padding: 96px 0;
+}
+.process h2 { text-align: center; margin-bottom: 8px; }
+.process .section-intro { text-align: center; margin: 0 auto 64px; }
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: rgba(var(--earth-rgb),0.25);
+}
+.process-step {
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+.process-dot {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1px solid rgba(var(--earth-rgb),0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  position: relative;
+  z-index: 1;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--earth2);
+}
+.process-step h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--earth3);
+  margin-bottom: 10px;
+}
+.process-step p { font-size: 0.88rem; line-height: 1.7; }
+
+/* ── INSTAGRAM GRID ── */
+.instagram-section {
+  background: var(--cream);
+  padding: 80px 0;
+}
+.instagram-section h2 { text-align: center; margin-bottom: 8px; }
+.instagram-handle {
+  text-align: center;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  color: var(--earth);
+  margin-bottom: 40px;
+}
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+.ig-cell {
+  aspect-ratio: 1;
+  background: var(--ivory);
+  border: 1px solid rgba(var(--earth-rgb),0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--earth);
+  font-size: 0.72rem;
+  font-style: italic;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.ig-cell:hover { opacity: 0.8; }
+
+/* ── NEWSLETTER ── */
+.newsletter-band {
+  background: var(--earth);
+  padding: 72px 0;
+}
+.newsletter-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+.newsletter-band h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--cream);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.newsletter-band p { color: rgba(var(--cream-rgb),0.75); margin: 0 auto 28px; font-size: 0.95rem; }
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.newsletter-input {
+  flex: 1;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(var(--cream-rgb),0.3);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 12px 18px;
+  border-radius: var(--radius-card);
+  outline: none;
+}
+.newsletter-input::placeholder { color: rgba(var(--cream-rgb),0.45); }
+.newsletter-btn {
+  background: var(--earth3);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.newsletter-btn:hover { opacity: 0.8; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-photo-wrap { order: -1; }
+  .hero-photo { width: 280px; height: 340px; }
+  .about-inner { grid-template-columns: 1fr; gap: 40px; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .svc-card { border-right: none; border-bottom: 1px solid rgba(var(--earth-rgb),0.2); }
+  .svc-card:last-child { border-bottom: none; }
+  .testi-grid { grid-template-columns: 1fr; gap: 48px; }
+  .rates-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .process-steps::before { display: none; }
+  .journal-grid { grid-template-columns: 1fr; gap: 32px; }
+  .ig-grid { grid-template-columns: repeat(3, 1fr); }
+  .newsletter-form { flex-direction: column; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .section { padding: 64px 0; }
+}
+@media (max-width: 480px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .ig-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-steps { grid-template-columns: 1fr; }
+}
+
+/* ── QUOTE BAND ── */
+.quote-band {
+  background: var(--olive2);
+  padding: 72px 0;
+}
+.quote-band-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+.quote-band blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--cream);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+.quote-band cite {
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(var(--cream-rgb),0.55);
+  font-style: normal;
+}
+
+/* ── ABOUT EXTENDED ── */
+.values-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 32px;
+  margin-top: 64px;
+}
+.value-card {
+  text-align: center;
+  padding: 40px 24px;
+  border: 1px solid rgba(var(--earth-rgb),0.18);
+  border-radius: var(--radius-card);
+}
+.value-card .value-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--earth);
+  margin-bottom: 16px;
+  display: block;
+}
+.value-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--earth3);
+  margin-bottom: 12px;
+}
+.value-card p { font-size: 0.88rem; line-height: 1.7; }
+@media (max-width: 768px) {
+  .values-list { grid-template-columns: 1fr; }
+}
+
+/* ── STATS BAND ── */
+.stats-band {
+  background: var(--earth3);
+  padding: 64px 0;
+}
+.stats-band-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.stat-item {}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--cream);
+  display: block;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--cream-rgb),0.6);
+}
+@media (max-width: 768px) {
+  .stats-band-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+}
+
+/* ── FEATURED IN ── */
+.featured-in {
+  background: var(--ivory);
+  padding: 56px 0;
+  border-top: 1px solid rgba(var(--earth-rgb),0.15);
+}
+.featured-label {
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 28px;
+  opacity: 0.6;
+}
+.featured-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.featured-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(var(--earth-rgb),0.4);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.featured-logo:hover { color: var(--earth); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <input type="checkbox" id="burger-toggle" hidden>
+  <div class="nav-inner">
+    <div class="nav-logo">Alchemist Wellness</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Offerings</a></li>
+      <li><a href="#testimonials">Stories</a></li>
+      <li><a href="#rates">Investment</a></li>
+    </ul>
+    <a class="nav-cta" href="#rates">Book a Clarity Call</a>
+    <label class="burger-label" for="burger-toggle">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+  <div class="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#services">Offerings</a>
+    <a href="#testimonials">Stories</a>
+    <a href="#rates">Investment</a>
+    <a href="#rates">Book a Clarity Call</a>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Presence</span><span>Peace</span><span>Intention</span><span>Embodiment</span><span>Slow Living</span><span>Sacred Practice</span><span>Somatic Healing</span><span>Women's Wisdom</span><span>Deep Tissue</span><span>White Sage</span><span>Breathwork</span><span>Spiritual Awakening</span>
+    <span>Presence</span><span>Peace</span><span>Intention</span><span>Embodiment</span><span>Slow Living</span><span>Sacred Practice</span><span>Somatic Healing</span><span>Women's Wisdom</span><span>Deep Tissue</span><span>White Sage</span><span>Breathwork</span><span>Spiritual Awakening</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow reveal">Holistic Health · Slow Living · Women's Coaching</p>
+      <h1 class="hero-headline reveal reveal-delay-1" data-live="headline">
+        Where <em>Presence</em> Becomes Your Most <em>Powerful</em> Practice
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-2" data-live="tagline">
+        Holistic health coaching and slow-living support for women who crave more presence, peace, and intention in their everyday lives.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#rates" class="btn-primary">Book a Clarity Call</a>
+        <a href="#services" class="btn-secondary">Explore Offerings</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap reveal reveal-delay-2">
+      <div class="hero-photo"><img id="alc-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />Photo Placeholder</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--ivory);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,32 C360,80 1080,-16 1440,32 L1440,64 L0,64 Z" fill="#F0E8D8"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner container">
+    <div class="about-photo reveal"><img id="alc-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="" />Photo Placeholder</div>
+    <div class="about-content">
+      <span class="about-label reveal">My Story</span>
+      <h2 class="reveal reveal-delay-1">Rooted in presence,<br>guided by intention</h2>
+      <p class="reveal reveal-delay-2">
+        I'm a certified life coach and somatic practitioner rooted in California, supporting women across the world through life transitions, identity shifts, and the slow work of coming home to themselves. Every session is an invitation to return.
+      </p>
+      <p class="reveal reveal-delay-3">
+        My work lives at the intersection of embodiment, simplicity, and soul — drawing on somatic practices, slow-living philosophy, and years of walking alongside women as they shed what no longer serves them and rediscover what does.
+      </p>
+      <p class="reveal reveal-delay-4">
+        Whether you're navigating a major life shift or simply craving more meaning in the everyday, this work is for you. Come as you are. Leave more fully yourself.
+      </p>
+      <div class="credentials reveal">
+        <span class="pill">Certified Life Coach</span>
+        <span class="pill">Somatic Practitioner</span>
+        <span class="pill">Breathwork Facilitator</span>
+        <span class="pill">Women's Circle Holder</span>
+        <span class="pill">IIN Graduate</span>
+        <span class="pill">10+ Years Experience</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="quote-band">
+  <div class="quote-band-inner">
+    <blockquote class="reveal">"The slowest path is often the most sacred. Come home to yourself — one breath, one choice, one day at a time."</blockquote>
+    <cite class="reveal reveal-delay-1">— Alchemist Wellness</cite>
+  </div>
+</div>
+
+<!-- VALUES -->
+<section style="background:var(--ivory);padding:80px 0;">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;" class="reveal">What I Believe</span>
+    <h2 style="text-align:center;" class="reveal">The Roots of This Work</h2>
+    <div class="values-list">
+      <div class="value-card reveal">
+        <span class="value-icon">♡</span>
+        <h4>Embodiment First</h4>
+        <p>The body knows before the mind does. Every offering is designed to drop you out of your head and back into your body — where real change lives.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-icon">◌</span>
+        <h4>Slowness as Medicine</h4>
+        <p>In a culture that worships speed, choosing slowness is a radical act. The work we do here is deliberate, unhurried, and deeply honoring of your pace.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-icon">✦</span>
+        <h4>Sacred Ordinariness</h4>
+        <p>Presence doesn't require a retreat or a special occasion. The most transformative work often happens in the most ordinary moments of your daily life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED IN -->
+<div class="featured-in">
+  <div class="container">
+    <p class="featured-label reveal">As Seen In</p>
+    <div class="featured-logos reveal reveal-delay-1">
+      <span class="featured-logo">Goop</span>
+      <span class="featured-logo">Well + Good</span>
+      <span class="featured-logo">MindBodyGreen</span>
+      <span class="featured-logo">The Chalkboard</span>
+      <span class="featured-logo">Yoga Journal</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-band-inner">
+    <div class="stat-item reveal">
+      <span class="stat-num">800+</span>
+      <span class="stat-label">Women Supported</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">Years of Practice</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Healing Modalities</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <span class="stat-num">★4.9</span>
+      <span class="stat-label">Client Rating</span>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--earth3);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C480,60 960,0 1440,40 L1440,64 L0,64 Z" fill="#F8F4EC"/>
+  </svg>
+</div>
+
+<!-- SERVICES -->
+<section class="services section" id="services">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;">Offerings</span>
+    <h2 class="reveal">Ways We Work Together</h2>
+    <p class="section-intro reveal reveal-delay-1">Every offering is designed to meet you where you are — and gently walk you toward where you wish to be.</p>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <span class="svc-num">01</span>
+        <h3 data-live="svc1-name">Clarity Coaching</h3>
+        <p data-live="svc1-desc">One-on-one sessions to untangle the noise and connect you back to what matters most — your values, vision, and true direction.</p>
+        <div class="svc-tags" data-live="svc1-tags">Values · Vision · Direction · 1:1 Sessions</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-1">
+        <span class="svc-num">02</span>
+        <h3 data-live="svc2-name">Somatic Healing</h3>
+        <p data-live="svc2-desc">Body-based practices to release stored stress, trauma, and tension — so you can move through life feeling lighter and more free.</p>
+        <div class="svc-tags" data-live="svc2-tags">Breathwork · Body · Release · Embodiment</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-2">
+        <span class="svc-num">03</span>
+        <h3 data-live="svc3-name">Slow Living Guidance</h3>
+        <p data-live="svc3-desc">Practical and soulful support for simplifying your life, creating meaningful rituals, and designing days that actually feel good.</p>
+        <div class="svc-tags" data-live="svc3-tags">Ritual · Simplicity · Intention · Daily Life</div>
+      </div>
+      <div class="svc-card reveal reveal-delay-3">
+        <span class="svc-num">04</span>
+        <h3 data-live="svc4-name">Women's Circles</h3>
+        <p data-live="svc4-desc">Sacred seasonal gatherings for women to come together in community, reflection, and shared intention-setting.</p>
+        <div class="svc-tags" data-live="svc4-tags">Community · Seasonal · Sacred · Gathering</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--ivory);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,48 C360,10 1080,56 1440,20 L1440,64 L0,64 Z" fill="#F0E8D8"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <h2 class="reveal">What Women Are Saying</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Working with her changed the way I move through every single day. I finally feel like I live in my own life — not just survive it."</p>
+        <div class="testi-name">Mara Callahan</div>
+        <div class="testi-role">Brand Strategist, New York</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I came in feeling scattered and completely disconnected. After three months, I feel grounded, clear, and more myself than I've been in years."</p>
+        <div class="testi-name">Sofia Reyes</div>
+        <div class="testi-role">Teacher & Mother, California</div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The somatic work cracked something open in me that years of talk therapy couldn't reach. I am eternally grateful for this practice."</p>
+        <div class="testi-name">Nadia Winters</div>
+        <div class="testi-role">Therapist, Portland</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,32 C480,0 960,64 1440,28 L1440,64 L0,64 Z" fill="#F8F4EC"/>
+  </svg>
+</div>
+
+<!-- RATES -->
+<section class="rates section" id="rates">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;">Investment</span>
+    <h2 class="reveal">Choose Your Path</h2>
+    <p class="section-intro reveal reveal-delay-1">Every offering is an investment in your return to yourself. Payment plans available.</p>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <span class="rate-badge">Single Session</span>
+        <h3>Clarity Call</h3>
+        <div class="rate-price"><sup>$</sup>195</div>
+        <p class="rate-period">One 75-minute session</p>
+        <ul class="rate-features">
+          <li>75-minute Zoom session</li>
+          <li>Personalized reflection guide</li>
+          <li>Follow-up voice note</li>
+          <li>Resource library access</li>
+        </ul>
+        <a href="#" class="rate-cta">Book Now</a>
+      </div>
+      <div class="rate-card featured reveal reveal-delay-1">
+        <span class="rate-badge">Most Loved</span>
+        <h3>Deep Dive</h3>
+        <div class="rate-price" style="color:var(--cream);"><sup>$</sup>888</div>
+        <p class="rate-period">3-month container (6 sessions)</p>
+        <ul class="rate-features">
+          <li>Six 75-minute sessions</li>
+          <li>Somatic practices included</li>
+          <li>Monthly intention-setting ritual</li>
+          <li>WhatsApp voice support</li>
+          <li>Full resource library</li>
+          <li>Payment plan available</li>
+        </ul>
+        <a href="#" class="rate-cta">Begin Your Journey</a>
+      </div>
+      <div class="rate-card reveal reveal-delay-2">
+        <span class="rate-badge">Sacred Container</span>
+        <h3>Full Alchemy</h3>
+        <div class="rate-price"><sup>$</sup>1,888</div>
+        <p class="rate-period">6-month transformation</p>
+        <ul class="rate-features">
+          <li>Twelve 75-minute sessions</li>
+          <li>All somatic modalities</li>
+          <li>Women's circle access</li>
+          <li>Daily check-in support</li>
+          <li>Personalized ritual kit</li>
+          <li>Priority scheduling</li>
+        </ul>
+        <a href="#" class="rate-cta">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process section">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;">How It Works</span>
+    <h2 class="reveal">The Path We Walk Together</h2>
+    <p class="section-intro reveal reveal-delay-1">Every container begins the same way — with deep listening, and an invitation to return.</p>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="process-dot">01</div>
+        <h4>Clarity Call</h4>
+        <p>We begin with a no-pressure conversation to understand where you are and where you long to be.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-dot">02</div>
+        <h4>Custom Map</h4>
+        <p>Together we co-create a personalized path — blending somatic practices, coaching tools, and your intuition.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-dot">03</div>
+        <h4>Deep Work</h4>
+        <p>Session by session, we move through what's ready — gently, intentionally, and always at your pace.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-dot">04</div>
+        <h4>Integration</h4>
+        <p>Between sessions, practices and prompts help the work take root in the texture of your daily life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--ivory);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,16 C480,60 960,0 1440,44 L1440,64 L0,64 Z" fill="#F0E8D8"/>
+  </svg>
+</div>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <h2 class="reveal">Common Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-question">How do I know if this work is right for me?</div>
+        <p class="faq-answer">If you find yourself craving more presence, meaning, and ease in your everyday life — and you're ready to do some gentle but meaningful inner work — you're in the right place. We begin with a free clarity call so you can feel into whether this is a good fit before committing.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Do I need any prior experience with coaching or somatic work?</div>
+        <p class="faq-answer">Not at all. Many of my most profound clients come in with zero background in any of this. I meet you exactly where you are — with no jargon, no pressure, and no expectation that you arrive already "healed." That's what the work is for.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Are sessions virtual or in-person?</div>
+        <p class="faq-answer">All one-on-one sessions are held via Zoom, making this work accessible to women wherever you are in the world. Women's Circles are offered seasonally, both virtually and (occasionally) in person in California.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">What is somatic work, exactly?</div>
+        <p class="faq-answer">Somatic work means working with the body as much as the mind. Rather than only talking about your experience, we bring gentle awareness to physical sensations, breath, and movement — because the body holds a kind of wisdom that words alone can't always access.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Is there a payment plan option?</div>
+        <p class="faq-answer">Yes — payment plans are available for both the Deep Dive and Full Alchemy containers. I believe this work should be accessible to women who are truly called to it, and I do my best to make that possible. Let's talk on your clarity call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C360,10 1080,60 1440,20 L1440,64 L0,64 Z" fill="#F8F4EC"/>
+  </svg>
+</div>
+
+<!-- JOURNAL PREVIEW -->
+<section class="journal section">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;">The Journal</span>
+    <h2 class="reveal">Words for the Slow Path</h2>
+    <p class="section-intro reveal reveal-delay-1">Musings on presence, embodiment, and the art of living intentionally.</p>
+    <div class="journal-grid">
+      <div class="journal-card reveal">
+        <span class="journal-tag">Slow Living</span>
+        <h3>On Doing Less and Feeling More</h3>
+        <p>What happens when you stop measuring your worth by your output? A reflection on slowing down in a world that rewards speed above all else.</p>
+        <a class="journal-link" href="#">Read More</a>
+      </div>
+      <div class="journal-card reveal reveal-delay-1">
+        <span class="journal-tag">Somatic Practice</span>
+        <h3>The Breath as a Return to Self</h3>
+        <p>Before any technique, before any method — there is the breath. Here's how a simple daily practice became the foundation of everything I do.</p>
+        <a class="journal-link" href="#">Read More</a>
+      </div>
+      <div class="journal-card reveal reveal-delay-2">
+        <span class="journal-tag">Women's Work</span>
+        <h3>What It Means to Come Home to Yourself</h3>
+        <p>Many of us spend years becoming who others need us to be. This is an invitation to gently, lovingly, find your way back to the woman beneath all of that.</p>
+        <a class="journal-link" href="#">Read More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--ivory);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,28 C480,64 960,10 1440,36 L1440,64 L0,64 Z" fill="#8A6840"/>
+  </svg>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-band">
+  <div class="newsletter-inner">
+    <h3 class="reveal">The Slow Letter</h3>
+    <p class="reveal reveal-delay-1">A gentle weekly offering — practices, reflections, and invitations for the slow-living woman. Join over 8,000 women already on the list.</p>
+    <div class="newsletter-form reveal reveal-delay-2">
+      <input class="newsletter-input" type="email" placeholder="your@email.com">
+      <button class="newsletter-btn">Subscribe</button>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--earth);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,36 C360,10 1080,56 1440,20 L1440,64 L0,64 Z" fill="#4A3018"/>
+  </svg>
+</div>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section">
+  <div class="container">
+    <h2 class="reveal">@alchemistwellness</h2>
+    <p class="instagram-handle reveal reveal-delay-1">Follow along for daily presence practices, slow-living inspiration, and behind-the-scenes of the work</p>
+    <div class="ig-grid">
+      <div class="ig-cell reveal">Photo</div>
+      <div class="ig-cell reveal reveal-delay-1">Photo</div>
+      <div class="ig-cell reveal reveal-delay-2">Photo</div>
+      <div class="ig-cell reveal reveal-delay-3">Photo</div>
+      <div class="ig-cell reveal reveal-delay-2">Photo</div>
+      <div class="ig-cell reveal reveal-delay-1">Photo</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider" style="background:var(--cream);">
+  <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,44 C480,12 960,56 1440,20 L1440,64 L0,64 Z" fill="#4A3018"/>
+  </svg>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2 class="reveal">You don't have to find your way alone.</h2>
+    <p class="reveal reveal-delay-1">Every woman deserves a space to slow down, come home to herself, and remember what she already knows. That space is here.</p>
+    <div class="reveal reveal-delay-2">
+      <a href="#rates" class="btn-light">Book a Clarity Call</a>
+      <a href="#about" class="btn-light">Learn More</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand" data-live="biz-name">Alchemist Wellness</div>
+        <p class="footer-tagline" data-live="tagline">Holistic health coaching and slow-living support for women who crave more presence, peace, and intention.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Offerings</h4>
+        <ul>
+          <li><a href="#">Clarity Coaching</a></li>
+          <li><a href="#">Somatic Healing</a></li>
+          <li><a href="#">Slow Living Guidance</a></li>
+          <li><a href="#">Women's Circles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Substack</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">hello@alchemistwellness.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Alchemist Wellness. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

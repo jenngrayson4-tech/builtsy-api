@@ -11,8 +11,10 @@
     :root {
       --orange: #FF6B35;
       --orange2: #E85520;
+      --orange-rgb: 255, 107, 53;
       --pink: #FF3D8A;
       --pink2: #E0206E;
+      --pink-rgb: 255, 61, 138;
       --teal: #00BFA5;
       --teal2: #009688;
       --yellow: #FFD93D;
@@ -76,7 +78,7 @@
     }
 
     #main-nav.scrolled {
-      box-shadow: 0 2px 20px rgba(255, 107, 53, 0.15);
+      box-shadow: 0 2px 20px rgba(var(--orange-rgb), 0.15);
     }
 
     .nav-inner {
@@ -262,7 +264,7 @@
     .btn-primary:hover {
       background: var(--orange2);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.35);
+      box-shadow: 0 8px 24px rgba(var(--orange-rgb), 0.35);
     }
 
     .btn-secondary {
@@ -320,7 +322,7 @@
       width: 100%;
       padding-top: 110%;
       border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
-      background: linear-gradient(135deg, #FFD93D 0%, #FF6B35 50%, #FF3D8A 100%);
+      background: linear-gradient(180deg, #E2E2E4 0%, #CACACA 28%, #B4B4B8 58%, #9E9EA2 100%);
       position: relative;
       overflow: hidden;
     }
@@ -470,7 +472,7 @@
       width: 100%;
       padding-top: 100%;
       border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
-      background: linear-gradient(135deg, #FFD93D 0%, rgba(255,255,255,0.4) 100%);
+      background: linear-gradient(160deg, #DEDEE0 0%, #C6C6CA 42%, #B0B0B4 100%);
       position: relative;
       overflow: hidden;
       border: 4px solid rgba(255,255,255,0.4);
@@ -796,7 +798,7 @@
 
     .rate-card.popular {
       border-color: var(--pink);
-      box-shadow: 0 8px 30px rgba(255, 61, 138, 0.15);
+      box-shadow: 0 8px 30px rgba(var(--pink-rgb), 0.15);
     }
 
     .rate-header {
@@ -1099,7 +1101,7 @@
     .btn-submit:hover {
       background: var(--orange2);
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.4);
+      box-shadow: 0 8px 28px rgba(var(--orange-rgb), 0.4);
     }
 
     /* ==============================
@@ -1340,7 +1342,7 @@
 
     <div class="wave-wrap">
       <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
-        <path d="M0,25 C250,60 550,5 800,38 C980,58 1100,12 1200,28 L1200,70 L0,70 Z" fill="#FF6B35"/>
+        <path d="M0,25 C250,60 550,5 800,38 C980,58 1100,12 1200,28 L1200,70 L0,70 Z" fill="var(--orange)"/>
       </svg>
     </div>
   </section>
@@ -1399,9 +1401,9 @@
           <div class="service-icon-wrap icon-bg-orange">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
-          <h4 class="service-name">Newborn &amp; Infant Care</h4>
-          <p class="service-desc">Gentle, attentive care for your newest family member. I follow your feeding schedule, sleep routines, and developmental milestones with precision and love. Parents rest easy knowing their baby is in experienced hands.</p>
-          <div class="service-tags">
+          <h4 class="service-name" data-live="svc1-name">Newborn &amp; Infant Care</h4>
+          <p class="service-desc" data-live="svc1-desc">Gentle, attentive care for your newest family member. I follow your feeding schedule, sleep routines, and developmental milestones with precision and love. Parents rest easy knowing their baby is in experienced hands.</p>
+          <div class="service-tags" data-live="svc1-tags">
             <span class="tag-pill tag-orange">Feeding Support</span>
             <span class="tag-pill tag-orange">Sleep Schedules</span>
             <span class="tag-pill tag-orange">Tummy Time</span>
@@ -1415,9 +1417,9 @@
           <div class="service-icon-wrap icon-bg-pink">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#FF3D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l3 3 5-5"/></svg>
           </div>
-          <h4 class="service-name">Big Kid Adventures</h4>
-          <p class="service-desc">School-age kids need more than babysitting — they need engagement. From homework help and art projects to park days and cooking experiments, I keep bigger kids busy, happy, and growing.</p>
-          <div class="service-tags">
+          <h4 class="service-name" data-live="svc2-name">Big Kid Adventures</h4>
+          <p class="service-desc" data-live="svc2-desc">School-age kids need more than babysitting — they need engagement. From homework help and art projects to park days and cooking experiments, I keep bigger kids busy, happy, and growing.</p>
+          <div class="service-tags" data-live="svc2-tags">
             <span class="tag-pill tag-pink">Homework Help</span>
             <span class="tag-pill tag-pink">Arts &amp; Crafts</span>
             <span class="tag-pill tag-pink">After School</span>
@@ -1431,9 +1433,9 @@
           <div class="service-icon-wrap icon-bg-teal">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00BFA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
-          <h4 class="service-name">Overnight Stays</h4>
-          <p class="service-desc">Date nights, work trips, or weekend getaways — I stay the night so your family's routine keeps rolling. Full bedtime routine, morning breakfast, and all the in-between moments handled with care.</p>
-          <div class="service-tags">
+          <h4 class="service-name" data-live="svc3-name">Overnight Stays</h4>
+          <p class="service-desc" data-live="svc3-desc">Date nights, work trips, or weekend getaways — I stay the night so your family's routine keeps rolling. Full bedtime routine, morning breakfast, and all the in-between moments handled with care.</p>
+          <div class="service-tags" data-live="svc3-tags">
             <span class="tag-pill tag-teal">Overnight</span>
             <span class="tag-pill tag-teal">Multi-day</span>
             <span class="tag-pill tag-teal">Travel Nanny</span>
@@ -1447,9 +1449,9 @@
           <div class="service-icon-wrap" style="background:#FFFBE6;">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#E6A200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2M14 2v2M3 8h18M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M9 13h6M9 17h4"/></svg>
           </div>
-          <h4 class="service-name">Pet &amp; Home Care</h4>
-          <p class="service-desc">Furry family members welcome. I provide dog walks, pet sitting, feeding, and basic home upkeep while you're away — so you return to a happy pet and a tidy home, not a chaotic one.</p>
-          <div class="service-tags">
+          <h4 class="service-name" data-live="svc4-name">Pet &amp; Home Care</h4>
+          <p class="service-desc" data-live="svc4-desc">Furry family members welcome. I provide dog walks, pet sitting, feeding, and basic home upkeep while you're away — so you return to a happy pet and a tidy home, not a chaotic one.</p>
+          <div class="service-tags" data-live="svc4-tags">
             <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Dog Walking</span>
             <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Pet Sitting</span>
             <span class="tag-pill" style="background:#FFFBE6;color:#C68A00;">Home Check-ins</span>
@@ -1461,7 +1463,7 @@
 
     <div class="wave-wrap" style="margin-top:70px;">
       <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
-        <path d="M0,20 C300,58 600,5 900,42 C1050,58 1150,16 1200,30 L1200,70 L0,70 Z" fill="#00BFA5"/>
+        <path d="M0,20 C300,58 600,5 900,42 C1050,58 1150,16 1200,30 L1200,70 L0,70 Z" fill="var(--teal)"/>
       </svg>
     </div>
   </section>
@@ -1718,7 +1720,7 @@
   ============================== -->
   <div class="wave-wrap">
     <svg viewBox="0 0 1200 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:70px;display:block;">
-      <path d="M0,28 C200,65 480,10 720,44 C900,65 1060,15 1200,35 L1200,70 L0,70 Z" fill="#1A0808"/>
+      <path d="M0,28 C200,65 480,10 720,44 C900,65 1060,15 1200,35 L1200,70 L0,70 Z" fill="var(--dark)"/>
     </svg>
   </div>
 
@@ -2059,6 +2061,7 @@
     }
   }
 
+  window.builtsy_demoBurst = doBurst;
   window.builtsy_initAnim = function() {
     if (animFrame) cancelAnimationFrame(animFrame);
     running = false;

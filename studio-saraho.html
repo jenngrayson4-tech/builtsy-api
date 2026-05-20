@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Sara — Somatic Coaching for Women</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #141210;
+    --bg-rgb: 20,18,16;
+    --surface: #1C1A18;
+    --surface2: #242220;
+    --cream: #F0EAD8;
+    --cream2: #E0D8C0;
+    --gold: #C4A060;
+    --gold-rgb: 196,160,96;
+    --sage: #7A9870;
+    --gold2: #A88040;
+    --text: #EEE8D8;
+    --text-rgb: 238,232,216;
+    --text-soft: rgba(var(--text-rgb),0.6);
+    --mid: rgba(var(--text-rgb),0.3);
+    --radius-pill: 999px;
+    --radius-card: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  em { font-style: italic; color: var(--gold); }
+
+  a { color: inherit; text-decoration: none; }
+
+  img { max-width: 100%; display: block; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--mid);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--cream);
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cream); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--bg) !important;
+    padding: 9px 22px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.1em;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold2) !important; }
+
+  /* Burger Menu */
+  #burger-toggle { display: none; }
+
+  .burger-label {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 200;
+  }
+
+  .burger-label span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cream);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  #burger-toggle:checked ~ .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    z-index: 150;
+  }
+
+  #burger-toggle:checked + .burger-label span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #burger-toggle:checked + .burger-label span:nth-child(2) { opacity: 0; }
+  #burger-toggle:checked + .burger-label span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--gold);
+    color: var(--bg);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee-scroll 22s linear infinite;
+    gap: 0;
+  }
+
+  .marquee-track span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0 36px;
+  }
+
+  .marquee-track span::after {
+    content: '·';
+    margin-left: 36px;
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    padding: 80px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-text { display: flex; flex-direction: column; gap: 24px; }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.1;
+    color: var(--cream);
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-soft);
+    max-width: 440px;
+    line-height: 1.8;
+  }
+
+  .btn-group { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    padding: 14px 30px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+
+  .btn-secondary {
+    border: 1px solid var(--mid);
+    color: var(--text-soft);
+    padding: 14px 30px;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-photo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-circle {
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-circle::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 1px solid var(--mid);
+  }
+
+  .photo-placeholder-inner {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  .photo-deco {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.15;
+  }
+
+  .photo-deco2 {
+    position: absolute;
+    bottom: 20px;
+    left: -30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.4;
+  }
+
+  /* ── WAVE DIVIDER ── */
+  .wave-divider { line-height: 0; overflow: hidden; }
+  .wave-divider svg { display: block; width: 100%; }
+
+  /* ── PILLARS ── */
+  .pillars-section {
+    background: var(--surface);
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    text-align: center;
+    color: var(--cream);
+    margin-bottom: 56px;
+  }
+
+  .pillars-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .pillar-card {
+    background: var(--surface2);
+    border: 1px solid var(--mid);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+
+  .pillar-photo {
+    height: 220px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--gold);
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .pillar-content { padding: 28px 24px; }
+
+  .pillar-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .pillar-content p { font-size: 0.9rem; color: var(--text-soft); line-height: 1.75; }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: var(--bg);
+    padding: 100px 24px;
+  }
+
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: center;
+  }
+
+  .about-photo-wrap {
+    position: relative;
+  }
+
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--text-soft);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-deco {
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.4;
+  }
+
+  .about-text { display: flex; flex-direction: column; gap: 20px; }
+
+  .about-text h2 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--cream);
+  }
+
+  .about-text p { font-size: 0.95rem; color: var(--text-soft); line-height: 1.85; }
+
+  .credentials-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--mid);
+    color: var(--text-soft);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+  }
+
+  .pill-gold {
+    background: rgba(var(--gold-rgb),0.12);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── SERVICES ── */
+  .services-section {
+    background: var(--surface);
+    padding: 100px 24px;
+  }
+
+  .services-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .service-card {
+    background: var(--surface2);
+    border: 1px solid var(--mid);
+    border-radius: var(--radius-card);
+    padding: 40px 36px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+
+  .service-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(var(--gold-rgb),0.12);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--gold);
+  }
+
+  .service-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .service-card p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    background: var(--surface);
+    border: 1px solid var(--mid);
+    color: var(--text-soft);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    background: var(--bg);
+    padding: 100px 24px;
+  }
+
+  .testimonials-grid {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .testimonial-card {
+    background: var(--surface);
+    border: 1px solid var(--mid);
+    border-radius: var(--radius-card);
+    padding: 36px 28px;
+    position: relative;
+  }
+
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    color: var(--gold);
+    line-height: 0.8;
+    margin-bottom: 20px;
+    opacity: 0.7;
+    display: block;
+  }
+
+  .testimonial-card blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--cream2);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .testimonial-footer { display: flex; align-items: center; gap: 12px; }
+
+  .testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--gold);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .testimonial-name { font-size: 0.85rem; color: var(--cream); font-weight: 500; }
+  .testimonial-role { font-size: 0.78rem; color: var(--text-soft); }
+
+  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 2px; }
+
+  /* ── RATES ── */
+  .rates-section {
+    background: var(--surface);
+    padding: 100px 24px;
+  }
+
+  .rates-grid {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .rate-card {
+    background: var(--surface2);
+    border: 1px solid var(--mid);
+    border-radius: var(--radius-card);
+    padding: 40px 32px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .rate-card.featured {
+    border-color: var(--gold);
+    background: rgba(var(--gold-rgb),0.06);
+    position: relative;
+  }
+
+  .rate-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--bg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: var(--radius-pill);
+  }
+
+  .rate-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .rate-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    color: var(--gold);
+    line-height: 1;
+    margin: 16px 0 4px;
+  }
+
+  .rate-price sup { font-size: 1.4rem; vertical-align: top; margin-top: 8px; }
+  .rate-period { font-size: 0.8rem; color: var(--text-soft); margin-bottom: 24px; }
+
+  .rate-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  .rate-features li {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .rate-features li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.65rem;
+    top: 3px;
+  }
+
+  .rate-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .rate-btn:hover, .rate-card.featured .rate-btn {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  /* ── CTA BAND (Membership) ── */
+  .cta-band {
+    background: var(--gold);
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .cta-band::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .cta-band .section-label { color: var(--bg); opacity: 0.7; }
+
+  .cta-band h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    color: var(--bg);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-band p {
+    font-size: 1rem;
+    color: rgba(var(--bg-rgb),0.7);
+    max-width: 540px;
+    margin: 0 auto 36px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-band .btn-group { justify-content: center; position: relative; z-index: 1; }
+
+  .btn-dark {
+    background: var(--bg);
+    color: var(--gold);
+    padding: 14px 32px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-dark:hover { background: var(--surface); transform: translateY(-2px); }
+
+  .btn-outline-dark {
+    border: 2px solid var(--bg);
+    color: var(--bg);
+    padding: 12px 30px;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline-dark:hover { background: var(--bg); color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--mid);
+    padding: 64px 24px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .footer-brand h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .footer-col ul a {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    transition: color 0.2s;
+  }
+
+  .footer-col ul a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .burger-label { display: flex; }
+    .nav-links { display: none; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 60px 24px;
+      text-align: center;
+      min-height: auto;
+    }
+
+    .hero p { margin: 0 auto; }
+    .btn-group { justify-content: center; }
+
+    .photo-circle { width: 280px; height: 280px; margin: 0 auto; }
+
+    .pillars-grid { grid-template-columns: 1fr; }
+
+    .about-inner { grid-template-columns: 1fr; }
+    .about-deco { display: none; }
+
+    .services-grid { grid-template-columns: 1fr; }
+
+    .testimonials-grid { grid-template-columns: 1fr; }
+
+    .rates-grid { grid-template-columns: 1fr; }
+
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Studio <span>Sara</span></a>
+    <input type="checkbox" id="burger-toggle">
+    <label for="burger-toggle" class="burger-label" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </label>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Work With Me</a></li>
+      <li><a href="#rates">Investment</a></li>
+      <li><a href="#contact" class="nav-cta">Book a Call</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Soul</span><span>Mind</span><span>Body</span>
+    <span>Presence</span><span>Peace</span><span>Integration</span>
+    <span>Soul</span><span>Mind</span><span>Body</span>
+    <span>Presence</span><span>Peace</span><span>Integration</span>
+    <span>Soul</span><span>Mind</span><span>Body</span>
+    <span>Presence</span><span>Peace</span><span>Integration</span>
+    <span>Soul</span><span>Mind</span><span>Body</span>
+    <span>Presence</span><span>Peace</span><span>Integration</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-text reveal">
+    <p class="eyebrow">Somatic Coaching · Women's Wellness</p>
+    <h1 data-live="headline">Let's Discover a <em>New You</em></h1>
+    <p data-live="tagline">Somatic coaching and seasonal group programs for women ready to slow down, listen in, and finally feel at home in their bodies.</p>
+    <div class="btn-group">
+      <a href="#contact" class="btn-primary">Begin Your Journey</a>
+      <a href="#services" class="btn-secondary">Explore the Work</a>
+    </div>
+  </div>
+  <div class="hero-photo reveal reveal-delay-2">
+    <div class="photo-circle">
+      <img id="sar-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />
+      <div class="photo-placeholder-inner">
+        ✦<br>Your Photo Here<br>✦
+      </div>
+    </div>
+    <div class="photo-deco"></div>
+    <div class="photo-deco2"></div>
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#1C1A18"/>
+  </svg>
+</div>
+
+<!-- ── PILLARS ── -->
+<section class="pillars-section">
+  <p class="section-label">The Three Pillars</p>
+  <h2 class="section-title reveal">Soul · Mind · Body</h2>
+  <div class="pillars-grid">
+    <div class="pillar-card reveal">
+      <div class="pillar-photo">☽</div>
+      <div class="pillar-content">
+        <h3>Soul</h3>
+        <p>Reconnect with the quiet knowing that lives beneath the noise of daily life. Ritual, reflection, and stillness as a way back to yourself.</p>
+      </div>
+    </div>
+    <div class="pillar-card reveal reveal-delay-1">
+      <div class="pillar-photo">◇</div>
+      <div class="pillar-content">
+        <h3>Mind</h3>
+        <p>Untangle the stories and patterns quietly running the show. Replace old narratives with something true — and finally, more aligned.</p>
+      </div>
+    </div>
+    <div class="pillar-card reveal reveal-delay-2">
+      <div class="pillar-photo">◎</div>
+      <div class="pillar-content">
+        <h3>Body</h3>
+        <p>The body keeps the score — and holds the wisdom. Learn to soften, regulate, and reconnect so you can finally feel at home in yourself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:#1C1A18">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,0 C480,60 960,0 1440,40 L1440,60 L0,60 Z" fill="#141210"/>
+  </svg>
+</div>
+
+<!-- ── ABOUT ── -->
+<section class="about-section" id="about">
+  <div class="about-inner container">
+    <div class="about-photo-wrap reveal">
+      <div class="about-photo"><img id="sar-about-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" alt="" />🌿</div>
+      <div class="about-deco"></div>
+    </div>
+    <div class="about-text reveal reveal-delay-1">
+      <p class="eyebrow">About Your Guide</p>
+      <h2>Hello, I'm <em>Sara</em></h2>
+      <p>I'm a certified life coach and somatic practitioner based in California, supporting women across the world through life transitions, identity shifts, and the slow work of coming home to themselves.</p>
+      <p>This work isn't about fixing you — because you were never broken. It's about remembering what was always true, and building a life that reflects it. I bring warmth, depth, and a steady presence to every session.</p>
+      <div class="credentials-pills">
+        <span class="pill pill-gold">Certified Somatic Practitioner</span>
+        <span class="pill pill-gold">ICF Certified Coach</span>
+        <span class="pill">10+ Years Experience</span>
+        <span class="pill">300+ Women Supported</span>
+        <span class="pill">Trauma-Informed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:#141210">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C400,0 1000,60 1440,20 L1440,60 L0,60 Z" fill="#1C1A18"/>
+  </svg>
+</div>
+
+<!-- ── SERVICES ── -->
+<section class="services-section" id="services">
+  <p class="section-label reveal">Work With Me</p>
+  <h2 class="section-title reveal">Offerings &amp; Programs</h2>
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="service-icon">☽</div>
+      <h3 data-live="svc1-name">Soul Work</h3>
+      <p data-live="svc1-desc">Reconnect with the parts of you that already know. Through stillness, reflection, and ritual, we make space for the quiet wisdom you've been too busy to hear.</p>
+      <div class="service-tags" data-live="svc1-tags">
+        <span class="tag">1:1 Sessions</span>
+        <span class="tag">Ritual Practice</span>
+        <span class="tag">Reflection</span>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">◇</div>
+      <h3 data-live="svc2-name">Mind Coaching</h3>
+      <p data-live="svc2-desc">Untangle the stories and patterns that have been quietly running the show. We replace old narratives with something true — and finally, more aligned.</p>
+      <div class="service-tags" data-live="svc2-tags">
+        <span class="tag">Belief Work</span>
+        <span class="tag">Identity Shifts</span>
+        <span class="tag">Nervous System</span>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">◎</div>
+      <h3 data-live="svc3-name">Body Practice</h3>
+      <p data-live="svc3-desc">The body keeps the score — and holds the wisdom. Together, we learn to soften, regulate, and reconnect, so you can finally feel at home in yourself again.</p>
+      <div class="service-tags" data-live="svc3-tags">
+        <span class="tag">Somatic Work</span>
+        <span class="tag">Breathwork</span>
+        <span class="tag">Regulation</span>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">✦</div>
+      <h3 data-live="svc4-name">Group Programs</h3>
+      <p data-live="svc4-desc">Seasonal containers for women craving community, accountability, and transformation. Small groups, deep work, real results.</p>
+      <div class="service-tags" data-live="svc4-tags">
+        <span class="tag">Seasonal Cohorts</span>
+        <span class="tag">Community</span>
+        <span class="tag">Deep Dives</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:#1C1A18">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C600,60 900,0 1440,30 L1440,60 L0,60 Z" fill="#141210"/>
+  </svg>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials-section" id="testimonials">
+  <p class="section-label reveal">Kind Words</p>
+  <h2 class="section-title reveal">What Women Are Saying</h2>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <blockquote>"Working with Sara genuinely changed my relationship with myself. I came in feeling disconnected and exhausted — I left feeling like I finally came home. This work is real."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="sar-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />M</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Mara L.</div>
+          <div class="testimonial-role">Program Graduate, Spring Cohort</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-1">
+      <span class="quote-mark">"</span>
+      <blockquote>"I had been in therapy for years, but Sara's somatic approach reached something therapy never did. I feel regulated, grounded, and deeply at peace for the first time in my life."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="sar-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />J</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Jessie R.</div>
+          <div class="testimonial-role">1:1 Coaching Client</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-2">
+      <span class="quote-mark">"</span>
+      <blockquote>"The group program was exactly the container I needed. A small community of women doing deep, honest work together — with Sara as a steady, loving guide through all of it."</blockquote>
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="position:relative;overflow:hidden;"><img id="sar-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="" />A</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-name">Amara T.</div>
+          <div class="testimonial-role">Group Program Member</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:#141210">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,50 C500,10 950,60 1440,20 L1440,60 L0,60 Z" fill="#1C1A18"/>
+  </svg>
+</div>
+
+<!-- ── RATES ── -->
+<section class="rates-section" id="rates">
+  <p class="section-label reveal">Investment</p>
+  <h2 class="section-title reveal">Choose Your Path</h2>
+  <div class="rates-grid">
+
+    <div class="rate-card reveal">
+      <div class="rate-name">Single Session</div>
+      <div class="rate-price"><sup>$</sup>180</div>
+      <div class="rate-period">per 60-minute session</div>
+      <ul class="rate-features">
+        <li>One private 60-min session</li>
+        <li>Pre-session intake form</li>
+        <li>Follow-up reflection prompts</li>
+        <li>Recording (if requested)</li>
+      </ul>
+      <button class="rate-btn">Book a Session</button>
+    </div>
+
+    <div class="rate-card featured reveal reveal-delay-1">
+      <div class="rate-badge">Most Popular</div>
+      <div class="rate-name">3-Month Journey</div>
+      <div class="rate-price"><sup>$</sup>1,400</div>
+      <div class="rate-period">billed monthly · $480/mo</div>
+      <ul class="rate-features">
+        <li>2 sessions per month (6 total)</li>
+        <li>Voxer/voice note support</li>
+        <li>Custom somatic practice plan</li>
+        <li>Seasonal ritual guidance</li>
+        <li>Private resource library access</li>
+      </ul>
+      <button class="rate-btn">Apply Now</button>
+    </div>
+
+    <div class="rate-card reveal reveal-delay-2">
+      <div class="rate-name">Group Seasonal</div>
+      <div class="rate-price"><sup>$</sup>680</div>
+      <div class="rate-period">per 12-week seasonal container</div>
+      <ul class="rate-features">
+        <li>Weekly live group sessions</li>
+        <li>Private community access</li>
+        <li>Somatic practice library</li>
+        <li>Guest wellness practitioners</li>
+        <li>Seasonal journal workbook</li>
+      </ul>
+      <button class="rate-btn">Join the Waitlist</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WAVE ── -->
+<div class="wave-divider" style="background:#1C1A18">
+  <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,0 1080,60 1440,20 L1440,60 L0,60 Z" fill="#C4A060"/>
+  </svg>
+</div>
+
+<!-- ── CTA BAND ── -->
+<section class="cta-band" id="contact">
+  <p class="section-label reveal">Membership</p>
+  <h2 class="reveal">Stay Close to This Work</h2>
+  <p class="reveal">Want to stay close to this work? Our curated program is a gentle, monthly offering designed to deeply integrate into your everyday — presence, practice, and community, delivered to you each month.</p>
+  <div class="btn-group reveal">
+    <a href="#" class="btn-dark">Join the Membership</a>
+    <a href="#" class="btn-outline-dark">Book a Discovery Call</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3 data-live="biz-name">Studio Sara</h3>
+      <p data-live="tagline">Somatic coaching and seasonal group programs for women ready to slow down, listen in, and finally feel at home in their bodies.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Work</h4>
+      <ul>
+        <li><a href="#">Soul Work</a></li>
+        <li><a href="#">Mind Coaching</a></li>
+        <li><a href="#">Body Practice</a></li>
+        <li><a href="#">Group Programs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <ul>
+        <li><a href="#">My Story</a></li>
+        <li><a href="#">Philosophy</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Resources</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Podcast</a></li>
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Studio Sara. All rights reserved.</span>
+    <span>Made with intention · California</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll Reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Mobile nav close on link click
+  const burgerToggle = document.getElementById('burger-toggle');
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => { burgerToggle.checked = false; });
+  });
+
+  // Marquee duplicate for seamless loop
+  const track = document.querySelector('.marquee-track');
+  if (track) {
+    track.innerHTML += track.innerHTML;
+  }
+</script>
+</body>
+</html>

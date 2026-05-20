@@ -38,7 +38,8 @@ Return this exact JSON structure:
       }]
     });
 
-    const config = JSON.parse(msg.content[0].text.trim());
+    const raw = msg.content[0].text.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+    const config = JSON.parse(raw);
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
