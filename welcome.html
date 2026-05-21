@@ -48,15 +48,21 @@
 
   /* LOGO */
   .logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #C8E000;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
     text-align: center;
-    display: block;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0;
     margin-bottom: 2.5rem;
+    letter-spacing: 0;
+    text-transform: none;
   }
+  .logo .logo-sy { color: #ee70bc; font-style: italic; }
+  .logo .logo-dot { color: #4361EE; font-size: 1.7rem; font-weight: 900; margin-left: 2px; line-height: 1; }
 
   /* STEPS INDICATOR */
   .steps {
@@ -74,8 +80,8 @@
     transition: all 0.3s;
   }
 
-  .step-dot.active { background: #ee70bc; width: 24px; border-radius: 4px; }
-  .step-dot.done { background: #C8E000; }
+  .step-dot.active { background: #4361EE; width: 24px; border-radius: 4px; }
+  .step-dot.done { background: #4361EE; }
 
   /* CARD */
   .card {
@@ -300,7 +306,7 @@
 </script>
 
 <div class="wrap">
-  <span class="logo">Builtsy</span>
+  <span class="logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></span>
 
   <!-- STEP DOTS -->
   <div class="steps" id="steps">

@@ -65,16 +65,22 @@
   }
 
   .logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--papaya);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
     text-align: center;
-    display: block;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0;
     margin-bottom: 2.5rem;
     text-decoration: none;
+    letter-spacing: 0;
+    text-transform: none;
   }
+  .logo .logo-sy { color: var(--papaya); font-style: italic; }
+  .logo .logo-dot { color: #4361EE; font-size: 1.7rem; font-weight: 900; margin-left: 2px; line-height: 1; }
 
   .login-card {
     background: #1A2235;
@@ -172,13 +178,14 @@
     display: block;
     text-align: center;
     margin-top: 1.5rem;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.4);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #4361EE;
     text-decoration: none;
     transition: color 0.2s;
   }
 
-  .back-link:hover { color: var(--papaya); }
+  .back-link:hover { color: white; }
 
   .beta-note {
     margin-top: 1.5rem;
@@ -197,7 +204,7 @@
 <body>
 
 <div class="login-wrap">
-  <a href="index.html" class="logo">Builtsy</a>
+  <a href="index.html" class="logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
 
   <div class="login-card">
     <span class="card-tag">Members Only</span>

@@ -10,9 +10,10 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:#12192B;color:white;min-height:100vh;display:flex;flex-direction:column;}
 .nav{padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.07);}
-.nav-logo{font-family:'DM Mono',monospace;font-size:1rem;color:white;text-decoration:none;}
-.nav-logo span{color:#ee70bc;}
-.nav-back{font-size:0.8rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:white;text-decoration:none;display:inline-flex;align-items:baseline;gap:0;}
+.nav-logo .logo-sy{color:#ee70bc;font-style:italic;}
+.nav-logo .logo-dot{color:#4361EE;font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
+.nav-back{font-size:0.95rem;font-weight:700;color:#4361EE;text-decoration:none;transition:color 0.2s;}
 .nav-back:hover{color:white;}
 .main{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem;}
 .container{width:100%;max-width:520px;}
@@ -56,7 +57,7 @@ footer{padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.06);text-alig
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">built<span>sy</span></a>
+  <a href="index.html" class="nav-logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
   <a href="index.html" class="nav-back">← Back to Builtsy</a>
 </nav>
 
