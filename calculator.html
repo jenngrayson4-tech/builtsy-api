@@ -25,7 +25,9 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 /* ── TOPNAV ── */
 .topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
-.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
+.logo-text{font-family:'Playfair Display',serif;color:white;font-size:1.2rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:baseline;gap:0;}
+.logo-text .logo-sy{color:var(--pink);font-style:italic;}
+.logo-text .logo-dot{color:var(--blue);font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
 .tn-tag{background:var(--blue);color:white;font-size:0.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
 .tn-right{display:flex;align-items:center;gap:1rem;}
 .tn-back{color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;display:flex;align-items:center;gap:0.35rem;transition:color .15s;}
@@ -39,7 +41,8 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 .page-wrap{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;}
 .page-header{margin-bottom:2rem;}
 .page-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;}
-.page-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);margin-bottom:0.4rem;}
+.page-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);margin-bottom:0.4rem;line-height:1.1;}
+.page-title em{color:var(--blue);font-style:italic;}
 .page-sub{color:var(--dim);font-size:0.92rem;max-width:520px;line-height:1.6;}
 
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
@@ -128,7 +131,7 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 
 <nav class="topnav">
   <div class="logo-wrap">
-    <a href="dashboard.html" class="logo-text">builtsy</a>
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
     <span class="tn-tag">Tool</span>
   </div>
   <div class="tn-right">
@@ -140,8 +143,8 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 <div class="page-wrap">
   <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
     <div>
-      <div class="page-eyebrow">Builtsy Tool</div>
-      <h1 class="page-title">Revenue Booster</h1>
+      <div class="page-eyebrow">✦ Builtsy Tool</div>
+      <h1 class="page-title">Revenue <em>Booster.</em></h1>
       <p class="page-sub">Build your interactive pricing estimator. Add sessions and add-ons — changes save automatically to your blueprint.</p>
     </div>
     <button onclick="clearAll()" style="margin-top:0.35rem;flex-shrink:0;background:none;border:1.5px solid var(--border);border-radius:8px;padding:0.45rem 1rem;font-size:0.78rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.borderColor='#e53e3e';this.style.color='#e53e3e';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">↺ Start Over</button>
@@ -157,7 +160,7 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
         <div class="ai-bar-label"><span>✦</span> AI Add-on Suggestions</div>
         <div class="ai-input-row">
           <input type="text" id="ai-business-input" placeholder="e.g. Private piano lessons for kids ages 5–15 in Denver" />
-          <button class="ai-btn" id="ai-suggest-btn" onclick="suggestAddons()">✨ Suggest Add-ons</button>
+          <button class="ai-btn" id="ai-suggest-btn" onclick="suggestAddons()">✦ Builtsy My Add-ons</button>
         </div>
         <div class="ai-status" id="ai-status"></div>
       </div>
