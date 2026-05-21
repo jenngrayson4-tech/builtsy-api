@@ -380,8 +380,7 @@ function renderRows() {
     ar.appendChild(row);
   });
 
-    renderPreview();
-  }); // end msConfirm clearAll
+  renderPreview();
 }
 
 function addSession() {
@@ -404,18 +403,18 @@ function removeAddon(i) { addons.splice(i,1); renderRows(); scheduleSave(); }
 function clearAll() {
   msConfirm('↺', 'Start Over?', 'This will clear all sessions, add-ons, and your business description.', 'Yes, Start Over', true).then(function(ok) {
     if (!ok) return;
-  sessions = [{name:'', price:0}];
-  addons = [];
-  var input = document.getElementById('ai-business-input');
-  if (input) input.value = '';
-  var lbl = document.getElementById('btn-label-input');
-  if (lbl) lbl.value = 'Book Now';
-  buttonLabel = 'Book Now';
-  var status = document.getElementById('ai-status');
-  if (status) { status.textContent = ''; status.className = 'ai-status'; }
-  renderRows();
-  renderPreview();
-  scheduleSave();
+    sessions = [{name:'', price:0}];
+    addons = [];
+    var input = document.getElementById('ai-business-input');
+    if (input) input.value = '';
+    var lbl = document.getElementById('btn-label');
+    if (lbl) lbl.value = 'Book This Session →';
+    var status = document.getElementById('ai-status');
+    if (status) { status.textContent = ''; status.className = 'ai-status'; }
+    renderRows();
+    renderPreview();
+    scheduleSave();
+  });
 }
 
 // ── RENDER LIVE PREVIEW ────────────────────────────
