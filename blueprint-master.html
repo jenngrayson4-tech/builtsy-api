@@ -213,16 +213,17 @@ textarea.fi{resize:vertical;min-height:80px;}
 .left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
 /* ── SMART CHIPS ── */
-.chip-hint{font-size:.6rem;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;letter-spacing:.07em;margin-top:10px;margin-bottom:7px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
-.chip-hint-ai{font-size:.6rem;font-family:'DM Mono',monospace;letter-spacing:.07em;margin-top:10px;margin-bottom:7px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:var(--yellow);}
+.chip-hint{font-size:.6rem;color:rgba(255,255,255,0.5);font-family:'DM Mono',monospace;letter-spacing:.07em;margin-top:12px;margin-bottom:7px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.chip-hint::before{content:'✦';font-size:.55rem;color:var(--yellow);margin-right:2px;}
+.chip-hint-ai{font-size:.6rem;font-family:'DM Mono',monospace;letter-spacing:.07em;margin-top:12px;margin-bottom:7px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:var(--yellow);}
 .chip-hint-ai::before{content:'✦';font-size:.65rem;color:var(--yellow);}
 .chips-row{display:flex;flex-wrap:wrap;gap:5px;}
 .chip-s{background:rgba(255,255,255,0.04);border:none;border-radius:100px;padding:5px 13px;font-size:.72rem;color:rgba(255,255,255,0.4);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;line-height:1.5;}
 .chip-s:hover{background:rgba(67,97,238,0.12);color:rgba(255,255,255,0.8);}
 .chip-s.used{background:rgba(67,97,238,0.15);color:rgba(255,255,255,0.9);font-weight:600;}
 /* ── TOP BACK BUTTON ── */
-#ms-top-back{display:none;align-items:center;gap:5px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:.72rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;padding:12px 0 4px;letter-spacing:.01em;transition:color .15s;}
-#ms-top-back:hover{color:rgba(255,255,255,0.7);}
+#ms-top-back{display:none;align-items:center;gap:5px;background:none;border:none;color:var(--builtsy-blue);font-size:.75rem;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;padding:12px 0 4px;letter-spacing:.02em;transition:opacity .15s;}
+#ms-top-back:hover{opacity:0.7;}
 #ms-top-back.visible{display:flex;}
 
 /* ── INCOME CALCULATOR ── */
@@ -456,7 +457,7 @@ body.ms-s9 .topnav{display:none;}
         <div class="field">
           <label>Tagline</label>
           <input class="fi" id="ms-tagline" type="text" placeholder="e.g. Bold, punchy phrase about what you do">
-          <div class="chip-hint">— Suggestions — click to fill</div>
+          <div class="chip-hint">Suggestions — click to fill</div>
           <div class="chips-row" id="ms-chips-tagline"></div>
         </div>
         <div class="field-grid">
@@ -494,13 +495,13 @@ body.ms-s9 .topnav{display:none;}
           <label>Hero Headline <span class="opt">5&ndash;8 words, punchy</span></label>
           <input class="fi" id="ms-hero-headline" type="text" placeholder="e.g. Your powerful 5–8 word headline">
           <div class="field-hint">This is the first thing visitors read. Make it count.</div>
-          <div class="chip-hint">— Suggestions — click to fill</div>
+          <div class="chip-hint">Suggestions — click to fill</div>
           <div class="chips-row" id="ms-chips-headline"></div>
         </div>
         <div class="field">
           <label>Hero Subheading <span class="opt">2 sentences, who you help</span></label>
           <textarea class="fi" id="ms-hero-sub" placeholder="What you do and who you help — 2 sentences."></textarea>
-          <div class="chip-hint">— Suggestions — click to fill</div>
+          <div class="chip-hint">Suggestions — click to fill</div>
           <div class="chips-row" id="ms-chips-hero-sub"></div>
         </div>
         <div class="field">
@@ -516,7 +517,7 @@ body.ms-s9 .topnav{display:none;}
           <label>Credentials / Certifications <span class="opt">comma-separated</span></label>
           <input class="fi" id="ms-credentials" type="text" placeholder="e.g. Licensed, Certified, Published, Award Winning">
           <div class="field-hint">Trust signals shown prominently on your site.</div>
-          <div class="chip-hint">— Suggestions — click to add</div>
+          <div class="chip-hint">Suggestions — click to add</div>
           <div class="chips-row" id="ms-chips-creds"></div>
         </div>
         <div class="step-nav">
@@ -542,7 +543,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-top:11px;">
                 <label>Name</label>
                 <input class="fi" id="ms-svc1-name" type="text" placeholder="e.g. Private Art Lessons">
-                <div class="chip-hint">— Quick picks — click to fill</div>
+                <div class="chip-hint">Quick picks — click to fill</div>
                 <div class="chips-row" id="ms-chips-svc1-name"></div>
               </div>
               <div class="field">
@@ -554,7 +555,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-bottom:4px;">
                 <label>Tags <span class="opt">comma-separated</span></label>
                 <input class="fi" id="ms-svc1-tags" type="text" placeholder="e.g. Beginners Welcome, All Ages, Online & In-Person">
-                <div class="chip-hint">— Click to add tags</div>
+                <div class="chip-hint">Click to add tags</div>
                 <div class="chips-row" id="ms-chips-svc1-tags"></div>
               </div>
             </div>
@@ -568,7 +569,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-top:11px;">
                 <label>Name</label>
                 <input class="fi" id="ms-svc2-name" type="text" placeholder="e.g. Group Sessions">
-                <div class="chip-hint">— Quick picks — click to fill</div>
+                <div class="chip-hint">Quick picks — click to fill</div>
                 <div class="chips-row" id="ms-chips-svc2-name"></div>
               </div>
               <div class="field">
@@ -580,7 +581,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-bottom:4px;">
                 <label>Tags</label>
                 <input class="fi" id="ms-svc2-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
-                <div class="chip-hint">— Click to add tags</div>
+                <div class="chip-hint">Click to add tags</div>
                 <div class="chips-row" id="ms-chips-svc2-tags"></div>
               </div>
             </div>
@@ -594,7 +595,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-top:11px;">
                 <label>Name</label>
                 <input class="fi" id="ms-svc3-name" type="text" placeholder="e.g. Intensive Workshop">
-                <div class="chip-hint">— Quick picks — click to fill</div>
+                <div class="chip-hint">Quick picks — click to fill</div>
                 <div class="chips-row" id="ms-chips-svc3-name"></div>
               </div>
               <div class="field">
@@ -606,7 +607,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-bottom:4px;">
                 <label>Tags</label>
                 <input class="fi" id="ms-svc3-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
-                <div class="chip-hint">— Click to add tags</div>
+                <div class="chip-hint">Click to add tags</div>
                 <div class="chips-row" id="ms-chips-svc3-tags"></div>
               </div>
             </div>
@@ -620,7 +621,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-top:11px;">
                 <label>Name</label>
                 <input class="fi" id="ms-svc4-name" type="text" placeholder="e.g. One-on-One Coaching">
-                <div class="chip-hint">— Quick picks — click to fill</div>
+                <div class="chip-hint">Quick picks — click to fill</div>
                 <div class="chips-row" id="ms-chips-svc4-name"></div>
               </div>
               <div class="field">
@@ -632,7 +633,7 @@ body.ms-s9 .topnav{display:none;}
               <div class="field" style="margin-bottom:4px;">
                 <label>Tags</label>
                 <input class="fi" id="ms-svc4-tags" type="text" placeholder="e.g. Tag 1, Tag 2, Tag 3">
-                <div class="chip-hint">— Click to add tags</div>
+                <div class="chip-hint">Click to add tags</div>
                 <div class="chips-row" id="ms-chips-svc4-tags"></div>
               </div>
             </div>
