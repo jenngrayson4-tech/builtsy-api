@@ -570,6 +570,29 @@ app.post('/contact-notify', async function(req, res) {
   }
 });
 
+// ── Builtsy Brain AI chat ────────────────────────────────────────────────────
+app.post('/chat', async function(req, res) {
+  try {
+    var messages = req.body.messages;
+    var system   = req.body.system || '';
+    if (!messages || !messages.length) return res.status(400).json({ error: 'No messages' });
+
+    var params = {
+      model: MODEL,
+      max_tokens: 2048,
+      messages: messages
+    };
+    if (system) params.system = system;
+
+    var msg = await client.messages.create(params);
+    var text = msg.content[0].text;
+    res.json({ text: text });
+  } catch(err) {
+    console.error('Chat error:', err.message);
+    res.status(500).json({ error: err.message || 'Chat failed' });
+  }
+});
+
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
   console.log('Builtsy API running on port ' + PORT);

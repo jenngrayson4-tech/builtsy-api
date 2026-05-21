@@ -5,180 +5,281 @@
 <title>Dashboard | Builtsy</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --navy:#12192B;--navy-deep:#0D1220;--navy-mid:#161E30;
-  --lime:#C8E000;--pink:#ee70bc;--iris:#8ba2f0;
+  --lime:#C8E000;--pink:#ee70bc;--iris:#8ba2f0;--blue:#4361EE;
   --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.12);
-  --surface:rgba(255,255,255,0.04);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.55);
+  --surface:rgba(255,255,255,0.04);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.4);
+  --sidebar-w:220px;
 }
 html,body{height:100%;overflow:hidden;}
-body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;display:flex;flex-direction:column;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;display:flex;}
 
-/* ── TOP NAV ── */
-.topnav{height:54px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;flex-shrink:0;z-index:20;}
-.tn-left{display:flex;align-items:center;gap:1rem;}
-.logo-wrap{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
-.logo-mark{width:28px;height:28px;background:var(--lime);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-mark svg{width:14px;height:14px;}
-.logo-text{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:white;font-weight:500;}
-.logo-sub{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;}
-.tn-divider{width:1px;height:20px;background:var(--border-mid);}
-.tn-right{display:flex;align-items:center;gap:0.75rem;}
-.beta-tag{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.22);color:var(--lime);padding:3px 10px;border-radius:100px;}
-.logout-btn{font-size:0.75rem;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color 0.15s;}
-.logout-btn:hover{color:var(--pink);}
+/* ── APP SHELL ── */
+.app{display:flex;width:100%;height:100%;overflow:hidden;}
 
-/* ── WORKSPACE ── */
-.workspace{display:flex;flex:1;overflow:hidden;}
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--navy);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;z-index:20;}
+.sidebar::-webkit-scrollbar{width:0;}
 
-/* ── LEFT NAV ── */
-.leftnav{width:210px;background:var(--navy);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
-.leftnav::-webkit-scrollbar{width:0;}
-.nav-section{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:1rem 1rem 0.3rem;opacity:0.6;}
-.nav-item{display:flex;align-items:center;gap:0.55rem;padding:0.5rem 1rem;font-size:0.78rem;color:var(--dim);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;margin-bottom:1px;}
-.nav-item:hover{background:rgba(255,255,255,0.04);color:white;}
-.nav-item.active{background:rgba(200,224,0,0.07);border-left-color:var(--lime);color:var(--lime);}
-.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.nav-icon{font-size:0.85rem;width:16px;text-align:center;flex-shrink:0;}
-.leftnav-footer{margin-top:auto;padding:0.875rem 1rem;border-top:1px solid var(--border);}
-.user-row{display:flex;align-items:center;gap:0.5rem;}
-.user-avatar{width:30px;height:30px;border-radius:50%;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;flex-shrink:0;}
-.user-name{font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.8);}
-.user-tag{font-size:0.58rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.sb-logo{padding:1.25rem 1rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-logo-wrap{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+.sb-logo-mark{width:34px;height:34px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-logo-mark svg{width:16px;height:16px;}
+.sb-logo-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;letter-spacing:-0.02em;line-height:1;}
+.sb-logo-name em{font-style:italic;color:var(--pink);}
+.sb-logo-name .dot{color:var(--blue);}
+.sb-logo-sub{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
 
-/* ── MAIN CONTENT ── */
+.sb-section{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);padding:1.1rem 1rem 0.4rem;opacity:0.9;}
+.sb-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 1rem;font-size:0.88rem;color:rgba(255,255,255,0.75);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;text-decoration:none;}
+.sb-item:hover{background:rgba(67,97,238,0.06);color:white;border-left-color:var(--blue);}
+.sb-item.active{background:rgba(200,224,0,0.06);border-left-color:var(--lime);color:var(--lime);}
+.sb-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;margin:0 7px 0 0;}
+.sb-item:hover .sb-dot{background:var(--blue);}
+.sb-item.active .sb-dot{background:var(--lime);}
+.ai-star{display:inline-block;color:var(--blue);font-size:1rem;animation:sparkle-spin 3s ease-in-out infinite;}
+@keyframes sparkle-spin{0%{transform:rotate(0deg) scale(1);opacity:0.7;}25%{transform:rotate(45deg) scale(1.3);opacity:1;}50%{transform:rotate(0deg) scale(1);opacity:0.7;}75%{transform:rotate(-45deg) scale(1.3);opacity:1;}100%{transform:rotate(0deg) scale(1);opacity:0.7;}}
+
+.sb-footer{margin-top:auto;padding:1rem;border-top:1px solid var(--border);flex-shrink:0;}
+.sb-user{display:flex;align-items:center;gap:0.55rem;}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;flex-shrink:0;text-transform:uppercase;}
+.sb-uname{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.85);}
+.sb-utag{font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.05em;}
+
+/* ── MAIN WRAPPER ── */
+.main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── MAIN SCROLL AREA ── */
 .main-content{flex:1;overflow-y:auto;display:flex;flex-direction:column;}
 .main-content::-webkit-scrollbar{width:4px;}
-.main-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
+.main-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
 
-/* ── HERO HEADER ── */
-.dash-hero{background:linear-gradient(135deg,#141e35 0%,#0d1220 60%);border-bottom:1px solid var(--border);padding:2rem 2rem 1.75rem;position:relative;overflow:hidden;flex-shrink:0;}
-.dash-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(200,224,0,0.06) 0%,transparent 70%);pointer-events:none;}
-.dash-hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:200px;height:200px;background:radial-gradient(circle,rgba(139,162,240,0.05) 0%,transparent 70%);pointer-events:none;}
-.hero-eyebrow{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime);margin-bottom:0.4rem;opacity:0.8;}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:900;color:white;line-height:1.15;margin-bottom:0.5rem;}
+/* ── TOP BAR (inside main) ── */
+.dash-topbar{display:flex;align-items:center;justify-content:flex-end;padding:0.75rem 2rem;gap:0.65rem;flex-shrink:0;border-bottom:1px solid var(--border);}
+.beta-tag{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);color:var(--lime);padding:3px 10px;border-radius:100px;}
+.logout-btn{font-size:0.75rem;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color 0.15s;}
+.logout-btn:hover{color:var(--pink);}
+.topbar-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:white;font-family:'DM Mono',monospace;text-transform:uppercase;}
+
+/* ── HERO ── */
+.dash-hero{padding:2.5rem 2.5rem 2rem;display:grid;grid-template-columns:1fr 320px;gap:2rem;align-items:center;position:relative;overflow:hidden;flex-shrink:0;
+  background-color:#0a0f1e;
+  background-image:linear-gradient(135deg,rgba(10,15,30,1) 0%,rgba(13,18,32,1) 60%,rgba(15,20,40,1) 100%),linear-gradient(rgba(67,97,238,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(67,97,238,0.045) 1px,transparent 1px);
+  background-size:100% 100%,58px 58px,58px 58px;
+}
+.dash-hero::before{content:'';position:absolute;top:-80px;left:25%;width:750px;height:550px;background:radial-gradient(ellipse at center,rgba(67,97,238,0.25) 0%,rgba(67,97,238,0.1) 40%,transparent 70%);pointer-events:none;z-index:0;}
+.dash-hero::after{content:'';position:absolute;bottom:-100px;right:80px;width:450px;height:450px;background:radial-gradient(circle,rgba(67,97,238,0.14) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.hero-glow-extra{position:absolute!important;top:10%;left:5%;width:220px;height:220px;background:radial-gradient(circle,rgba(139,162,240,0.1) 0%,transparent 70%);pointer-events:none;z-index:0;}
+.dash-hero>.hero-left,.dash-hero>.hero-right{position:relative;z-index:1;}
+
+.hero-greeting{font-family:'DM Sans',sans-serif;font-size:0.92rem;color:var(--dim);margin-bottom:0.5rem;font-weight:400;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3vw,2.7rem);font-weight:900;color:white;line-height:1.1;margin-bottom:0.75rem;}
 .hero-title em{font-style:italic;color:var(--lime);}
-.hero-sub{font-size:0.85rem;color:var(--dim);line-height:1.6;max-width:480px;margin-bottom:1.5rem;}
-.hero-stats{display:flex;align-items:center;gap:1.5rem;}
-.hero-stat{display:flex;flex-direction:column;}
-.hs-num{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:white;line-height:1;}
-.hs-label{font-size:0.65rem;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace;letter-spacing:0.06em;}
-.hero-stat-div{width:1px;height:28px;background:var(--border-mid);}
-.hero-actions{position:absolute;top:2rem;right:2rem;display:flex;gap:0.5rem;}
-.btn-new{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.55rem 1.25rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:0.4rem;}
-.btn-new:hover{opacity:0.88;transform:translateY(-1px);}
+.hero-sub{font-size:0.85rem;color:var(--muted);line-height:1.65;max-width:420px;margin-bottom:1.75rem;}
+.hero-stats{display:flex;align-items:center;gap:2rem;}
+.hero-stat{display:flex;align-items:center;gap:0.6rem;}
+.hs-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+.hs-icon-blue{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.25);}
+.hs-icon-lime{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.2);}
+.hs-num{font-family:'DM Mono',monospace;font-size:1.15rem;font-weight:700;color:white;line-height:1;}
+.hs-label{font-size:0.65rem;color:var(--muted);margin-top:1px;font-family:'DM Mono',monospace;letter-spacing:0.04em;}
 
-/* ── CONTENT BODY ── */
-.content-body{padding:1.5rem 2rem 3rem;flex:1;}
+/* AI Card */
+.ai-card{background:var(--navy);border:1px solid var(--border-mid);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden;}
+.ai-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(200,224,0,0.06) 0%,transparent 70%);pointer-events:none;}
+.ai-card-top{display:flex;align-items:flex-start;gap:0.75rem;}
+.ai-card-icon{width:38px;height:38px;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.22);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.ai-card-title{font-size:0.9rem;font-weight:700;color:white;margin-bottom:0.2rem;}
+.ai-card-desc{font-size:0.72rem;color:var(--dim);line-height:1.55;}
+.ai-card-btn{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.6rem 1.25rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;align-self:flex-start;}
+.ai-card-btn:hover{opacity:0.88;transform:translateY(-1px);}
 
 /* ── SECTION HEADERS ── */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;}
-.sec-title{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);}
-.sec-link{font-size:0.72rem;color:var(--iris);cursor:pointer;text-decoration:none;transition:color 0.15s;}
-.sec-link:hover{color:white;}
+.dash-section{padding:0 2.5rem;margin-bottom:2rem;}
+.dash-section.no-pad{padding:0;}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.section-title{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);}
+.section-link{font-size:0.72rem;color:var(--iris);cursor:pointer;text-decoration:none;transition:color 0.15s;font-family:'DM Sans',sans-serif;}
+.section-link:hover{color:white;}
 
-/* ── PROJECTS ── */
-.projects-table{background:var(--navy);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:2rem;}
-.pt-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:1rem;padding:0.6rem 1.25rem;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);}
-.pt-head span{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
-.pt-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:1rem;padding:0.875rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;transition:background 0.12s;cursor:pointer;}
-.pt-row:last-child{border-bottom:none;}
-.pt-row:hover{background:rgba(255,255,255,0.025);}
-.pt-business{display:flex;align-items:center;gap:0.75rem;}
-.pt-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.pt-bname{font-size:0.85rem;font-weight:600;color:white;}
-.pt-bsub{font-size:0.67rem;color:var(--muted);margin-top:1px;}
-.pt-pill{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.07em;padding:2px 9px;border-radius:100px;display:inline-block;width:fit-content;}
+/* ── BLUEPRINT CAROUSEL ── */
+.carousel-wrap{padding:0 2.5rem;margin-bottom:2rem;}
+.blueprint-carousel{display:flex;gap:1rem;overflow-x:auto;overflow-y:visible;padding:6px 2px 0.75rem;-ms-overflow-style:none;scrollbar-width:none;}
+.blueprint-carousel::-webkit-scrollbar{display:none;}
+
+/* ── CAROUSEL CARDS ── */
+.bp-card-wrap{flex-shrink:0;width:230px;background:var(--navy);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.18s;}
+.bp-card-wrap:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 12px 40px rgba(67,97,238,0.15);}
+.bp-card-wrap.has-save{border-color:rgba(67,97,238,0.35);}
+.bp-card-wrap.has-save:hover{border-color:var(--blue);box-shadow:0 12px 40px rgba(67,97,238,0.2);}
+
+/* Thumbnail area */
+.bp-thumb{height:148px;position:relative;overflow:hidden;flex-shrink:0;}
+.bp-card-wrap:hover .bp-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(67,97,238,0.18) 0%,transparent 65%);pointer-events:none;z-index:2;}
+
+/* ── MASTER THUMBNAIL ── */
+.bt-master{background:linear-gradient(145deg,#0d1829 0%,#1a2744 100%);}
+.bt-master .bt-nav{position:absolute;top:0;left:0;right:0;height:16px;background:rgba(0,0,0,0.3);display:flex;align-items:center;padding:0 6px;gap:4px;}
+.bt-master .bt-nav-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.18);}
+.bt-master .bt-nav-spacer{flex:1;}
+.bt-master .bt-nav-btn{width:28px;height:5px;border-radius:3px;background:rgba(200,224,0,0.4);}
+.bt-master .bt-hero{position:absolute;top:22px;left:12px;right:12px;}
+.bt-master .bt-tag{font-size:5px;font-family:'DM Mono',monospace;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:5px;}
+.bt-master .bt-h1{font-family:'Playfair Display',serif;font-size:13px;font-weight:900;color:white;line-height:1.2;margin-bottom:5px;}
+.bt-master .bt-line{height:3px;border-radius:2px;background:rgba(255,255,255,0.12);margin-bottom:3px;}
+.bt-master .bt-line.short{width:60%;}
+.bt-master .bt-cta{position:absolute;bottom:10px;left:12px;background:var(--lime);color:#0d1829;font-size:6px;font-weight:700;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px;letter-spacing:0.08em;}
+.bt-master .bt-glow{position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(67,97,238,0.2) 0%,transparent 70%);}
+
+/* ── EVENT INVITE THUMBNAIL ── */
+.bt-event{background:linear-gradient(160deg,#faf4ef 0%,#f0ddd5 100%);}
+.bt-event .bt-ev-top{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:7px;color:rgba(100,60,50,0.4);letter-spacing:0.2em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.bt-event .bt-ev-flourish{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(238,112,188,0.5);}
+.bt-event .bt-ev-you{position:absolute;top:32px;left:0;right:0;text-align:center;font-family:'Playfair Display',serif;font-style:italic;font-size:11px;color:rgba(80,40,35,0.6);line-height:1;}
+.bt-event .bt-ev-invited{position:absolute;top:46px;left:0;right:0;text-align:center;font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:20px;color:#3a2520;line-height:1;}
+.bt-event .bt-ev-div{position:absolute;top:74px;left:50%;transform:translateX(-50%);width:30px;height:1px;background:rgba(238,112,188,0.5);}
+.bt-event .bt-ev-date{position:absolute;top:82px;left:0;right:0;text-align:center;font-size:5.5px;font-family:'DM Mono',monospace;letter-spacing:0.12em;color:rgba(80,40,35,0.45);text-transform:uppercase;}
+.bt-event .bt-ev-rsvp{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:#ee70bc;color:white;font-size:6px;font-weight:700;font-family:'DM Mono',monospace;padding:4px 12px;border-radius:4px;letter-spacing:0.1em;white-space:nowrap;}
+.bt-event .bt-ev-add{position:absolute;bottom:12px;left:50%;transform:translateX(-50%) translateY(14px) translateX(30px);color:rgba(80,40,35,0.35);font-size:5px;font-family:'DM Mono',monospace;letter-spacing:0.1em;white-space:nowrap;}
+
+/* ── LINK IN BIO THUMBNAIL ── */
+.bt-linkbio{background:linear-gradient(160deg,#0e1627 0%,#1c2b47 100%);}
+.bt-linkbio .bt-lb-av{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;border:2px solid rgba(200,224,0,0.5);background:rgba(200,224,0,0.08);}
+.bt-linkbio .bt-lb-handle{position:absolute;top:44px;left:0;right:0;text-align:center;font-size:6.5px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.7);letter-spacing:0.1em;}
+.bt-linkbio .bt-lb-line{position:absolute;left:24px;right:24px;height:2px;border-radius:1px;background:rgba(255,255,255,0.07);}
+.bt-linkbio .bt-lb-btn{position:absolute;left:18px;right:18px;height:14px;border-radius:5px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;}
+.bt-linkbio .bt-lb-btn-txt{font-size:5px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.45);letter-spacing:0.1em;}
+.bt-linkbio .bt-lb-btn.lime-btn{border-color:rgba(200,224,0,0.3);background:rgba(200,224,0,0.06);}
+.bt-linkbio .bt-lb-btn.lime-btn .bt-lb-btn-txt{color:rgba(200,224,0,0.7);}
+.bt-linkbio .bt-lb-socials{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
+.bt-linkbio .bt-lb-soc{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);}
+
+/* ── UGC THUMBNAIL ── */
+.bt-ugc{background:linear-gradient(145deg,#080d18 0%,#111826 100%);}
+.bt-ugc .bt-ugc-hdr{position:absolute;top:8px;left:10px;font-size:5.5px;font-family:'DM Mono',monospace;color:rgba(238,112,188,0.8);letter-spacing:0.15em;text-transform:uppercase;}
+.bt-ugc .bt-ugc-grid{position:absolute;top:22px;left:10px;right:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.bt-ugc .bt-ugc-cell{height:44px;border-radius:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.bt-ugc .bt-ugc-cell:nth-child(1){background:rgba(238,112,188,0.08);}
+.bt-ugc .bt-ugc-cell:nth-child(2){background:rgba(139,162,240,0.08);}
+.bt-ugc .bt-ugc-cell:nth-child(3){background:rgba(67,97,238,0.08);}
+.bt-ugc .bt-ugc-cell:nth-child(4){background:rgba(200,224,0,0.06);}
+.bt-ugc .bt-play{font-size:10px;color:rgba(255,255,255,0.25);}
+.bt-ugc .bt-ugc-price{position:absolute;bottom:8px;left:10px;font-size:6px;font-family:'DM Mono',monospace;color:rgba(200,224,0,0.7);letter-spacing:0.08em;}
+
+/* ── COLLAB THUMBNAIL ── */
+.bt-collab{background:linear-gradient(145deg,#0d1220 0%,#131c30 100%);}
+.bt-collab .bt-cl-hdr{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;}
+.bt-collab .bt-cl-title{font-size:6.5px;font-weight:600;color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;}
+.bt-collab .bt-cl-arrow{font-size:7px;color:var(--iris);}
+.bt-collab .bt-cl-div{position:absolute;top:24px;left:10px;right:10px;height:1px;background:var(--border);}
+.bt-collab .bt-cl-step{position:absolute;left:10px;right:10px;font-size:6px;font-family:'DM Mono',monospace;display:flex;align-items:center;gap:4px;}
+.bt-collab .bt-cl-check{width:8px;height:8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:5px;flex-shrink:0;}
+.bt-collab .done .bt-cl-check{background:rgba(200,224,0,0.2);color:var(--lime);}
+.bt-collab .done{color:rgba(255,255,255,0.5);}
+.bt-collab .pending .bt-cl-check{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:transparent;}
+.bt-collab .pending{color:rgba(255,255,255,0.25);}
+.bt-collab .bt-cl-btn{position:absolute;bottom:10px;left:10px;right:10px;height:14px;border-radius:5px;border:1px solid rgba(139,162,240,0.25);background:rgba(139,162,240,0.06);display:flex;align-items:center;justify-content:center;}
+.bt-collab .bt-cl-btn-txt{font-size:5.5px;font-family:'DM Mono',monospace;color:var(--iris);letter-spacing:0.1em;}
+
+/* ── SITE REFRESH THUMBNAIL ── */
+.bt-refresh{background:linear-gradient(145deg,#0d1624 0%,#1a2540 100%);display:flex;}
+.bt-refresh .bt-rf-half{flex:1;position:relative;padding:10px 8px;}
+.bt-refresh .bt-rf-label{font-size:4.5px;font-family:'DM Mono',monospace;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:5px;}
+.bt-refresh .bt-rf-label.old{color:rgba(255,255,255,0.2);}
+.bt-refresh .bt-rf-label.new{color:var(--lime);}
+.bt-refresh .bt-rf-line{height:3px;border-radius:1.5px;margin-bottom:3px;}
+.bt-refresh .bt-rf-line.old-line{background:rgba(255,255,255,0.07);}
+.bt-refresh .bt-rf-line.new-line{background:rgba(200,224,0,0.2);}
+.bt-refresh .bt-rf-btn{height:10px;border-radius:3px;margin-top:5px;width:50%;}
+.bt-refresh .bt-rf-btn.old-btn{background:rgba(255,255,255,0.07);}
+.bt-refresh .bt-rf-btn.new-btn{background:rgba(200,224,0,0.3);}
+.bt-refresh .bt-rf-divider{width:1px;background:rgba(255,255,255,0.08);position:relative;display:flex;align-items:center;justify-content:center;}
+.bt-refresh .bt-rf-arrow{font-size:9px;color:rgba(200,224,0,0.4);background:var(--navy-deep);padding:2px;border-radius:50%;line-height:1;}
+
+/* Card info area */
+.bp-card-info{padding:0.875rem 1rem;border-top:1px solid var(--border);}
+.bpci-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;}
+.bpci-type{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
+.bpci-date{font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--muted);}
+.bpci-title{font-size:0.82rem;font-weight:600;color:white;margin-bottom:0.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bpci-progress{height:2px;border-radius:1px;background:rgba(255,255,255,0.06);margin-bottom:0.6rem;overflow:hidden;}
+.bpci-progress-fill{height:100%;border-radius:1px;background:linear-gradient(90deg,var(--blue),var(--iris));}
+.bp-continue-btn{font-size:0.7rem;font-weight:600;color:var(--iris);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;transition:color 0.12s;display:flex;align-items:center;gap:0.25rem;}
+.bp-continue-btn:hover{color:white;}
+.bp-continue-btn.start-btn{color:var(--lime);}
+.bp-continue-btn.start-btn:hover{color:white;}
+
+/* ── BOTTOM GRID ── */
+.bottom-grid{display:grid;grid-template-columns:1fr 300px;gap:0;padding:0 2.5rem 3rem;align-items:start;}
+
+/* ── RECOMMENDED ── */
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin-bottom:1rem;}
+.rec-card{background:var(--navy);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;}
+.rec-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(67,97,238,0.12);}
+.rec-thumb{height:70px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;position:relative;}
+.rec-thumb-master{background:linear-gradient(135deg,rgba(67,97,238,0.15) 0%,rgba(13,18,32,0.8) 100%);}
+.rec-thumb-event{background:linear-gradient(135deg,rgba(238,112,188,0.15) 0%,rgba(13,18,32,0.8) 100%);}
+.rec-thumb-linkbio{background:linear-gradient(135deg,rgba(200,224,0,0.1) 0%,rgba(13,18,32,0.8) 100%);}
+.rec-thumb-ugc{background:linear-gradient(135deg,rgba(238,112,188,0.12) 0%,rgba(8,13,24,0.9) 100%);}
+.rec-thumb-collab{background:linear-gradient(135deg,rgba(139,162,240,0.12) 0%,rgba(13,18,32,0.85) 100%);}
+.rec-thumb-refresh{background:linear-gradient(135deg,rgba(200,224,0,0.08) 0%,rgba(13,18,32,0.8) 100%);}
+.rec-badge{position:absolute;top:7px;left:7px;font-family:'DM Mono',monospace;font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;font-weight:500;}
+.rec-badge-new{background:rgba(200,224,0,0.15);color:var(--lime);border:1px solid rgba(200,224,0,0.3);}
+.rec-badge-trending{background:rgba(238,112,188,0.15);color:var(--pink);border:1px solid rgba(238,112,188,0.3);}
+.rec-badge-popular{background:rgba(139,162,240,0.15);color:var(--iris);border:1px solid rgba(139,162,240,0.3);}
+.rec-info{padding:0.625rem 0.75rem;}
+.rec-name{font-size:0.78rem;font-weight:600;color:white;margin-bottom:0.15rem;}
+.rec-desc{font-size:0.62rem;color:var(--muted);line-height:1.4;}
+.rec-match{font-size:0.58rem;font-family:'DM Mono',monospace;color:var(--lime);margin-top:0.3rem;opacity:0.7;}
+
+.browse-link{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:var(--iris);text-decoration:none;font-family:'DM Sans',sans-serif;cursor:pointer;transition:color 0.12s;padding:0 0 1rem;}
+.browse-link:hover{color:white;}
+
+/* ── RIGHT COLUMN ── */
+.right-col{padding-left:2rem;display:flex;flex-direction:column;gap:1.5rem;}
+
+/* Quick actions */
+.qa-list{display:flex;flex-direction:column;gap:0.1rem;}
+.qa-item{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.75rem;border-radius:10px;cursor:pointer;transition:background 0.12s;border:1px solid transparent;}
+.qa-item:hover{background:rgba(255,255,255,0.03);border-color:var(--border);}
+.qa-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;}
+.qa-icon-lime{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.18);}
+.qa-icon-iris{background:rgba(139,162,240,0.1);border:1px solid rgba(139,162,240,0.18);}
+.qa-icon-blue{background:rgba(67,97,238,0.1);border:1px solid rgba(67,97,238,0.18);}
+.qa-icon-pink{background:rgba(238,112,188,0.1);border:1px solid rgba(238,112,188,0.18);}
+.qa-name{font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.85);margin-bottom:1px;}
+.qa-desc{font-size:0.63rem;color:var(--muted);line-height:1.3;}
+.qa-arrow{margin-left:auto;font-size:1rem;color:var(--muted);}
+
+/* Recent activity */
+.activity-list{display:flex;flex-direction:column;gap:0.5rem;}
+.act-item{display:flex;align-items:center;gap:0.65rem;padding:0.5rem 0;}
+.act-item+.act-item{border-top:1px solid var(--border);}
+.act-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;}
+.act-name{font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.8);}
+.act-sub{font-size:0.62rem;color:var(--muted);}
+.act-time{margin-left:auto;font-size:0.6rem;font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0;}
+.act-empty{font-size:0.75rem;color:var(--muted);padding:0.5rem 0;text-align:center;line-height:1.6;}
+
+/* ── PILL TAGS ── */
+.pt-pill{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.07em;padding:2px 9px;border-radius:100px;display:inline-block;}
 .pill-lime{background:rgba(200,224,0,0.1);color:var(--lime);border:1px solid rgba(200,224,0,0.22);}
 .pill-iris{background:rgba(139,162,240,0.1);color:var(--iris);border:1px solid rgba(139,162,240,0.22);}
 .pill-pink{background:rgba(238,112,188,0.1);color:var(--pink);border:1px solid rgba(238,112,188,0.22);}
 .pill-amber{background:rgba(255,190,80,0.1);color:#ffbe50;border:1px solid rgba(255,190,80,0.22);}
-.pt-date{font-family:'DM Mono',monospace;font-size:0.67rem;color:var(--muted);}
-.pt-status{display:flex;align-items:center;gap:0.35rem;font-size:0.67rem;font-family:'DM Mono',monospace;}
-.st-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.st-ready .st-dot{background:var(--lime);}
-.st-ready{color:rgba(200,224,0,0.7);}
-.st-draft .st-dot{background:rgba(255,255,255,0.2);}
-.st-draft{color:var(--muted);}
-.pt-actions{display:flex;gap:0.3rem;}
-.ta-btn{font-size:0.67rem;padding:0.28rem 0.65rem;border-radius:6px;border:1px solid var(--border-mid);background:transparent;color:var(--dim);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.12s;}
-.ta-btn:hover{border-color:rgba(255,255,255,0.25);color:white;}
-.ta-btn.go{background:rgba(200,224,0,0.09);border-color:rgba(200,224,0,0.28);color:var(--lime);}
-.ta-btn.go:hover{background:rgba(200,224,0,0.16);}
-.ta-btn.del:hover{border-color:rgba(238,112,188,0.4);color:var(--pink);}
-.pt-empty{padding:2.5rem;text-align:center;color:var(--muted);font-size:0.82rem;}
-.pt-empty-icon{font-size:1.75rem;margin-bottom:0.5rem;opacity:0.4;}
-.pt-empty-sub{font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.25rem;}
 
-/* ── BLUEPRINT LAUNCHER ── */
-.bp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;margin-bottom:2rem;}
-.bp-card{border-radius:10px;padding:1rem 1rem 0.875rem;cursor:pointer;transition:all 0.15s;border:1px solid transparent;position:relative;}
-.bp-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.15)!important;}
-.bp-card-icon{font-size:1.35rem;margin-bottom:0.5rem;display:block;}
-.bp-card-name{font-size:0.82rem;font-weight:600;color:white;margin-bottom:0.2rem;line-height:1.2;}
-.bp-card-desc{font-size:0.62rem;color:rgba(255,255,255,0.62);line-height:1.35;}
-.proj-vis-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;}
-.proj-vis-card:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);}
-.proj-vis-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:2rem;}
-.proj-vis-body{padding:0.75rem 0.875rem;border-top:1px solid var(--border);}
-.proj-vis-name{font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.9);}
-.proj-vis-meta{font-size:0.65rem;color:var(--muted);margin-top:0.15rem;}
-.proj-vis-new{background:transparent;border:1px dashed rgba(255,255,255,0.12);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;cursor:pointer;gap:0.4rem;transition:all .15s;}
-.proj-vis-new:hover{border-color:rgba(255,255,255,0.25);}
-.proj-vis-new-icon{font-size:1.25rem;color:rgba(255,255,255,0.2);}
-.proj-vis-new-label{font-size:0.7rem;color:rgba(255,255,255,0.3);}
-.bp-refresh{background:rgba(200,224,0,0.07);border-color:rgba(200,224,0,0.2)!important;}
-.bp-lessons{background:rgba(139,162,240,0.07);border-color:rgba(139,162,240,0.15)!important;}
-.bp-caretaker{background:rgba(238,112,188,0.07);border-color:rgba(238,112,188,0.14)!important;}
-.bp-service{background:rgba(255,190,80,0.07);border-color:rgba(255,190,80,0.14)!important;}
-.bp-health{background:rgba(100,200,140,0.07);border-color:rgba(100,200,140,0.14)!important;}
-.bp-beauty{background:rgba(238,112,188,0.06);border-color:rgba(238,112,188,0.12)!important;}
-.bp-fitness{background:rgba(255,100,50,0.07);border-color:rgba(255,100,50,0.14)!important;}
-.bp-food{background:rgba(255,180,60,0.07);border-color:rgba(255,180,60,0.14)!important;}
-.bp-home{background:rgba(80,200,120,0.07);border-color:rgba(80,200,120,0.14)!important;}
-.bp-pro{background:rgba(139,162,240,0.06);border-color:rgba(139,162,240,0.12)!important;}
-.bp-creative{background:rgba(180,100,255,0.07);border-color:rgba(180,100,255,0.14)!important;}
-
-/* ── TOOLS ── */
-.tools-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;}
-.tool-card{background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:flex-start;gap:0.875rem;cursor:pointer;transition:border-color 0.15s;}
-.tool-card:hover{border-color:var(--border-mid);}
-.tool-icon-wrap{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.ti-lime{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.18);}
-.ti-iris{background:rgba(139,162,240,0.1);border:1px solid rgba(139,162,240,0.18);}
-.ti-soon{background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.1);}
-.tool-name{font-size:0.84rem;font-weight:600;color:white;margin-bottom:0.2rem;}
-.tool-desc{font-size:0.7rem;color:var(--dim);line-height:1.5;}
-.tool-links{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.625rem;}
-.tool-link-chip{font-size:0.6rem;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid var(--border-mid);color:var(--muted);cursor:pointer;transition:all 0.12s;text-decoration:none;}
-.tool-link-chip:hover{border-color:rgba(200,224,0,0.3);color:var(--lime);}
-.soon-badge{font-size:0.58rem;font-family:'DM Mono',monospace;color:var(--muted);margin-top:0.5rem;display:block;}
-
-/* ── MODAL: new project picker ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--navy);border:1px solid var(--border-mid);border-radius:16px;padding:1.75rem;width:520px;max-height:80vh;overflow-y:auto;}
-.modal-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:white;margin-bottom:0.25rem;}
-.modal-sub{font-size:0.82rem;color:var(--dim);margin-bottom:1.5rem;}
-.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
-.modal-bp-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.875rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:0.75rem;}
-.modal-bp-card:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);}
-.modal-bp-icon{font-size:1.1rem;flex-shrink:0;}
-.modal-bp-name{font-size:0.82rem;font-weight:600;color:white;}
-.modal-bp-desc{font-size:0.65rem;color:var(--muted);}
-.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;margin-top:-0.25rem;}
-.modal-close:hover{color:white;}
-
-/* ── LOADING STATE ── */
-.loading-row{padding:1.5rem;text-align:center;color:var(--muted);font-size:0.8rem;font-family:'DM Mono',monospace;}
+/* ── LOADING ── */
+.loading-row{padding:1.5rem;text-align:center;color:var(--muted);font-size:0.75rem;font-family:'DM Mono',monospace;letter-spacing:0.08em;}
 
 /* ── GROW STUDIO ── */
 .gs-panel{display:none;flex:1;overflow:hidden;flex-direction:column;}
 .gs-panel.gs-active{display:flex;}
-.gs-topbar{height:48px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:0.75rem;flex-shrink:0;}
+.gs-topbar{height:48px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:0.75rem;flex-shrink:0;background:var(--navy);}
 .gs-topbar-title{font-size:0.88rem;font-weight:500;flex:1;color:white;}
 .gs-topbar-title span{color:var(--muted);font-weight:400;}
 .gs-body{flex:1;display:grid;grid-template-columns:1fr 280px;overflow:hidden;}
@@ -196,14 +297,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .gs-bubble{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.85rem;font-size:0.78rem;line-height:1.65;color:rgba(255,255,255,0.82);max-width:88%;}
 .gs-msg-row.gs-user .gs-bubble{background:rgba(255,255,255,0.05);border-color:var(--border-mid);}
 .gs-bubble strong{color:white;font-weight:500;}
-.gs-prompt-cards{display:flex;flex-direction:column;gap:0.45rem;margin:0.5rem 0 0 32px;}
-.gs-prompt-card{background:var(--navy);border:1px solid var(--border-mid);border-radius:10px;padding:0.65rem 0.875rem;cursor:pointer;transition:all 0.15s;}
-.gs-prompt-card:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.04);}
-.gs-prompt-card.gs-used{opacity:0.35;pointer-events:none;}
-.gs-pc-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.gs-pc-title{font-size:0.78rem;font-weight:600;color:white;margin-bottom:2px;}
-.gs-pc-desc{font-size:0.68rem;color:var(--dim);line-height:1.4;}
-.gs-pc-action{font-size:0.65rem;color:var(--muted);margin-top:4px;}
 .gs-typing-row{display:flex;gap:8px;align-items:flex-start;}
 .gs-typing-bub{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.55rem 0.75rem;display:flex;gap:4px;align-items:center;}
 .gs-td{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:gstd 1.2s ease-in-out infinite;opacity:0.4;}
@@ -255,312 +348,373 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .gs-empty-state{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:0.78rem;line-height:1.6;}
 .gs-empty-icon{font-size:1.5rem;margin-bottom:0.5rem;opacity:0.4;}
 .gs-generating{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--lime);letter-spacing:0.06em;margin-bottom:0.75rem;}
-.gs-gen-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:gstd 1.2s ease-in-out infinite;}
-
 .boost-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.75rem 0.875rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:all 0.15s;margin-bottom:0.45rem;}
 .boost-card:hover{border-color:var(--border-mid);background:rgba(255,255,255,0.05);}
-.boost-card.boost-active{border-color:rgba(200,224,0,0.4);background:rgba(200,224,0,0.05);}
 .boost-card-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;border:1px solid transparent;}
 .boost-card-body{flex:1;}
 .boost-card-title{font-size:0.78rem;font-weight:600;color:white;margin-bottom:2px;}
 .boost-card-desc{font-size:0.65rem;color:var(--dim);line-height:1.4;}
 .boost-card-arrow{font-size:0.75rem;color:var(--muted);}
-.boost-tweak-btn{background:var(--surface);border:1px solid var(--border-mid);border-radius:6px;padding:0.3rem 0.65rem;font-size:0.68rem;color:var(--dim);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.12s;}
-.boost-tweak-btn:hover{color:white;border-color:rgba(255,255,255,0.25);}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--navy);border:1px solid var(--border-mid);border-radius:18px;padding:2rem;width:540px;max-height:80vh;overflow-y:auto;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;margin-bottom:0.3rem;}
+.modal-sub{font-size:0.82rem;color:var(--dim);margin-bottom:1.5rem;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
+.modal-bp-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:0.9rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:0.75rem;}
+.modal-bp-card:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);}
+.modal-bp-icon{font-size:1.1rem;flex-shrink:0;}
+.modal-bp-name{font-size:0.82rem;font-weight:600;color:white;}
+.modal-bp-desc{font-size:0.65rem;color:var(--muted);}
+.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
+.modal-close:hover{color:white;}
 </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
-<div class="topnav">
-  <div class="tn-left">
-    <a href="/" class="logo-wrap" title="Back to Builtsy home">
-      <div class="logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M2 11L7 3L12 11H2Z" fill="#12192B"/></svg></div>
+<div class="app">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <a href="/" class="sb-logo-wrap" title="Back to Builtsy">
+      <div class="sb-logo-mark">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="9" width="5" height="5" rx="1" fill="rgba(18,25,43,0.4)"/></svg>
+      </div>
       <div>
-        <div class="logo-text">Builtsy</div>
-        <div class="logo-sub">Blueprints</div>
+        <div class="sb-logo-name">Built<em>sy</em><span class="dot">.</span></div>
+        <div class="sb-logo-sub">Blueprints</div>
       </div>
     </a>
-    <div class="tn-divider"></div>
-    <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Dashboard</span>
   </div>
-  <div class="tn-right">
+
+  <div class="sb-section">Main</div>
+  <div class="sb-item active" id="nav-dashboard" onclick="showSection('dashboard')">
+    <div class="sb-dot"></div>Dashboard
+  </div>
+  <div class="sb-item" id="nav-blueprints" onclick="showSection('blueprints')">
+    <div class="sb-dot"></div>My Blueprints
+  </div>
+
+  <div class="sb-section">AI</div>
+  <a class="sb-item" id="nav-boost" href="builtsy-brain.html">
+    <span class="ai-star">✦</span>Builtsy Brain AI
+  </a>
+
+  <div class="sb-section">Blueprints</div>
+  <div class="sb-item" onclick="location.href='blueprint-master.html'">
+    <div class="sb-dot"></div>Builtsy Blueprint
+  </div>
+  <div class="sb-item" onclick="location.href='blueprint-event-invite.html'">
+    <div class="sb-dot"></div>Event Invite
+  </div>
+  <div class="sb-item" onclick="location.href='blueprint-linkbio.html'">
+    <div class="sb-dot"></div>Link in Bio
+  </div>
+  <div class="sb-item" onclick="location.href='blueprint-ugc.html'">
+    <div class="sb-dot"></div>UGC Creator
+  </div>
+  <div class="sb-item" onclick="location.href='blueprint-collab-booking.html'">
+    <div class="sb-dot"></div>Collab Booking
+  </div>
+
+  <div class="sb-section">Tools</div>
+  <div class="sb-item" onclick="location.href='builtsy-audit.html'">
+    <div class="sb-dot"></div>Audit Tools
+  </div>
+  <div class="sb-item" onclick="location.href='calculator.html'">
+    <div class="sb-dot"></div>Revenue Booster
+  </div>
+  <div class="sb-item" onclick="location.href='faq-tool.html'">
+    <div class="sb-dot"></div>FAQ Tool
+  </div>
+  <div class="sb-item" onclick="location.href='sms-tool.html'">
+    <div class="sb-dot"></div>SMS Tool
+  </div>
+  <div class="sb-item" onclick="location.href='forms-tool.html'">
+    <div class="sb-dot"></div>Forms
+  </div>
+  <div class="sb-item" onclick="location.href='testimonials-tool.html'">
+    <div class="sb-dot"></div>Testimonials
+  </div>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-avatar">?</div>
+      <div>
+        <div class="sb-uname" id="user-name">Beta User</div>
+        <div class="sb-utag">Beta access</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN WRAPPER ── -->
+<div class="main-wrapper">
+<main class="main-content" id="main-content">
+
+  <!-- TOP BAR -->
+  <div class="dash-topbar">
     <span class="beta-tag">Beta</span>
-    <button class="logout-btn" onclick="sessionStorage.clear();window.location.href='login.html'">Log out</button>
+    <button class="logout-btn" onclick="doLogout()">Log out</button>
+    <div class="topbar-avatar" id="topbar-avatar">?</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="dash-hero">
+    <div class="hero-glow-extra"></div>
+    <div class="hero-left">
+      <p class="hero-greeting">Good <span id="greeting-time">morning</span>, <span id="user-first">there</span>.</p>
+      <h1 class="hero-title">Build something <em>worth sharing.</em></h1>
+      <p class="hero-sub">Pick up where you left off, start a new blueprint, or let AI help you build faster.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hs-icon-wrap hs-icon-blue">◫</div>
+          <div>
+            <div class="hs-num" id="stat-projects">—</div>
+            <div class="hs-label">Blueprints</div>
+          </div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-icon-wrap hs-icon-lime">✓</div>
+          <div>
+            <div class="hs-num" id="stat-ready">—</div>
+            <div class="hs-label">Ready to publish</div>
+          </div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-icon-wrap hs-icon-blue"><span class="ai-star" style="font-size:0.9rem;">✦</span></div>
+          <div>
+            <div class="hs-num">0</div>
+            <div class="hs-label">Builtsy Brain AIs used</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="ai-card">
+        <div class="ai-card-top">
+          <div class="ai-card-icon"><span class="ai-star">✦</span></div>
+          <div>
+            <div class="ai-card-title">Builtsy Brain AI</div>
+            <div class="ai-card-desc">Let Builtsy AI generate content, layouts, and assets for your blueprint.</div>
+          </div>
+        </div>
+        <button class="ai-card-btn" onclick="location.href='builtsy-brain.html'">Try Builtsy Brain AI →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTINUE BUILDING -->
+  <div class="carousel-wrap">
+    <div class="section-hdr">
+      <span class="section-title">Continue building</span>
+      <a class="section-link" onclick="openNewModal()">+ New blueprint</a>
+    </div>
+    <div class="blueprint-carousel" id="blueprint-carousel">
+      <div class="loading-row" id="carousel-loading">Loading your blueprints…</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <!-- LEFT: Recommended -->
+    <div>
+      <div class="section-hdr">
+        <span class="section-title">Recommended for you</span>
+      </div>
+      <div class="rec-grid">
+        <div class="rec-card" onclick="location.href='blueprint-master.html'">
+          <div class="rec-thumb rec-thumb-master">◫<span class="rec-badge rec-badge-popular">Popular</span></div>
+          <div class="rec-info">
+            <div class="rec-name">Builtsy Blueprint</div>
+            <div class="rec-desc">Any service business — AI detects your industry</div>
+            <div class="rec-match">✦ Best match</div>
+          </div>
+        </div>
+        <div class="rec-card" onclick="location.href='blueprint-event-invite.html'">
+          <div class="rec-thumb rec-thumb-event">🎉<span class="rec-badge rec-badge-new">New</span></div>
+          <div class="rec-info">
+            <div class="rec-name">Event Invite</div>
+            <div class="rec-desc">Birthdays, showers &amp; celebrations</div>
+            <div class="rec-match">✦ Best match</div>
+          </div>
+        </div>
+        <div class="rec-card" onclick="location.href='blueprint-linkbio.html'">
+          <div class="rec-thumb rec-thumb-linkbio">🔗<span class="rec-badge rec-badge-trending">Trending</span></div>
+          <div class="rec-info">
+            <div class="rec-name">Link in Bio</div>
+            <div class="rec-desc">Mobile page for Instagram &amp; TikTok</div>
+            <div class="rec-match">✦ Best match</div>
+          </div>
+        </div>
+        <div class="rec-card" onclick="location.href='blueprint-ugc.html'">
+          <div class="rec-thumb rec-thumb-ugc">🎬<span class="rec-badge rec-badge-new">New</span></div>
+          <div class="rec-info">
+            <div class="rec-name">UGC Creator</div>
+            <div class="rec-desc">Portfolio &amp; packages for content creators</div>
+            <div class="rec-match">✦ Best match</div>
+          </div>
+        </div>
+      </div>
+      <a class="browse-link" onclick="openNewModal()">Browse all blueprints →</a>
+    </div>
+
+    <!-- RIGHT: Quick actions + Recent activity -->
+    <div class="right-col">
+
+      <!-- Quick actions -->
+      <div>
+        <div class="section-hdr">
+          <span class="section-title">Quick actions</span>
+        </div>
+        <div class="qa-list">
+          <div class="qa-item" onclick="location.href='builtsy-brain.html'">
+            <div class="qa-icon qa-icon-lime">✦</div>
+            <div>
+              <div class="qa-name">Generate content</div>
+              <div class="qa-desc">Use AI to write, edit, and more</div>
+            </div>
+            <span class="qa-arrow">›</span>
+          </div>
+          <div class="qa-item" onclick="openNewModal()">
+            <div class="qa-icon qa-icon-blue">◫</div>
+            <div>
+              <div class="qa-name">Build landing page</div>
+              <div class="qa-desc">Start with a proven blueprint</div>
+            </div>
+            <span class="qa-arrow">›</span>
+          </div>
+          <div class="qa-item" onclick="location.href='calculator.html'">
+            <div class="qa-icon qa-icon-iris">💰</div>
+            <div>
+              <div class="qa-name">Add pricing tool</div>
+              <div class="qa-desc">Build a live calculator for clients</div>
+            </div>
+            <span class="qa-arrow">›</span>
+          </div>
+          <div class="qa-item" onclick="location.href='builtsy-audit.html'">
+            <div class="qa-icon qa-icon-pink">◎</div>
+            <div>
+              <div class="qa-name">Run visibility audit</div>
+              <div class="qa-desc">See how your site performs</div>
+            </div>
+            <span class="qa-arrow">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div>
+        <div class="section-hdr">
+          <span class="section-title">Recent activity</span>
+        </div>
+        <div class="activity-list" id="recent-activity">
+          <div class="loading-row" style="padding:0.5rem 0;">Loading…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ── BOOST PANEL ── -->
+<div class="gs-panel" id="gs-panel">
+  <div class="gs-topbar">
+    <div class="gs-topbar-title">Builtsy Brain AI <span>/ Click anything to create it instantly.</span></div>
+    <button style="background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.72rem;font-family:'DM Sans',sans-serif;" onclick="showSection('dashboard')">← Back</button>
+  </div>
+  <div class="gs-body" style="grid-template-columns:340px 1fr;">
+    <div style="border-right:1px solid var(--border);overflow-y:auto;padding:1.25rem;">
+      <div class="gs-context-banner" id="gs-context-banner" style="margin-bottom:1.25rem;">Loading your business context...</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;">Pricing calculator</div>
+      <div class="boost-card" onclick="gsClickPrompt('addons')">
+        <div class="boost-card-icon" style="background:rgba(200,224,0,0.1);border-color:rgba(200,224,0,0.2);">✦</div>
+        <div class="boost-card-body"><div class="boost-card-title">Suggest add-ons</div><div class="boost-card-desc">6 ideas for your pricing calculator with revenue signal tags</div></div>
+        <div class="boost-card-arrow">→</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:1rem 0 0.6rem;">Digital products</div>
+      <div class="boost-card" onclick="gsClickPrompt('digital')">
+        <div class="boost-card-icon" style="background:rgba(139,162,240,0.1);border-color:rgba(139,162,240,0.2);">◎</div>
+        <div class="boost-card-body"><div class="boost-card-title">Starter guide PDF</div><div class="boost-card-desc">A downloadable beginner guide customers buy from your site</div></div>
+        <div class="boost-card-arrow">→</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:1rem 0 0.6rem;">Copy &amp; content</div>
+      <div class="boost-card" onclick="gsClickPrompt('email')">
+        <div class="boost-card-icon" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.2);">✉</div>
+        <div class="boost-card-body"><div class="boost-card-title">Welcome email sequence</div><div class="boost-card-desc">3 emails for new customers written in your voice</div></div>
+        <div class="boost-card-arrow">→</div>
+      </div>
+      <div class="boost-card" onclick="gsClickPrompt('social')">
+        <div class="boost-card-icon" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.2);">◈</div>
+        <div class="boost-card-body"><div class="boost-card-title">Social caption pack</div><div class="boost-card-desc">5 Instagram captions ready to post this week</div></div>
+        <div class="boost-card-arrow">→</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;overflow:hidden;">
+      <!-- chat col -->
+      <div class="gs-chat-col" style="border-right:none;">
+        <div class="gs-messages" id="gs-messages">
+          <div class="gs-context-banner" id="gs-context-banner-chat" style="margin-bottom:0.5rem;">Boost uses your saved blueprint to generate targeted content.</div>
+          <div class="gs-typing-row" id="gs-typing" style="display:none;">
+            <div class="gs-av gs-b">B</div>
+            <div class="gs-typing-bub"><div class="gs-td"></div><div class="gs-td"></div><div class="gs-td"></div></div>
+          </div>
+        </div>
+        <div class="gs-input-area">
+          <div class="gs-input-row">
+            <input class="gs-input" id="gs-input" placeholder="Ask anything about your business…" onkeydown="gsHandleKey(event)">
+            <button class="gs-send-btn" onclick="gsSendMessage()">
+              <svg viewBox="0 0 13 13" fill="none"><path d="M1 6.5h11M6.5 1l5.5 5.5-5.5 5.5" stroke="#12192B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- output panel -->
+      <div class="gs-output-col" style="border-top:1px solid var(--border);max-height:50%;">
+        <div class="gs-out-header">
+          <div class="gs-out-label">Output</div>
+          <div class="gs-tabs">
+            <div class="gs-tab gs-tab-active" id="gs-tab-ao" onclick="gsShowTab('ao')">Add-ons</div>
+            <div class="gs-tab" id="gs-tab-dp" onclick="gsShowTab('dp')">Products</div>
+            <div class="gs-tab" id="gs-tab-copy" onclick="gsShowTab('copy')">Copy</div>
+          </div>
+        </div>
+        <div class="gs-out-body">
+          <div id="gs-panel-ao">
+            <div class="gs-out-hdr"><h3 id="gs-ao-title">Add-on ideas</h3><p id="gs-ao-sub">Choose a prompt on the left to generate add-on suggestions.</p></div>
+            <div class="gs-generating" id="gs-ao-generating" style="display:none;"><div class="gs-td"></div>Generating ideas…</div>
+            <div class="gs-addon-list" id="gs-ao-list" style="opacity:0.3;pointer-events:none;"></div>
+            <button class="gs-cta-btn" id="gs-ao-cta" onclick="gsAddToBlueprint()" disabled>Add selected to blueprint</button>
+          </div>
+          <div id="gs-panel-dp" style="display:none;">
+            <div class="gs-empty-state" id="gs-dp-empty"><div class="gs-empty-icon">◎</div>Click "Starter guide PDF" to generate digital product ideas.</div>
+            <div id="gs-dp-content" style="display:none;">
+              <div class="gs-out-hdr"><h3>Digital product ideas</h3><p>Things you can create and sell directly from your site.</p></div>
+              <div class="gs-addon-list" id="gs-dp-list"></div>
+              <button class="gs-cta-btn" onclick="gsAddDigitalToBlueprint()">Add to blueprint notes</button>
+            </div>
+          </div>
+          <div id="gs-panel-copy" style="display:none;">
+            <div class="gs-empty-state" id="gs-copy-empty"><div class="gs-empty-icon">✐</div>Click an email or social prompt to generate copy.</div>
+            <div id="gs-copy-content" style="display:none;">
+              <div class="gs-out-hdr"><h3 id="gs-copy-title">Copy</h3></div>
+              <div id="gs-copy-body" style="font-size:0.78rem;line-height:1.75;color:rgba(255,255,255,0.8);white-space:pre-wrap;margin-bottom:0.75rem;"></div>
+              <button class="gs-cta-btn" onclick="gsCopyCopy()">Copy to clipboard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="workspace">
-
-  <!-- LEFT NAV -->
-  <div class="leftnav">
-    <div class="nav-section">Main</div>
-    <div class="nav-item active" onclick="showSection('dashboard')">
-      <span class="nav-icon">⊞</span>Dashboard
-    </div>
-    <div class="nav-item" onclick="showSection('projects')">
-      <span class="nav-icon">◫</span>My Projects
-    </div>
-
-
-
-    <div class="nav-section">Boost</div>
-    <div class="nav-item" id="nav-boost" onclick="showSection('boost')">
-      <span class="nav-icon">✦</span>Boost
-    </div>
-
-    <div class="nav-section">Blueprints</div>
-    <div class="nav-item" onclick="location.href='blueprint-collab-booking.html'">
-      <span class="nav-icon">🤝</span>Collab Booking
-    </div>
-
-    <div class="nav-section">Tools</div>
-    <div class="nav-item" onclick="showSection('tools')">
-      <span class="nav-icon">◎</span>Audit Tools
-    </div>
-    <div class="nav-item" onclick="location.href='calculator.html'">
-      <span class="nav-icon">💰</span>Revenue Booster
-    </div>
-    <div class="nav-item" onclick="location.href='faq-tool.html'">
-      <span class="nav-icon">❓</span>FAQ Tool
-    </div>
-    <div class="nav-item" onclick="location.href='sms-tool.html'">
-      <span class="nav-icon">💬</span>SMS Tool
-    </div>
-    <div class="nav-item" onclick="location.href='calendly-tool.html'">
-      <span class="nav-icon">📅</span>Calendly
-    </div>
-    <div class="nav-item" onclick="location.href='forms-tool.html'">
-      <span class="nav-icon">📋</span>Forms
-    </div>
-    <div class="nav-item" onclick="location.href='testimonials-tool.html'">
-      <span class="nav-icon">★</span>Testimonials
-    </div>
-
-    <div class="leftnav-footer">
-      <div class="user-row">
-        <div class="user-avatar" id="user-avatar">?</div>
-        <div>
-          <div class="user-name" id="user-name">Beta User</div>
-          <div class="user-tag">Beta access</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN CONTENT -->
-  <div class="main-content" id="main-content">
-
-    <!-- HERO HEADER -->
-    <div class="dash-hero">
-      <div class="hero-eyebrow">Welcome back</div>
-      <div class="hero-title">Your Builtsy <em>workspace.</em></div>
-      <div class="hero-sub">Pick up where you left off, start a new blueprint, or run an audit before delivery.</div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hs-num" id="stat-projects">—</div>
-          <div class="hs-label">Projects</div>
-        </div>
-        <div class="hero-stat-div"></div>
-        <div class="hero-stat">
-          <div class="hs-num">12</div>
-          <div class="hs-label">Blueprints</div>
-        </div>
-        <div class="hero-stat-div"></div>
-        <div class="hero-stat">
-          <div class="hs-num" id="stat-ready">—</div>
-          <div class="hs-label">Ready to generate</div>
-        </div>
-      </div>
-      <div class="hero-actions">
-        <button class="btn-new" onclick="openNewModal()">+ New Blueprint</button>
-      </div>
-    </div>
-
-    <div class="content-body">
-
-      <!-- PROJECTS -->
-      <div class="sec-hdr">
-        <span class="sec-title">My Projects</span>
-        <a class="sec-link" onclick="showSection('projects')">View all →</a>
-      </div>
-
-      <!-- Visual project cards -->
-      <div id="proj-card-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;margin-bottom:1.75rem;">
-        <div class="loading-row" id="projects-loading" style="grid-column:1/-1;">Loading projects…</div>
-        <div id="projects-rows" style="display:contents;"></div>
-        <div id="projects-empty" style="display:none;grid-column:1/-1;">
-          <div class="proj-vis-new" onclick="document.getElementById('new-bp-modal').style.display='flex'" style="min-height:140px;border-color:rgba(67,97,238,0.3);gap:0.6rem;">
-            <div style="font-size:2.2rem;opacity:0.5;">📁</div>
-            <div style="font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.7);">No projects yet</div>
-            <div style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:-0.2rem;">Start a blueprint below to create your first</div>
-            <div style="margin-top:0.3rem;background:rgba(67,97,238,0.15);border:1px solid rgba(67,97,238,0.35);border-radius:6px;padding:5px 14px;font-size:0.72rem;font-weight:600;color:#8ba2f0;">+ New Blueprint</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BLUEPRINT DIVIDER -->
-      <div style="border-top:2px solid #4361EE;margin-bottom:0;"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0 0.9rem;">
-        <div style="display:flex;align-items:center;gap:0.65rem;">
-          <span style="font-size:1.1rem;color:#4361EE;">⊞</span>
-          <span style="font-size:0.95rem;font-weight:600;color:white;letter-spacing:.01em;">Start a New Blueprint</span>
-        </div>
-        <span style="font-size:0.68rem;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">5 blueprints available</span>
-      </div>
-      <div class="bp-grid">
-        <div class="bp-card bp-refresh" onclick="launchBP('site-refresh','blueprint-site-refresh.html')">
-          <span class="bp-card-icon">✦</span>
-          <div class="bp-card-name">Site Refresh</div>
-          <div class="bp-card-desc">Fix & upgrade an existing site</div>
-        </div>
-        <div class="bp-card" style="background:rgba(67,97,238,0.1);border-color:rgba(67,97,238,0.3);" onclick="launchBP('master','blueprint-master.html')">
-          <span class="bp-card-icon">◫</span>
-          <div class="bp-card-name">Builtsy Blueprint</div>
-          <div class="bp-card-desc">Any service business — AI detects your industry</div>
-        </div>
-        <div class="bp-card" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.25);" onclick="location.href='blueprint-event-invite.html'">
-          <span class="bp-card-icon">🎉</span>
-          <div class="bp-card-name">Event Invite</div>
-          <div class="bp-card-desc">Birthdays, showers &amp; more</div>
-        </div>
-        <div class="bp-card" style="background:rgba(200,224,0,0.07);border-color:rgba(200,224,0,0.22);" onclick="location.href='blueprint-collab-booking.html'">
-          <span class="bp-card-icon">🤝</span>
-          <div class="bp-card-name">Collab Booking</div>
-          <div class="bp-card-desc">Creators &amp; influencers</div>
-        </div>
-        <div class="bp-card" style="background:rgba(67,97,238,0.1);border-color:rgba(67,97,238,0.25);" onclick="location.href='blueprint-linkbio.html'">
-          <span class="bp-card-icon">🔗</span>
-          <div class="bp-card-name">Link in Bio</div>
-          <div class="bp-card-desc">Mobile page for Instagram</div>
-        </div>
-      </div>
-
-      <!-- TOOLS -->
-      <div class="sec-hdr">
-        <span class="sec-title">Tools</span>
-      </div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="window.location.href='builtsy-audit.html'">
-          <div class="tool-icon-wrap ti-lime">◎</div>
-          <div>
-            <div class="tool-name">Site Audit Checklist</div>
-            <div class="tool-desc">Run before every delivery. Schema, AI crawlability, speed, accessibility — all in one checklist.</div>
-            <div class="tool-links">
-              <a class="tool-link-chip" href="https://search.google.com/test/rich-results" target="_blank">Rich Results</a>
-              <a class="tool-link-chip" href="https://otterly.ai" target="_blank">Otterly AI</a>
-              <a class="tool-link-chip" href="https://pagespeed.web.dev" target="_blank">PageSpeed</a>
-              <a class="tool-link-chip" href="https://wave.webaim.org" target="_blank">WAVE</a>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card">
-          <div class="tool-icon-wrap ti-iris">⚡</div>
-          <div>
-            <div class="tool-name">AI Visibility Check</div>
-            <div class="tool-desc">Test whether your site shows up in ChatGPT, Perplexity, and Claude. Run 2–4 weeks after launch.</div>
-            <div class="tool-links">
-              <a class="tool-link-chip" href="https://perplexity.ai" target="_blank">Perplexity</a>
-              <a class="tool-link-chip" href="https://chatgpt.com" target="_blank">ChatGPT</a>
-              <a class="tool-link-chip" href="https://claude.ai" target="_blank">Claude</a>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card" onclick="window.location.href='calculator.html'">
-          <div class="tool-icon-wrap ti-lime">💰</div>
-          <div>
-            <div class="tool-name">Revenue Booster</div>
-            <div class="tool-desc">Build a live pricing tool for any client. Add sessions, add-ons, and a custom book button — auto-saved to your blueprint.</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /content-body -->
-  </div><!-- /main-content -->
-
-  <!-- BOOST PANEL -->
-  <div class="gs-panel" id="gs-panel">
-    <div class="gs-topbar">
-      <div class="gs-topbar-title">Boost <span>/ Click anything to create it. No back-and-forth.</span></div>
-    </div>
-    <div class="gs-body" style="grid-template-columns:340px 1fr;">
-      <div style="border-right:1px solid var(--border);overflow-y:auto;padding:1.25rem;">
-        <div class="gs-context-banner" id="gs-context-banner" style="margin-bottom:1.25rem;">Loading your business context...</div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;">Pricing calculator</div>
-        <div class="boost-card" onclick="boostRun('addons', this)">
-          <div class="boost-card-icon" style="background:rgba(200,224,0,0.1);border-color:rgba(200,224,0,0.2);">✦</div>
-          <div class="boost-card-body"><div class="boost-card-title">Suggest add-ons</div><div class="boost-card-desc">6 ideas for your pricing calculator with revenue signal tags</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:1rem 0 0.6rem;">Digital products</div>
-        <div class="boost-card" onclick="boostRun('digital-guide', this)">
-          <div class="boost-card-icon" style="background:rgba(139,162,240,0.1);border-color:rgba(139,162,240,0.2);">◎</div>
-          <div class="boost-card-body"><div class="boost-card-title">Starter guide PDF</div><div class="boost-card-desc">A downloadable beginner guide customers buy from your site</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div class="boost-card" onclick="boostRun('digital-intake', this)">
-          <div class="boost-card-icon" style="background:rgba(139,162,240,0.1);border-color:rgba(139,162,240,0.2);">◫</div>
-          <div class="boost-card-body"><div class="boost-card-title">Client intake form</div><div class="boost-card-desc">A professional onboarding form for new clients</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div class="boost-card" onclick="boostRun('digital-checklist', this)">
-          <div class="boost-card-icon" style="background:rgba(139,162,240,0.1);border-color:rgba(139,162,240,0.2);">✓</div>
-          <div class="boost-card-body"><div class="boost-card-title">Getting started checklist</div><div class="boost-card-desc">A printable checklist new customers follow before first session</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:1rem 0 0.6rem;">Copy &amp; content</div>
-        <div class="boost-card" onclick="boostRun('email', this)">
-          <div class="boost-card-icon" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.2);">✉</div>
-          <div class="boost-card-body"><div class="boost-card-title">Welcome email sequence</div><div class="boost-card-desc">3 emails for new customers written in your voice</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div class="boost-card" onclick="boostRun('social', this)">
-          <div class="boost-card-icon" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.2);">◈</div>
-          <div class="boost-card-body"><div class="boost-card-title">Social caption pack</div><div class="boost-card-desc">5 Instagram captions ready to post this week</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-        <div class="boost-card" onclick="boostRun('bio', this)">
-          <div class="boost-card-icon" style="background:rgba(238,112,188,0.1);border-color:rgba(238,112,188,0.2);">✐</div>
-          <div class="boost-card-body"><div class="boost-card-title">Professional bio</div><div class="boost-card-desc">Short + long version for your site and socials</div></div>
-          <div class="boost-card-arrow">→</div>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;overflow:hidden;">
-        <div id="boost-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;text-align:center;">
-          <div style="font-size:1.5rem;margin-bottom:0.75rem;opacity:0.3;">✦</div>
-          <div style="font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.5);margin-bottom:0.4rem;">Click anything on the left</div>
-          <div style="font-size:0.75rem;color:var(--muted);max-width:260px;line-height:1.6;">Boost generates it instantly using your business info. No questions, no back-and-forth.</div>
-        </div>
-        <div id="boost-generating" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:3rem;text-align:center;">
-          <div style="display:flex;gap:5px;margin-bottom:1rem;justify-content:center;">
-            <div class="gs-td"></div><div class="gs-td"></div><div class="gs-td"></div>
-          </div>
-          <div style="font-size:0.7rem;color:var(--lime);font-family:'DM Mono',monospace;letter-spacing:0.06em;" id="boost-gen-label">Generating...</div>
-        </div>
-        <div id="boost-result" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
-          <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
-            <div style="flex:1;">
-              <div style="font-size:0.85rem;font-weight:600;color:white;" id="boost-result-title">Result</div>
-              <div style="font-size:0.68rem;color:var(--muted);margin-top:1px;" id="boost-result-sub"></div>
-            </div>
-            <button class="gs-cta-btn" style="width:auto;padding:0.45rem 1rem;font-size:0.75rem;" id="boost-dl-btn" onclick="boostDownload()">Download</button>
-          </div>
-          <div id="boost-addon-output" style="display:none;flex:1;overflow-y:auto;padding:1rem 1.25rem;">
-            <div class="gs-addon-list" id="gs-ao-list"></div>
-            <button class="gs-cta-btn" id="gs-ao-cta" onclick="gsAddToBlueprint()" style="margin-top:0.5rem;">Add selected to blueprint</button>
-          </div>
-          <div id="boost-text-output" style="display:none;flex:1;overflow-y:auto;padding:1rem 1.25rem;">
-            <div id="boost-text-body" style="font-size:0.8rem;line-height:1.75;color:rgba(255,255,255,0.8);white-space:pre-wrap;"></div>
-          </div>
-          <div style="padding:0.85rem 1.25rem;border-top:1px solid var(--border);flex-shrink:0;">
-            <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">Want a tweak?</div>
-            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;" id="boost-tweaks"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /workspace -->
+</div><!-- /main-wrapper -->
+</div><!-- /app -->
 
 <!-- NEW BLUEPRINT MODAL -->
 <div class="modal-overlay" id="new-modal" onclick="if(event.target===this)closeNewModal()">
@@ -569,167 +723,262 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
     <div class="modal-title">Start a new blueprint</div>
     <div class="modal-sub">Choose the type of site you're building.</div>
     <div class="modal-grid">
-      <div class="modal-bp-card" onclick="launchBP('site-refresh','blueprint-site-refresh.html')">
-        <span class="modal-bp-icon">✦</span>
-        <div><div class="modal-bp-name">Site Refresh</div><div class="modal-bp-desc">Fix & upgrade existing site</div></div>
-      </div>
-      <div class="modal-bp-card" onclick="launchBP('master','blueprint-master.html')">
+      <div class="modal-bp-card" onclick="location.href='blueprint-master.html'">
         <span class="modal-bp-icon">◫</span>
         <div><div class="modal-bp-name">Builtsy Blueprint</div><div class="modal-bp-desc">Any service business — AI detects your industry</div></div>
       </div>
       <div class="modal-bp-card" onclick="location.href='blueprint-event-invite.html'">
         <span class="modal-bp-icon">🎉</span>
-        <div><div class="modal-bp-name">Event Invite</div><div class="modal-bp-desc">Birthdays, showers & more</div></div>
-      </div>
-      <div class="modal-bp-card" onclick="location.href='blueprint-collab-booking.html'">
-        <span class="modal-bp-icon">🤝</span>
-        <div><div class="modal-bp-name">Collab Booking</div><div class="modal-bp-desc">Creators & influencers</div></div>
+        <div><div class="modal-bp-name">Event Invite</div><div class="modal-bp-desc">Birthdays, showers &amp; more</div></div>
       </div>
       <div class="modal-bp-card" onclick="location.href='blueprint-linkbio.html'">
         <span class="modal-bp-icon">🔗</span>
         <div><div class="modal-bp-name">Link in Bio</div><div class="modal-bp-desc">Mobile page for Instagram</div></div>
       </div>
+      <div class="modal-bp-card" onclick="location.href='blueprint-ugc.html'">
+        <span class="modal-bp-icon">🎬</span>
+        <div><div class="modal-bp-name">UGC Creator</div><div class="modal-bp-desc">Portfolio &amp; packages for creators</div></div>
+      </div>
+      <div class="modal-bp-card" onclick="location.href='blueprint-collab-booking.html'">
+        <span class="modal-bp-icon">🤝</span>
+        <div><div class="modal-bp-name">Collab Booking</div><div class="modal-bp-desc">Creators &amp; influencers</div></div>
+      </div>
+      <div class="modal-bp-card" onclick="location.href='blueprint-site-refresh.html'">
+        <span class="modal-bp-icon">✦</span>
+        <div><div class="modal-bp-name">Site Refresh</div><div class="modal-bp-desc">Fix &amp; upgrade an existing site</div></div>
+      </div>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
 <script>
-// ── AUTH CHECK ──
-var sess = sessionStorage.getItem('builtsy-auth');
-if (!sess || sess !== 'true') { window.location.href = 'login.html'; }
+var currentUser = null;
+var _isPreview = window.location.search.indexOf('preview=1') !== -1;
 
-// ── USER DISPLAY ──
-var userName = sessionStorage.getItem('builtsy-user') || 'Beta User';
-var initials = userName.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2) || 'BU';
-document.getElementById('user-avatar').textContent = initials;
-document.getElementById('user-name').textContent = userName;
+// Time-based greeting
+(function(){
+  var h = new Date().getHours();
+  var t = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  var el = document.getElementById('greeting-time');
+  if (el) el.textContent = t;
+})();
 
-// ── BLUEPRINT ICONS & LABELS ──
+(async function initAuth() {
+  if (_isPreview) {
+    setUserDisplay('Preview');
+    loadProjects();
+    return;
+  }
+  currentUser = await getUser();
+  if (!currentUser) {
+    sessionStorage.setItem('builtsy-redirect', 'dashboard.html');
+    window.location.href = 'login.html';
+    return;
+  }
+  var email = currentUser.email || '';
+  var userName = email.split('@')[0] || 'Beta User';
+  setUserDisplay(userName);
+  loadProjects();
+})();
+
+function setUserDisplay(name) {
+  var initials = name.charAt(0).toUpperCase();
+  var els = ['user-name','sb-avatar','topbar-avatar'];
+  els.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (id === 'user-name') el.textContent = name;
+    else el.textContent = initials;
+  });
+  var first = name.split(/[@.\-_]/)[0] || name;
+  first = first.charAt(0).toUpperCase() + first.slice(1);
+  var fn = document.getElementById('user-first');
+  if (fn) fn.textContent = first;
+}
+
+// ── BLUEPRINT META ──
 var BP_META = {
-  'site-refresh':          { icon:'✦',  label:'Site Refresh',       pill:'pill-iris' },
-  'private-lessons':       { icon:'🎵', label:'Private Lessons',    pill:'pill-lime' },
-  'caretaker':             { icon:'🤝', label:'Caretaker',          pill:'pill-pink' },
-  'service-provider':      { icon:'🔧', label:'Service Provider',   pill:'pill-amber' },
-  'health-wellness':       { icon:'🌿', label:'Health & Wellness',  pill:'pill-lime' },
-  'beauty':                { icon:'💅', label:'Beauty',             pill:'pill-pink' },
-  'fitness':               { icon:'🏋️', label:'Fitness',            pill:'pill-amber' },
-  'food-hospitality':      { icon:'🍽️', label:'Food & Hospitality', pill:'pill-amber' },
-  'home-trades':           { icon:'🏠', label:'Home & Trades',      pill:'pill-lime' },
-  'professional-services': { icon:'💼', label:'Professional',       pill:'pill-iris' },
-  'creative':              { icon:'🎨', label:'Creative',           pill:'pill-iris' }
+  'site-refresh':          { icon:'✦',  label:'Site Refresh',       pill:'pill-iris',  url:'blueprint-site-refresh.html' },
+  'master':                { icon:'◫',  label:'Blueprint',          pill:'pill-iris',  url:'blueprint-master.html' },
+  'linkbio':               { icon:'🔗', label:'Link in Bio',        pill:'pill-lime',  url:'blueprint-linkbio.html' },
+  'event-invite':          { icon:'🎉', label:'Event Invite',       pill:'pill-pink',  url:'blueprint-event-invite.html' },
+  'ugc':                   { icon:'🎬', label:'UGC Creator',        pill:'pill-pink',  url:'blueprint-ugc.html' },
+  'collab':                { icon:'🤝', label:'Collab Booking',     pill:'pill-iris',  url:'blueprint-collab-booking.html' },
+  'private-lessons':       { icon:'🎵', label:'Private Lessons',    pill:'pill-lime',  url:'blueprint-master.html' },
+  'caretaker':             { icon:'🤝', label:'Caretaker',          pill:'pill-pink',  url:'blueprint-master.html' },
+  'service-provider':      { icon:'🔧', label:'Service Provider',   pill:'pill-amber', url:'blueprint-master.html' },
+  'health-wellness':       { icon:'🌿', label:'Health & Wellness',  pill:'pill-lime',  url:'blueprint-master.html' },
+  'beauty':                { icon:'💅', label:'Beauty',             pill:'pill-pink',  url:'blueprint-master.html' },
+  'fitness':               { icon:'🏋️', label:'Fitness',            pill:'pill-amber', url:'blueprint-master.html' },
+  'food-hospitality':      { icon:'🍽️', label:'Food & Hospitality', pill:'pill-amber', url:'blueprint-master.html' },
+  'home-trades':           { icon:'🏠', label:'Home & Trades',      pill:'pill-lime',  url:'blueprint-master.html' },
+  'professional-services': { icon:'💼', label:'Professional',       pill:'pill-iris',  url:'blueprint-master.html' },
+  'creative':              { icon:'🎨', label:'Creative',           pill:'pill-iris',  url:'blueprint-master.html' }
 };
 
-// ── RAILWAY API ──
-var API = 'https://builtsy-api-production.up.railway.app';
-var AUTH_KEY = 'builtsy-auth';
+// ── CAROUSEL BLUEPRINT TYPES (always shown) ──
+var CAROUSEL_TYPES = [
+  { type:'master',       label:'Builtsy Blueprint',  thumbClass:'bt-master',  defaultTitle:'Your Business Site' },
+  { type:'event-invite', label:'Event Invite',        thumbClass:'bt-event',   defaultTitle:'Event Invite Page' },
+  { type:'linkbio',      label:'Link in Bio',         thumbClass:'bt-linkbio', defaultTitle:'Link in Bio Page' },
+  { type:'ugc',          label:'UGC Creator',         thumbClass:'bt-ugc',     defaultTitle:'UGC Creator Hub' },
+  { type:'collab',       label:'Collab Booking',      thumbClass:'bt-collab',  defaultTitle:'Collab Booking Page' }
+];
+
+function getBlueprintThumb(type) {
+  if (type === 'master') {
+    return '<div class="bp-thumb bt-master">'
+      + '<div class="bt-glow"></div>'
+      + '<div class="bt-nav"><div class="bt-nav-dot"></div><div class="bt-nav-dot"></div><div class="bt-nav-dot"></div><div class="bt-nav-spacer"></div><div class="bt-nav-btn"></div></div>'
+      + '<div class="bt-hero">'
+      + '<div class="bt-tag">◫ SERVICE</div>'
+      + '<div class="bt-h1">Build Your Brand</div>'
+      + '<div class="bt-line"></div>'
+      + '<div class="bt-line short"></div>'
+      + '</div>'
+      + '<div class="bt-cta">Book Now →</div>'
+      + '</div>';
+  }
+  if (type === 'event-invite') {
+    return '<div class="bp-thumb bt-event">'
+      + '<div class="bt-ev-top">CELEBRATION</div>'
+      + '<div class="bt-ev-flourish">✦</div>'
+      + '<div class="bt-ev-you">you\'re</div>'
+      + '<div class="bt-ev-invited">invited.</div>'
+      + '<div class="bt-ev-div"></div>'
+      + '<div class="bt-ev-date">Saturday, June 14th · 6pm</div>'
+      + '<div class="bt-ev-rsvp">RSVP Now</div>'
+      + '</div>';
+  }
+  if (type === 'linkbio') {
+    return '<div class="bp-thumb bt-linkbio">'
+      + '<div class="bt-lb-av"></div>'
+      + '<div class="bt-lb-handle">@yourhandle</div>'
+      + '<div class="bt-lb-line" style="top:60px;"></div>'
+      + '<div class="bt-lb-btn" style="top:68px;"><span class="bt-lb-btn-txt">BOOK A SESSION</span></div>'
+      + '<div class="bt-lb-btn lime-btn" style="top:86px;"><span class="bt-lb-btn-txt">MY PORTFOLIO</span></div>'
+      + '<div class="bt-lb-btn" style="top:104px;"><span class="bt-lb-btn-txt">CONTACT ME</span></div>'
+      + '<div class="bt-lb-socials"><div class="bt-lb-soc"></div><div class="bt-lb-soc"></div><div class="bt-lb-soc"></div></div>'
+      + '</div>';
+  }
+  if (type === 'ugc') {
+    return '<div class="bp-thumb bt-ugc">'
+      + '<div class="bt-ugc-hdr">🎬 UGC CREATOR</div>'
+      + '<div class="bt-ugc-grid">'
+      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
+      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
+      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
+      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
+      + '</div>'
+      + '<div class="bt-ugc-price">PACKAGES FROM $499</div>'
+      + '</div>';
+  }
+  if (type === 'collab') {
+    return '<div class="bp-thumb bt-collab">'
+      + '<div class="bt-cl-hdr"><span class="bt-cl-title">New Collaboration</span><span class="bt-cl-arrow">→</span></div>'
+      + '<div class="bt-cl-div"></div>'
+      + '<div class="bt-cl-step done" style="top:30px;"><div class="bt-cl-check">✓</div>Proposal Sent</div>'
+      + '<div class="bt-cl-step done" style="top:46px;"><div class="bt-cl-check">✓</div>Contract Signed</div>'
+      + '<div class="bt-cl-step pending" style="top:62px;"><div class="bt-cl-check"></div>Content Delivered</div>'
+      + '<div class="bt-cl-btn"><span class="bt-cl-btn-txt">ACCEPT COLLAB</span></div>'
+      + '</div>';
+  }
+  return '<div class="bp-thumb" style="background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:2rem;">◫</div>';
+}
 
 // ── PROJECTS ──
 var allProjects = [];
 
-function loadProjects() {
-  document.getElementById('projects-loading').style.display = 'block';
-  document.getElementById('projects-empty').style.display = 'none';
-  document.getElementById('projects-rows').innerHTML = '';
-
-  fetch(API + '/projects/list', {
-    method: 'GET',
-    headers: { 'x-auth-key': AUTH_KEY, 'Content-Type': 'application/json' }
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    document.getElementById('projects-loading').style.display = 'none';
-    allProjects = (data && data.projects) ? data.projects : [];
-    renderProjects(allProjects);
-  })
-  .catch(function(){
-    // Fallback to localStorage if Railway not yet updated
-    document.getElementById('projects-loading').style.display = 'none';
-    var local = loadLocalProjects();
-    allProjects = local;
-    renderProjects(local);
+async function loadProjects() {
+  var saves = await loadSaves();
+  // Build a map of type → save
+  var saveMap = {};
+  saves.forEach(function(s) { saveMap[s.blueprint_type] = s; });
+  allProjects = saves.map(function(s) {
+    var meta = BP_META[s.blueprint_type] || { url: 'blueprint-master.html' };
+    return {
+      id: s.blueprint_type,
+      type: s.blueprint_type,
+      name: (s.data && s.data.title) || s.blueprint_type,
+      savedAt: s.updated_at,
+      data: s.data,
+      status: 'ready',
+      url: meta.url
+    };
   });
+  // Update stats
+  document.getElementById('stat-projects').textContent = allProjects.length;
+  document.getElementById('stat-ready').textContent = allProjects.filter(function(p){ return p.status==='ready'; }).length;
+  // Render carousel with saveMap
+  renderCarousel(saveMap);
+  // Render recent activity
+  renderRecentActivity(allProjects);
 }
 
-function loadLocalProjects() {
-  var keys = ['builtsy-bp-lessons-v1','builtsy-bp-su-v3','builtsy-bp-caretaker-v1',
-    'builtsy-bp-service-v1','builtsy-bp-health-v1','builtsy-bp-beauty-v1',
-    'builtsy-bp-fitness-v1','builtsy-bp-food-v1','builtsy-bp-trades-v1',
-    'builtsy-bp-professional-v1','builtsy-bp-creative-v1'];
-  var typeMap = {
-    'builtsy-bp-lessons-v1':'private-lessons','builtsy-bp-su-v3':'site-refresh',
-    'builtsy-bp-caretaker-v1':'caretaker','builtsy-bp-service-v1':'service-provider',
-    'builtsy-bp-health-v1':'health-wellness','builtsy-bp-beauty-v1':'beauty',
-    'builtsy-bp-fitness-v1':'fitness','builtsy-bp-food-v1':'food-hospitality',
-    'builtsy-bp-trades-v1':'home-trades','builtsy-bp-professional-v1':'professional-services',
-    'builtsy-bp-creative-v1':'creative'
-  };
-  var projects = [];
-  keys.forEach(function(k){
-    try {
-      var d = JSON.parse(localStorage.getItem(k));
-      if (!d) return;
-      var name = (d.fields && (d.fields['f-name'] || d.fields['su-name'])) || '';
-      if (!name) return;
-      projects.push({
-        id: k, type: typeMap[k] || 'unknown', name: name,
-        savedAt: d._savedAt || null, tier: d.tier || null,
-        palette: d.palette ? d.palette.name || '' : '',
-        url: typeMap[k] === 'site-refresh' ? 'blueprint-site-refresh.html' : 'blueprint-master.html'
-      });
-    } catch(e){}
-  });
-  return projects;
-}
-
-function renderProjects(projects) {
-  var rows = document.getElementById('projects-rows');
-  var empty = document.getElementById('projects-empty');
-  if (!projects || projects.length === 0) {
-    empty.style.display = 'block'; rows.innerHTML = '';
-    document.getElementById('stat-projects').textContent = '0';
-    document.getElementById('stat-ready').textContent = '0';
-    return;
-  }
-  empty.style.display = 'none';
-  document.getElementById('stat-projects').textContent = projects.length;
-  var ready = projects.filter(function(p){ return p.status === 'ready' || p.tier; }).length;
-  document.getElementById('stat-ready').textContent = ready;
+function renderCarousel(saveMap) {
+  var carousel = document.getElementById('blueprint-carousel');
+  document.getElementById('carousel-loading').style.display = 'none';
   var html = '';
-  var thumbColors = ['rgba(139,162,240,0.15)','rgba(238,112,188,0.15)','rgba(200,224,0,0.12)','rgba(67,97,238,0.15)','rgba(255,190,80,0.12)','rgba(100,200,140,0.12)'];
-  projects.slice(0, 3).forEach(function(p, i){
-    var meta = BP_META[p.type] || { icon:'◫', label: p.type, pill:'pill-iris' };
-    var savedDate = p.savedAt ? new Date(p.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    var url = p.type === 'site-refresh' ? 'blueprint-site-refresh.html' : 'blueprint-master.html';
-    var isReady = p.status === 'ready' || p.tier;
-    var statusDot = isReady ? 'color:rgba(200,224,0,0.8)' : 'color:rgba(255,255,255,0.3)';
-    html += '<div class="proj-vis-card" onclick="window.location.href=\'' + url + '\'">'
-      + '<div class="proj-vis-thumb" style="background:' + thumbColors[i % thumbColors.length] + '">' + meta.icon + '</div>'
-      + '<div class="proj-vis-body">'
-      + '<div class="proj-vis-name">' + escapeHtml(p.name) + '</div>'
-      + '<div class="proj-vis-meta"><span class="pt-pill ' + meta.pill + '" style="font-size:0.58rem;padding:2px 7px;">' + meta.label + '</span> <span style="' + statusDot + ';margin-left:4px;font-size:0.62rem;">' + (isReady ? '● Ready' : '● Draft') + '</span></div>'
-      + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;">' + savedDate + '</div>'
+  CAROUSEL_TYPES.forEach(function(ct) {
+    var save = saveMap[ct.type];
+    var hasSave = !!save;
+    var title = hasSave && save.data && save.data.title ? save.data.title : ct.defaultTitle;
+    var meta = BP_META[ct.type] || {};
+    var url = meta.url || 'blueprint-master.html';
+    var dateStr = '';
+    if (hasSave && save.updated_at) {
+      var diff = Date.now() - new Date(save.updated_at).getTime();
+      var days = Math.floor(diff / 86400000);
+      var hours = Math.floor(diff / 3600000);
+      if (hours < 1) dateStr = 'Just now';
+      else if (hours < 24) dateStr = hours + 'h ago';
+      else if (days === 1) dateStr = '1d ago';
+      else if (days < 30) dateStr = days + 'd ago';
+      else dateStr = new Date(save.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    }
+    var progressPct = hasSave ? 100 : 0;
+    html += '<div class="bp-card-wrap' + (hasSave ? ' has-save' : '') + '" onclick="location.href=\'' + url + '\'">'
+      + getBlueprintThumb(ct.type)
+      + '<div class="bp-card-info">'
+      + '<div class="bpci-top">'
+      + '<span class="bpci-type">' + ct.label + '</span>'
+      + (dateStr ? '<span class="bpci-date">' + dateStr + '</span>' : '')
+      + '</div>'
+      + '<div class="bpci-title">' + escapeHtml(title) + '</div>'
+      + '<div class="bpci-progress"><div class="bpci-progress-fill" style="width:' + progressPct + '%"></div></div>'
+      + '<button class="bp-continue-btn' + (hasSave ? '' : ' start-btn') + '" onclick="event.stopPropagation();location.href=\'' + url + '\'">'
+      + (hasSave ? 'Continue building →' : 'Start this blueprint →')
+      + '</button>'
       + '</div></div>';
   });
-  // Add "new project" card
-  html += '<div class="proj-vis-new" onclick="document.getElementById(\'new-bp-modal\').style.display=\'flex\'">'
-    + '<div class="proj-vis-new-icon">＋</div>'
-    + '<div class="proj-vis-new-label">New project</div>'
-    + '</div>';
-  rows.innerHTML = html;
+  carousel.innerHTML = html;
 }
 
-function deleteProject(id, btn) {
-  if (!confirm('Delete this project? This cannot be undone.')) return;
-  // Remove from localStorage
-  localStorage.removeItem(id);
-  // Try Railway too
-  fetch(API + '/projects/delete', {
-    method:'POST',
-    headers:{'x-auth-key':AUTH_KEY,'Content-Type':'application/json'},
-    body: JSON.stringify({id:id})
-  }).catch(function(){});
-  allProjects = allProjects.filter(function(p){ return p.id !== id; });
-  renderProjects(allProjects);
+function renderRecentActivity(projects) {
+  var el = document.getElementById('recent-activity');
+  if (!projects || projects.length === 0) {
+    el.innerHTML = '<div class="act-empty">No blueprints saved yet.<br>Start one below to get going.</div>';
+    return;
+  }
+  var sorted = projects.slice().sort(function(a,b){ return new Date(b.savedAt)-new Date(a.savedAt); });
+  var html = '';
+  sorted.slice(0,5).forEach(function(p) {
+    var meta = BP_META[p.type] || { icon:'◫', pill:'pill-iris' };
+    var diff = Date.now() - new Date(p.savedAt).getTime();
+    var days = Math.floor(diff/86400000);
+    var hours = Math.floor(diff/3600000);
+    var timeStr = hours < 1 ? 'Just now' : hours < 24 ? hours+'h ago' : days+'d ago';
+    var bgColors = { 'pill-lime':'rgba(200,224,0,0.1)', 'pill-pink':'rgba(238,112,188,0.1)', 'pill-iris':'rgba(139,162,240,0.1)', 'pill-amber':'rgba(255,190,80,0.1)' };
+    var bg = bgColors[meta.pill] || 'rgba(255,255,255,0.06)';
+    html += '<div class="act-item">'
+      + '<div class="act-icon" style="background:' + bg + '">' + meta.icon + '</div>'
+      + '<div><div class="act-name">' + escapeHtml(p.name) + '</div><div class="act-sub">' + meta.label + '</div></div>'
+      + '<div class="act-time">' + timeStr + '</div>'
+      + '</div>';
+  });
+  el.innerHTML = html;
 }
 
 function escapeHtml(s) {
@@ -737,365 +986,170 @@ function escapeHtml(s) {
 }
 
 // ── NAVIGATION ──
-function launchBP(type, url) {
-  window.location.href = url;
-}
+function launchBP(type, url) { window.location.href = url; }
 
 function showSection(section) {
   var mainContent = document.getElementById('main-content');
   var gsPanel = document.getElementById('gs-panel');
-  var navGrow = document.getElementById('nav-boost');
-
-  // Remove active from all nav items
-  var navItems = document.querySelectorAll('.nav-item');
-  for (var i = 0; i < navItems.length; i++) {
-    navItems[i].classList.remove('active');
-  }
-
+  var navItems = document.querySelectorAll('.sb-item');
+  for (var i = 0; i < navItems.length; i++) navItems[i].classList.remove('active');
   if (section === 'boost') {
     mainContent.style.display = 'none';
     gsPanel.classList.add('gs-active');
-    navGrow.classList.add('active');
+    document.getElementById('nav-boost').classList.add('active');
     gsInitContext();
+  } else if (section === 'blueprints') {
+    window.location.href = 'dashboard.html';
+  } else if (section === 'tools') {
+    window.location.href = 'builtsy-audit.html';
   } else {
     mainContent.style.display = '';
     gsPanel.classList.remove('gs-active');
-    if (section === 'projects') window.location.href = 'dashboard.html';
-    if (section === 'tools') window.location.href = 'builtsy-audit.html';
+    document.getElementById('nav-dashboard').classList.add('active');
   }
 }
 
 // ── GROW STUDIO ──
-var gsStep = 0;
 var gsBusinessContext = null;
-
 function gsInitContext() {
-  // Try to read context from the most recent local project
-  var keys = ['builtsy-bp-lessons-v1','builtsy-bp-caretaker-v1','builtsy-bp-service-v1',
-    'builtsy-bp-health-v1','builtsy-bp-beauty-v1','builtsy-bp-fitness-v1',
-    'builtsy-bp-food-v1','builtsy-bp-trades-v1','builtsy-bp-professional-v1','builtsy-bp-creative-v1'];
-  var latest = null;
-  var latestTime = 0;
-  keys.forEach(function(k) {
-    try {
-      var d = JSON.parse(localStorage.getItem(k));
-      if (!d) return;
-      var t = d._savedAt ? new Date(d._savedAt).getTime() : 0;
-      if (t > latestTime) { latestTime = t; latest = { key: k, data: d }; }
-    } catch(e) {}
-  });
-
-  if (latest && latest.data && latest.data.fields) {
-    var f = latest.data.fields;
-    var name = f['f-name'] || f['su-name'] || '';
-    var industry = f['f-category'] || '';
-    var location = f['f-location'] || f['f-city'] || '';
-    var services = f['f-sessions'] || '';
-    if (name) {
-      gsBusinessContext = { name: name, industry: industry, location: location, services: services };
+  // Load context from saves
+  if (allProjects && allProjects.length > 0) {
+    var p = allProjects[0];
+    if (p.data && p.data.fields) {
+      var f = p.data.fields;
+      var name = f['f-name'] || f['su-name'] || '';
+      var industry = f['f-category'] || '';
+      var location = f['f-location'] || f['f-city'] || '';
+      if (name) {
+        gsBusinessContext = { name:name, industry:industry, location:location, services:'' };
+        document.getElementById('gs-context-banner').innerHTML =
+          'I know your business — <strong>' + escapeHtml(name) + '</strong>'
+          + (industry ? ', '+escapeHtml(industry) : '')
+          + (location ? ' in '+escapeHtml(location) : '')
+          + '. Everything I create is specific to you.';
+        return;
+      }
+    }
+    if (p.data && p.data.title) {
+      gsBusinessContext = { name: p.data.title, industry: p.type, location: '', services: '' };
       document.getElementById('gs-context-banner').innerHTML =
-        'I know your business \u2014 <strong>' + escapeHtml(name) + '</strong>'
-        + (industry ? ', ' + escapeHtml(industry) : '')
-        + (location ? ' in ' + escapeHtml(location) : '')
-        + '. Everything I suggest is specific to you.';
+        'Boosting for <strong>' + escapeHtml(p.data.title) + '</strong>. Click anything to generate.';
     }
   }
 }
-
 function gsGetContext() {
   if (gsBusinessContext) return gsBusinessContext;
-  return { name: 'your business', industry: '', location: '', services: '' };
+  return { name:'your business', industry:'', location:'', services:'' };
 }
-
 function gsClickPrompt(type) {
-  var pc = document.getElementById('gs-pc-' + type);
-  if (pc) pc.classList.add('gs-used');
-
   var ctx = gsGetContext();
-  var userText = {
-    addons:  'Suggest add-ons for my pricing calculator',
-    digital: 'Create a digital product I can sell',
-    email:   'Write my welcome email sequence',
-    social:  'Generate social captions for this week'
-  }[type] || 'Help me grow my business';
-
+  var userText = { addons:'Suggest add-ons for my pricing calculator', digital:'Create a digital product I can sell', email:'Write my welcome email sequence', social:'Generate social captions for this week' }[type] || 'Help me grow';
   gsAppendMessage('user', userText);
   gsShowTyping();
-
   var prompt = '';
+  var API = 'https://builtsy-api-production.up.railway.app';
   if (type === 'addons') {
-    prompt = 'You are a business growth assistant for Builtsy. The user owns a small business called "'
-      + ctx.name + '" in the ' + (ctx.industry || 'service') + ' industry'
-      + (ctx.location ? ' based in ' + ctx.location : '') + '.'
-      + ' Generate exactly 6 add-on ideas they can add to their online pricing calculator.'
-      + ' Each add-on should be something a customer would genuinely pay for in addition to the base service.'
-      + ' For each add-on, assign ONE revenue signal tag from this list: "Easy win" (low effort, high appeal), "High margin" (low cost to deliver, good price), "Most popular" (commonly chosen in this industry), "Easy upsell" (natural complement to the base service), "Passive income" (digital or minimal delivery effort).'
-      + ' Respond ONLY with a valid JSON array, no explanation, no markdown. Format:'
-      + ' [{"name":"...","desc":"One sentence description","price":25,"tag":"Easy win"}]'
-      + ' Keep prices between $5 and $60. Make them specific and realistic for this type of business.';
+    prompt = 'You are a business growth assistant for Builtsy. The user owns a small business called "'+ctx.name+'" in the '+(ctx.industry||'service')+' industry'+(ctx.location?' based in '+ctx.location:'')+'. Generate exactly 6 add-on ideas they can add to their online pricing calculator. Each add-on should be something a customer would genuinely pay for in addition to the base service. For each add-on, assign ONE revenue signal tag from: "Easy win", "High margin", "Most popular", "Easy upsell", "Passive income". Respond ONLY with a valid JSON array, no explanation, no markdown. Format: [{"name":"...","desc":"One sentence description","price":25,"tag":"Easy win"}] Keep prices between $5 and $60.';
     gsCallGrow(prompt, type, ctx);
   } else if (type === 'digital') {
-    prompt = 'You are a business growth assistant for Builtsy. The user owns a small business called "'
-      + ctx.name + '" in the ' + (ctx.industry || 'service') + ' industry'
-      + (ctx.location ? ' based in ' + ctx.location : '') + '.'
-      + ' Generate exactly 4 digital product ideas they can create and sell directly from their website.'
-      + ' Think PDFs, guides, templates, video series, or practice packs that relate to their core service.'
-      + ' Respond ONLY with a valid JSON array, no explanation, no markdown. Format:'
-      + ' [{"name":"...","desc":"One sentence description","price":15,"format":"PDF download"}]'
-      + ' Keep prices between $8 and $40.';
+    prompt = 'You are a business growth assistant for Builtsy. The user owns "'+ctx.name+'" in the '+(ctx.industry||'service')+' industry'+(ctx.location?' based in '+ctx.location:'')+'. Generate exactly 4 digital product ideas they can create and sell directly from their website. Think PDFs, guides, templates, video series, or practice packs. Respond ONLY with a valid JSON array: [{"name":"...","desc":"One sentence description","price":15,"format":"PDF download"}] Keep prices between $8 and $40.';
     gsCallGrow(prompt, type, ctx);
   } else if (type === 'email') {
-    prompt = 'Write a 3-email welcome sequence for a small business called "' + ctx.name + '"'
-      + ' in the ' + (ctx.industry || 'service') + ' industry'
-      + (ctx.location ? ' based in ' + ctx.location : '') + '.'
-      + ' Email 1: warm welcome + what to expect. Email 2: tips to get the most value. Email 3: gentle invitation to book again or refer a friend.'
-      + ' Write in a warm, personal, non-corporate tone. Format as plain text with EMAIL 1:, EMAIL 2:, EMAIL 3: headers.'
-      + ' Each email should be 4-6 sentences. Include a subject line for each.';
+    prompt = 'Write a 3-email welcome sequence for "'+ctx.name+'" in the '+(ctx.industry||'service')+' industry'+(ctx.location?' based in '+ctx.location:'')+'. Email 1: warm welcome + what to expect. Email 2: tips to get the most value. Email 3: gentle invitation to book again or refer a friend. Warm, personal, non-corporate tone. Format as plain text with EMAIL 1:, EMAIL 2:, EMAIL 3: headers. Each email 4-6 sentences with a subject line.';
     gsCallGrow(prompt, 'email', ctx);
   } else if (type === 'social') {
-    prompt = 'Write 5 Instagram captions for a small business called "' + ctx.name + '"'
-      + ' in the ' + (ctx.industry || 'service') + ' industry'
-      + (ctx.location ? ' based in ' + ctx.location : '') + '.'
-      + ' Make them varied: one educational, one personal/behind-the-scenes, one testimonial-style, one promotional, one community-focused.'
-      + ' Each caption should be 2-4 sentences with 3-5 relevant hashtags at the end.'
-      + ' Format as plain text with CAPTION 1:, CAPTION 2: etc. headers. Warm and authentic tone, not salesy.';
+    prompt = 'Write 5 Instagram captions for "'+ctx.name+'" in the '+(ctx.industry||'service')+' industry'+(ctx.location?' based in '+ctx.location:'')+'. Make them varied: educational, personal/BTS, testimonial-style, promotional, community-focused. Each caption 2-4 sentences with 3-5 hashtags. Format with CAPTION 1:, CAPTION 2: etc. Warm and authentic.';
     gsCallGrow(prompt, 'social', ctx);
   }
 }
-
 function gsCallGrow(prompt, type, ctx) {
-  fetch(API + '/grow', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    gsHideTyping();
-    if (data.error) { gsAppendMessage('assistant', 'Sorry, something went wrong. Try again in a moment.'); return; }
-    gsHandleGrowResponse(type, data.text, ctx);
-  })
-  .catch(function() {
-    gsHideTyping();
-    gsAppendMessage('assistant', 'Could not reach the server. Check your connection and try again.');
-  });
+  var API = 'https://builtsy-api-production.up.railway.app';
+  fetch(API+'/grow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt})})
+  .then(function(r){return r.json();})
+  .then(function(data){gsHideTyping();if(data.error){gsAppendMessage('assistant','Sorry, something went wrong. Try again.');return;}gsHandleGrowResponse(type,data.text,ctx);})
+  .catch(function(){gsHideTyping();gsAppendMessage('assistant','Could not reach the server. Check your connection.');});
 }
-
-function gsHandleGrowResponse(type, text, ctx) {
-  if (type === 'addons') {
-    var addons = [];
-    try {
-      var clean = text.replace(/```json|```/g, '').trim();
-      addons = JSON.parse(clean);
-    } catch(e) {
-      gsAppendMessage('assistant', 'I had trouble formatting those suggestions. Try again and I\'ll get it right.');
-      return;
-    }
-    gsRenderAddons(addons, ctx);
-    gsShowTab('ao');
-    gsAppendMessage('assistant',
-      'Here are 6 add-on ideas for <strong>' + escapeHtml(ctx.name) + '</strong> — they\'re in the panel on the right. '
-      + 'Select the ones that fit and I\'ll add them to your blueprint.');
-  } else if (type === 'digital') {
-    var products = [];
-    try {
-      var clean = text.replace(/```json|```/g, '').trim();
-      products = JSON.parse(clean);
-    } catch(e) {
-      gsAppendMessage('assistant', 'I had trouble formatting those ideas. Try again.');
-      return;
-    }
-    gsRenderDigital(products);
-    gsShowTab('dp');
-    gsAppendMessage('assistant',
-      'Here are 4 digital product ideas you could sell directly from your site — in the panel on the right. '
-      + 'Each one is something your customers already want, packaged as a paid download.');
-  } else if (type === 'email' || type === 'social') {
-    var title = type === 'email' ? 'Welcome email sequence' : 'Social captions';
-    document.getElementById('gs-copy-title').textContent = title;
-    document.getElementById('gs-copy-body').textContent = text;
-    document.getElementById('gs-copy-empty').style.display = 'none';
-    document.getElementById('gs-copy-content').style.display = 'block';
+function gsHandleGrowResponse(type,text,ctx){
+  if(type==='addons'){
+    var addons=[];try{var clean=text.replace(/```json|```/g,'').trim();addons=JSON.parse(clean);}catch(e){gsAppendMessage('assistant','Had trouble formatting those. Try again.');return;}
+    gsRenderAddons(addons,ctx);gsShowTab('ao');
+    gsAppendMessage('assistant','Here are 6 add-on ideas for <strong>'+escapeHtml(ctx.name)+'</strong> — they\'re in the panel below. Select the ones that fit.');
+  } else if(type==='digital'){
+    var products=[];try{var clean=text.replace(/```json|```/g,'').trim();products=JSON.parse(clean);}catch(e){gsAppendMessage('assistant','Had trouble formatting those. Try again.');return;}
+    gsRenderDigital(products);gsShowTab('dp');
+    gsAppendMessage('assistant','Here are 4 digital product ideas you could sell from your site — in the panel below.');
+  } else if(type==='email'||type==='social'){
+    var title=type==='email'?'Welcome email sequence':'Social captions';
+    document.getElementById('gs-copy-title').textContent=title;
+    document.getElementById('gs-copy-body').textContent=text;
+    document.getElementById('gs-copy-empty').style.display='none';
+    document.getElementById('gs-copy-content').style.display='block';
     gsShowTab('copy');
-    var msg = type === 'email'
-      ? 'Your welcome email sequence is ready in the panel \u2014 click "Copy to clipboard" and paste it into your email tool.'
-      : 'Your 5 captions are ready in the panel \u2014 copy them and schedule for the week.';
-    gsAppendMessage('assistant', msg);
+    gsAppendMessage('assistant',type==='email'?'Your welcome email sequence is ready — copy it and paste into your email tool.':'Your 5 captions are ready — copy and schedule for the week.');
   }
 }
-
-function gsRenderAddons(addons, ctx) {
-  var tagClasses = {
-    'Easy win':      'gs-tag-win',
-    'High margin':   'gs-tag-margin',
-    'Most popular':  'gs-tag-popular',
-    'Easy upsell':   'gs-tag-upsell',
-    'Passive income':'gs-tag-passive'
-  };
-  var list = document.getElementById('gs-ao-list');
-  var html = '';
-  addons.forEach(function(a) {
-    var price = parseFloat(a.price) || 0;
-    var tagClass = (a.tag && tagClasses[a.tag]) ? tagClasses[a.tag] : 'gs-tag-win';
-    var tagHtml = a.tag ? '<span class="gs-tag ' + tagClass + '">' + escapeHtml(a.tag) + '</span>' : '';
-    html += '<div class="gs-ac gs-sel" onclick="gsToggleAc(this)">'
-      + '<div class="gs-chk"><svg class="gs-chk-inner" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-      + '<div class="gs-ac-body">'
-      + '<div class="gs-ac-name">' + escapeHtml(a.name) + '</div>'
-      + '<div class="gs-ac-desc">' + escapeHtml(a.desc || '') + '</div>'
-      + tagHtml
-      + '</div>'
-      + '<div class="gs-ac-price">+$' + Math.round(price) + '</div>'
-      + '</div>';
+function gsRenderAddons(addons,ctx){
+  var tagClasses={'Easy win':'gs-tag-win','High margin':'gs-tag-margin','Most popular':'gs-tag-popular','Easy upsell':'gs-tag-upsell','Passive income':'gs-tag-passive'};
+  var list=document.getElementById('gs-ao-list');var html='';
+  addons.forEach(function(a){var price=parseFloat(a.price)||0;var tc=(a.tag&&tagClasses[a.tag])?tagClasses[a.tag]:'gs-tag-win';var th=a.tag?'<span class="gs-tag '+tc+'">'+escapeHtml(a.tag)+'</span>':'';
+    html+='<div class="gs-ac gs-sel" onclick="gsToggleAc(this)"><div class="gs-chk"><svg class="gs-chk-inner" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="gs-ac-body"><div class="gs-ac-name">'+escapeHtml(a.name)+'</div><div class="gs-ac-desc">'+escapeHtml(a.desc||'')+'</div>'+th+'</div><div class="gs-ac-price">+$'+Math.round(price)+'</div></div>';
   });
-  list.innerHTML = html;
-  list.style.opacity = '1';
-  list.style.pointerEvents = 'auto';
-  document.getElementById('gs-ao-title').textContent = '6 add-on ideas for ' + (ctx.name || 'your business');
-  document.getElementById('gs-ao-sub').textContent = 'Select the ones you want, then add to your blueprint.';
-  document.getElementById('gs-ao-generating').style.display = 'none';
-  var cta = document.getElementById('gs-ao-cta');
-  cta.disabled = false;
+  list.innerHTML=html;list.style.opacity='1';list.style.pointerEvents='auto';
+  document.getElementById('gs-ao-title').textContent='6 add-on ideas for '+(ctx.name||'your business');
+  document.getElementById('gs-ao-sub').textContent='Select the ones you want, then add to your blueprint.';
+  document.getElementById('gs-ao-generating').style.display='none';
+  document.getElementById('gs-ao-cta').disabled=false;
+}
+function gsRenderDigital(products){
+  var list=document.getElementById('gs-dp-list');var html='';
+  products.forEach(function(p){var price=parseFloat(p.price)||0;html+='<div class="gs-ac gs-sel" onclick="gsToggleAc(this)"><div class="gs-chk"><svg class="gs-chk-inner" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="gs-ac-body"><div class="gs-ac-name">'+escapeHtml(p.name)+'</div><div class="gs-ac-desc">'+escapeHtml((p.desc||'')+(p.format?' · '+p.format:''))+'</div></div><div class="gs-ac-price">$'+Math.round(price)+'</div></div>';});
+  list.innerHTML=html;document.getElementById('gs-dp-empty').style.display='none';document.getElementById('gs-dp-content').style.display='block';
+}
+function gsToggleAc(el){el.classList.toggle('gs-sel');}
+function gsShowTab(tab){
+  ['ao','dp','copy'].forEach(function(t){var p=document.getElementById('gs-panel-'+t);var tb=document.getElementById('gs-tab-'+t);if(p)p.style.display=t===tab?'block':'none';if(tb){if(t===tab)tb.classList.add('gs-tab-active');else tb.classList.remove('gs-tab-active');}});
+}
+function gsAddToBlueprint(){
+  var sel=document.querySelectorAll('#gs-ao-list .gs-ac.gs-sel');if(!sel.length){gsAppendMessage('assistant','Select at least one add-on first.');return;}
+  var names=[];for(var i=0;i<sel.length;i++){var n=sel[i].querySelector('.gs-ac-name');if(n)names.push(n.textContent);}
+  gsAppendMessage('assistant','Done! I\'ve noted <strong>'+escapeHtml(names.join(', '))+'</strong>. Head to your blueprint and add them in the add-ons section.');
+  var cta=document.getElementById('gs-ao-cta');cta.textContent='Added ✓';cta.disabled=true;
+}
+function gsAddDigitalToBlueprint(){gsAppendMessage('assistant','Great picks! Add these as add-ons in your blueprint\'s pricing section.');}
+function gsCopyCopy(){
+  var body=document.getElementById('gs-copy-body');if(!body)return;
+  try{navigator.clipboard.writeText(body.textContent).then(function(){gsAppendMessage('assistant','Copied to clipboard!');});}
+  catch(e){var ta=document.createElement('textarea');ta.value=body.textContent;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);gsAppendMessage('assistant','Copied to clipboard!');}
+}
+function gsAppendMessage(role,html){
+  var msgs=document.getElementById('gs-messages');var row=document.createElement('div');row.className='gs-msg-row'+(role==='user'?' gs-user':'');
+  var av='<div class="gs-av '+(role==='user'?'gs-u':'gs-b')+'">'+(role==='user'?(gsBusinessContext?escapeHtml((gsBusinessContext.name||'U').charAt(0).toUpperCase()):'U'):'B')+'</div>';
+  row.innerHTML=av+'<div class="gs-bubble">'+html+'</div>';
+  var typing=document.getElementById('gs-typing');msgs.insertBefore(row,typing);msgs.scrollTop=msgs.scrollHeight;
+}
+function gsShowTyping(){document.getElementById('gs-typing').style.display='flex';var m=document.getElementById('gs-messages');m.scrollTop=m.scrollHeight;}
+function gsHideTyping(){document.getElementById('gs-typing').style.display='none';}
+function gsHandleKey(e){if(e.key==='Enter')gsSendMessage();}
+function gsSendMessage(){
+  var input=document.getElementById('gs-input');var val=(input.value||'').trim();if(!val)return;input.value='';
+  gsAppendMessage('user',escapeHtml(val));gsShowTyping();
+  var ctx=gsGetContext();var API='https://builtsy-api-production.up.railway.app';
+  var prompt='You are a helpful business growth assistant for a small business called "'+ctx.name+'" in the '+(ctx.industry||'service')+' industry'+(ctx.location?' based in '+ctx.location:'')+'. The user says: "'+val+'" Give a helpful, specific, friendly response in 2-4 sentences.';
+  fetch(API+'/grow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt})})
+  .then(function(r){return r.json();})
+  .then(function(data){gsHideTyping();gsAppendMessage('assistant',escapeHtml(data.text||'Let me think about that…'));})
+  .catch(function(){gsHideTyping();gsAppendMessage('assistant','Could not reach the server. Try again in a moment.');});
 }
 
-function gsRenderDigital(products) {
-  var list = document.getElementById('gs-dp-list');
-  var html = '';
-  products.forEach(function(p) {
-    var price = parseFloat(p.price) || 0;
-    html += '<div class="gs-ac gs-sel" onclick="gsToggleAc(this)">'
-      + '<div class="gs-chk"><svg class="gs-chk-inner" viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6.5 7,1.5" stroke="#12192B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-      + '<div class="gs-ac-body">'
-      + '<div class="gs-ac-name">' + escapeHtml(p.name) + '</div>'
-      + '<div class="gs-ac-desc">' + escapeHtml((p.desc || '') + (p.format ? ' · ' + p.format : '')) + '</div>'
-      + '</div>'
-      + '<div class="gs-ac-price">$' + Math.round(price) + '</div>'
-      + '</div>';
-  });
-  list.innerHTML = html;
-  document.getElementById('gs-dp-empty').style.display = 'none';
-  document.getElementById('gs-dp-content').style.display = 'block';
-}
-
-function gsToggleAc(el) { el.classList.toggle('gs-sel'); }
-
-function gsShowTab(tab) {
-  var tabs = ['ao','dp','copy'];
-  tabs.forEach(function(t) {
-    var panel = document.getElementById('gs-panel-' + t);
-    var tabEl = document.getElementById('gs-tab-' + t);
-    if (panel) panel.style.display = t === tab ? 'block' : 'none';
-    if (tabEl) {
-      if (t === tab) tabEl.classList.add('gs-tab-active');
-      else tabEl.classList.remove('gs-tab-active');
-    }
-  });
-}
-
-function gsAddToBlueprint() {
-  var selected = document.querySelectorAll('#gs-ao-list .gs-ac.gs-sel');
-  if (!selected.length) { gsAppendMessage('assistant', 'Select at least one add-on first.'); return; }
-  var names = [];
-  for (var i = 0; i < selected.length; i++) {
-    var n = selected[i].querySelector('.gs-ac-name');
-    if (n) names.push(n.textContent);
-  }
-  gsAppendMessage('assistant', 'Done! I\'ve noted <strong>' + escapeHtml(names.join(', ')) + '</strong>. Head back to your blueprint and add them to the add-ons section in Step 2 — they\'ll show up in your pricing calculator automatically.');
-  var cta = document.getElementById('gs-ao-cta');
-  cta.textContent = 'Added \u2713';
-  cta.disabled = true;
-}
-
-function gsAddDigitalToBlueprint() {
-  gsAppendMessage('assistant', 'Great picks! Add these as add-ons in your blueprint\'s Step 2. Price them as standalone items and they\'ll appear in your calculator as optional purchases.');
-}
-
-function gsCopyCopy() {
-  var body = document.getElementById('gs-copy-body');
-  if (!body) return;
-  try {
-    navigator.clipboard.writeText(body.textContent).then(function() {
-      gsAppendMessage('assistant', 'Copied to clipboard!');
-    });
-  } catch(e) {
-    var ta = document.createElement('textarea');
-    ta.value = body.textContent;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    gsAppendMessage('assistant', 'Copied to clipboard!');
-  }
-}
-
-function gsAppendMessage(role, html) {
-  var msgs = document.getElementById('gs-messages');
-  var row = document.createElement('div');
-  row.className = 'gs-msg-row' + (role === 'user' ? ' gs-user' : '');
-  var av = '<div class="gs-av ' + (role === 'user' ? 'gs-u' : 'gs-b') + '">'
-    + (role === 'user' ? (gsBusinessContext ? escapeHtml((gsBusinessContext.name||'U').charAt(0).toUpperCase()) : 'U') : 'B')
-    + '</div>';
-  row.innerHTML = av + '<div class="gs-bubble">' + html + '</div>';
-  var typing = document.getElementById('gs-typing');
-  msgs.insertBefore(row, typing);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function gsShowTyping() {
-  document.getElementById('gs-typing').style.display = 'flex';
-  var msgs = document.getElementById('gs-messages');
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function gsHideTyping() {
-  document.getElementById('gs-typing').style.display = 'none';
-}
-
-function gsHandleKey(e) {
-  if (e.key === 'Enter') gsSendMessage();
-}
-
-function gsSendMessage() {
-  var input = document.getElementById('gs-input');
-  var val = (input.value || '').trim();
-  if (!val) return;
-  input.value = '';
-  gsAppendMessage('user', escapeHtml(val));
-  gsShowTyping();
-
-  var ctx = gsGetContext();
-  var prompt = 'You are a helpful business growth assistant for a small business called "'
-    + ctx.name + '" in the ' + (ctx.industry || 'service') + ' industry'
-    + (ctx.location ? ' based in ' + ctx.location : '') + '.'
-    + ' The user says: "' + val + '"'
-    + ' Give a helpful, specific, friendly response in 2-4 sentences. Focus on practical advice for their business.';
-
-  fetch(API + '/grow', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    gsHideTyping();
-    gsAppendMessage('assistant', escapeHtml(data.text || 'Let me think about that...'));
-  })
-  .catch(function() {
-    gsHideTyping();
-    gsAppendMessage('assistant', 'Could not reach the server. Try again in a moment.');
-  });
+// ── LOGOUT ──
+async function doLogout() {
+  await _supabase.auth.signOut();
+  window.location.href = 'login.html';
 }
 
 // ── MODAL ──
-function openNewModal() {
-  document.getElementById('new-modal').classList.add('open');
-}
-function closeNewModal() {
-  document.getElementById('new-modal').classList.remove('open');
-}
-
-// ── INIT ──
-loadProjects();
+function openNewModal() { document.getElementById('new-modal').classList.add('open'); }
+function closeNewModal() { document.getElementById('new-modal').classList.remove('open'); }
 </script>
 </body>
 </html>

@@ -258,7 +258,8 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 /* keep bp-out hidden — JS still writes to it */
 #bp-out{display:none!important;}
 </style>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-client.js"></script>
 </head>
 <body>
 
@@ -1772,6 +1773,7 @@ function lbGenerate(){
     }
     if(raw.indexOf('builtsy-calculator-placeholder')!==-1)raw=injectCalculator(raw);
     raw=injectConfetti(raw);
+    raw=builtsyInjectFooter(raw, (document.getElementById('f-name')||{}).value || 'You');
     lbGeneratedHTML=raw;
     generatedHTML=raw;
     try{sessionStorage.setItem('lb-last-generated',raw);}catch(e){}
@@ -1797,6 +1799,12 @@ function lbShowOutput(html){
   if(frame._blobUrl)URL.revokeObjectURL(frame._blobUrl);
   frame._blobUrl=blobUrl;frame.src=blobUrl;
   window.scrollTo({top:0,behavior:'smooth'});
+  // Save progress to Supabase (silent — does nothing if not logged in)
+  try {
+    var name=(document.getElementById('f-name')||{value:''}).value||'Link in Bio';
+    var tagline=(document.getElementById('f-tagline')||{value:''}).value||'';
+    saveBlueprint('linkbio', { title: name, tagline: tagline });
+  } catch(e) {}
 }
 
 function lbShowError(msg){
@@ -1822,6 +1830,17 @@ function lbRebuild(){
   if(frame._blobUrl){URL.revokeObjectURL(frame._blobUrl);frame._blobUrl=null;}
   frame.src='about:blank';
   lbGeneratedHTML='';lbCurrentStep=0;lbGoStep(0);
+}
+
+// ── BUILTSY FOOTER ──
+function builtsyInjectFooter(html, name) {
+  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
+    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
+    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
+    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
+    + '</section>';
+  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
 }
 
 function lbDownload(){
@@ -1858,6 +1877,7 @@ function lbSubmitRevise(){
     document.getElementById('lb-gen-overlay').style.display='none';
     var html=(data.html||'').replace(/^```html?\s*/i,'').replace(/\s*```$/,'').trim();
     if(html&&html.length>200){
+      html=builtsyInjectFooter(html, (document.getElementById('f-name')||{}).value || 'You');
       lbGeneratedHTML=html;generatedHTML=html;
       var frame=document.getElementById('lb-preview-frame');
       var blob=new Blob([html],{type:'text/html'});

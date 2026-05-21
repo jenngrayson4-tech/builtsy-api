@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Builtsy Brain AI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--navy-deep:#0D1220;--navy-mid:#161E30;
+  --lime:#C8E000;--pink:#ee70bc;--iris:#8ba2f0;--blue:#4361EE;
+  --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.12);
+  --surface:rgba(255,255,255,0.04);--dim:rgba(255,255,255,0.5);--muted:rgba(255,255,255,0.4);
+  --sidebar-w:220px;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;display:flex;}
+
+/* ── SIDEBAR ── */
+.app{display:flex;width:100%;height:100%;overflow:hidden;}
+.sidebar{width:var(--sidebar-w);background:var(--navy);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;z-index:20;}
+.sidebar::-webkit-scrollbar{width:0;}
+.sb-logo{padding:1.25rem 1rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-logo-wrap{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+.sb-logo-mark{width:34px;height:34px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-logo-mark svg{width:16px;height:16px;}
+.sb-logo-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;letter-spacing:-0.02em;line-height:1;}
+.sb-logo-name em{font-style:italic;color:var(--pink);}
+.sb-logo-name .dot{color:var(--blue);}
+.sb-logo-sub{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.sb-section{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);padding:1.1rem 1rem 0.4rem;opacity:0.9;}
+.sb-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 1rem;font-size:0.88rem;color:rgba(255,255,255,0.75);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;text-decoration:none;}
+.sb-item:hover{background:rgba(67,97,238,0.06);color:white;border-left-color:var(--blue);}
+.sb-item.active{background:rgba(200,224,0,0.06);border-left-color:var(--lime);color:var(--lime);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;margin:0 7px 0 0;}
+.sb-item:hover .sb-dot{background:var(--blue);}
+.sb-item.active .sb-dot{background:var(--lime);}
+.ai-star{display:inline-block;color:var(--blue);font-size:1rem;animation:sparkle-spin 3s ease-in-out infinite;}
+.sb-item.active .ai-star{color:var(--lime);}
+@keyframes sparkle-spin{0%{transform:rotate(0deg) scale(1);opacity:0.7;}25%{transform:rotate(45deg) scale(1.3);opacity:1;}50%{transform:rotate(0deg) scale(1);opacity:0.7;}75%{transform:rotate(-45deg) scale(1.3);opacity:1;}100%{transform:rotate(0deg) scale(1);opacity:0.7;}}
+.sb-footer{margin-top:auto;padding:1rem;border-top:1px solid var(--border);flex-shrink:0;}
+.sb-user{display:flex;align-items:center;gap:0.55rem;}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;flex-shrink:0;text-transform:uppercase;}
+.sb-uname{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.85);}
+.sb-utag{font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.05em;}
+
+/* ── BRAIN LAYOUT ── */
+.brain-wrapper{flex:1;display:flex;overflow:hidden;}
+
+/* ── LEFT PANEL — preset prompts ── */
+.brain-left{width:320px;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;background:var(--navy);flex-shrink:0;}
+.bl-header{padding:1.1rem 1.25rem 0.9rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.bl-icon-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.bl-icon{width:32px;height:32px;border-radius:9px;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.22);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.bl-title{font-size:0.88rem;font-weight:700;color:white;}
+.bl-sub{font-size:0.7rem;color:var(--muted);line-height:1.45;}
+.bl-scrollable{flex:1;overflow-y:auto;padding:1rem 1.25rem 2rem;}
+.bl-scrollable::-webkit-scrollbar{width:3px;}
+.bl-scrollable::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
+
+/* Context banner */
+.ctx-banner{background:rgba(67,97,238,0.07);border:1px solid rgba(67,97,238,0.18);border-radius:10px;padding:0.7rem 0.875rem;margin-bottom:1.25rem;}
+.ctx-label{font-family:'DM Mono',monospace;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.ctx-text{font-size:0.72rem;color:rgba(255,255,255,0.65);line-height:1.5;}
+.ctx-text strong{color:rgba(255,255,255,0.9);font-weight:500;}
+
+/* Category */
+.prompt-cat{margin-bottom:1.1rem;}
+.prompt-cat-label{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.55rem;display:block;}
+
+/* Prompt card */
+.prompt-card{display:flex;align-items:center;gap:0.65rem;padding:0.625rem 0.75rem;border-radius:9px;border:1px solid var(--border);background:transparent;cursor:pointer;transition:all 0.15s;margin-bottom:0.3rem;width:100%;text-align:left;}
+.prompt-card:hover{border-color:rgba(67,97,238,0.4);background:rgba(67,97,238,0.05);transform:translateX(2px);}
+.prompt-card:hover .pc-arrow{color:var(--blue);opacity:1;}
+.pc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
+.pc-icon-blue{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.2);}
+.pc-icon-lime{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.18);}
+.pc-icon-pink{background:rgba(238,112,188,0.1);border:1px solid rgba(238,112,188,0.18);}
+.pc-icon-iris{background:rgba(139,162,240,0.1);border:1px solid rgba(139,162,240,0.18);}
+.pc-body{flex:1;min-width:0;}
+.pc-title{font-size:0.78rem;font-weight:600;color:white;line-height:1.2;margin-bottom:1px;}
+.pc-desc{font-size:0.6rem;color:var(--muted);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pc-arrow{font-size:0.8rem;color:var(--muted);flex-shrink:0;opacity:0.5;transition:all 0.15s;}
+
+/* ── CHAT AREA ── */
+.brain-chat{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--navy-deep);}
+
+/* Chat header */
+.bc-header{padding:0.875rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;flex-shrink:0;background:var(--navy);}
+.bc-hdr-icon{width:34px;height:34px;border-radius:9px;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bc-hdr-title{font-size:0.9rem;font-weight:700;color:white;line-height:1;}
+.bc-hdr-sub{font-size:0.63rem;color:var(--muted);}
+.bc-new-btn{margin-left:auto;font-size:0.7rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.12s;white-space:nowrap;}
+.bc-new-btn:hover{color:white;border-color:var(--border-mid);}
+
+/* Messages */
+.bc-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;}
+.bc-messages::-webkit-scrollbar{width:4px;}
+.bc-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
+
+/* Welcome state */
+.bc-welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 2rem;margin:auto;max-width:440px;}
+.bc-welcome-star{font-size:2rem;margin-bottom:1rem;animation:sparkle-spin 3s ease-in-out infinite;display:inline-block;color:var(--lime);}
+.bc-welcome-title{font-family:'Playfair Display',serif;font-size:1.65rem;font-weight:900;color:white;margin-bottom:0.5rem;line-height:1.15;}
+.bc-welcome-title em{font-style:italic;color:var(--lime);}
+.bc-welcome-sub{font-size:0.83rem;color:var(--dim);line-height:1.65;margin-bottom:1.5rem;}
+.bc-welcome-chips{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;}
+.bc-chip{font-size:0.7rem;color:var(--iris);background:rgba(139,162,240,0.08);border:1px solid rgba(139,162,240,0.18);border-radius:100px;padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:0.04em;transition:all 0.12s;}
+.bc-chip:hover{background:rgba(67,97,238,0.12);border-color:rgba(67,97,238,0.35);color:white;}
+
+/* Message rows */
+.msg-row{display:flex;gap:10px;align-items:flex-start;}
+.msg-row.msg-user{flex-direction:row-reverse;align-self:flex-end;max-width:80%;}
+.msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;margin-top:3px;font-family:'DM Mono',monospace;}
+.msg-av.av-ai{background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.22);font-size:0.75rem;color:var(--lime);}
+.msg-av.av-user{background:rgba(255,255,255,0.06);border:1px solid var(--border-mid);color:var(--dim);}
+.msg-bubble{border-radius:12px;padding:0.75rem 1rem;font-size:0.82rem;line-height:1.72;color:rgba(255,255,255,0.85);}
+.msg-row:not(.msg-user) .msg-bubble{background:var(--surface);border:1px solid var(--border);max-width:680px;}
+.msg-row.msg-user .msg-bubble{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.22);color:white;}
+.msg-bubble p{margin:0 0 0.65rem;}
+.msg-bubble p:last-child{margin:0;}
+.msg-bubble strong{color:white;font-weight:600;}
+.msg-bubble em{color:var(--iris);}
+.msg-bubble ul,.msg-bubble ol{padding-left:1.3rem;margin:0.35rem 0 0.65rem;}
+.msg-bubble li{margin-bottom:0.3rem;}
+.msg-bubble h3{font-size:0.88rem;font-weight:700;color:white;margin:0.8rem 0 0.35rem;}
+.msg-bubble h3:first-child{margin-top:0;}
+.msg-bubble hr{border:none;border-top:1px solid var(--border);margin:0.75rem 0;}
+.msg-bubble code{font-family:'DM Mono',monospace;font-size:0.75rem;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;color:var(--lime);}
+
+/* Typing indicator */
+.typing-row{display:flex;gap:10px;align-items:center;}
+.typing-bub{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;display:flex;gap:4px;align-items:center;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:tdot 1.2s ease-in-out infinite;opacity:0.3;}
+.td:nth-child(2){animation-delay:0.2s;}
+.td:nth-child(3){animation-delay:0.4s;}
+@keyframes tdot{0%,60%,100%{opacity:.2;transform:scale(.8);}30%{opacity:1;transform:scale(1);}}
+
+/* Input area */
+.bc-input-area{padding:1rem 1.5rem 1.25rem;border-top:1px solid var(--border);flex-shrink:0;background:var(--navy);}
+.bc-input-row{display:flex;gap:8px;align-items:flex-end;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:0.7rem 0.7rem 0.7rem 1rem;transition:border-color 0.15s;}
+.bc-input-row:focus-within{border-color:rgba(67,97,238,0.4);box-shadow:0 0 0 3px rgba(67,97,238,0.06);}
+.bc-input{flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:white;resize:none;max-height:140px;line-height:1.5;padding:0;}
+.bc-input::placeholder{color:var(--muted);}
+.bc-send-btn{width:34px;height:34px;background:var(--lime);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;align-self:flex-end;}
+.bc-send-btn:hover{opacity:0.88;transform:scale(1.03);}
+.bc-send-btn:disabled{background:rgba(255,255,255,0.08);cursor:default;transform:none;}
+.bc-send-btn:disabled svg path{stroke:var(--muted);}
+.bc-send-btn svg{width:14px;height:14px;}
+.bc-hint{display:flex;align-items:center;justify-content:space-between;margin-top:7px;}
+.bc-hint-left{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.04em;}
+.bc-hint-right{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* Error banner */
+.bc-error{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:10px;padding:0.65rem 0.875rem;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.5;}
+.bc-error strong{color:var(--pink);}
+
+/* Logout */
+.logout-btn{font-size:0.75rem;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color 0.15s;padding:0;}
+.logout-btn:hover{color:var(--pink);}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <a href="dashboard.html" class="sb-logo-wrap" title="Dashboard">
+      <div class="sb-logo-mark">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="9" width="5" height="5" rx="1" fill="rgba(18,25,43,0.4)"/></svg>
+      </div>
+      <div>
+        <div class="sb-logo-name">Built<em>sy</em><span class="dot">.</span></div>
+        <div class="sb-logo-sub">Blueprints</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sb-section">Main</div>
+  <a class="sb-item" href="dashboard.html">
+    <div class="sb-dot"></div>Dashboard
+  </a>
+  <a class="sb-item" href="dashboard.html">
+    <div class="sb-dot"></div>My Blueprints
+  </a>
+
+  <div class="sb-section">AI</div>
+  <div class="sb-item active">
+    <span class="ai-star">✦</span>Builtsy Brain AI
+  </div>
+
+  <div class="sb-section">Blueprints</div>
+  <a class="sb-item" href="blueprint-master.html">
+    <div class="sb-dot"></div>Builtsy Blueprint
+  </a>
+  <a class="sb-item" href="blueprint-event-invite.html">
+    <div class="sb-dot"></div>Event Invite
+  </a>
+  <a class="sb-item" href="blueprint-linkbio.html">
+    <div class="sb-dot"></div>Link in Bio
+  </a>
+  <a class="sb-item" href="blueprint-ugc.html">
+    <div class="sb-dot"></div>UGC Creator
+  </a>
+  <a class="sb-item" href="blueprint-collab-booking.html">
+    <div class="sb-dot"></div>Collab Booking
+  </a>
+
+  <div class="sb-section">Tools</div>
+  <a class="sb-item" href="builtsy-audit.html">
+    <div class="sb-dot"></div>Audit Tools
+  </a>
+  <a class="sb-item" href="calculator.html">
+    <div class="sb-dot"></div>Revenue Booster
+  </a>
+  <a class="sb-item" href="faq-tool.html">
+    <div class="sb-dot"></div>FAQ Tool
+  </a>
+  <a class="sb-item" href="sms-tool.html">
+    <div class="sb-dot"></div>SMS Tool
+  </a>
+  <a class="sb-item" href="forms-tool.html">
+    <div class="sb-dot"></div>Forms
+  </a>
+  <a class="sb-item" href="testimonials-tool.html">
+    <div class="sb-dot"></div>Testimonials
+  </a>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-avatar">?</div>
+      <div>
+        <div class="sb-uname" id="user-name">Beta User</div>
+        <div class="sb-utag">Beta access</div>
+      </div>
+    </div>
+    <button class="logout-btn" style="margin-top:0.65rem;" onclick="doLogout()">Log out</button>
+  </div>
+</aside>
+
+<!-- ── BRAIN WRAPPER ── -->
+<div class="brain-wrapper">
+
+  <!-- LEFT: Preset prompts -->
+  <div class="brain-left">
+    <div class="bl-header">
+      <div class="bl-icon-row">
+        <div class="bl-icon"><span class="ai-star" style="font-size:0.9rem;">✦</span></div>
+        <div class="bl-title">Prompt ideas</div>
+      </div>
+      <div class="bl-sub">Click any card to get started instantly.</div>
+    </div>
+    <div class="bl-scrollable">
+
+      <div class="ctx-banner" id="ctx-banner">
+        <div class="ctx-label">Your context</div>
+        <div class="ctx-text" id="ctx-text">Loading your business profile…</div>
+      </div>
+
+      <!-- WRITE COPY -->
+      <div class="prompt-cat">
+        <span class="prompt-cat-label">Write copy</span>
+        <button class="prompt-card" onclick="sendPreset('bio')">
+          <div class="pc-icon pc-icon-blue">✏</div>
+          <div class="pc-body"><div class="pc-title">Write my bio</div><div class="pc-desc">Professional About Me for site &amp; social</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('headline')">
+          <div class="pc-icon pc-icon-lime">⚡</div>
+          <div class="pc-body"><div class="pc-title">Homepage headline</div><div class="pc-desc">Bold, punchy hero text that converts</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('services')">
+          <div class="pc-icon pc-icon-blue">◫</div>
+          <div class="pc-body"><div class="pc-title">Service descriptions</div><div class="pc-desc">Persuasive copy for each of my offers</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('email')">
+          <div class="pc-icon pc-icon-iris">✉</div>
+          <div class="pc-body"><div class="pc-title">Welcome email sequence</div><div class="pc-desc">3 emails to wow new clients</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- CONTENT & SOCIAL -->
+      <div class="prompt-cat">
+        <span class="prompt-cat-label">Content &amp; social</span>
+        <button class="prompt-card" onclick="sendPreset('captions')">
+          <div class="pc-icon pc-icon-pink">◈</div>
+          <div class="pc-body"><div class="pc-title">Instagram caption pack</div><div class="pc-desc">5 ready-to-post captions for this week</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('calendar')">
+          <div class="pc-icon pc-icon-iris">◷</div>
+          <div class="pc-body"><div class="pc-title">Content calendar</div><div class="pc-desc">30-day posting plan with topic ideas</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('reels')">
+          <div class="pc-icon pc-icon-pink">▷</div>
+          <div class="pc-body"><div class="pc-title">Reel &amp; video ideas</div><div class="pc-desc">10 short-form video concepts</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- STRATEGY & GROWTH -->
+      <div class="prompt-cat">
+        <span class="prompt-cat-label">Strategy &amp; growth</span>
+        <button class="prompt-card" onclick="sendPreset('pricing')">
+          <div class="pc-icon pc-icon-lime">◎</div>
+          <div class="pc-body"><div class="pc-title">Pricing strategy</div><div class="pc-desc">How to price + package ideas</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('launch')">
+          <div class="pc-icon pc-icon-blue">◁</div>
+          <div class="pc-body"><div class="pc-title">Launch plan</div><div class="pc-desc">Step-by-step plan for your next launch</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('leadmagnet')">
+          <div class="pc-icon pc-icon-lime">◆</div>
+          <div class="pc-body"><div class="pc-title">Lead magnet ideas</div><div class="pc-desc">Free offer ideas to grow your list</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- WEBSITE & TOOLS -->
+      <div class="prompt-cat">
+        <span class="prompt-cat-label">Website &amp; tools</span>
+        <button class="prompt-card" onclick="sendPreset('faq')">
+          <div class="pc-icon pc-icon-iris">?</div>
+          <div class="pc-body"><div class="pc-title">FAQ section</div><div class="pc-desc">8 FAQs with answers for my site</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('testimonials')">
+          <div class="pc-icon pc-icon-lime">✦</div>
+          <div class="pc-body"><div class="pc-title">Testimonial prompts</div><div class="pc-desc">Questions to get powerful reviews</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+        <button class="prompt-card" onclick="sendPreset('blog')">
+          <div class="pc-icon pc-icon-blue">✎</div>
+          <div class="pc-body"><div class="pc-title">Blog post outline</div><div class="pc-desc">Structure for SEO-friendly content</div></div>
+          <span class="pc-arrow">→</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: Chat -->
+  <div class="brain-chat">
+    <div class="bc-header">
+      <div class="bc-hdr-icon"><span class="ai-star">✦</span></div>
+      <div>
+        <div class="bc-hdr-title">Builtsy Brain AI</div>
+        <div class="bc-hdr-sub">Your creative &amp; business expert — ask anything</div>
+      </div>
+      <button class="bc-new-btn" onclick="newChat()">+ New chat</button>
+    </div>
+
+    <div class="bc-messages" id="bc-messages">
+      <!-- Welcome state shown when no messages -->
+      <div class="bc-welcome" id="bc-welcome">
+        <span class="bc-welcome-star">✦</span>
+        <h2 class="bc-welcome-title">What can I help you<br><em>build today?</em></h2>
+        <p class="bc-welcome-sub">Ask me anything — write copy, plan your launch, brainstorm content, or just think out loud. I'm here for all of it.</p>
+        <div class="bc-welcome-chips">
+          <button class="bc-chip" onclick="sendPreset('bio')">Write my bio</button>
+          <button class="bc-chip" onclick="sendPreset('pricing')">Pricing strategy</button>
+          <button class="bc-chip" onclick="sendPreset('captions')">Caption pack</button>
+          <button class="bc-chip" onclick="sendPreset('headline')">Homepage headline</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bc-input-area">
+      <div class="bc-input-row">
+        <textarea
+          class="bc-input"
+          id="bc-input"
+          rows="1"
+          placeholder="Ask anything about your business, content, or strategy…"
+          onkeydown="handleInputKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="bc-send-btn" id="bc-send-btn" onclick="sendMessage()">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="#12192B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="bc-hint">
+        <span class="bc-hint-left">Enter to send · Shift+Enter for new line</span>
+        <span class="bc-hint-right" id="bc-model-tag">Claude Sonnet</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+var CHAT_API = (window.location.port === '3000')
+  ? '/chat'
+  : '/.netlify/functions/chat';
+
+var chatHistory = [];
+var isLoading   = false;
+var bizCtx      = null;
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+(async function init() {
+  var user = await getUser();
+  if (!user) {
+    sessionStorage.setItem('builtsy-redirect', 'builtsy-brain.html');
+    window.location.href = 'login.html';
+    return;
+  }
+  var email    = user.email || '';
+  var userName = email.split('@')[0] || 'Beta User';
+  setUserDisplay(userName);
+  await loadContext();
+})();
+
+function setUserDisplay(name) {
+  var initials = name.charAt(0).toUpperCase();
+  var sbAv = document.getElementById('sb-avatar');
+  var unEl = document.getElementById('user-name');
+  if (sbAv) sbAv.textContent = initials;
+  if (unEl) unEl.textContent = name;
+}
+
+async function doLogout() {
+  await _supabase.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// ── CONTEXT ───────────────────────────────────────────────────────────────────
+async function loadContext() {
+  var banner = document.getElementById('ctx-banner');
+  var text   = document.getElementById('ctx-text');
+  try {
+    var saves = await loadSaves();
+    if (!saves || saves.length === 0) {
+      text.innerHTML = 'No blueprints saved yet. Build one and I\'ll automatically tailor my answers to your business.';
+      return;
+    }
+    // Try to extract business info from saves
+    var name = '', industry = '', location = '';
+    for (var i = 0; i < saves.length; i++) {
+      var d = saves[i].data || {};
+      var f = d.fields || {};
+      name     = name     || f['f-name']     || f['su-name']   || f['ugc-name']  || '';
+      industry = industry || f['f-category'] || saves[i].blueprint_type || '';
+      location = location || f['f-location'] || f['f-city'] || '';
+      if (name) break;
+    }
+    if (!name && saves[0].data && saves[0].data.title) {
+      name = saves[0].data.title;
+    }
+    if (name) {
+      bizCtx = { name: name, industry: industry, location: location };
+      var html = 'I know your business — <strong>' + esc(name) + '</strong>';
+      if (industry) html += ', <strong>' + esc(industry) + '</strong>';
+      if (location) html += ' in ' + esc(location);
+      html += '. Every answer is tailored to you.';
+      text.innerHTML = html;
+      banner.style.borderColor = 'rgba(200,224,0,0.25)';
+      banner.style.background  = 'rgba(200,224,0,0.05)';
+      document.querySelector('.ctx-label').style.color = 'rgba(200,224,0,0.7)';
+    } else {
+      text.innerHTML = 'Build a blueprint and I\'ll know your business — answers get way more specific.';
+    }
+  } catch(e) {
+    text.innerHTML = 'Tell me about your business in the chat for personalized answers.';
+  }
+}
+
+// ── SYSTEM PROMPT ─────────────────────────────────────────────────────────────
+function buildSystemPrompt() {
+  var base = 'You are Builtsy Brain AI, a creative and business expert assistant built into Builtsy — a platform that helps small business owners, creators, and entrepreneurs build beautiful websites and grow their brand online.\n\nYou help with anything: writing copy, content creation, marketing, strategy, social media, business growth, and more. You\'re warm, encouraging, sharp, and direct. Give real, actionable, specific answers — not generic advice.\n\nFormat responses cleanly. Use **bold** for key terms. Use bullet points or numbered lists when listing things. Use ### headings for sections when the response is long. Keep it conversational but genuinely useful.';
+  if (bizCtx && bizCtx.name) {
+    base += '\n\nUser\'s business context:\n- Business / creator name: ' + bizCtx.name;
+    if (bizCtx.industry) base += '\n- Industry / type: ' + bizCtx.industry;
+    if (bizCtx.location) base += '\n- Location: ' + bizCtx.location;
+    base += '\n\nAlways tailor your responses specifically to their business, industry, and situation. Reference their name and context naturally.';
+  }
+  return base;
+}
+
+// ── PRESETS ───────────────────────────────────────────────────────────────────
+var PRESET_PROMPTS = {
+  bio:        'Write a professional bio for my website and social media profiles. Make it warm, specific, and compelling — 2–3 paragraphs. Include a short punchy version (1–2 sentences) at the end.',
+  headline:   'Write 5 different homepage headline options for my website. Bold and punchy — each under 10 words. Then write a 1–2 sentence subheadline for your strongest pick.',
+  services:   'Write persuasive service descriptions for 3–4 of my core offerings. Each should be 2–3 sentences highlighting the outcome and transformation for the client. Make them feel irresistible.',
+  email:      'Write a 3-email welcome sequence for new clients or subscribers. Email 1: warm welcome + what to expect. Email 2: tips to get the most value. Email 3: gentle invitation to book again or refer a friend. Include subject lines. Warm, personal tone.',
+  captions:   'Write 5 Instagram captions ready to post this week. Make them varied: educational, behind-the-scenes, testimonial-style, promotional, and community-focused. Include 3–5 hashtags each. Warm and authentic.',
+  calendar:   'Create a 30-day social media content calendar. Give me a theme for each week and specific post ideas for each day. Mix formats: carousels, Reels, stories, and feed posts. Keep it realistic and doable.',
+  reels:      'Give me 10 Reel or TikTok video ideas specific to my business or niche. For each: the concept, an opening hook line, and what to show on screen. Focus on genuine value and viral potential.',
+  pricing:    'Help me think through my pricing strategy. Suggest how to package my services, what price points make sense, and how to position them to maximize revenue without underselling. Give me 2–3 package tier options.',
+  launch:     'Give me a 30-day launch plan for my business (or a new offer). Break it into 4 weekly phases with specific daily or weekly actions I can actually execute as a one-person business.',
+  leadmagnet: 'Suggest 5 lead magnet ideas I can create to grow my email list. For each: the format, the title, what it covers, and why people would want it. Keep them simple enough to create in a weekend.',
+  faq:        'Write an FAQ section for my website with 8 questions and detailed answers. Focus on the questions potential clients actually ask before booking or buying. Make the answers conversational and reassuring.',
+  testimonials: 'Give me 5–7 questions I can send to happy clients to collect powerful, specific testimonials for my website and social media. The questions should draw out specific results and emotions, not just generic praise.',
+  blog:       'Create a detailed outline for a blog post in my industry. Include a compelling title, intro hook, 4–5 main sections with key subpoints, and a conclusion with a call to action. Make it SEO-friendly and genuinely useful.'
+};
+
+function sendPreset(key) {
+  var prompt = PRESET_PROMPTS[key];
+  if (!prompt) return;
+  var input = document.getElementById('bc-input');
+  input.value = prompt;
+  autoResize(input);
+  sendMessage();
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────────────
+function sendMessage() {
+  if (isLoading) return;
+  var input = document.getElementById('bc-input');
+  var text  = input.value.trim();
+  if (!text) return;
+
+  // Hide welcome
+  var welcome = document.getElementById('bc-welcome');
+  if (welcome) welcome.style.display = 'none';
+
+  // Add user message
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  // Clear input
+  input.value = '';
+  input.style.height = '';
+
+  // Send to API
+  callChatAPI();
+}
+
+function callChatAPI() {
+  isLoading = true;
+  document.getElementById('bc-send-btn').disabled = true;
+  showTyping();
+
+  var system = buildSystemPrompt();
+
+  fetch(CHAT_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: chatHistory, system: system })
+  })
+  .then(function(r) {
+    if (!r.ok) return r.json().then(function(d){ throw new Error(d.error || 'Request failed'); });
+    return r.json();
+  })
+  .then(function(data) {
+    hideTyping();
+    if (data.error) throw new Error(data.error);
+    var reply = data.text || '';
+    chatHistory.push({ role: 'assistant', content: reply });
+    appendMsg('assistant', reply);
+  })
+  .catch(function(err) {
+    hideTyping();
+    appendError('Something went wrong: ' + (err.message || 'Unknown error') + '. Try again in a moment.');
+  })
+  .finally(function() {
+    isLoading = false;
+    document.getElementById('bc-send-btn').disabled = false;
+  });
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function appendMsg(role, text) {
+  var msgs = document.getElementById('bc-messages');
+  var row  = document.createElement('div');
+  row.className = 'msg-row' + (role === 'user' ? ' msg-user' : '');
+
+  var av = document.createElement('div');
+  av.className = 'msg-av ' + (role === 'user' ? 'av-user' : 'av-ai');
+  av.textContent = role === 'user' ? 'Y' : '✦';
+
+  var bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = role === 'assistant' ? renderMarkdown(text) : esc(text).replace(/\n/g,'<br>');
+
+  row.appendChild(av);
+  row.appendChild(bubble);
+  msgs.appendChild(row);
+  scrollToBottom();
+}
+
+function appendError(msg) {
+  var msgs = document.getElementById('bc-messages');
+  var el   = document.createElement('div');
+  el.className = 'bc-error';
+  el.innerHTML = '<strong>Oops.</strong> ' + esc(msg);
+  msgs.appendChild(el);
+  scrollToBottom();
+}
+
+function showTyping() {
+  var msgs = document.getElementById('bc-messages');
+  var row  = document.createElement('div');
+  row.className = 'typing-row';
+  row.id = 'typing-row';
+  var av = document.createElement('div');
+  av.className = 'msg-av av-ai';
+  av.textContent = '✦';
+  var bub = document.createElement('div');
+  bub.className = 'typing-bub';
+  bub.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+  row.appendChild(av);
+  row.appendChild(bub);
+  msgs.appendChild(row);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  var el = document.getElementById('typing-row');
+  if (el) el.remove();
+}
+
+function scrollToBottom() {
+  var msgs = document.getElementById('bc-messages');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── MARKDOWN RENDERER ─────────────────────────────────────────────────────────
+function renderMarkdown(text) {
+  // Escape HTML first, then apply markdown
+  var lines = text.split('\n');
+  var html  = '';
+  var inUl  = false;
+  var inOl  = false;
+
+  function closeList() {
+    if (inUl) { html += '</ul>'; inUl = false; }
+    if (inOl) { html += '</ol>'; inOl = false; }
+  }
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+
+    // Headings
+    if (/^###\s/.test(line)) {
+      closeList();
+      html += '<h3>' + inlineFormat(line.replace(/^###\s*/, '')) + '</h3>';
+      continue;
+    }
+    if (/^##\s/.test(line)) {
+      closeList();
+      html += '<h3>' + inlineFormat(line.replace(/^##\s*/, '')) + '</h3>';
+      continue;
+    }
+    if (/^#\s/.test(line)) {
+      closeList();
+      html += '<h3>' + inlineFormat(line.replace(/^#\s*/, '')) + '</h3>';
+      continue;
+    }
+
+    // Unordered list
+    if (/^[-•*]\s/.test(line)) {
+      if (inOl) { html += '</ol>'; inOl = false; }
+      if (!inUl) { html += '<ul>'; inUl = true; }
+      html += '<li>' + inlineFormat(line.replace(/^[-•*]\s*/, '')) + '</li>';
+      continue;
+    }
+
+    // Ordered list
+    if (/^\d+\.\s/.test(line)) {
+      if (inUl) { html += '</ul>'; inUl = false; }
+      if (!inOl) { html += '<ol>'; inOl = true; }
+      html += '<li>' + inlineFormat(line.replace(/^\d+\.\s*/, '')) + '</li>';
+      continue;
+    }
+
+    closeList();
+
+    // HR
+    if (/^---+$/.test(line.trim())) {
+      html += '<hr>';
+      continue;
+    }
+
+    // Empty line = paragraph break
+    if (line.trim() === '') {
+      html += '';
+      continue;
+    }
+
+    html += '<p>' + inlineFormat(line) + '</p>';
+  }
+
+  closeList();
+  return html;
+}
+
+function inlineFormat(s) {
+  // Escape HTML
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Bold + italic: ***text***
+  s = s.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+  // Bold: **text**
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Italic: *text*
+  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Code: `text`
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  return s;
+}
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── CONTROLS ──────────────────────────────────────────────────────────────────
+function newChat() {
+  chatHistory = [];
+  var msgs    = document.getElementById('bc-messages');
+  msgs.innerHTML = '';
+  // Re-add welcome
+  var welcome = document.createElement('div');
+  welcome.className = 'bc-welcome';
+  welcome.id = 'bc-welcome';
+  welcome.innerHTML = '<span class="bc-welcome-star">✦</span>'
+    + '<h2 class="bc-welcome-title">What can I help you<br><em>build today?</em></h2>'
+    + '<p class="bc-welcome-sub">Ask me anything — write copy, plan your launch, brainstorm content, or just think out loud. I\'m here for all of it.</p>'
+    + '<div class="bc-welcome-chips">'
+    + '<button class="bc-chip" onclick="sendPreset(\'bio\')">Write my bio</button>'
+    + '<button class="bc-chip" onclick="sendPreset(\'pricing\')">Pricing strategy</button>'
+    + '<button class="bc-chip" onclick="sendPreset(\'captions\')">Caption pack</button>'
+    + '<button class="bc-chip" onclick="sendPreset(\'headline\')">Homepage headline</button>'
+    + '</div>';
+  msgs.appendChild(welcome);
+}
+
+function handleInputKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+// Update avatar initials from user name
+function updateAvatar(name) {
+  var el = document.getElementById('sb-avatar');
+  if (el) el.textContent = (name || '?').charAt(0).toUpperCase();
+}
+</script>
+</body>
+</html>

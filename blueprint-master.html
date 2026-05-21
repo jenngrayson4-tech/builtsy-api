@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-client.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -280,7 +281,7 @@ body.ms-s9 .topnav{display:none;}
 .ms-welcome-body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px 64px;}
 .ms-welcome-inner{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;text-align:center;}
 /* eyebrow */
-.ms-welcome-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;display:inline-block;margin-bottom:20px;background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.2);padding:5px 14px;border-radius:100px;}
+.ms-welcome-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--builtsy-blue);font-weight:700;display:inline-block;margin-bottom:20px;background:rgba(67,97,238,0.08);border:1px solid rgba(67,97,238,0.25);padding:5px 14px;border-radius:100px;}
 /* headline */
 .ms-welcome-h1{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;color:white;line-height:1.02;letter-spacing:-0.025em;margin-bottom:18px;}
 .ms-welcome-h1 span{color:var(--lime);font-style:italic;}
@@ -4022,6 +4023,7 @@ function msGenerate() {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
                 if (html.length < 200) { msFinishError('Generation returned empty content. Please try again.'); return; }
                 html = msInjectAssets(html);
+                html = builtsyInjectFooter(html, (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || 'Your Business');
                 _ctHTML = html;
                 msFinishGenerate();
                 msShowOutput(html);
@@ -4049,6 +4051,11 @@ function msFinishGenerate() {
     var overlay = document.getElementById('ms-overlay');
     if (overlay) overlay.className = 'gen-overlay';
   }, 300);
+  // Save progress to Supabase (silent — does nothing if not logged in)
+  try {
+    var d = msCollect();
+    saveBlueprint('master', { title: d.businessName || d.ownerName || 'Master Blueprint', fields: d });
+  } catch(e) {}
 }
 
 function msFinishError(msg) {
@@ -4209,6 +4216,7 @@ function msRevise() {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
                 if (html.length < 200) { msFinishError('Revision returned empty content. Please try again.'); return; }
                 html = msInjectAssets(html);
+                html = builtsyInjectFooter(html, (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || 'Your Business');
                 _ctHTML = html;
                 var inp = document.getElementById('ms-revise-input');
                 if (inp) inp.value = '';
@@ -4227,6 +4235,17 @@ function msRevise() {
   .catch(function(err) {
     msFinishError('Revision error: ' + err.message);
   });
+}
+
+// ── BUILTSY FOOTER ──
+function builtsyInjectFooter(html, name) {
+  var safe = (name||'Your Business').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
+    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
+    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
+    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
+    + '</section>';
+  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
 }
 
 function msDownload() {

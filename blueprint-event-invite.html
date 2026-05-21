@@ -174,6 +174,8 @@
     .step-nav{flex-direction:column;}
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-client.js"></script>
 </head>
 <body>
 
@@ -1761,9 +1763,10 @@ function doGenerate(data, built) {
     // Photos now embedded directly in prompt — no injection needed
     // Inject real invite ID for claims
     html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
-    var claimsUrl = 'https://builtsy-api-production.up.railway.app';
-    html = html.replace(/CLAIMS_SCRIPT_URL/g, claimsUrl);
-    html = html.replace(/https:\/\/script\.google\.com[^"\s]*/g, claimsUrl);
+    var SUPA_URL = 'https://nukcbqlxxrfsgchqyxud.supabase.co';
+    var SUPA_KEY = 'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX';
+    html = html.replace(/CLAIMS_SCRIPT_URL/g, SUPA_URL);
+    html = html.replace(/https:\/\/script\.google\.com[^"\s]*/g, SUPA_URL);
 
     // OG social share
     var ogTitle = (data.honoree || 'You') + ' — ' + (data.eventType || 'Invite');
@@ -1790,12 +1793,38 @@ function doGenerate(data, built) {
     var invId = currentInviteId;
     var claimsCode = [
       'var INVITE_ID="' + invId + '";',
-      'var CLAIMS_BASE="' + claimsUrl + '";',
+      'var SUPA_URL="' + SUPA_URL + '";',
+      'var SUPA_KEY="' + SUPA_KEY + '";',
       'var claimedItems={};',
-      'function loadClaims(){fetch(CLAIMS_BASE+"/claims/"+encodeURIComponent(INVITE_ID)).then(function(r){return r.json();}).then(function(d){if(d&&d.claims){claimedItems=d.claims;renderClaimStates();}}).catch(function(){});}',
+      // Load claims from Supabase REST API (no auth needed — public read policy)
+      'function loadClaims(){',
+      '  fetch(SUPA_URL+"/rest/v1/claims?invite_id=eq."+encodeURIComponent(INVITE_ID)+"&select=item_name,claimed_by",',
+      '    {headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}})',
+      '  .then(function(r){return r.json();})',
+      '  .then(function(rows){',
+      '    if(!Array.isArray(rows))return;',
+      '    rows.forEach(function(r){claimedItems[r.item_name]=r.claimed_by;});',
+      '    renderClaimStates();',
+      '  }).catch(function(){});',
+      '}',
       'function renderClaimStates(){var rows=document.querySelectorAll("[data-item]");for(var i=0;i<rows.length;i++){var n=rows[i].getAttribute("data-item");if(claimedItems[n]){rows[i].innerHTML="<span style=\'background:#dcfce7;color:#16a34a;font-weight:700;padding:5px 12px;border-radius:20px;display:inline-block\'>&check; Claimed by "+claimedItems[n]+"</span>";}}}',
       'function sanitizeId(s){return s.replace(/[^a-zA-Z0-9]/g,"_");}',
-      'function claimItem(n){var el=document.getElementById("claim-input-"+sanitizeId(n));if(!el){alert("Field not found.");return;}var v=el.value.trim();if(!v){alert("Enter your name first!");return;}fetch(CLAIMS_BASE+"/claim",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({inviteId:INVITE_ID,item:n,name:v})}).then(function(r){return r.json();}).then(function(d){if(d.ok){claimedItems[n]=v;renderClaimStates();}else{alert("Already claimed!");}}).catch(function(){alert("Could not connect.");});}',
+      // Claim an item via Supabase REST — unique constraint handles double-claims
+      'function claimItem(n){',
+      '  var el=document.getElementById("claim-input-"+sanitizeId(n));',
+      '  if(!el){alert("Field not found.");return;}',
+      '  var v=el.value.trim();',
+      '  if(!v){alert("Enter your name first!");return;}',
+      '  fetch(SUPA_URL+"/rest/v1/claims",{',
+      '    method:"POST",',
+      '    headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},',
+      '    body:JSON.stringify({invite_id:INVITE_ID,item_name:n,claimed_by:v})',
+      '  }).then(function(r){',
+      '    if(r.status===201){claimedItems[n]=v;renderClaimStates();}',
+      '    else if(r.status===409){alert("Already claimed by someone else!");}',
+      '    else{alert("Could not save — please try again.");}',
+      '  }).catch(function(){alert("Could not connect. Check your internet and try again.");});',
+      '}',
       'function rebuildClaimUIs(){var rows=document.querySelectorAll("[data-item]");for(var i=0;i<rows.length;i++){var n=rows[i].getAttribute("data-item");if(claimedItems[n])continue;var sid=sanitizeId(n);if(document.getElementById("claim-input-"+sid))continue;var inp=document.createElement("input");inp.id="claim-input-"+sid;inp.type="text";inp.placeholder="Your name";inp.style.cssText="border:1.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:.85rem;width:130px;outline:none;font-family:inherit";var btn=document.createElement("button");btn.textContent="Claim";btn.style.cssText="background:#ee70bc;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:.85rem;font-weight:700;cursor:pointer";(function(name){btn.onclick=function(){claimItem(name);};})(n);var wrap=document.createElement("div");wrap.style.cssText="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px";wrap.appendChild(inp);wrap.appendChild(btn);rows[i].innerHTML="";rows[i].appendChild(wrap);}}',
       'loadClaims();rebuildClaimUIs();setInterval(function(){loadClaims();rebuildClaimUIs();},8000);',
       'document.addEventListener("DOMContentLoaded",function(){',
@@ -1858,6 +1887,7 @@ function doGenerate(data, built) {
       html = html.replace(new RegExp("src='" + ph + "'", 'g'), "src='" + galSrc + "'");
     }
 
+    html = builtsyInjectFooter(html, (document.getElementById('honoreeNames')||{}).value || 'You');
     generatedHTML = html;
     showOutput(html);
   })
@@ -1882,6 +1912,11 @@ function showOutput(html) {
   frame._blobUrl = blobUrl;
   frame.src = blobUrl;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Save progress to Supabase (silent — does nothing if not logged in)
+  try {
+    var d = collectFormData();
+    saveBlueprint('event-invite', { title: d.honoreeNames || d.eventType || 'Event Invite', eventType: d.eventType, eventDate: d.eventDate, honoree: d.honoreeNames });
+  } catch(e) {}
 }
 
 function showError(msg) {
@@ -1907,6 +1942,17 @@ function rebuildFromScratch() {
   clearFrame.src = 'about:blank';
   generatedHTML = '';
   goStep(1);
+}
+
+// ── BUILTSY FOOTER ──
+function builtsyInjectFooter(html, name) {
+  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
+    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
+    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
+    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
+    + '</section>';
+  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
 }
 
 // ── DOWNLOAD ──
@@ -1955,6 +2001,7 @@ function submitRevise() {
     html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
     html = html.replace(/^===FILE:\s*index\.html===\s*/i, '').trim();
     if (html && html.length > 100) {
+      html = builtsyInjectFooter(html, (document.getElementById('honoreeNames')||{}).value || 'You');
       generatedHTML = html;
       var frame2 = document.getElementById('preview-frame');
       var blob2 = new Blob([html], {type: 'text/html'});

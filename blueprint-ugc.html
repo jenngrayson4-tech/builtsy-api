@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGC Creator Blueprint | Builtsy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-client.js"></script>
+<style>
+:root {
+  --navy:#12192B; --navy-mid:#1a2540; --navy-card:#0D1828;
+  --lime:#C8E000; --pink:#ee70bc; --blue:#4361EE;
+  --text:#f4f6ff; --muted:rgba(244,246,255,0.5); --border:rgba(244,246,255,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;}
+
+/* ── NAV ── */
+.bp-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--navy);}
+.bp-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:white;text-decoration:none;display:flex;align-items:baseline;gap:0;}
+.bp-logo .logo-sy{color:var(--pink);font-style:italic;}
+.bp-logo .logo-dot{color:var(--blue);font-size:1.6rem;font-weight:900;margin-left:2px;line-height:1;}
+.bp-nav-tag{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.25);padding:4px 10px;border-radius:99px;}
+.bp-back{font-size:.875rem;font-weight:700;color:var(--blue);text-decoration:none;transition:color .15s;}
+.bp-back:hover{color:white;}
+
+/* ── PROGRESS ── */
+.step-progress{display:flex;align-items:center;justify-content:center;gap:0;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);}
+.s-dot{width:28px;height:28px;border-radius:50%;background:rgba(67,97,238,.12);border:1.5px solid rgba(67,97,238,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .2s;font-family:'DM Mono',monospace;}
+.s-dot.active{background:var(--blue);border-color:var(--blue);color:white;}
+.s-dot.done{background:rgba(67,97,238,.2);border-color:var(--blue);color:var(--blue);}
+.s-line{width:32px;height:2px;background:var(--border);border-radius:99px;}
+.s-line.done{background:rgba(67,97,238,.4);}
+
+/* ── LAYOUT ── */
+.bp-body{max-width:600px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* ── STEP PANELS ── */
+.step-panel{display:none;}
+.step-panel.active{display:block;}
+.step-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;line-height:1.15;margin-bottom:.5rem;}
+.step-title em{font-style:italic;color:var(--lime);}
+.step-sub{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:2rem;}
+
+/* ── FORM ELEMENTS ── */
+.ff{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem;}
+.ff label{font-size:.78rem;font-weight:600;color:white;letter-spacing:.02em;}
+.ff label .opt{font-weight:400;color:var(--muted);font-size:.72rem;}
+.fi{padding:.8rem 1rem;border-radius:.75rem;border:1px solid var(--border);background:rgba(255,255,255,.04);color:white;font-size:.9rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;width:100%;}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.1);}
+.fi::placeholder{color:rgba(255,255,255,.2);}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;appearance:none;}
+select.fi option{background:#1a2540;color:white;}
+textarea.fi{resize:vertical;min-height:80px;line-height:1.5;}
+
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+
+/* ── PACKAGE CARDS ── */
+.pkg-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:.75rem;}
+.pkg-card-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.875rem;}
+.pkg-num{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.2);padding:3px 9px;border-radius:99px;}
+.pkg-opt{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── PRICING TIERS ── */
+.tier-card{background:rgba(255,255,255,.03);border:1.5px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:.75rem;transition:border-color .2s;}
+.tier-card.popular{border-color:rgba(67,97,238,.5);background:rgba(67,97,238,.06);}
+.tier-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.875rem;}
+.tier-radio{accent-color:var(--blue);width:16px;height:16px;cursor:pointer;flex-shrink:0;}
+.tier-label{font-size:.82rem;font-weight:600;color:white;}
+.popular-badge{margin-left:auto;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:white;background:var(--blue);padding:3px 9px;border-radius:99px;}
+
+/* ── VIDEO PORTFOLIO GRID ── */
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin-bottom:1.25rem;}
+.vid-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:1rem;overflow:hidden;}
+.vid-upload-area{border:1.5px dashed rgba(255,255,255,.15);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:.75rem;position:relative;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.3rem;background:rgba(255,255,255,.02);}
+.vid-upload-area:hover{border-color:rgba(67,97,238,.5);}
+.vid-upload-area.has-thumb{padding:0;overflow:hidden;}
+.vid-upload-area img{width:100%;height:80px;object-fit:cover;border-radius:8px;display:block;}
+.vid-upload-icon{font-size:1.2rem;color:var(--muted);}
+.vid-upload-label{font-size:.72rem;color:var(--muted);}
+.vid-card-num{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:.5rem;}
+
+/* ── PHOTO UPLOADS ── */
+.photo-upload-row{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin-bottom:1.25rem;}
+.photo-upload-box{border:1.5px dashed rgba(255,255,255,.15);border-radius:14px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:border-color .2s;background:rgba(255,255,255,.02);}
+.photo-upload-box:hover{border-color:rgba(67,97,238,.5);}
+.photo-upload-box .pu-icon{font-size:1.5rem;margin-bottom:.4rem;display:block;}
+.photo-upload-box .pu-label{font-size:.78rem;font-weight:600;color:white;margin-bottom:.2rem;}
+.photo-upload-box .pu-sub{font-size:.7rem;color:var(--muted);}
+.photo-upload-box.has-img{padding:.5rem;overflow:hidden;}
+.photo-upload-box.has-img img{width:100%;height:100px;object-fit:cover;border-radius:10px;}
+
+/* ── TOGGLES ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;cursor:pointer;}
+.toggle-info .toggle-title{font-size:.875rem;font-weight:600;color:white;}
+.toggle-info .toggle-desc{font-size:.75rem;color:var(--muted);margin-top:1px;}
+.toggle-switch{width:40px;height:22px;background:rgba(255,255,255,.1);border-radius:99px;position:relative;flex-shrink:0;transition:background .2s;}
+.toggle-switch.on{background:var(--blue);}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:white;transition:transform .2s;}
+.toggle-switch.on::after{transform:translateX(18px);}
+
+/* ── BUTTONS ── */
+.btn-next{width:100%;padding:1rem;background:var(--lime);color:#12192B;border:none;border-radius:14px;font-size:1rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .18s,transform .15s;margin-top:1.25rem;}
+.btn-next:hover{background:#d4ee00;transform:translateY(-1px);box-shadow:0 8px 28px rgba(200,224,0,.25);}
+.btn-next:active{transform:translateY(0);}
+.btn-back{background:none;border:1.5px solid var(--border);color:var(--muted);border-radius:14px;padding:.75rem 1.25rem;font-size:.875rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;margin-top:.5rem;width:100%;}
+.btn-back:hover{border-color:rgba(255,255,255,.2);color:white;}
+.btn-generate{width:100%;padding:1.1rem;background:var(--lime);color:#12192B;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .18s,transform .15s;box-shadow:0 0 28px rgba(200,224,0,.2);}
+.btn-generate:hover{background:#d4ee00;transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,224,0,.35);}
+
+/* ── GENERATING OVERLAY ── */
+#gen-overlay{display:none;position:fixed;inset:0;background:var(--navy);z-index:500;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+#gen-overlay.active{display:flex;}
+.gen-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;display:flex;align-items:baseline;gap:0;margin-bottom:2rem;}
+.gen-logo .logo-sy{color:var(--pink);font-style:italic;}
+.gen-logo .logo-dot{color:var(--blue);font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
+.gen-msg{font-size:1rem;color:var(--muted);min-height:1.5em;margin-bottom:1.5rem;font-weight:300;}
+.gen-bar-wrap{width:280px;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
+.gen-bar{height:100%;background:var(--lime);border-radius:99px;width:0;transition:width .4s ease;}
+
+/* ── OUTPUT PANEL ── */
+#output-panel{display:none;position:fixed;inset:0;z-index:400;background:#1a1a2e;flex-direction:column;}
+#output-panel.active{display:flex;}
+.output-topbar{display:flex;align-items:center;gap:.75rem;padding:.875rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08);background:#12192B;flex-wrap:wrap;}
+.output-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-right:auto;}
+.out-btn{padding:.5rem 1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .18s;}
+.out-btn-primary{background:var(--lime);color:#12192B;}
+.out-btn-primary:hover{background:#d4ee00;}
+.out-btn-secondary{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.12);}
+.out-btn-secondary:hover{background:rgba(255,255,255,.14);}
+.output-main{flex:1;display:flex;align-items:stretch;overflow:hidden;}
+.preview-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#2a2a3e;overflow:hidden;}
+.device-frame{width:390px;height:100%;max-height:100%;box-shadow:0 0 60px rgba(0,0,0,.5);position:relative;}
+#preview-frame{width:100%;height:100%;border:none;display:block;}
+.out-sidebar{width:260px;background:#12192B;border-left:1px solid rgba(255,255,255,.08);padding:1.25rem;display:flex;flex-direction:column;gap:.75rem;overflow-y:auto;}
+.out-sidebar-title{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem;}
+.out-sidebar-btn{display:block;width:100%;padding:.75rem 1rem;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;text-align:left;transition:all .18s;}
+
+@media(max-width:600px){
+  .field-row{grid-template-columns:1fr;}
+  .vid-grid{grid-template-columns:1fr;}
+  .photo-upload-row{grid-template-columns:1fr;}
+  .output-main{flex-direction:column;}
+  .out-sidebar{width:100%;border-left:none;border-top:1px solid rgba(255,255,255,.08);}
+  .device-frame{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="bp-nav">
+  <a href="dashboard.html" class="bp-logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+  <span class="bp-nav-tag">UGC Creator Blueprint</span>
+  <a href="dashboard.html" class="bp-back">← Dashboard</a>
+</nav>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress" id="step-progress">
+  <div class="s-dot active" id="dot-1">1</div>
+  <div class="s-line" id="line-1"></div>
+  <div class="s-dot" id="dot-2">2</div>
+  <div class="s-line" id="line-2"></div>
+  <div class="s-dot" id="dot-3">3</div>
+  <div class="s-line" id="line-3"></div>
+  <div class="s-dot" id="dot-4">4</div>
+  <div class="s-line" id="line-4"></div>
+  <div class="s-dot" id="dot-5">5</div>
+  <div class="s-line" id="line-5"></div>
+  <div class="s-dot" id="dot-6">6</div>
+</div>
+
+<!-- BODY -->
+<div class="bp-body">
+
+  <!-- ══ STEP 1: YOUR BRAND ══ -->
+  <div class="step-panel active" id="step-1">
+    <h2 class="step-title">Tell us your <em>brand.</em></h2>
+    <p class="step-sub">The basics that make you, you.</p>
+
+    <div class="field-row">
+      <div class="ff"><label>Your name</label><input class="fi" id="ugc-name" placeholder="e.g. Mia Torres"></div>
+      <div class="ff"><label>Your handle</label><input class="fi" id="ugc-handle" placeholder="e.g. @mia.creates"></div>
+    </div>
+    <div class="ff"><label>Your niche</label><input class="fi" id="ugc-niche" placeholder="e.g. Beauty & Skincare, Home & Lifestyle"></div>
+    <div class="ff"><label>Content style in one line</label><input class="fi" id="ugc-style" placeholder="e.g. Authentic, relatable, scroll-stopping"></div>
+    <div class="ff"><label>Your tagline</label><input class="fi" id="ms-tagline" placeholder="e.g. Real content. Real results."></div>
+    <div class="field-row">
+      <div class="ff"><label>Location <span class="opt">(optional)</span></label><input class="fi" id="ms-location" placeholder="e.g. Denver, CO"></div>
+      <div class="ff"><label>Primary platform</label>
+        <select class="fi" id="ms-platform">
+          <option value="">Select one</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Instagram">Instagram</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Multi-platform">Multi-platform</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="ff"><label>Years creating</label><input class="fi" id="ms-years-exp" placeholder="e.g. 3"></div>
+      <div class="ff"><label>Brands worked with</label><input class="fi" id="ms-clients-served" placeholder="e.g. 40+"></div>
+    </div>
+    <button class="btn-next" onclick="goStep(2)">Next — Your Story →</button>
+  </div>
+
+  <!-- ══ STEP 2: YOUR STORY ══ -->
+  <div class="step-panel" id="step-2">
+    <h2 class="step-title">Your <em>story.</em></h2>
+    <p class="step-sub">Your headlines, bio, and what makes your content different.</p>
+
+    <div class="ff"><label>Hero headline</label><input class="fi" id="ms-hero-headline" placeholder="e.g. UGC That Actually Converts"></div>
+    <div class="ff"><label>Hero subheading</label><textarea class="fi" id="ms-hero-sub" placeholder="e.g. I create scroll-stopping content for brands that want real results — not just pretty videos."></textarea></div>
+    <div class="ff"><label>Your bio</label><textarea class="fi" id="ms-bio" style="min-height:110px;" placeholder="Tell your story — who you are, what you create, why brands love working with you"></textarea></div>
+    <div class="ff"><label>Content style pillars <span class="opt">(3 things that define your style)</span></label><textarea class="fi" id="ms-fun-facts" placeholder="e.g. Authentic storytelling, Hook-first editing, Raw & relatable POV"></textarea></div>
+    <div class="ff"><label>Platforms you post on</label><input class="fi" id="ms-credentials" placeholder="e.g. TikTok, Instagram Reels, YouTube Shorts"></div>
+    <div class="ff"><label>Featured hero video URL <span class="opt">(optional)</span></label><input class="fi" id="ugc-hero-video" placeholder="e.g. https://www.youtube.com/watch?v=... or TikTok URL"></div>
+    <div class="ff"><label>Brand collabs for scrolling bar <span class="opt">(comma separated)</span></label><input class="fi" id="ugc-brands" placeholder="e.g. Glossier, LMNT, Notion, Fenty Beauty"></div>
+
+    <button class="btn-next" onclick="goStep(3)">Next — Portfolio →</button>
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+  </div>
+
+  <!-- ══ STEP 3: PORTFOLIO ══ -->
+  <div class="step-panel" id="step-3">
+    <h2 class="step-title">Your <em>portfolio.</em></h2>
+    <p class="step-sub">Add up to 4 videos. Upload a thumbnail and paste the video URL.</p>
+
+    <div class="vid-grid">
+      <!-- Video 1 -->
+      <div class="vid-card">
+        <div class="vid-card-num">Video 1</div>
+        <div class="vid-upload-area" id="vid-upload-1" onclick="document.getElementById('vid-file-1').click()">
+          <div class="vid-upload-icon">📹</div>
+          <div class="vid-upload-label">Upload thumbnail</div>
+        </div>
+        <input type="file" id="vid-file-1" accept="image/*" style="display:none" onchange="handleVidThumb(1,this)">
+        <input type="hidden" id="ugc-vid1-thumb">
+        <div class="ff" style="margin-bottom:.5rem;"><input class="fi" id="ugc-vid1-brand" placeholder="Brand name"></div>
+        <div class="ff" style="margin-bottom:0;"><input class="fi" id="ugc-vid1-url" placeholder="Video URL"></div>
+      </div>
+      <!-- Video 2 -->
+      <div class="vid-card">
+        <div class="vid-card-num">Video 2</div>
+        <div class="vid-upload-area" id="vid-upload-2" onclick="document.getElementById('vid-file-2').click()">
+          <div class="vid-upload-icon">📹</div>
+          <div class="vid-upload-label">Upload thumbnail</div>
+        </div>
+        <input type="file" id="vid-file-2" accept="image/*" style="display:none" onchange="handleVidThumb(2,this)">
+        <input type="hidden" id="ugc-vid2-thumb">
+        <div class="ff" style="margin-bottom:.5rem;"><input class="fi" id="ugc-vid2-brand" placeholder="Brand name"></div>
+        <div class="ff" style="margin-bottom:0;"><input class="fi" id="ugc-vid2-url" placeholder="Video URL"></div>
+      </div>
+      <!-- Video 3 -->
+      <div class="vid-card">
+        <div class="vid-card-num">Video 3</div>
+        <div class="vid-upload-area" id="vid-upload-3" onclick="document.getElementById('vid-file-3').click()">
+          <div class="vid-upload-icon">📹</div>
+          <div class="vid-upload-label">Upload thumbnail</div>
+        </div>
+        <input type="file" id="vid-file-3" accept="image/*" style="display:none" onchange="handleVidThumb(3,this)">
+        <input type="hidden" id="ugc-vid3-thumb">
+        <div class="ff" style="margin-bottom:.5rem;"><input class="fi" id="ugc-vid3-brand" placeholder="Brand name"></div>
+        <div class="ff" style="margin-bottom:0;"><input class="fi" id="ugc-vid3-url" placeholder="Video URL"></div>
+      </div>
+      <!-- Video 4 -->
+      <div class="vid-card">
+        <div class="vid-card-num">Video 4</div>
+        <div class="vid-upload-area" id="vid-upload-4" onclick="document.getElementById('vid-file-4').click()">
+          <div class="vid-upload-icon">📹</div>
+          <div class="vid-upload-label">Upload thumbnail</div>
+        </div>
+        <input type="file" id="vid-file-4" accept="image/*" style="display:none" onchange="handleVidThumb(4,this)">
+        <input type="hidden" id="ugc-vid4-thumb">
+        <div class="ff" style="margin-bottom:.5rem;"><input class="fi" id="ugc-vid4-brand" placeholder="Brand name"></div>
+        <div class="ff" style="margin-bottom:0;"><input class="fi" id="ugc-vid4-url" placeholder="Video URL"></div>
+      </div>
+    </div>
+
+    <button class="btn-next" onclick="goStep(4)">Next — Packages →</button>
+    <button class="btn-back" onclick="goStep(2)">← Back</button>
+  </div>
+
+  <!-- ══ STEP 4: PACKAGES ══ -->
+  <div class="step-panel" id="step-4">
+    <h2 class="step-title">Your <em>packages.</em></h2>
+    <p class="step-sub">What content do you offer? Define your packages below.</p>
+
+    <div class="pkg-card">
+      <div class="pkg-card-header"><span class="pkg-num">Package 1</span></div>
+      <div class="ff"><input class="fi" id="ms-svc1-name" placeholder="Package name (e.g. Starter Pack)"></div>
+      <div class="ff"><textarea class="fi" id="ms-svc1-desc" placeholder="What's included (e.g. 3 raw UGC videos, 1 revision round, 30-day usage rights)"></textarea></div>
+      <div class="ff"><input class="fi" id="ms-svc1-tags" placeholder="Content types (e.g. Product Demo, Unboxing, Lifestyle)"></div>
+    </div>
+    <div class="pkg-card">
+      <div class="pkg-card-header"><span class="pkg-num">Package 2</span></div>
+      <div class="ff"><input class="fi" id="ms-svc2-name" placeholder="Package name (e.g. Brand Story)"></div>
+      <div class="ff"><textarea class="fi" id="ms-svc2-desc" placeholder="What's included"></textarea></div>
+      <div class="ff"><input class="fi" id="ms-svc2-tags" placeholder="Content types"></div>
+    </div>
+    <div class="pkg-card">
+      <div class="pkg-card-header"><span class="pkg-num">Package 3</span><span class="pkg-opt">optional</span></div>
+      <div class="ff"><input class="fi" id="ms-svc3-name" placeholder="Package name (e.g. Full Campaign)"></div>
+      <div class="ff"><textarea class="fi" id="ms-svc3-desc" placeholder="What's included"></textarea></div>
+      <div class="ff"><input class="fi" id="ms-svc3-tags" placeholder="Content types"></div>
+    </div>
+    <div class="pkg-card">
+      <div class="pkg-card-header"><span class="pkg-num">Package 4</span><span class="pkg-opt">optional</span></div>
+      <div class="ff"><input class="fi" id="ms-svc4-name" placeholder="Package name (e.g. Rush Delivery)"></div>
+      <div class="ff"><textarea class="fi" id="ms-svc4-desc" placeholder="What's included"></textarea></div>
+      <div class="ff"><input class="fi" id="ms-svc4-tags" placeholder="Content types"></div>
+    </div>
+
+    <button class="btn-next" onclick="goStep(5)">Next — Pricing →</button>
+    <button class="btn-back" onclick="goStep(3)">← Back</button>
+  </div>
+
+  <!-- ══ STEP 5: PRICING ══ -->
+  <div class="step-panel" id="step-5">
+    <h2 class="step-title">Your <em>pricing.</em></h2>
+    <p class="step-sub">Set your 3 tiers and mark your most requested option.</p>
+
+    <div class="tier-card" id="tier-card-1">
+      <div class="tier-header">
+        <input type="radio" name="popular-tier" class="tier-radio" value="1" id="pop-1" onchange="markPopular(1)">
+        <label for="pop-1" class="tier-label">Mark as Most Requested</label>
+        <span class="popular-badge" id="pop-badge-1" style="display:none;">Most Requested</span>
+      </div>
+      <div class="field-row">
+        <div class="ff"><input class="fi" id="ms-rate1-name" placeholder="Tier name (e.g. Starter)"></div>
+        <div class="ff"><input class="fi" id="ms-rate1-price" placeholder="Price (e.g. $150)"></div>
+      </div>
+      <div class="ff"><textarea class="fi" id="ms-rate1-desc" placeholder="What's included at this tier"></textarea></div>
+    </div>
+    <div class="tier-card" id="tier-card-2">
+      <div class="tier-header">
+        <input type="radio" name="popular-tier" class="tier-radio" value="2" id="pop-2" onchange="markPopular(2)" checked>
+        <label for="pop-2" class="tier-label">Mark as Most Requested</label>
+        <span class="popular-badge" id="pop-badge-2">Most Requested</span>
+      </div>
+      <div class="field-row">
+        <div class="ff"><input class="fi" id="ms-rate2-name" placeholder="Tier name (e.g. Growth)"></div>
+        <div class="ff"><input class="fi" id="ms-rate2-price" placeholder="Price (e.g. $450)"></div>
+      </div>
+      <div class="ff"><textarea class="fi" id="ms-rate2-desc" placeholder="What's included at this tier"></textarea></div>
+    </div>
+    <div class="tier-card" id="tier-card-3">
+      <div class="tier-header">
+        <input type="radio" name="popular-tier" class="tier-radio" value="3" id="pop-3" onchange="markPopular(3)">
+        <label for="pop-3" class="tier-label">Mark as Most Requested</label>
+        <span class="popular-badge" id="pop-badge-3" style="display:none;">Most Requested</span>
+      </div>
+      <div class="field-row">
+        <div class="ff"><input class="fi" id="ms-rate3-name" placeholder="Tier name (e.g. Campaign)"></div>
+        <div class="ff"><input class="fi" id="ms-rate3-price" placeholder="Price (e.g. $1,200+)"></div>
+      </div>
+      <div class="ff"><textarea class="fi" id="ms-rate3-desc" placeholder="What's included at this tier"></textarea></div>
+    </div>
+    <div class="ff"><label>Usage rights note</label><input class="fi" id="ms-service-area" placeholder="e.g. 30-day usage rights included. Extended licensing available."></div>
+
+    <button class="btn-next" onclick="goStep(6)">Next — Finishing Touches →</button>
+    <button class="btn-back" onclick="goStep(4)">← Back</button>
+  </div>
+
+  <!-- ══ STEP 6: FINISHING TOUCHES ══ -->
+  <div class="step-panel" id="step-6">
+    <h2 class="step-title"><em>Finishing</em> touches.</h2>
+    <p class="step-sub">Photos, features, and contact info.</p>
+
+    <div style="font-size:.78rem;font-weight:600;color:white;margin-bottom:.75rem;letter-spacing:.02em;">Photos <span style="font-size:.7rem;font-weight:400;color:var(--muted);">(optional but recommended)</span></div>
+    <div class="photo-upload-row">
+      <div class="photo-upload-box" id="hero-photo-box" onclick="document.getElementById('hero-photo-file').click()">
+        <span class="pu-icon">🤳</span>
+        <div class="pu-label">Hero / Profile Photo</div>
+        <div class="pu-sub">Tap to upload</div>
+      </div>
+      <div class="photo-upload-box" id="about-photo-box" onclick="document.getElementById('about-photo-file').click()">
+        <span class="pu-icon">📸</span>
+        <div class="pu-label">About Section Photo</div>
+        <div class="pu-sub">Tap to upload</div>
+      </div>
+    </div>
+    <input type="file" id="hero-photo-file" accept="image/*" style="display:none" onchange="handlePhoto('ugc-hero','hero-photo-box',this)">
+    <input type="file" id="about-photo-file" accept="image/*" style="display:none" onchange="handlePhoto('ugc-about','about-photo-box',this)">
+    <input type="hidden" id="ugc-hero">
+    <input type="hidden" id="ugc-about">
+
+    <div style="font-size:.78rem;font-weight:600;color:white;margin-bottom:.75rem;letter-spacing:.02em;margin-top:1.5rem;">Extra sections</div>
+    <div class="toggle-row" onclick="toggleFeat('feat-testimonials')">
+      <div class="toggle-info"><div class="toggle-title">Testimonials</div><div class="toggle-desc">Add 3 brand manager testimonials</div></div>
+      <div class="toggle-switch" id="tog-feat-testimonials"></div>
+    </div>
+    <div class="toggle-row" onclick="toggleFeat('feat-faq')">
+      <div class="toggle-info"><div class="toggle-title">FAQ Section</div><div class="toggle-desc">8 UGC-specific Q&amp;As</div></div>
+      <div class="toggle-switch" id="tog-feat-faq"></div>
+    </div>
+    <div class="toggle-row" onclick="toggleFeat('feat-calendly')">
+      <div class="toggle-info"><div class="toggle-title">Calendly Booking</div><div class="toggle-desc">Embed a discovery call widget</div></div>
+      <div class="toggle-switch" id="tog-feat-calendly"></div>
+    </div>
+    <div id="calendly-url-wrap" style="display:none;margin-top:.5rem;">
+      <div class="ff"><label>Calendly URL</label><input class="fi" id="ugc-calendly-url" placeholder="https://calendly.com/yourname"></div>
+    </div>
+
+    <div style="font-size:.78rem;font-weight:600;color:white;margin-bottom:.75rem;letter-spacing:.02em;margin-top:1.5rem;">Contact & links</div>
+    <div class="ff"><label>Email for inquiry form</label><input class="fi" id="ms-email" placeholder="you@email.com" type="email"></div>
+    <div class="field-row">
+      <div class="ff"><label>Instagram URL <span class="opt">(optional)</span></label><input class="fi" id="ms-instagram" placeholder="https://instagram.com/yourhandle"></div>
+      <div class="ff"><label>Phone / WhatsApp <span class="opt">(optional)</span></label><input class="fi" id="ms-phone" placeholder="e.g. (720) 555-0100"></div>
+    </div>
+
+    <button class="btn-generate" onclick="startGenerate()">✦ Generate My UGC Site →</button>
+    <button class="btn-back" onclick="goStep(5)">← Back</button>
+  </div>
+
+</div><!-- /bp-body -->
+
+<!-- GENERATING OVERLAY -->
+<div id="gen-overlay">
+  <div class="gen-logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></div>
+  <p class="gen-msg" id="gen-msg">Building your site…</p>
+  <div class="gen-bar-wrap"><div class="gen-bar" id="gen-bar"></div></div>
+</div>
+
+<!-- OUTPUT PANEL -->
+<div id="output-panel">
+  <div class="output-topbar">
+    <span class="output-title" id="output-title">Your UGC Creator Site</span>
+    <button class="out-btn out-btn-secondary" onclick="doRebuild()">↺ Rebuild</button>
+    <button class="out-btn out-btn-secondary" onclick="copyHTML()">Copy HTML</button>
+    <button class="out-btn out-btn-primary" onclick="downloadHTML()">Download →</button>
+  </div>
+  <div class="output-main">
+    <div class="preview-wrap">
+      <div class="device-frame">
+        <iframe id="preview-frame" scrolling="yes"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? (window.location.protocol + '//' + window.location.host)
+  : 'https://builtsy-api-production.up.railway.app';
+
+var _currentStep = 1;
+var _totalSteps = 6;
+var _generatedHTML = '';
+var _featStates = {};
+var _genInterval = null;
+var _genProgress = 0;
+
+var GEN_MSGS = [
+  'Crafting your hero section…',
+  'Building your portfolio grid…',
+  'Writing your rate card…',
+  'Adding your brand collab bar…',
+  'Polishing your packages…',
+  'Writing your collab form…',
+  'Adding the finishing touches…',
+  'Almost there — nearly done…'
+];
+
+// ── AUTH CHECK ──
+(async function() {
+  var isPreview = window.location.search.indexOf('preview=1') !== -1;
+  if (isPreview) return;
+  var user = await getUser();
+  var legacyAuth = sessionStorage.getItem('builtsy-auth');
+  if (!user && !legacyAuth) {
+    sessionStorage.setItem('builtsy-redirect', 'blueprint-ugc.html');
+    window.location.href = 'login.html';
+  }
+})();
+
+// ── STEP NAV ──
+function goStep(n) {
+  document.getElementById('step-' + _currentStep).classList.remove('active');
+  document.getElementById('dot-' + _currentStep).classList.remove('active');
+  if (n > _currentStep) document.getElementById('dot-' + _currentStep).classList.add('done');
+  else document.getElementById('dot-' + _currentStep).classList.remove('done');
+  if (_currentStep < _totalSteps) {
+    var ln = document.getElementById('line-' + _currentStep);
+    if (ln) ln.classList.toggle('done', n > _currentStep);
+  }
+  _currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('dot-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── POPULAR TIER ──
+function markPopular(n) {
+  for (var i = 1; i <= 3; i++) {
+    var badge = document.getElementById('pop-badge-' + i);
+    var card = document.getElementById('tier-card-' + i);
+    if (i === n) { badge.style.display = ''; card.classList.add('popular'); }
+    else { badge.style.display = 'none'; card.classList.remove('popular'); }
+  }
+}
+markPopular(2);
+
+// ── VIDEO THUMBNAIL ──
+function handleVidThumb(n, input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result;
+    document.getElementById('ugc-vid' + n + '-thumb').value = b64;
+    var area = document.getElementById('vid-upload-' + n);
+    area.innerHTML = '<img src="' + b64 + '" alt="thumbnail">';
+    area.classList.add('has-thumb');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ── PHOTO UPLOAD ──
+function handlePhoto(hiddenId, boxId, input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result;
+    document.getElementById(hiddenId).value = b64;
+    var box = document.getElementById(boxId);
+    box.classList.add('has-img');
+    box.innerHTML = '<img src="' + b64 + '" alt="photo">';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ── FEATURE TOGGLES ──
+function toggleFeat(id) {
+  _featStates[id] = !_featStates[id];
+  var tog = document.getElementById('tog-' + id);
+  if (_featStates[id]) tog.classList.add('on'); else tog.classList.remove('on');
+  if (id === 'feat-calendly') {
+    document.getElementById('calendly-url-wrap').style.display = _featStates[id] ? 'block' : 'none';
+  }
+}
+
+// ── COLLECT ALL DATA ──
+function v(id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
+
+function buildUGCPrompt() {
+  var popular = document.querySelector('input[name="popular-tier"]:checked');
+  var popularTier = popular ? popular.value : '2';
+
+  var features = [];
+  if (_featStates['feat-testimonials']) features.push('- Testimonials section (3 brand manager quotes)');
+  if (_featStates['feat-faq']) features.push('- FAQ section (8 UGC-specific Q&As)');
+  if (_featStates['feat-calendly']) features.push('- Calendly booking section, URL: ' + v('ugc-calendly-url'));
+
+  var tierDesc = function(n) {
+    var desc = v('ms-rate' + n + '-desc');
+    if (String(n) === popularTier) desc += ' [MOST REQUESTED]';
+    return v('ms-rate' + n + '-name') + ' — ' + v('ms-rate' + n + '-price') + ' — ' + desc;
+  };
+
+  return 'You are building a complete, production-ready UGC creator website as a single HTML file.\n\n' +
+    'CREATOR INFO:\n' +
+    'Name: ' + v('ugc-name') + '\n' +
+    'Handle: ' + v('ugc-handle') + '\n' +
+    'Niche: ' + v('ugc-niche') + '\n' +
+    'Content Style: ' + v('ugc-style') + '\n' +
+    'Tagline: ' + v('ms-tagline') + '\n' +
+    'Location: ' + v('ms-location') + '\n' +
+    'Primary Platform: ' + v('ms-platform') + '\n' +
+    'Years Creating: ' + v('ms-years-exp') + '\n' +
+    'Brands Worked With: ' + v('ms-clients-served') + '\n' +
+    'Hero Headline: ' + v('ms-hero-headline') + '\n' +
+    'Hero Subheading: ' + v('ms-hero-sub') + '\n' +
+    'Bio: ' + v('ms-bio') + '\n' +
+    'Content Style Pillars: ' + v('ms-fun-facts') + '\n' +
+    'Platforms: ' + v('ms-credentials') + '\n' +
+    'Featured Hero Video URL: ' + v('ugc-hero-video') + '\n' +
+    'Brand Collabs: ' + v('ugc-brands') + '\n' +
+    'Usage Rights: ' + v('ms-service-area') + '\n\n' +
+    'CONTENT PACKAGES:\n' +
+    'Package 1: ' + v('ms-svc1-name') + ' — ' + v('ms-svc1-desc') + ' — Tags: ' + v('ms-svc1-tags') + '\n' +
+    'Package 2: ' + v('ms-svc2-name') + ' — ' + v('ms-svc2-desc') + ' — Tags: ' + v('ms-svc2-tags') + '\n' +
+    'Package 3: ' + v('ms-svc3-name') + ' — ' + v('ms-svc3-desc') + ' — Tags: ' + v('ms-svc3-tags') + '\n' +
+    'Package 4: ' + v('ms-svc4-name') + ' — ' + v('ms-svc4-desc') + ' — Tags: ' + v('ms-svc4-tags') + '\n\n' +
+    'PRICING:\n' +
+    'Tier 1: ' + tierDesc(1) + '\n' +
+    'Tier 2: ' + tierDesc(2) + '\n' +
+    'Tier 3: ' + tierDesc(3) + '\n\n' +
+    'PORTFOLIO:\n' +
+    'Video 1: URL=' + v('ugc-vid1-url') + ', Brand=' + v('ugc-vid1-brand') + '\n' +
+    'Video 2: URL=' + v('ugc-vid2-url') + ', Brand=' + v('ugc-vid2-brand') + '\n' +
+    'Video 3: URL=' + v('ugc-vid3-url') + ', Brand=' + v('ugc-vid3-brand') + '\n' +
+    'Video 4: URL=' + v('ugc-vid4-url') + ', Brand=' + v('ugc-vid4-brand') + '\n\n' +
+    'CONTACT:\n' +
+    'Email: ' + v('ms-email') + '\n' +
+    'Instagram: ' + v('ms-instagram') + '\n' +
+    'Phone: ' + v('ms-phone') + '\n\n' +
+    'FEATURES ENABLED:\n' + (features.length ? features.join('\n') : 'None') + '\n\n' +
+    'BUILD REQUIREMENTS:\n' +
+    'Build a complete UGC creator website with ALL of the following sections in this order:\n\n' +
+    '1. STICKY NAV — creator name/logo left, nav links right (Work, Packages, About, Collab), mobile hamburger\n' +
+    '2. HERO — [if hero video URL: autoplay muted looped embed] [if no video: hero photo or gradient] + headline + subheading + two CTAs ("View My Work" scroll-links to portfolio, "Let\'s Collab" scroll-links to form) + stat strip: years creating + brands worked with\n' +
+    '3. BRAND COLLAB BAR — scrolling CSS marquee with brand/niche names\n' +
+    '4. PORTFOLIO GRID — up to 4 cards: styled thumbnail (use brand color gradient + initial if no image), brand name, platform icon, "Watch →" button linking to video URL\n' +
+    '5. CONTENT STYLE — "My Content Style" section, 3 pillars from style pillars\n' +
+    '6. ABOUT — bio text + platform badges + content style chips\n' +
+    '7. PACKAGES — 4 content package cards\n' +
+    '8. PRICING — 3 tier cards, visually highlight the Most Requested tier\n' +
+    '9. PROCESS — 4 steps: Brief → Content → Revisions → Deliver\n' +
+    (features.includes('Testimonials') ? '10. TESTIMONIALS — 3 placeholder testimonials from brand managers\n' : '') +
+    (features.includes('FAQ') ? '11. FAQ — accordion with 8 UGC-specific questions\n' : '') +
+    (features.includes('Calendly') ? '12. BOOK A CALL — Calendly embed section\n' : '') +
+    '13. COLLAB INQUIRY FORM — fields: Brand Name, Product, Content Type (dropdown: Product Demo/Lifestyle/Unboxing/Testimonial/Other), Budget (dropdown: Under $500/$500–$1500/$1500–$5000/$5000+), Timeline, Product URL, Notes — Netlify Forms with honeypot field (name="ugc-collab", data-netlify="true")\n' +
+    '14. FOOTER — handle, platform links, copyright\n\n' +
+    'TECHNICAL:\n' +
+    '- Single complete HTML file, all CSS and JS inline\n' +
+    '- Mobile-first responsive\n' +
+    '- Netlify Forms on collab inquiry\n' +
+    '- Smooth scroll on nav links\n' +
+    '- JSON-LD schema (Person + Service)\n' +
+    '- WCAG 2.1 AA color contrast\n\n' +
+    'Return ONLY the complete HTML. No explanation, no markdown, no code fences.';
+}
+
+// ── GENERATE ──
+function startGenerate() {
+  var overlay = document.getElementById('gen-overlay');
+  overlay.classList.add('active');
+  var bar = document.getElementById('gen-bar');
+  var msg = document.getElementById('gen-msg');
+  var msgIdx = 0;
+  bar.style.width = '0%';
+  msg.textContent = GEN_MSGS[0];
+  _genProgress = 0;
+
+  _genInterval = setInterval(function() {
+    _genProgress = Math.min(_genProgress + 0.7, 90);
+    bar.style.width = _genProgress + '%';
+    msgIdx = (msgIdx + 1) % GEN_MSGS.length;
+    msg.textContent = GEN_MSGS[msgIdx];
+  }, 4000);
+
+  var prompt = buildUGCPrompt();
+  _generatedHTML = '';
+
+  fetch(RAILWAY_URL + '/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt, stream: true })
+  }).then(function(response) {
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) { finishGenerate(); return; }
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.startsWith(': keep-alive')) continue;
+          if (line.startsWith('data: ')) {
+            var raw = line.slice(6);
+            if (raw === '[DONE]') { finishGenerate(); return; }
+            try {
+              var parsed = JSON.parse(raw);
+              if (parsed.html) { _generatedHTML = builtsyInjectFooter(parsed.html, v('ugc-name') || 'UGC Creator'); finishGenerate(); return; }
+              if (parsed.chunk) _generatedHTML += parsed.chunk;
+              if (parsed.error) { showError(parsed.error); return; }
+            } catch(e) { _generatedHTML += raw; }
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  }).catch(function(err) {
+    showError('Connection error: ' + err.message);
+  });
+}
+
+function finishGenerate() {
+  clearInterval(_genInterval);
+  document.getElementById('gen-bar').style.width = '100%';
+  setTimeout(function() {
+    document.getElementById('gen-overlay').classList.remove('active');
+    if (_generatedHTML && _generatedHTML.length > 200) {
+      showOutput(_generatedHTML);
+    } else {
+      showError('Generation returned empty content. Please try again.');
+    }
+  }, 400);
+}
+
+function showError(msg) {
+  clearInterval(_genInterval);
+  document.getElementById('gen-overlay').classList.remove('active');
+  alert('Generation error: ' + msg);
+}
+
+// ── BUILTSY FOOTER ──
+function builtsyInjectFooter(html, name) {
+  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
+    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
+    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
+    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
+    + '</section>';
+  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
+}
+
+function showOutput(html) {
+  html = builtsyInjectFooter(html, v('ugc-name') || 'UGC Creator');
+  _generatedHTML = html;
+  var name = v('ugc-name') || 'UGC Creator';
+  document.getElementById('output-title').textContent = name + '\'s UGC Site';
+  var panel = document.getElementById('output-panel');
+  panel.classList.add('active');
+  var frame = document.getElementById('preview-frame');
+  var blob = new Blob([html], { type: 'text/html' });
+  var blobUrl = URL.createObjectURL(blob);
+  if (frame._blobUrl) URL.revokeObjectURL(frame._blobUrl);
+  frame._blobUrl = blobUrl;
+  frame.src = blobUrl;
+  // Save to Supabase
+  try {
+    saveBlueprint('ugc', { title: v('ugc-name') || 'UGC Creator Site', niche: v('ugc-niche') });
+  } catch(e) {}
+}
+
+function doRebuild() {
+  document.getElementById('output-panel').classList.remove('active');
+  startGenerate();
+}
+
+function downloadHTML() {
+  var name = (v('ugc-name') || 'ugc-creator').toLowerCase().replace(/\s+/g, '-');
+  var blob = new Blob([_generatedHTML], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name + '-site.html';
+  a.click();
+}
+
+function copyHTML() {
+  navigator.clipboard.writeText(_generatedHTML).then(function() {
+    var btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy HTML'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
