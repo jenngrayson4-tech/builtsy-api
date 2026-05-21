@@ -2763,8 +2763,21 @@ function msToggleSMS() {
   if(_ctSMSOn) msFetchSMS();
 }
 function msOpenFAQTool() {
-  var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';
-  window.open('faq-tool.html'+(bpId?'?blueprint='+encodeURIComponent(bpId):''),'_blank');
+  var bpId = window._blueprintId || localStorage.getItem('builtsy_bp_id') || '';
+  // Gather blueprint fields for pre-fill
+  var svcNames = [];
+  ['ms-svc1-name','ms-svc2-name','ms-svc3-name','ms-svc4-name'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.value.trim()) svcNames.push(el.value.trim());
+  });
+  var prefill = {
+    name:     (document.getElementById('ms-biz-name')    || {}).value || '',
+    niche:    (document.getElementById('ms-description') || {}).value || '',
+    audience: (document.getElementById('ms-tagline')     || {}).value || '',
+    services: svcNames.slice(0,3).join(', ')
+  };
+  localStorage.setItem('builtsy_faq_prefill', JSON.stringify(prefill));
+  window.open('faq-tool.html' + (bpId ? '?blueprint=' + encodeURIComponent(bpId) : ''), '_blank');
 }
 function msOpenSMSTool() {
   var bpId=window._blueprintId||localStorage.getItem('builtsy_bp_id')||'';

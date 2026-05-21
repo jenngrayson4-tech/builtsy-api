@@ -5,7 +5,7 @@
 <title>FAQ Generator | Builtsy</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -28,8 +28,9 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 /* TOPNAV */
 .topnav{height:52px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
-.logo-text{font-family:'DM Sans',sans-serif;color:var(--text);font-size:1.15rem;font-weight:700;text-decoration:none;letter-spacing:-0.02em;}
-.logo-text .logo-sy{color:var(--pink);}
+.logo-text{font-family:'Playfair Display',serif;color:white;font-size:1.15rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:baseline;gap:0;}
+.logo-text .logo-sy{color:var(--pink);font-style:italic;}
+.logo-text .logo-dot{color:#4361EE;font-size:1.6rem;font-weight:900;margin-left:2px;line-height:1;}
 .tn-center{position:absolute;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
 .tn-right{display:flex;align-items:center;gap:1rem;}
 .save-indicator{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.08em;color:transparent;transition:all .3s;}
@@ -121,9 +122,9 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
 
 <nav class="topnav">
   <div class="logo-wrap">
-    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span></a>
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
   </div>
-  <div class="tn-center">FAQ Generator</div>
+  <div class="tn-center">FAQ Builder</div>
   <div class="tn-right">
     <span class="save-indicator" id="save-indicator"></span>
   </div>
@@ -132,9 +133,9 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
 <div class="page-wrap">
 
   <div class="page-header">
-    <div class="page-eyebrow">Builtsy Tool</div>
-    <h1 class="page-title">FAQ Generator</h1>
-    <p class="page-sub">Tell Claude about your business and get a polished FAQ section — ready to drop into your site.</p>
+    <div class="page-eyebrow">✦ Builtsy Tool</div>
+    <h1 class="page-title">FAQ Builder</h1>
+    <p class="page-sub">Confirm your details and Builtsy writes 8 polished FAQs — ready to drop straight into your site.</p>
   </div>
 
   <div id="no-bp-warn" class="warn-banner hidden">
@@ -143,7 +144,7 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
 
   <!-- STEP 1: Context Form -->
   <div id="step-form" class="card">
-    <div class="step-label"><span class="step-dot">1</span>Tell Claude about your business</div>
+    <div class="step-label"><span class="step-dot">1</span>Confirm your business details</div>
 
     <div class="form-group">
       <label class="form-label" for="inp-name">Business name</label>
@@ -178,7 +179,7 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
 
     <hr class="divider">
 
-    <button class="btn-primary" id="generate-btn" onclick="generateFaqs()">Generate My FAQs</button>
+    <button class="btn-primary" id="generate-btn" onclick="generateFaqs()">✦ Builtsy My FAQs</button>
     <div id="gen-error" style="margin-top:0.65rem;font-size:0.8rem;color:var(--pink);text-align:center;display:none;"></div>
   </div>
 
@@ -203,8 +204,8 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
       <hr class="divider">
 
       <div class="action-row">
-        <button class="btn-primary" id="save-btn" onclick="saveFaqs()">Save FAQs</button>
-        <button class="btn-secondary" onclick="goBack()">Regenerate</button>
+        <button class="btn-primary" id="save-btn" onclick="saveFaqs()">Save to Blueprint</button>
+        <button class="btn-secondary" onclick="goBack()">Start Over</button>
       </div>
 
       <div class="success-msg" id="success-msg">
@@ -238,6 +239,17 @@ var _faqs = [];
   if (!_bpId) {
     document.getElementById('no-bp-warn').classList.remove('hidden');
   }
+  // Pre-fill from blueprint data written by msOpenFAQTool()
+  try {
+    var prefill = localStorage.getItem('builtsy_faq_prefill');
+    if (prefill) {
+      var d = JSON.parse(prefill);
+      if (d.name)     document.getElementById('inp-name').value     = d.name;
+      if (d.niche)    document.getElementById('inp-niche').value    = d.niche;
+      if (d.audience) document.getElementById('inp-audience').value = d.audience;
+      if (d.services) document.getElementById('inp-services').value = d.services;
+    }
+  } catch(e) {}
 })();
 
 // TONE SELECTOR
