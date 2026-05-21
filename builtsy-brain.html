@@ -61,10 +61,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .bl-scrollable::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
 
 /* Context banner */
-.ctx-banner{background:rgba(67,97,238,0.07);border:1px solid rgba(67,97,238,0.18);border-radius:10px;padding:0.7rem 0.875rem;margin-bottom:1.25rem;}
-.ctx-label{font-family:'DM Mono',monospace;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
-.ctx-text{font-size:0.72rem;color:rgba(255,255,255,0.65);line-height:1.5;}
-.ctx-text strong{color:rgba(255,255,255,0.9);font-weight:500;}
+.ctx-banner{border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);}
+.ctx-banner.ctx-no-bp .ctx-label{color:var(--muted);}
+.ctx-banner.ctx-has-bp{border-color:rgba(200,224,0,0.35);background:rgba(200,224,0,0.05);box-shadow:0 0 0 1px rgba(200,224,0,0.1),0 4px 20px rgba(200,224,0,0.07);}
+.ctx-banner-top{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.55rem;}
+.ctx-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.ctx-banner.ctx-no-bp .ctx-icon{background:rgba(255,255,255,0.06);border:1px solid var(--border);}
+.ctx-banner.ctx-has-bp .ctx-icon{background:rgba(200,224,0,0.15);border:1px solid rgba(200,224,0,0.3);color:var(--lime);}
+.ctx-label{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;}
+.ctx-banner.ctx-no-bp .ctx-label{color:var(--muted);}
+.ctx-banner.ctx-has-bp .ctx-label{color:var(--lime);}
+.ctx-bp-pill{font-family:'DM Mono',monospace;font-size:0.58rem;font-weight:700;letter-spacing:0.06em;background:rgba(200,224,0,0.18);color:var(--lime);border:1px solid rgba(200,224,0,0.35);border-radius:100px;padding:2px 9px;margin-left:auto;white-space:nowrap;}
+.ctx-text{font-size:0.78rem;color:rgba(255,255,255,0.75);line-height:1.55;}
+.ctx-text strong{color:white;font-weight:600;}
+.ctx-banner.ctx-no-bp .ctx-text{font-size:0.72rem;color:rgba(255,255,255,0.45);}
 
 /* Category */
 .prompt-cat{margin-bottom:1.1rem;}
@@ -153,12 +163,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .bc-hint-left{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.04em;}
 .bc-hint-right{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;}
 
-/* Copy button on AI messages */
-.msg-row:not(.msg-user):hover .msg-copy-btn{opacity:1;}
-.msg-copy-btn{opacity:0;transition:opacity 0.15s;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:0.62rem;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:0.04em;margin-top:4px;display:inline-block;}
+/* Copy button + return CTA on AI messages */
+.msg-outer{display:flex;flex-direction:column;}
+.msg-actions{display:flex;align-items:center;gap:0.5rem;margin-top:6px;opacity:0;transition:opacity 0.15s;}
+.msg-row:not(.msg-user):hover .msg-actions{opacity:1;}
+.msg-copy-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:0.62rem;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:0.04em;transition:all 0.12s;}
 .msg-copy-btn:hover{background:rgba(255,255,255,0.1);color:white;}
 .msg-copy-btn.copied{color:var(--lime);border-color:rgba(200,224,0,0.3);}
-.msg-outer{display:flex;flex-direction:column;}
+.msg-return-btn{background:var(--lime);color:var(--navy);border:none;border-radius:6px;padding:5px 13px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}
+.msg-return-btn:hover{opacity:0.88;transform:translateY(-1px);}
 
 /* Error banner */
 .bc-error{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:10px;padding:0.65rem 0.875rem;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.5;}
@@ -262,8 +275,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
     </div>
     <div class="bl-scrollable">
 
-      <div class="ctx-banner" id="ctx-banner">
-        <div class="ctx-label">Your context</div>
+      <div class="ctx-banner ctx-no-bp" id="ctx-banner">
+        <div class="ctx-banner-top">
+          <div class="ctx-icon" id="ctx-icon">✦</div>
+          <span class="ctx-label" id="ctx-label">Your context</span>
+          <span class="ctx-bp-pill" id="ctx-bp-pill" style="display:none;"></span>
+        </div>
         <div class="ctx-text" id="ctx-text">Loading your business profile…</div>
       </div>
 
@@ -413,6 +430,13 @@ var CHAT_API = (window.location.port === '3000')
   ? '/chat'
   : '/.netlify/functions/chat';
 
+var BP_URLS = {
+  'master':       'blueprint-master.html',
+  'linkbio':      'blueprint-linkbio.html',
+  'event-invite': 'blueprint-event-invite.html',
+  'ugc':          'blueprint-ugc.html'
+};
+
 var chatHistory = [];
 var isLoading   = false;
 var bizCtx      = null;
@@ -447,22 +471,33 @@ async function loadContext() {
   var textEl   = document.getElementById('ctx-text');
   var labelEl  = document.querySelector('.ctx-label');
 
-  // 1 — Check sessionStorage for live blueprint context (set when clicking Brain AI from a blueprint)
+  var pillEl  = document.getElementById('ctx-bp-pill');
+
+  function setBpBanner(bpCtx) {
+    banner.classList.remove('ctx-no-bp');
+    banner.classList.add('ctx-has-bp');
+    labelEl.textContent = 'From your blueprint';
+    pillEl.textContent  = bpCtx.bpLabel || bpCtx.bp || 'Blueprint';
+    pillEl.style.display = '';
+    var lines = [];
+    if (bpCtx.name) lines.push('<strong>' + esc(bpCtx.name) + '</strong>');
+    if (bpCtx.niche || bpCtx.industry) lines.push(esc(bpCtx.niche || bpCtx.industry));
+    if (bpCtx.handle) lines.push(esc(bpCtx.handle));
+    if (bpCtx.location) lines.push(esc(bpCtx.location));
+    if (bpCtx.description) lines.push(esc(bpCtx.description.slice(0, 80)) + (bpCtx.description.length > 80 ? '…' : ''));
+    textEl.innerHTML = lines.length
+      ? lines.join(' · ') + '<br><span style="font-size:0.68rem;color:rgba(200,224,0,0.6);margin-top:4px;display:inline-block;">Brain AI has your context ✓</span>'
+      : 'Brain AI has your blueprint context ✓';
+  }
+
+  // 1 — Check sessionStorage for live blueprint context
   try {
     var stored = sessionStorage.getItem('bb-ctx');
     if (stored) {
       var bpCtx = JSON.parse(stored);
-      sessionStorage.removeItem('bb-ctx'); // consume it
+      sessionStorage.removeItem('bb-ctx');
       bizCtx = bpCtx;
-      var html = 'Working on <strong>' + esc(bpCtx.bpLabel || bpCtx.bp || 'blueprint') + '</strong>';
-      if (bpCtx.name) html += ' for <strong>' + esc(bpCtx.name) + '</strong>';
-      if (bpCtx.details) html += ' — ' + esc(bpCtx.details);
-      html += '. I have your current info.';
-      textEl.innerHTML = html;
-      banner.style.borderColor = 'rgba(200,224,0,0.25)';
-      banner.style.background  = 'rgba(200,224,0,0.05)';
-      labelEl.style.color = 'rgba(200,224,0,0.7)';
-      labelEl.textContent = 'From your blueprint';
+      setBpBanner(bpCtx);
       return;
     }
   } catch(e) {}
@@ -471,7 +506,8 @@ async function loadContext() {
   try {
     var saves = await loadSaves();
     if (!saves || saves.length === 0) {
-      textEl.innerHTML = 'No blueprints saved yet. Build one and I\'ll automatically tailor my answers to your business.';
+      banner.classList.add('ctx-no-bp');
+      textEl.innerHTML = 'No blueprints saved yet — answers will be general until you build one.';
       return;
     }
     var name = '', industry = '', location = '';
@@ -486,18 +522,13 @@ async function loadContext() {
     if (!name && saves[0].data && saves[0].data.title) name = saves[0].data.title;
     if (name) {
       bizCtx = { name: name, industry: industry, location: location };
-      var html = 'I know your business — <strong>' + esc(name) + '</strong>';
-      if (industry) html += ', <strong>' + esc(industry) + '</strong>';
-      if (location) html += ' in ' + esc(location);
-      html += '. Every answer is tailored to you.';
-      textEl.innerHTML = html;
-      banner.style.borderColor = 'rgba(200,224,0,0.25)';
-      banner.style.background  = 'rgba(200,224,0,0.05)';
-      labelEl.style.color = 'rgba(200,224,0,0.7)';
+      setBpBanner({ bpLabel: 'Saved blueprint', name: name, industry: industry, location: location });
     } else {
-      textEl.innerHTML = 'Build a blueprint and I\'ll know your business — answers get way more specific.';
+      banner.classList.add('ctx-no-bp');
+      textEl.innerHTML = 'Open Brain AI from a blueprint to give me your full context.';
     }
   } catch(e) {
+    banner.classList.add('ctx-no-bp');
     textEl.innerHTML = 'Tell me about your business in the chat for personalized answers.';
   }
 }
@@ -620,13 +651,30 @@ function appendMsg(role, text) {
   if (role === 'assistant') {
     var outer = document.createElement('div');
     outer.className = 'msg-outer';
+
+    var actions = document.createElement('div');
+    actions.className = 'msg-actions';
+
     var copyBtn = document.createElement('button');
     copyBtn.className = 'msg-copy-btn';
     copyBtn.textContent = 'copy';
     copyBtn.setAttribute('data-text', text);
     copyBtn.onclick = function() { copyMsg(this); };
+    actions.appendChild(copyBtn);
+
+    // "Copy & return to [BP]" — only when a blueprint context is active
+    if (bizCtx && bizCtx.bp && BP_URLS[bizCtx.bp]) {
+      var retBtn = document.createElement('button');
+      retBtn.className = 'msg-return-btn';
+      retBtn.innerHTML = 'Copy &amp; return to ' + esc(bizCtx.bpLabel || bizCtx.bp) + ' →';
+      retBtn.setAttribute('data-text', text);
+      retBtn.setAttribute('data-url', BP_URLS[bizCtx.bp]);
+      retBtn.onclick = function() { copyAndReturn(this); };
+      actions.appendChild(retBtn);
+    }
+
     outer.appendChild(bubble);
-    outer.appendChild(copyBtn);
+    outer.appendChild(actions);
     row.appendChild(av);
     row.appendChild(outer);
   } else {
@@ -650,6 +698,18 @@ function copyMsg(btn) {
   }).catch(function() {
     btn.textContent = 'error';
     setTimeout(function() { btn.textContent = 'copy'; }, 1500);
+  });
+}
+
+function copyAndReturn(btn) {
+  var text = btn.getAttribute('data-text');
+  var url  = btn.getAttribute('data-url');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '✓ Copied! Returning…';
+    setTimeout(function() { window.location.href = url; }, 700);
+  }).catch(function() {
+    // clipboard failed — navigate anyway, user can copy manually
+    window.location.href = url;
   });
 }
 
