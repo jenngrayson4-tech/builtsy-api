@@ -154,6 +154,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.5;}
 <nav class="bp-nav">
   <a href="dashboard.html" class="bp-logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
   <span class="bp-nav-tag">UGC Creator Blueprint</span>
+  <button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button>
   <a href="dashboard.html" class="bp-back">← Dashboard</a>
 </nav>
 
@@ -750,6 +751,21 @@ function copyHTML() {
     btn.textContent = 'Copied!';
     setTimeout(function() { btn.textContent = 'Copy HTML'; }, 2000);
   });
+}
+</script>
+<style>.btn-brain-ai{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.3);color:#8ba2f0;border-radius:100px;padding:5px 13px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}.btn-brain-ai:hover{background:rgba(67,97,238,0.22);color:white;border-color:rgba(67,97,238,0.5);}</style>
+<script>
+function openBrainAI() {
+  var ctx = {
+    bp: 'ugc',
+    bpLabel: 'UGC Creator',
+    name:    (document.getElementById('ugc-name')||{}).value    || '',
+    handle:  (document.getElementById('ugc-handle')||{}).value  || '',
+    niche:   (document.getElementById('ugc-niche')||{}).value   || '',
+    style:   (document.getElementById('ugc-style')||{}).value   || ''
+  };
+  sessionStorage.setItem('bb-ctx', JSON.stringify(ctx));
+  window.location.href = 'builtsy-brain.html';
 }
 </script>
 </body>

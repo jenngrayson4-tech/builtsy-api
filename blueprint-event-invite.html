@@ -186,6 +186,7 @@
     <span class="tn-tag">Builtsy Blueprint</span>
   </div>
   <div class="tn-right">
+    <button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button>
     <span class="tn-save">Auto-saved</span>
     <a href="dashboard.html" class="tn-back">← Dashboard</a>
   </div>
@@ -2439,6 +2440,18 @@ function selectFontMode(mode) {
 }
 
 
+</script>
+<style>.btn-brain-ai{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.3);color:#8ba2f0;border-radius:100px;padding:5px 13px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}.btn-brain-ai:hover{background:rgba(67,97,238,0.22);color:white;border-color:rgba(67,97,238,0.5);}</style>
+<script>
+function openBrainAI() {
+  var ctx = {
+    bp: 'event-invite',
+    bpLabel: 'Event Invite',
+    name: (document.getElementById('honoreeNames')||{}).value || ''
+  };
+  sessionStorage.setItem('bb-ctx', JSON.stringify(ctx));
+  window.location.href = 'builtsy-brain.html';
+}
 </script>
 </body>
 </html>

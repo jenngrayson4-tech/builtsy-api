@@ -153,6 +153,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .bc-hint-left{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.04em;}
 .bc-hint-right{font-size:0.6rem;color:var(--muted);font-family:'DM Mono',monospace;}
 
+/* Copy button on AI messages */
+.msg-row:not(.msg-user):hover .msg-copy-btn{opacity:1;}
+.msg-copy-btn{opacity:0;transition:opacity 0.15s;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:0.62rem;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:0.04em;margin-top:4px;display:inline-block;}
+.msg-copy-btn:hover{background:rgba(255,255,255,0.1);color:white;}
+.msg-copy-btn.copied{color:var(--lime);border-color:rgba(200,224,0,0.3);}
+.msg-outer{display:flex;flex-direction:column;}
+
 /* Error banner */
 .bc-error{background:rgba(238,112,188,0.08);border:1px solid rgba(238,112,188,0.2);border-radius:10px;padding:0.65rem 0.875rem;font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.5;}
 .bc-error strong{color:var(--pink);}
@@ -436,15 +443,37 @@ async function doLogout() {
 
 // ── CONTEXT ───────────────────────────────────────────────────────────────────
 async function loadContext() {
-  var banner = document.getElementById('ctx-banner');
-  var text   = document.getElementById('ctx-text');
+  var banner   = document.getElementById('ctx-banner');
+  var textEl   = document.getElementById('ctx-text');
+  var labelEl  = document.querySelector('.ctx-label');
+
+  // 1 — Check sessionStorage for live blueprint context (set when clicking Brain AI from a blueprint)
+  try {
+    var stored = sessionStorage.getItem('bb-ctx');
+    if (stored) {
+      var bpCtx = JSON.parse(stored);
+      sessionStorage.removeItem('bb-ctx'); // consume it
+      bizCtx = bpCtx;
+      var html = 'Working on <strong>' + esc(bpCtx.bpLabel || bpCtx.bp || 'blueprint') + '</strong>';
+      if (bpCtx.name) html += ' for <strong>' + esc(bpCtx.name) + '</strong>';
+      if (bpCtx.details) html += ' — ' + esc(bpCtx.details);
+      html += '. I have your current info.';
+      textEl.innerHTML = html;
+      banner.style.borderColor = 'rgba(200,224,0,0.25)';
+      banner.style.background  = 'rgba(200,224,0,0.05)';
+      labelEl.style.color = 'rgba(200,224,0,0.7)';
+      labelEl.textContent = 'From your blueprint';
+      return;
+    }
+  } catch(e) {}
+
+  // 2 — Fall back to Supabase saves
   try {
     var saves = await loadSaves();
     if (!saves || saves.length === 0) {
-      text.innerHTML = 'No blueprints saved yet. Build one and I\'ll automatically tailor my answers to your business.';
+      textEl.innerHTML = 'No blueprints saved yet. Build one and I\'ll automatically tailor my answers to your business.';
       return;
     }
-    // Try to extract business info from saves
     var name = '', industry = '', location = '';
     for (var i = 0; i < saves.length; i++) {
       var d = saves[i].data || {};
@@ -454,35 +483,40 @@ async function loadContext() {
       location = location || f['f-location'] || f['f-city'] || '';
       if (name) break;
     }
-    if (!name && saves[0].data && saves[0].data.title) {
-      name = saves[0].data.title;
-    }
+    if (!name && saves[0].data && saves[0].data.title) name = saves[0].data.title;
     if (name) {
       bizCtx = { name: name, industry: industry, location: location };
       var html = 'I know your business — <strong>' + esc(name) + '</strong>';
       if (industry) html += ', <strong>' + esc(industry) + '</strong>';
       if (location) html += ' in ' + esc(location);
       html += '. Every answer is tailored to you.';
-      text.innerHTML = html;
+      textEl.innerHTML = html;
       banner.style.borderColor = 'rgba(200,224,0,0.25)';
       banner.style.background  = 'rgba(200,224,0,0.05)';
-      document.querySelector('.ctx-label').style.color = 'rgba(200,224,0,0.7)';
+      labelEl.style.color = 'rgba(200,224,0,0.7)';
     } else {
-      text.innerHTML = 'Build a blueprint and I\'ll know your business — answers get way more specific.';
+      textEl.innerHTML = 'Build a blueprint and I\'ll know your business — answers get way more specific.';
     }
   } catch(e) {
-    text.innerHTML = 'Tell me about your business in the chat for personalized answers.';
+    textEl.innerHTML = 'Tell me about your business in the chat for personalized answers.';
   }
 }
 
 // ── SYSTEM PROMPT ─────────────────────────────────────────────────────────────
 function buildSystemPrompt() {
   var base = 'You are Builtsy Brain AI, a creative and business expert assistant built into Builtsy — a platform that helps small business owners, creators, and entrepreneurs build beautiful websites and grow their brand online.\n\nYou help with anything: writing copy, content creation, marketing, strategy, social media, business growth, and more. You\'re warm, encouraging, sharp, and direct. Give real, actionable, specific answers — not generic advice.\n\nFormat responses cleanly. Use **bold** for key terms. Use bullet points or numbered lists when listing things. Use ### headings for sections when the response is long. Keep it conversational but genuinely useful.';
-  if (bizCtx && bizCtx.name) {
-    base += '\n\nUser\'s business context:\n- Business / creator name: ' + bizCtx.name;
-    if (bizCtx.industry) base += '\n- Industry / type: ' + bizCtx.industry;
-    if (bizCtx.location) base += '\n- Location: ' + bizCtx.location;
-    base += '\n\nAlways tailor your responses specifically to their business, industry, and situation. Reference their name and context naturally.';
+  if (bizCtx) {
+    var ctx = '\n\nUser\'s current context:';
+    if (bizCtx.bpLabel) ctx += '\n- Active blueprint: ' + bizCtx.bpLabel;
+    if (bizCtx.name)    ctx += '\n- Name: ' + bizCtx.name;
+    if (bizCtx.industry || bizCtx.niche) ctx += '\n- Industry / niche: ' + (bizCtx.industry || bizCtx.niche || '');
+    if (bizCtx.location) ctx += '\n- Location: ' + bizCtx.location;
+    if (bizCtx.handle)   ctx += '\n- Handle: ' + bizCtx.handle;
+    if (bizCtx.style)    ctx += '\n- Content style: ' + bizCtx.style;
+    if (bizCtx.description) ctx += '\n- About: ' + bizCtx.description;
+    if (bizCtx.details)  ctx += '\n- Additional info: ' + bizCtx.details;
+    ctx += '\n\nAlways tailor your responses specifically to their context. Reference their name and details naturally.';
+    base += ctx;
   }
   return base;
 }
@@ -583,10 +617,40 @@ function appendMsg(role, text) {
   bubble.className = 'msg-bubble';
   bubble.innerHTML = role === 'assistant' ? renderMarkdown(text) : esc(text).replace(/\n/g,'<br>');
 
-  row.appendChild(av);
-  row.appendChild(bubble);
+  if (role === 'assistant') {
+    var outer = document.createElement('div');
+    outer.className = 'msg-outer';
+    var copyBtn = document.createElement('button');
+    copyBtn.className = 'msg-copy-btn';
+    copyBtn.textContent = 'copy';
+    copyBtn.setAttribute('data-text', text);
+    copyBtn.onclick = function() { copyMsg(this); };
+    outer.appendChild(bubble);
+    outer.appendChild(copyBtn);
+    row.appendChild(av);
+    row.appendChild(outer);
+  } else {
+    row.appendChild(av);
+    row.appendChild(bubble);
+  }
+
   msgs.appendChild(row);
   scrollToBottom();
+}
+
+function copyMsg(btn) {
+  var text = btn.getAttribute('data-text');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(function() {
+    btn.textContent = 'error';
+    setTimeout(function() { btn.textContent = 'copy'; }, 1500);
+  });
 }
 
 function appendError(msg) {

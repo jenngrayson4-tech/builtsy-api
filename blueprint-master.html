@@ -304,7 +304,7 @@ body.ms-s9 .topnav{display:none;}
 <div class="topnav">
   <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
   <span class="tn-tag" id="ms-tn-tag">Builtsy Blueprint In Progress</span>
-  <div class="tn-right"></div>
+  <div class="tn-right"><button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button></div>
 </div>
 
 <!-- ══ FULL-PAGE WELCOME (Step 1) ══ -->
@@ -4569,5 +4569,19 @@ function msHideEmptyFilterPills() {
 <!-- ══ STEP 9 LAUNCH FULLSCREEN ══ -->
 <div id="ms-launch-full"></div>
 
+<style>.btn-brain-ai{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.3);color:#8ba2f0;border-radius:100px;padding:5px 13px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}.btn-brain-ai:hover{background:rgba(67,97,238,0.22);color:white;border-color:rgba(67,97,238,0.5);}</style>
+<script>
+function openBrainAI() {
+  var ctx = {
+    bp: 'master',
+    bpLabel: 'Builtsy Blueprint',
+    name: (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || '',
+    description: (document.getElementById('ms-description')||{}).value || '',
+    location: (document.getElementById('ms-location')||{}).value || ''
+  };
+  sessionStorage.setItem('bb-ctx', JSON.stringify(ctx));
+  window.location.href = 'builtsy-brain.html';
+}
+</script>
 </body>
 </html>
