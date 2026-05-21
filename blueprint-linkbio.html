@@ -18,13 +18,15 @@
   --r:0.6rem;--rl:0.875rem;--rxl:1.1rem;
   --cream:#fafaf7;--white:#ffffff;
 }
-html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--navy);}
+html,body{min-height:100%;background:var(--navy);font-family:'DM Sans',sans-serif;color:white;}
 
 /* ── TOPBAR ── */
 .topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:50;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
-.logo-text{font-family:'Playfair Display',serif;color:var(--lime);font-size:1.2rem;font-weight:700;text-decoration:none;}
-.tn-tag{background:var(--builtsy-blue);color:white;font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;text-decoration:none;color:white;display:inline-flex;align-items:baseline;gap:0;}
+.logo-sy{color:var(--pink);font-style:italic;}
+.logo-dot{color:var(--builtsy-blue);font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
+.tn-tag{background:rgba(67,97,238,0.15);color:var(--builtsy-blue);border:1px solid rgba(67,97,238,0.35);font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
 .tn-right{display:flex;align-items:center;gap:0.75rem;}
 .tn-saved{font-size:0.72rem;color:rgba(200,224,0,0.7);font-family:'DM Mono',monospace;}
 .btn-generate-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
@@ -32,81 +34,76 @@ html,body{min-height:100%;background:var(--cream);font-family:'DM Sans',sans-ser
 /* hide old layout elements */
 .workspace,.leftnav,.panel,.preview-pane,.preview-banner{display:none!important;}
 
-/* ── WELCOME BANNER ── */
-.welcome-banner{background:var(--builtsy-blue);color:white;text-align:center;padding:8px 24px;font-size:0.78rem;font-weight:600;letter-spacing:.03em;}
-.welcome-banner a{color:var(--lime);}
-
-/* ── HERO ── */
-.bp-hero{background:var(--navy);color:white;padding:44px 24px 36px;text-align:center;}
-.bp-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.15;margin-bottom:10px;}
-.bp-hero h1 span{color:var(--lime);}
-.bp-hero p{color:rgba(255,255,255,0.65);font-size:.95rem;max-width:500px;margin:0 auto;}
-#hero-industry-name{color:var(--lime);}
+/* ── WELCOME BANNER — hidden, kept for JS querySelector ── */
+.welcome-banner{display:none!important;}
+/* ── HERO — hidden, kept for JS querySelector ── */
+.bp-hero{display:none!important;}
 
 /* ── STEP PROGRESS ── */
-.step-progress{display:flex;align-items:center;justify-content:center;padding:22px 16px 0;max-width:700px;margin:0 auto;}
-.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,0.15);background:white;color:#9ca3af;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
+.step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;max-width:700px;margin:0 auto;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.4);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;}
 .step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
-.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
-.step-line{flex:1;height:2px;background:rgba(0,0,0,0.1);min-width:16px;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:#0D1220;}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,0.1);min-width:16px;}
 .step-line.done{background:var(--lime);}
 
 /* ── FORM WRAP ── */
-.form-wrap{max-width:700px;margin:0 auto;padding:0 16px 80px;}
+.form-wrap{max-width:700px;margin:0 auto;padding:0 16px 80px;background:transparent;}
 .step-panel{display:none;padding-top:24px;}
 .step-panel.active{display:block;}
-.step-label-top{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;font-family:'DM Mono',monospace;}
-.step-title-main{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:5px;}
-.step-sub-main{color:#6b7280;font-size:.875rem;margin-bottom:22px;}
+.step-label-top{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:6px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:white;margin-bottom:6px;line-height:1.1;letter-spacing:-.01em;}
+.step-title-main em{color:var(--lime);font-style:italic;}
+.step-sub-main{color:rgba(255,255,255,0.38);font-size:.83rem;margin-bottom:28px;line-height:1.65;}
 
-/* ── FORM FIELDS (light theme) ── */
-.field{margin-bottom:18px;}
-.field label{display:block;font-weight:700;font-size:.72rem;margin-bottom:7px;color:#4361EE;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
-.field label .opt{font-weight:400;color:#9ca3af;font-size:.74rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
-.fi-light{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:white;outline:none;transition:border-color .2s;}
-.fi-light:focus{border-color:var(--builtsy-blue);}
-.fi-light::placeholder{color:#9ca3af;}
+/* ── FORM FIELDS (dark theme) ── */
+.field{margin-bottom:20px;}
+.field label{display:block;font-weight:700;font-size:.64rem;margin-bottom:7px;color:var(--builtsy-blue);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:rgba(255,255,255,0.3);font-size:.65rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi-light{width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fi-light:focus{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.fi-light::placeholder{color:rgba(255,255,255,0.2);}
 textarea.fi-light{resize:vertical;min-height:80px;}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:480px){.field-grid{grid-template-columns:1fr;}}
 
-/* ── CHIP SELECTORS (light) ── */
+/* ── CHIP SELECTORS (dark) ── */
 .chip-group{display:flex;flex-wrap:wrap;gap:8px;}
-.chip-light{border:1.5px solid rgba(67,97,238,0.25);border-radius:24px;padding:7px 15px;font-size:.82rem;font-weight:500;cursor:pointer;background:white;color:var(--navy);transition:all .2s;user-select:none;}
-.chip-light:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.05);}
-.chip-light.sel{background:var(--navy);color:var(--lime);border-color:var(--navy);font-weight:600;}
-.chip-loading{font-size:.8rem;color:#9ca3af;font-style:italic;padding:6px 2px;animation:chipPulse 1.2s ease-in-out infinite;}
+.chip-light{border:1.5px solid rgba(255,255,255,0.15);border-radius:100px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);transition:all .2s;user-select:none;font-family:'DM Sans',sans-serif;}
+.chip-light:hover{border-color:rgba(255,255,255,0.35);color:rgba(255,255,255,0.8);}
+.chip-light.sel{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+.chip-loading{font-size:.8rem;color:rgba(255,255,255,0.3);font-style:italic;padding:6px 2px;animation:chipPulse 1.2s ease-in-out infinite;}
 @keyframes chipPulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* ── OPTION CARDS (light) ── */
-.oc-light{background:white;border:1.5px solid rgba(67,97,238,0.2);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;}
-.oc-light:hover{border-color:var(--builtsy-blue);}
-.oc-light.sel{border-color:var(--navy);background:rgba(18,25,43,0.04);}
+/* ── OPTION CARDS (dark) ── */
+.oc-light{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;}
+.oc-light:hover{border-color:rgba(255,255,255,0.25);}
+.oc-light.sel{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.12);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
 .oc-light .oc-icon{font-size:1.1rem;margin-bottom:4px;display:block;}
-.oc-light .oc-name{font-size:.8rem;font-weight:600;color:var(--navy);}
-.oc-light .oc-desc{font-size:.7rem;color:#6b7280;margin-top:2px;}
+.oc-light .oc-name{font-size:.8rem;font-weight:600;color:white;}
+.oc-light .oc-desc{font-size:.7rem;color:rgba(255,255,255,0.35);margin-top:2px;}
 .og-light{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .og-light.two{grid-template-columns:1fr 1fr;}
 @media(max-width:480px){.og-light{grid-template-columns:1fr 1fr;}}
 
 /* ── SECTION LABEL ── */
-.sl-light{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:10px;margin-top:24px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid #4361EE;}
+.sl-light{font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin:32px 0 12px;display:block;padding:0;border-left:none;}
 .sl-light:first-child{margin-top:0;}
 
-/* ── PRICING ROWS (light) ── */
-.svc-row-light{display:flex;align-items:center;gap:10px;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;margin-bottom:8px;}
-.svc-row-light .sr-name{font-size:.85rem;font-weight:600;color:var(--navy);}
-.svc-row-light .sr-dur{font-size:.72rem;color:#9ca3af;}
-.sr-price-light{border:none;border-bottom:1.5px solid #e5e7eb;font-size:1rem;font-weight:700;color:var(--builtsy-blue);font-family:'DM Mono',monospace;width:70px;outline:none;background:transparent;padding:2px 0;}
-.sr-del-light{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1rem;margin-left:auto;}
+/* ── PRICING ROWS (dark) ── */
+.svc-row-light{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;margin-bottom:8px;}
+.svc-row-light .sr-name{font-size:.85rem;font-weight:600;color:white;}
+.svc-row-light .sr-dur{font-size:.72rem;color:rgba(255,255,255,0.35);}
+.sr-price-light{border:none;border-bottom:1.5px solid rgba(255,255,255,0.15);font-size:1rem;font-weight:700;color:var(--lime);font-family:'DM Mono',monospace;width:70px;outline:none;background:transparent;padding:2px 0;color:white;}
+.sr-del-light{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:1rem;margin-left:auto;}
 .sr-del-light:hover{color:#ef4444;}
-.btn-add-row{background:none;border:1.5px dashed #d1d5db;border-radius:10px;padding:9px 16px;font-size:.82rem;color:#9ca3af;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:4px;}
+.btn-add-row{background:none;border:1.5px dashed rgba(255,255,255,0.15);border-radius:10px;padding:9px 16px;font-size:.82rem;color:rgba(255,255,255,0.3);cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:4px;}
 .btn-add-row:hover{border-color:var(--builtsy-blue);color:var(--builtsy-blue);}
 
-/* ── TOGGLE ROWS (light) ── */
-.toggle-row-light{display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 16px;margin-bottom:8px;}
-.tg-label-light{font-size:.72rem;font-weight:700;color:#4361EE;letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace;}
-.tg-desc-light{font-size:.75rem;color:#6b7280;margin-top:3px;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+/* ── TOGGLE ROWS (dark) ── */
+.toggle-row-light{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;margin-bottom:8px;}
+.tg-label-light{font-size:.72rem;font-weight:700;color:var(--builtsy-blue);letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.tg-desc-light{font-size:.75rem;color:rgba(255,255,255,0.35);margin-top:3px;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
 /* reuse existing switch styles */
 .switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
 .switch input{opacity:0;width:0;height:0;}
@@ -115,18 +112,18 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 .switch input:checked+.track{background:var(--lime);}
 .switch input:checked+.track:before{transform:translateX(18px);}
 
-/* ── PHOTO UPLOAD (light) ── */
-.upload-zone-light{border:2px dashed #d1d5db;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;}
-.upload-zone-light:hover{border-color:var(--builtsy-blue);}
-.upload-zone-light.has-file{border-color:var(--lime);background:#f7fde8;}
+/* ── PHOTO UPLOAD (dark) ── */
+.upload-zone-light{border:2px dashed rgba(255,255,255,0.12);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);position:relative;}
+.upload-zone-light:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.06);}
+.upload-zone-light.has-file{border-color:var(--lime);background:rgba(200,224,0,0.06);}
 .upload-zone-light input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .upload-icon-light{font-size:1.6rem;margin-bottom:6px;}
-.upload-label-light{font-size:.82rem;color:#6b7280;}
-.upload-label-light strong{color:var(--navy);}
+.upload-label-light{font-size:.82rem;color:rgba(255,255,255,0.35);}
+.upload-label-light strong{color:rgba(255,255,255,0.7);}
 .gallery-grid-light{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;}
-.gallery-slot-light{aspect-ratio:1;border:2px dashed #d1d5db;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#9ca3af;cursor:pointer;background:white;transition:all .2s;position:relative;overflow:hidden;text-align:center;padding:8px;}
+.gallery-slot-light{aspect-ratio:1;border:2px dashed rgba(255,255,255,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,0.3);cursor:pointer;background:rgba(255,255,255,0.03);transition:all .2s;position:relative;overflow:hidden;text-align:center;padding:8px;}
 .gallery-slot-light:hover{border-color:var(--builtsy-blue);}
-.gallery-slot-light.filled{border-color:var(--lime);background:#f7fde8;}
+.gallery-slot-light.filled{border-color:var(--lime);background:rgba(200,224,0,0.06);}
 .gallery-slot-light input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 
 /* ── PALETTE GRID (light) ── */
@@ -169,10 +166,10 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 .mic-swatch{width:100%;height:18px;border-radius:50px;margin-bottom:-6px;}
 .mic-swatch:last-child{margin-bottom:0;}
 .mic-footer{padding:8px 8px 8px;background:inherit;}
-.mic-name{font-size:9px;font-weight:700;color:#0d1422;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mic-vibe{font-size:8px;color:#9ca3af;margin-top:1px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mic-name{font-size:9px;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mic-vibe{font-size:8px;color:rgba(255,255,255,0.35);margin-top:1px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-.style-picks-module{background:linear-gradient(135deg,rgba(67,97,238,0.05),rgba(139,162,240,0.03));border-radius:18px;padding:18px;margin-bottom:20px;}
+.style-picks-module{background:rgba(67,97,238,0.06);border:1px solid rgba(67,97,238,0.12);border-radius:18px;padding:18px;margin-bottom:20px;}
 .style-picks-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
 .style-picks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start;}
 
@@ -183,36 +180,37 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 .ai-sparkle{animation:sparkle-spin 3s ease-in-out infinite;display:inline-block;color:#4361EE;font-weight:700;}
 @keyframes sparkle-spin{0%{transform:rotate(0deg) scale(1);opacity:0.7;}25%{transform:rotate(45deg) scale(1.3);opacity:1;}50%{transform:rotate(0deg) scale(1);opacity:0.7;}75%{transform:rotate(-45deg) scale(1.3);opacity:1;}100%{transform:rotate(0deg) scale(1);opacity:0.7;}}
 
-.style-cat-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;font-family:'DM Mono',monospace;margin:14px 0 8px;display:block;}
+.style-cat-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin:14px 0 8px;display:block;}
 .style-cat-label:first-child{margin-top:4px;}
 
 .palette-grid-light{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 @media(max-width:480px){.palette-grid-light{grid-template-columns:repeat(3,1fr);}}
-.palette-card-light{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;}
-.palette-card-light.sel{border-color:var(--navy);}
+.palette-card-light{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid rgba(255,255,255,0.08);transition:all .2s;}
+.palette-card-light:hover{border-color:rgba(255,255,255,0.22);}
+.palette-card-light.sel{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
 .palette-preview-light{height:40px;display:flex;}
 .palette-swatch{flex:1;}
-.palette-name-light{font-size:.62rem;padding:4px 6px;background:white;color:var(--navy);font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.palette-cat-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#9ca3af;margin:18px 0 8px;display:block;}
+.palette-name-light{font-size:.62rem;padding:4px 6px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.palette-cat-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:18px 0 8px;display:block;}
 .palette-cat-label:first-child{margin-top:0;}
 
 /* ── NAV BUTTONS ── */
 .step-nav-light{display:flex;gap:10px;margin-top:28px;}
-.btn-back-light{background:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#6b7280;cursor:pointer;transition:all .2s;}
-.btn-back-light:hover{border-color:var(--navy);color:var(--navy);}
-.btn-next-light{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-back-light{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;}
+.btn-back-light:hover{border-color:rgba(255,255,255,0.4);color:white;}
+.btn-next-light{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;}
 .btn-next-light:hover{background:#b8d000;}
-.btn-generate-big-light{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
-.btn-generate-big-light:hover{background:#b8d000;}
+.btn-generate-big-light{flex:1;background:linear-gradient(135deg,var(--lime),#a8c000);color:var(--navy);border:none;border-radius:10px;padding:13px 20px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-generate-big-light:hover{filter:brightness(1.07);}
 
 /* ── GENERATING OVERLAY ── */
-.gen-overlay{display:none;position:fixed;inset:0;background:rgba(18,25,43,.93);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:24px;}
+.gen-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.96);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
 .gen-overlay.active{display:flex;}
-.gen-spinner{width:48px;height:48px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+.gen-spinner{width:44px;height:44px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.35rem;}
-.gen-sub{color:rgba(255,255,255,.55);font-size:.88rem;max-width:300px;}
-.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.78rem;min-height:18px;}
+.gen-title{font-family:'Playfair Display',serif;color:white;font-size:1.25rem;}
+.gen-sub{color:rgba(255,255,255,.45);font-size:.85rem;max-width:300px;line-height:1.6;}
+.gen-msg{color:var(--lime);font-family:'DM Mono',monospace;font-size:.75rem;min-height:18px;}
 
 /* ── BLURRED PROMPT (step 7) ── */
 .prompt-blur-wrap{position:relative;margin-bottom:22px;}
@@ -224,7 +222,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 /* ── OUTPUT PANEL ── */
 #output-panel{display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;}
 #output-panel.active{display:flex;}
-.output-toolbar{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.output-toolbar{background:#0D0D0D;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
 .output-badge{background:var(--lime);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
 .output-toolbar-title{color:rgba(255,255,255,.65);font-size:.8rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .btn-dl{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
@@ -233,13 +231,13 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 .btn-revise-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
 .btn-rebuild-tb{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;white-space:nowrap;}
 .btn-rebuild-tb:hover{border-color:rgba(255,255,255,.5);color:white;}
-.deploy-bar{background:rgba(67,97,238,.12);border-bottom:1px solid rgba(67,97,238,.2);padding:9px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.deploy-bar{background:rgba(200,224,0,.08);border-bottom:1px solid rgba(200,224,0,.15);padding:8px 16px;font-size:.74rem;color:rgba(255,255,255,.65);flex-shrink:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:'DM Sans',sans-serif;}
 .deploy-bar a{color:var(--lime);font-weight:600;}
 .deploy-bar .db-saved{color:rgba(255,255,255,.4);}
 .output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
 .output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden;width:390px;flex-shrink:0;}
 #output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
-.output-error{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;display:none;}
+.output-error{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:13px;color:#fca5a5;font-size:.85rem;margin:14px;display:none;}
 .output-error.active{display:block;}
 #revise-drawer{display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;}
 #revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
@@ -249,7 +247,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 .btn-revise-submit{background:var(--pink);color:white;border:none;border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;flex-shrink:0;}
 
 /* ── AI HINT BAR ── */
-.ai-hint{display:none;background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.25);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--navy);margin-bottom:16px;line-height:1.6;}
+.ai-hint{display:none;background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.25);border-radius:10px;padding:10px 14px;font-size:.78rem;color:rgba(255,255,255,0.7);margin-bottom:16px;line-height:1.6;}
 
 /* ── BOOST PANEL (kept but hidden until step 8) ── */
 #boost-panel-wrap{display:none;}
@@ -267,7 +265,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 <!-- TOPNAV -->
 <div class="topnav">
   <div class="logo-wrap">
-    <a href="dashboard.html" class="logo-text">builtsy</a>
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
   </div>
   <span class="tn-tag">✦ Link in Bio</span>
   <div class="tn-right">
@@ -296,6 +294,8 @@ textarea.fi-light{resize:vertical;min-height:80px;}
   <div class="step-dot" id="lbdot-2">3</div>
   <div class="step-line" id="lbline-2"></div>
   <div class="step-dot" id="lbdot-3">4</div>
+  <div class="step-line" id="lbline-3"></div>
+  <div class="step-dot" id="lbdot-4">5</div>
 </div>
 
 <!-- FORM PANELS -->
@@ -303,9 +303,9 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 
   <!-- STEP 0: Who You Are -->
   <div class="step-panel active" id="lb-step-0">
-    <div class="step-label-top">Step 1 of 4 · About you</div>
-    <div class="step-title-main">Let's set up your page.</div>
-    <div class="step-sub-main">Tell people who you are and what you do in one line.</div>
+    <div class="step-label-top">Step 1 of 5 · About you</div>
+    <div class="step-title-main">Tell your <em>story.</em></div>
+    <div class="step-sub-main">Who are you and what do you do? Let's set the stage.</div>
 
     <div class="field-grid" style="margin-bottom:16px;">
       <div class="field">
@@ -378,9 +378,9 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 
   <!-- STEP 1: Links + Services -->
   <div class="step-panel" id="lb-step-1">
-    <div class="step-label-top">Step 2 of 4 · Links & Services</div>
-    <div class="step-title-main">Add your links.</div>
-    <div class="step-sub-main">What do you want people to tap? Add your most important links.</div>
+    <div class="step-label-top">Step 2 of 5 · Links & Services</div>
+    <div class="step-title-main">Add your <em>links.</em></div>
+    <div class="step-sub-main">What do you want people to tap? Drop in your most important links.</div>
 
     <span class="sl-light">Your links</span>
     <div class="field"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.1rem;width:28px;text-align:center;">📅</span><input class="fi-light" id="l-booking" placeholder="Booking / Calendly URL" oninput="onInput();" style="flex:1;"></div></div>
@@ -390,89 +390,156 @@ textarea.fi-light{resize:vertical;min-height:80px;}
     <div class="field"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.1rem;width:28px;text-align:center;">👥</span><input class="fi-light" id="l-facebook" placeholder="Facebook URL" oninput="onInput();" style="flex:1;"></div></div>
     <div class="field"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.1rem;width:28px;text-align:center;">💼</span><input class="fi-light" id="l-linkedin" placeholder="LinkedIn URL" oninput="onInput();" style="flex:1;"></div></div>
 
-    <span class="sl-light">SMS booking <span class="opt">(opens texting app)</span></span>
-    <div class="field"><input class="fi-light" id="f-phone" type="tel" placeholder="(720) 555-0123" oninput="onInput();"></div>
-
     <span class="sl-light">Custom link <span class="opt">(optional)</span></span>
     <div class="field-grid">
       <div class="field"><input class="fi-light" id="l-custom-label" placeholder="Label" oninput="onInput();"></div>
       <div class="field"><input class="fi-light" id="l-custom-url" placeholder="URL" oninput="onInput();"></div>
     </div>
 
-    <span class="sl-light" style="margin-top:20px;">Services & pricing</span>
-    <div style="background:rgba(67,97,238,0.07);border:1px solid rgba(67,97,238,0.2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.8rem;color:var(--navy);line-height:1.5;">
-      <strong>💡 Do you charge for your services?</strong> Add them here with prices — Builtsy builds an interactive calculator into your page so visitors can tap services and see their total before booking. Leave blank if you don't charge or don't want pricing shown.
-    </div>
-    <div id="ai-svc-hint" style="display:none;background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);border-radius:10px;padding:8px 14px;font-size:0.78rem;color:var(--navy);margin-bottom:10px;"></div>
-    <div id="svc-rows">
-      <div class="svc-row-light"><div><div class="sr-name" style="font-size:.85rem;font-weight:600;color:var(--navy);">60-min lesson</div></div><span style="font-size:.7rem;color:#9ca3af;margin-left:auto;">$</span><input class="sr-price sr-price-light" type="number" placeholder="75" oninput="onInput();"><button class="sr-del-light" onclick="this.parentNode.remove();onInput();">✕</button></div>
-      <div class="svc-row-light"><div><div class="sr-name" style="font-size:.85rem;font-weight:600;color:var(--navy);">30-min session</div></div><span style="font-size:.7rem;color:#9ca3af;margin-left:auto;">$</span><input class="sr-price sr-price-light" type="number" placeholder="45" oninput="onInput();"><button class="sr-del-light" onclick="this.parentNode.remove();onInput();">✕</button></div>
-    </div>
-    <button class="btn-add-row" onclick="addSvcRow()">+ Add a service</button>
+      <span class="sl-light" style="margin-top:20px;">Features</span>
 
-    <span class="sl-light" style="margin-top:20px;">Features</span>
-    <div class="toggle-row-light"><div><div class="tg-label-light">Pricing calculator</div><div class="tg-desc-light">Interactive — customers tap to see their total</div></div><label class="switch"><input type="checkbox" id="tog-calc" checked onchange="onInput();"><span class="track"></span><span class="thumb"></span></label></div>
-    <div class="toggle-row-light"><div><div class="tg-label-light">SMS booking button</div><div class="tg-desc-light">Big tap-to-text button at the top</div></div><label class="switch"><input type="checkbox" id="tog-sms" checked onchange="onInput();"><span class="track"></span><span class="thumb"></span></label></div>
-    <div class="toggle-row-light"><div><div class="tg-label-light">Contact form</div><div class="tg-desc-light">Name, email, message</div></div><label class="switch"><input type="checkbox" id="tog-form" onchange="onInput();"><span class="track"></span><span class="thumb"></span></label></div>
-    <div class="toggle-row-light"><div><div class="tg-label-light">Client testimonial</div><div class="tg-desc-light">One quote from a happy client</div></div><label class="switch"><input type="checkbox" id="tog-testimonial" onchange="togTestimonial(this);"><span class="track"></span><span class="thumb"></span></label></div>
-    <div id="testimonial-fields" style="display:none;margin-top:8px;">
-      <div class="field"><input class="fi-light" id="f-test-text" placeholder="Quote from a client..." oninput="onInput();"></div>
-      <div class="field"><input class="fi-light" id="f-test-name" placeholder="— Client name" oninput="onInput();"></div>
+    <!-- Online Booking -->
+    <div class="toggle-row-light"><div><div class="tg-label-light">&#128197; Online Booking</div><div class="tg-desc-light">Calendly booking link &mdash; live on your page</div></div><label class="switch"><input type="checkbox" id="tog-booking" checked onchange="onInput();lbToggleBookingField();"><span class="track"></span><span class="thumb"></span></label></div>
+    <div id="lb-booking-field-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
+      <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Your Calendly URL</label>
+      <input type="text" id="f-calendly-lb" placeholder="e.g. calendly.com/yourname" class="fi-light" oninput="onInput();" style="width:100%;">
+      <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">Paste your booking link &mdash; we'll embed it directly on your page.</div>
     </div>
 
+    <!-- SMS -->
+    <div class="toggle-row-light"><div><div class="tg-label-light">&#128172; SMS Booking Button</div><div class="tg-desc-light">Big tap-to-text button at the top</div></div><label class="switch"><input type="checkbox" id="tog-sms" checked onchange="onInput();lbToggleSmsFields();"><span class="track"></span><span class="thumb"></span></label></div>
+    <div id="lb-sms-fields-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
+      <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Phone number for texts</label>
+      <input type="tel" id="f-phone" placeholder="e.g. (720) 555-0123" class="fi-light" oninput="onInput();" style="width:100%;margin-bottom:10px;">
+      <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Pre-filled message <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,0.3);">(edit to customize)</span></label>
+      <textarea id="f-sms-message-lb" class="fi-light" rows="2" oninput="onInput();" style="width:100%;font-size:.82rem;line-height:1.6;resize:vertical;">Hi! I found you and would love to connect. When are you available?</textarea>
+      <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">This is what visitors see when they tap your SMS button.</div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="toggle-row-light"><div><div class="tg-label-light">&#128221; Contact / Intake Form</div><div class="tg-desc-light">Embed a Google Form or AI builds a simple one</div></div><label class="switch"><input type="checkbox" id="tog-form" checked onchange="onInput();lbToggleFormField();"><span class="track"></span><span class="thumb"></span></label></div>
+    <div id="lb-form-field-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
+      <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Google Form URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,0.3);">(optional)</span></label>
+      <input type="text" id="f-form-url-lb" placeholder="e.g. forms.gle/yourformlink" class="fi-light" oninput="onInput();" style="width:100%;">
+      <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">Leave blank and AI builds a simple contact form.</div>
+    </div>
     <div class="step-nav-light">
       <button class="btn-back-light" onclick="lbGoStep(0)">← Back</button>
       <button class="btn-next-light" onclick="lbGoStep(2)">Next — Design →</button>
     </div>
   </div>
 
-  <!-- STEP 2: Design / Style Identity -->
+  <!-- STEP 2: Color Palette -->
   <div class="step-panel" id="lb-step-2">
-    <div class="step-label-top">Step 3 of 4 · Design</div>
-    <div class="step-title-main">Choose your vibe.</div>
-    <div class="step-sub-main">Pick the look Builtsy should build around.</div>
+    <div class="step-label-top">Step 3 of 5 · Colors &amp; Design</div>
+    <div class="step-title-main">Set your <em>colours.</em></div>
+    <div class="step-sub-main">Pick a mood or let AI choose the perfect palette for you.</div>
 
-    <!-- AI Picks Module — no box, just vibe -->
-    <div class="style-picks-module">
-      <div class="style-picks-header">
-        <div class="style-picks-icon">✨</div>
-        <div>
-          <div class="style-picks-title">Builtsy picked 3 looks for your page</div>
-          <div class="style-picks-sub">Based on your profile, links, and services — these identities are most likely to fit.</div>
-        </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div class="palette-card-light sel" id="lb-pal-ai-card" onclick="lbPickSpecial(this,'ai')" style="border:2px solid var(--builtsy-blue);border-radius:10px;padding:10px;cursor:pointer;background:rgba(67,97,238,0.1);">
+        <div style="display:flex;gap:4px;margin-bottom:6px;"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ee70bc,#8ba2f0);flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#C8E000,#46DFB1);flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FDA481,#C8E000);flex-shrink:0;"></div></div>
+        <div style="font-weight:700;font-size:.76rem;color:white;">❆ AI chooses</div>
+        <div style="font-size:.67rem;color:rgba(255,255,255,0.4);margin-top:2px;">Best match for your vibe</div>
       </div>
-      <div class="style-picks-grid" id="lb-style-picks">
-        <div class="wave-loader" style="grid-column:1/-1;"><div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s -0.4s ease-in-out infinite;"></div><div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s -0.2s ease-in-out infinite;"></div><div class="wave-dot" style="background:#8ba2f0;animation:lb-wave 1.2s 0s ease-in-out infinite;"></div><div class="wave-dot" style="background:#C8E000;animation:lb-wave 1.2s 0.2s ease-in-out infinite;"></div><div class="wave-dot" style="background:#ee70bc;animation:lb-wave 1.2s 0.4s ease-in-out infinite;"></div></div>
+      <div class="palette-card-light" id="lb-pal-custom-card" onclick="lbPickSpecial(this,'custom')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);">
+        <div style="display:flex;gap:4px;margin-bottom:6px;"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ee70bc,#4361EE,#C8E000,#12192B);flex-shrink:0;"></div></div>
+        <div style="font-weight:700;font-size:.76rem;color:white;">🎨 Your colors</div>
+        <div style="font-size:.67rem;color:rgba(255,255,255,0.4);margin-top:2px;">AI places them for you</div>
       </div>
     </div>
 
-    <!-- See all styles -->
-    <div class="see-all-toggle" id="lb-all-styles-toggle" onclick="lbToggleAllStyles()">
-      <div>
-        <div style="font-size:0.82rem;font-weight:600;color:var(--builtsy-blue);" id="lb-all-styles-label">↓ See all styles</div>
-        <div style="font-size:0.7rem;color:#9ca3af;margin-top:1px;">Browse the full style library.</div>
+    <div id="lb-custom-hex-fields" style="display:none;margin-bottom:14px;background:rgba(67,97,238,0.08);border:1.5px solid var(--builtsy-blue);border-radius:12px;padding:16px;">
+      <div style="font-size:.76rem;color:rgba(255,255,255,0.45);margin-bottom:12px;">Pick up to 5 colors — AI decides the most beautiful way to use them.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <div style="position:relative;width:44px;height:44px;flex-shrink:0;"><div id="lb-uc-swatch-0" style="width:44px;height:44px;border-radius:10px;background:#ee70bc;border:2px solid rgba(255,255,255,0.15);cursor:pointer;"></div><input type="color" id="lb-uc-input-0" value="#ee70bc" oninput="lbUcUpdate(0,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;"></div>
+        <div style="position:relative;width:44px;height:44px;flex-shrink:0;"><div id="lb-uc-swatch-1" style="width:44px;height:44px;border-radius:10px;background:#4361EE;border:2px solid rgba(255,255,255,0.15);cursor:pointer;"></div><input type="color" id="lb-uc-input-1" value="#4361EE" oninput="lbUcUpdate(1,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;"></div>
+        <div style="position:relative;width:44px;height:44px;flex-shrink:0;"><div id="lb-uc-swatch-2" style="width:44px;height:44px;border-radius:10px;background:#ffffff;border:2px solid rgba(255,255,255,0.15);cursor:pointer;"></div><input type="color" id="lb-uc-input-2" value="#ffffff" oninput="lbUcUpdate(2,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;"></div>
+        <div id="lb-uc-slot-3" style="position:relative;width:44px;height:44px;flex-shrink:0;display:none;"><div id="lb-uc-swatch-3" style="width:44px;height:44px;border-radius:10px;background:#C8E000;border:2px solid rgba(255,255,255,0.15);cursor:pointer;"></div><input type="color" id="lb-uc-input-3" value="#C8E000" oninput="lbUcUpdate(3,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;"></div>
+        <div id="lb-uc-slot-4" style="position:relative;width:44px;height:44px;flex-shrink:0;display:none;"><div id="lb-uc-swatch-4" style="width:44px;height:44px;border-radius:10px;background:#1a1a2e;border:2px solid rgba(255,255,255,0.15);cursor:pointer;"></div><input type="color" id="lb-uc-input-4" value="#1a1a2e" oninput="lbUcUpdate(4,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;"></div>
+        <button onclick="lbUcAddColor()" id="lb-uc-add-btn" style="width:44px;height:44px;border-radius:10px;border:2px dashed rgba(255,255,255,0.2);background:none;cursor:pointer;font-size:1.4rem;color:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
       </div>
-      <span style="font-size:0.7rem;color:#9ca3af;font-family:'DM Mono',monospace;">40+</span>
+      <div style="font-size:.7rem;color:rgba(255,255,255,0.3);margin-top:8px;">Click any swatch to change its color</div>
     </div>
-    <div id="lb-all-styles-grid" style="display:none;margin-bottom:8px;"></div>
 
-    <!-- Style notes -->
-    <div class="field" style="margin-top:14px;">
+    <div style="display:flex;gap:6px;margin-bottom:10px;">
+      <button id="lb-ptab-light" onclick="lbSwitchPaletteTab('light')" style="flex:1;padding:7px 4px;border:2px solid var(--builtsy-blue);border-radius:8px;background:var(--builtsy-blue);color:white;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.04em;">☀ Light</button>
+      <button id="lb-ptab-dark"  onclick="lbSwitchPaletteTab('dark')"  style="flex:1;padding:7px 4px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.04em;">🌙 Dark</button>
+      <button id="lb-ptab-mono"  onclick="lbSwitchPaletteTab('mono')"  style="flex:1;padding:7px 4px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.04em;">◑ Mono</button>
+    </div>
+
+    <div id="lb-palette-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#FFF5F8','#D4788A','#E8A0AE','#FFE4EE','#2A1A1F','Blush Dream')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#FFF5F8;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#D4788A;"></div><div style="width:13px;height:13px;border-radius:50%;background:#2A1A1F;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Blush Dream</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Blush · Rose · Cream</div></div>
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#FAFAFF','#9B8EC4','#C4B8E0','#EEE8FF','#1A1A2E','Lavender Mist')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#FAFAFF;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#9B8EC4;"></div><div style="width:13px;height:13px;border-radius:50%;background:#1A1A2E;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Lavender Mist</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">White · Lilac · Gray</div></div>
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#E3EED4','#375534','#0F2A1D','#C8DDB4','#1A1A1A','Sage Light')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#E3EED4;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#375534;"></div><div style="width:13px;height:13px;border-radius:50%;background:#C8DDB4;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Sage Light</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Sage · Forest · Natural</div></div>
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#F9F7F0','#B17457','#D8D2C2','#4A4947','#2A2A2A','Desert Clay')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#F9F7F0;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#B17457;"></div><div style="width:13px;height:13px;border-radius:50%;background:#4A4947;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Desert Clay</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Milk · Clay · Earth</div></div>
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#F0FFFE','#FF6B6B','#FFD166','#D4F5F4','#1A1A1A','Playful Bright')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#F0FFFE;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#FF6B6B;"></div><div style="width:13px;height:13px;border-radius:50%;background:#FFD166;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Playful Bright</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Teal · Coral · Yellow</div></div>
+<div class="palette-card-light" data-tab="light" onclick="lbPickTabPalette(this,'#F8F5F0','#2C2C2C','#8B7355','#EDE9E3','#1A1A1A','Editorial')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#F8F5F0;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#2C2C2C;"></div><div style="width:13px;height:13px;border-radius:50%;background:#8B7355;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Editorial</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Off-white · Charcoal · Tan</div></div>
+<div class="palette-card-light" data-tab="dark" onclick="lbPickTabPalette(this,'#1A1A1A','#C8E000','#D4EE00','#2D2D2D','#F5F5F5','Bold Modern')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#1A1A1A;"></div><div style="width:13px;height:13px;border-radius:50%;background:#C8E000;"></div><div style="width:13px;height:13px;border-radius:50%;background:#2D2D2D;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Bold Modern</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Dark · Lime · Contrast</div></div>
+<div class="palette-card-light" data-tab="dark" onclick="lbPickTabPalette(this,'#0A1628','#4ECDC4','#6EE7E0','#1A3A5C','#F0F4F8','Midnight')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#0A1628;"></div><div style="width:13px;height:13px;border-radius:50%;background:#4ECDC4;"></div><div style="width:13px;height:13px;border-radius:50%;background:#1A3A5C;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Midnight</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Navy · Teal · Luxury</div></div>
+<div class="palette-card-light" data-tab="dark" onclick="lbPickTabPalette(this,'#0A0A0A','#B8960C','#D4B44A','#111111','#F7F3E9','Obsidian & Gold')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#0A0A0A;"></div><div style="width:13px;height:13px;border-radius:50%;background:#B8960C;"></div><div style="width:13px;height:13px;border-radius:50%;background:#111111;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Obsidian &amp; Gold</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Black · Gold · Ivory</div></div>
+<div class="palette-card-light" data-tab="dark" onclick="lbPickTabPalette(this,'#1A1A2E','#7C3AED','#A78BFA','#16213E','#F0EFFE','Storm')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#1A1A2E;"></div><div style="width:13px;height:13px;border-radius:50%;background:#7C3AED;"></div><div style="width:13px;height:13px;border-radius:50%;background:#A78BFA;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Storm</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Charcoal · Violet · Mist</div></div>
+<div class="palette-card-light" data-tab="dark" onclick="lbPickTabPalette(this,'#2A0A12','#8B2635','#D4788A','#3D1520','#F7EEF0','Bordeaux')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#2A0A12;"></div><div style="width:13px;height:13px;border-radius:50%;background:#8B2635;"></div><div style="width:13px;height:13px;border-radius:50%;background:#D4788A;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">Bordeaux</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Wine · Blush · Nude</div></div>
+<div class="palette-card-light" data-tab="mono" onclick="lbPickTabPalette(this,'#FFF5F8','#D4788A','#E8A0AE','#FFE4EE','#2A1A1F','All Blush')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#FFF5F8;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#E8A0AE;"></div><div style="width:13px;height:13px;border-radius:50%;background:#D4788A;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">All Blush</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Pale pink → deep rose</div></div>
+<div class="palette-card-light" data-tab="mono" onclick="lbPickTabPalette(this,'#F5F5F5','#1A1A1A','#404040','#A0A0A0','#080808','All Noir')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#F5F5F5;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#A0A0A0;"></div><div style="width:13px;height:13px;border-radius:50%;background:#1A1A1A;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">All Noir</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">White → jet black</div></div>
+<div class="palette-card-light" data-tab="mono" onclick="lbPickTabPalette(this,'#FFFFF0','#C09820','#E8D080','#483800','#483800','All Gold')" style="border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:3px;margin-bottom:5px;"><div style="width:13px;height:13px;border-radius:50%;background:#FFFFF0;border:1px solid rgba(255,255,255,0.15);"></div><div style="width:13px;height:13px;border-radius:50%;background:#E8D080;"></div><div style="width:13px;height:13px;border-radius:50%;background:#C09820;"></div></div><div style="font-weight:700;font-size:.69rem;color:white;">All Gold</div><div style="font-size:.6rem;color:rgba(255,255,255,0.35);">Butter → antique bronze</div></div>
+    </div>
+
+    <div class="field">
       <label>Want to guide the vibe? <span class="opt">(optional)</span></label>
       <textarea class="fi-light" id="f-style-notes" rows="2" placeholder="e.g. Make it feel bridal, airy, spa-like, and premium. Nothing too corporate." oninput="showSaved();"></textarea>
     </div>
 
     <div class="step-nav-light">
       <button class="btn-back-light" onclick="lbGoStep(1)">← Back</button>
-      <button class="btn-next-light" onclick="lbGoStep(3)">Next — Generate →</button>
+      <button class="btn-next-light" onclick="lbGoStep(3)">Next — Effects →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Blurred Prompt + Generate -->
+  <!-- STEP 3: Celebration Effects -->
   <div class="step-panel" id="lb-step-3">
-    <div class="step-label-top">Step 4 of 4 · Generate</div>
-    <div class="step-title-main">Your page is ready to build.</div>
-    <div class="step-sub-main">Builtsy wrote the perfect brief. Click generate and watch it come to life.</div>
+    <div class="step-label-top">Step 4 of 5 · Effects</div>
+    <div class="step-title-main">Pick your <em>vibe.</em></div>
+    <div class="step-sub-main">Add a background animation and a celebration moment when visitors tap.</div>
+
+    <div style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);font-family:'DM Mono',monospace;margin-bottom:8px;">Background Animation</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+      <div class="lb-confetti-card" data-confetti="sparkles" onclick="lbPickConfetti(this,'sparkles')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">❆</div><div style="font-weight:700;font-size:.72rem;color:white;">Sparkles</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Floating particles</div></div>
+      <div class="lb-confetti-card" data-confetti="stars" onclick="lbPickConfetti(this,'stars')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">⭐</div><div style="font-weight:700;font-size:.72rem;color:white;">Stars</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Twinkling stars</div></div>
+      <div class="lb-confetti-card" data-confetti="bubbles" onclick="lbPickConfetti(this,'bubbles')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">○</div><div style="font-weight:700;font-size:.72rem;color:white;">Bubbles</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Rising circles</div></div>
+      <div class="lb-confetti-card" data-confetti="petals" onclick="lbPickConfetti(this,'petals')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">🌸</div><div style="font-weight:700;font-size:.72rem;color:white;">Petals</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Falling petals</div></div>
+      <div class="lb-confetti-card" data-confetti="confetti" onclick="lbPickConfetti(this,'confetti')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">🎊</div><div style="font-weight:700;font-size:.72rem;color:white;">Confetti</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Classic confetti</div></div>
+      <div class="lb-confetti-card sel" data-confetti="none" onclick="lbPickConfetti(this,'none')" style="border:2px solid var(--builtsy-blue);border-radius:10px;padding:10px;cursor:pointer;background:rgba(67,97,238,0.12);text-align:center;"><div style="font-size:1.1rem;margin-bottom:4px;">○</div><div style="font-weight:700;font-size:.72rem;color:white;">None</div><div style="font-size:.62rem;color:rgba(255,255,255,0.35);">Clean &amp; still</div></div>
+    </div>
+    <input type="hidden" id="lb-confetti-type" value="none">
+
+    <div id="lb-confetti-placement" style="display:none;margin-bottom:14px;">
+      <div style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);font-family:'DM Mono',monospace;margin-bottom:8px;">Placement</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="lb-layer-card sel" data-layer="above" onclick="lbPickLayer(this,'above')" style="border:2px solid var(--builtsy-blue);border-radius:10px;padding:10px;cursor:pointer;background:rgba(67,97,238,0.12);text-align:center;"><div style="font-weight:700;font-size:.76rem;color:white;">Above content</div><div style="font-size:.65rem;color:rgba(255,255,255,0.35);">Always visible</div></div>
+        <div class="lb-layer-card" data-layer="below" onclick="lbPickLayer(this,'below')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;"><div style="font-weight:700;font-size:.76rem;color:white;">Below content</div><div style="font-size:.65rem;color:rgba(255,255,255,0.35);">Subtle, behind</div></div>
+      </div>
+      <input type="hidden" id="lb-confetti-layer" value="above">
+    </div>
+
+    <label style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;cursor:pointer;margin-bottom:16px;">
+      <input type="checkbox" id="lb-confetti-burst" checked style="width:16px;height:16px;accent-color:var(--builtsy-blue);">
+      <div>
+        <div style="font-weight:700;font-size:.82rem;color:white;">Confetti burst on link tap</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.35);">Celebration burst when a visitor taps any link</div>
+      </div>
+    </label>
+
+    <div class="step-nav-light">
+      <button class="btn-back-light" onclick="lbGoStep(2)">← Back</button>
+      <button class="btn-next-light" onclick="lbGoStep(4)">Next — Generate →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Blurred Prompt + Generate -->
+  <div class="step-panel" id="lb-step-4">
+    <div class="step-label-top">Step 5 of 5 · Generate</div>
+    <div class="step-title-main">Build your <em>page.</em></div>
+    <div class="step-sub-main">Builtsy wrote your perfect brief. Hit generate and watch it come to life.</div>
 
     <div class="prompt-blur-wrap">
       <div class="prompt-blur-text" id="lb-prompt-preview"></div>
@@ -499,7 +566,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 </div>
 
 <!-- OUTPUT PANEL -->
-<div id="lb-output-panel" style="display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;">
+<div id="lb-output-panel" style="display:none;position:fixed;inset:0;z-index:50;background:#e8e8e0;flex-direction:column;" class="output-panel-root">
   <div class="output-toolbar">
     <span class="output-badge">✓ Ready</span>
     <span class="output-toolbar-title">Your link page — scroll to preview</span>
@@ -510,7 +577,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
   <div class="deploy-bar">
     <span>🚀 <strong style="color:white;">To go live:</strong> Download → drag to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> → instant live link.</span>
   </div>
-  <div class="output-error" id="lb-error-msg" style="display:none;background:#fff0f0;border:1.5px solid #fca5a5;border-radius:10px;padding:14px;color:#b91c1c;font-size:.88rem;margin:16px;"></div>
+  <div class="output-error" id="lb-error-msg" style="display:none;"></div>
   <div id="lb-revise-drawer" style="display:none;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 16px;flex-shrink:0;">
     <div style="display:flex;gap:10px;align-items:flex-start;">
       <textarea id="lb-revise-input" style="flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;" placeholder="Describe what to change…" rows="2"></textarea>
@@ -542,6 +609,8 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 </div>
 
 <script>
+var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? (window.location.protocol + '/\/' + window.location.host) : 'https://builtsy-api-production.up.railway.app';
+
 var currentStep = 0;
 var totalSteps = 5;
 var profilePhotoData = '';
@@ -907,12 +976,11 @@ function buildPrompt(){
 
   // Light theme toggles use checkbox — check .checked not .on class
   function togOn(id){ var el=document.getElementById(id); return el ? (el.checked || el.classList.contains('on')) : false; }
-  var calcOn=togOn('tog-calc');
+  var bookingOn=togOn('tog-booking');
   var smsOn=togOn('tog-sms');
   var formOn=togOn('tog-form');
-  var testOn=togOn('tog-testimonial');
-  var testText=(document.getElementById('f-test-text')||{value:''}).value||'';
-  var testName=(document.getElementById('f-test-name')||{value:''}).value||'';
+  var calcOn=false;
+  var testOn=false;
 
   var p='You are a world-class mobile UI designer. Create a beautiful, conversion-optimized LINK IN BIO page.\n\n';
   p+='PERSON:\n';
@@ -927,15 +995,31 @@ function buildPrompt(){
   if(realLinks.length){p+='\nLINKS (create a button for each):\n';realLinks.forEach(function(l){p+='• '+l.label+': '+l.url+'\n';});}
 
   p+='\nFEATURES:\n';
-  if(calcOn&&svcs.length){
-    p+='• Pricing calculator — REQUIRED. You MUST place exactly this HTML comment where the calculator should appear: <!-- builtsy-calculator-placeholder --> — do NOT skip this, it is required for the interactive calculator to work.\n';
+  if(bookingOn){
+    var calLb=(document.getElementById('f-calendly-lb')||{value:''}).value||'';
+    if(calLb){
+      var cleanCalLb=calLb.replace('https://','').replace('http://','');
+      p+='• ONLINE BOOKING: Embed Calendly widget. URL: https://'+cleanCalLb+'. Add a prominent Book Now button linking to https://'+cleanCalLb+' that opens in a new tab. Also embed the Calendly inline widget: <div class="calendly-inline-widget" data-url="https://'+cleanCalLb+'" style="min-width:320px;height:630px;"></div><scr'+'ipt type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async><\/scr'+'ipt>\n';
+    } else {
+      p+='• ONLINE BOOKING: Add a prominent Book Now button. Add placeholder comment <!-- Replace CALENDLY_URL with your booking link -->\n';
+    }
   }
-  if(smsOn&&phone){
-    var msg=encodeURIComponent('Hi '+name+'! I found you on your link in bio and would love to book a session.');
-    p+='• SMS booking button — LARGE, full-width, prominent at top of page. Opens: sms:'+phone+'?body='+msg+'\n';
+  if(smsOn){
+    var phone=(document.getElementById('f-phone')||{value:''}).value||'';
+    var smsMsg=(document.getElementById('f-sms-message-lb')||{value:''}).value||'Hi! I found you and would love to connect.';
+    if(phone){
+      var msg=encodeURIComponent(smsMsg);
+      p+='• SMS booking button — LARGE, full-width, prominent at top of page. Opens: sms:'+phone+'?body='+msg+'\n';
+    }
   }
-  if(formOn)p+='• Simple contact form (name, email, message)\n';
-  if(testOn&&testText)p+='• Testimonial: "'+testText+'" — '+testName+'\n';
+  if(formOn){
+    var formUrl=(document.getElementById('f-form-url-lb')||{value:''}).value||'';
+    if(formUrl){
+      p+='• INTAKE FORM: Embed this Google Form: '+formUrl+'. Use an iframe embed, width:100%, height:600px.\n';
+    } else {
+      p+='• Simple contact form (name, email, message)\n';
+    }
+  }
 
   // Profile photo — resize to max 300px before embedding to keep prompt small
   if(profilePhotoData && profilePhotoData.length < 200000) {
@@ -963,14 +1047,31 @@ function buildPrompt(){
   p+='• Button shape: '+btnStyle+'\n';
 
   p+='\nDESIGN:\n';
-  p+='• Palette: '+bpPalette.name+'\n';
-  p+='• Background color: '+bpPalette.bg+'\n';
-  p+='• Primary color: '+bpPalette.primary+'\n';
-  p+='• Accent: '+bpPalette.accent+'\n';
-  p+='• Text: '+bpPalette.text+'\n';
+  if (bpPalette.name === 'Your colors') {
+    var lbUserCols = lbGetUserColors ? lbGetUserColors() : [];
+    p+='• Palette: USER BRAND COLORS — use ONLY these: ' + lbUserCols.join(', ') + '. You decide the most beautiful assignment. Do not introduce any other colors.\n';
+  } else {
+    p+='• Palette: '+bpPalette.name+'\n';
+    p+='• Background color: '+bpPalette.bg+'\n';
+    p+='• Primary color: '+bpPalette.primary+'\n';
+    p+='• Accent: '+bpPalette.accent+'\n';
+    p+='• Text: '+bpPalette.text+'\n';
+  }
   if(window._lbStyleVibe) p+='• Aesthetic vibe: '+window._lbStyleVibe+'\n';
   var sn=(document.getElementById('f-style-notes')||{value:''}).value||'';
   if(sn) p+='• Style notes: '+sn+'\n';
+
+  var lbConfettiType = (document.getElementById('lb-confetti-type')||{value:'none'}).value||'none';
+  var lbConfettiLayer = (document.getElementById('lb-confetti-layer')||{value:'above'}).value||'above';
+  var lbConfettiBurst = document.getElementById('lb-confetti-burst') ? document.getElementById('lb-confetti-burst').checked : false;
+  if (lbConfettiType !== 'none') {
+    var lbZIdx = lbConfettiLayer === 'above' ? '9999' : '0';
+    var lbAnimDesc = {sparkles:'floating sparkle particles in the accent color, drifting upward, opacity 0.3-0.5',stars:'twinkling star shapes in gold and primary color',bubbles:'rising hollow circles in primary color at 20% opacity',petals:'soft petal shapes drifting and rotating in palette colors',confetti:'colorful squares tumbling and falling in palette colors'}[lbConfettiType]||'subtle particles';
+    p+='• BACKGROUND ANIMATION: position:fixed div as FIRST child of body, 100vw x 100vh, z-index:'+lbZIdx+', pointer-events:none. Populate with '+lbAnimDesc+'. Use only var/function(){}/for loops.\n';
+  }
+  if (lbConfettiBurst) {
+    p+='• CONFETTI BURST ON TAP: canvas#confetti-canvas position:fixed, z-index:9999, pointer-events:none, display:none. Function launchConfetti() using only var/function(){}/for. 60 particles in palette colors. Call via onclick= on every link button. NO addEventListener.\n';
+  }
 
   p+='\nDESIGN RULES — NON-NEGOTIABLE:\n';
   p+='• MOBILE FIRST — single column, max-width 480px, centered on desktop\n';
@@ -992,14 +1093,14 @@ function buildPrompt(){
   return p;
 }
 
-function goToGenerate(){ lbGoStep(3); }
+function goToGenerate(){ lbGoStep(4); }
 
 async function startGenerate(){
   try{
     var prompt=buildPrompt();
     // Strip photo data from prompt to avoid payload size issues — inject after
     var promptForAPI = prompt.replace(/data:image\/[^;]+;base64,[A-Za-z0-9+\/=]{100,}/g, '[PHOTO_PLACEHOLDER]');
-    var response=await fetch('https://builtsy-api-production.up.railway.app/generate',{
+    var response=await fetch(RAILWAY_URL + '/generate',{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:promptForAPI})
     });
     if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error(err.error||'API error '+response.status);}
@@ -1056,7 +1157,7 @@ function injectCalculator(html){
   calc+='<div><div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;">Your estimate</div><div style="font-size:0.7rem;opacity:0.45;">Per session</div></div>';
   calc+='<div style="font-size:2rem;font-weight:900;color:'+primary+';">$<span id="bc-t">'+def+'</span></div>';
   calc+='</div>';
-  calc+='<script>function bcPick(el,p){document.querySelectorAll(\'[onclick^="bcPick"]\').forEach(function(c){c.style.borderWidth=\'2px\';c.style.borderColor=\'rgba('+r+','+g+','+b+',0.2)\';c.style.background=\'rgba('+r+','+g+','+b+',0.02)\';});el.style.borderColor=\'rgba('+r+','+g+','+b+',0.8)\';el.style.background=\'rgba('+r+','+g+','+b+',0.08)\';var t=document.getElementById(\'bc-t\');if(t)t.textContent=p;}<\/script>';
+  calc+='<scr'+'ipt>function bcPick(el,p){document.querySelectorAll(\'[onclick^="bcPick"]\').forEach(function(c){c.style.borderWidth=\'2px\';c.style.borderColor=\'rgba('+r+','+g+','+b+',0.2)\';c.style.background=\'rgba('+r+','+g+','+b+',0.02)\';});el.style.borderColor=\'rgba('+r+','+g+','+b+',0.8)\';el.style.background=\'rgba('+r+','+g+','+b+',0.08)\';var t=document.getElementById(\'bc-t\');if(t)t.textContent=p;}<\/script>';
   calc+='</div>';
   html=html.replace(/<div[^>]*id=["\']builtsy-calculator-placeholder["\'][^>]*>\s*<\/div>/gi,calc);
   html=html.replace(/<div[^>]*id=["\']builtsy-calculator-placeholder["\'][^>]*\/>/gi,calc);
@@ -1078,7 +1179,7 @@ function downloadPage(){
 function injectConfetti(html) {
   var tog = document.getElementById('tog-confetti');
   if (!tog || !tog.classList.contains('on')) return html;
-  var confettiScript = '<script>'+
+  var confettiScript = '<scr'+'ipt>'+
     '(function(){'+
     'var canvas=document.createElement("canvas");canvas.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;";document.body.appendChild(canvas);'+
     'var ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;'+
@@ -1127,7 +1228,7 @@ function saveProject(){
     var name=(document.getElementById('f-name')||{value:''}).value||'';
     if(!name)return;
     var p={id:'lb-'+Date.now(),type:'link-bio',name:name,industry:'Link in Bio',savedAt:new Date().toISOString(),status:'ready',url:'blueprint-linkbio.html'};
-    fetch('https://builtsy-api-production.up.railway.app/projects/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).catch(function(){});
+    fetch(RAILWAY_URL + '/projects/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).catch(function(){});
     try{var ex=JSON.parse(localStorage.getItem('builtsy-boost-projects')||'[]');var found=false;for(var i=0;i<ex.length;i++){if(ex[i].name===p.name){ex[i]=p;found=true;break;}}if(!found)ex.push(p);localStorage.setItem('builtsy-boost-projects',JSON.stringify(ex));}catch(e){}
   }catch(e){}
 }
@@ -1271,7 +1372,7 @@ renderPalettes();
 updatePhonePreview();
 // Force hide all lb-step panels except step 0
 (function(){
-  for(var i=1;i<=3;i++){
+  for(var i=1;i<=4;i++){
     var p=document.getElementById('lb-step-'+i);
     if(p) p.style.display='none';
   }
@@ -1312,8 +1413,8 @@ function lbGoStep(n) {
     lbRebuild(); return;
   }
   if (lbCurrentStep === 0 && n === 1) lbLoadServiceSuggestions();
-  if (lbCurrentStep === 1 && n === 2) lbLoadPaletteSuggestions();
-  if (n === 3) {
+  if (lbCurrentStep === 1 && n === 2) lbSwitchPaletteTab('light');
+  if (n === 4) {
     var box = document.getElementById('lb-prompt-preview');
     if (box) {
       setTimeout(function() {
@@ -1324,9 +1425,9 @@ function lbGoStep(n) {
   }
   // Show netlify banner only on step 4
   var nb=document.getElementById('lb-netlify-banner');
-  if(nb) nb.style.display=(n===3)?'block':'none';
+  if(nb) nb.style.display=(n===4)?'block':'none';
   // Hide all panels with inline style (bulletproof)
-  for(var i=0;i<=3;i++){
+  for(var i=0;i<=4;i++){
     var panel=document.getElementById('lb-step-'+i);
     if(panel) panel.style.display='none';
   }
@@ -1376,7 +1477,7 @@ function lbLoadServiceSuggestions() {
     + 'Format as JSON array: [{"name":"Service name","price":75},{"name":"...","price":...}]. '
     + 'Keep service names short (2-4 words). Prices should be realistic. Output ONLY valid JSON.';
 
-  fetch('https://builtsy-api-production.up.railway.app/grow', {
+  fetch(RAILWAY_URL + '/grow', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({prompt: prompt})
   })
@@ -1549,7 +1650,7 @@ function lbLoadPaletteSuggestions() {
     + 'Palettes: ' + allNames.join(', ') + '. '
     + 'Respond ONLY with valid JSON: [{"name":"...","vibe":"...","recommended":true|false},...]';
 
-  fetch('https://builtsy-api-production.up.railway.app/grow', {
+  fetch(RAILWAY_URL + '/grow', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({prompt: prompt})
   })
@@ -1654,7 +1755,7 @@ function lbGenerate(){
   document.getElementById('lb-gen-msg').textContent=lbGenMsgsArr[0];
   lbGenInterval=setInterval(function(){msgIdx=(msgIdx+1)%lbGenMsgsArr.length;document.getElementById('lb-gen-msg').textContent=lbGenMsgsArr[msgIdx];},3000);
 
-  fetch('https://builtsy-api-production.up.railway.app/generate',{
+  fetch(RAILWAY_URL + '/generate',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({prompt:promptForAPI})
   })
@@ -1748,7 +1849,7 @@ function lbSubmitRevise(){
   document.getElementById('lb-gen-overlay').style.justifyContent='center';
   document.getElementById('lb-gen-msg').textContent='Applying your changes…';
   var prompt='Here is the current page HTML:\n\n'+lbGeneratedHTML+'\n\nPlease make these revisions: '+note+'\n\nOutput ONLY the complete revised HTML. No explanation, no markdown fences.';
-  fetch('https://builtsy-api-production.up.railway.app/generate',{
+  fetch(RAILWAY_URL + '/generate',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({prompt:prompt})
   })
@@ -1768,6 +1869,126 @@ function lbSubmitRevise(){
   })
   .catch(function(err){document.getElementById('lb-gen-overlay').style.display='none';lbShowError('Revision error: '+err.message);});
 }
+
+// ── LINKBIO FEATURE TOGGLE FUNCTIONS ──
+function lbToggleBookingField() {
+  var wrap = document.getElementById('lb-booking-field-wrap');
+  var tog = document.getElementById('tog-booking');
+  if (wrap && tog) wrap.style.display = tog.checked ? 'block' : 'none';
+}
+function lbToggleSmsFields() {
+  var wrap = document.getElementById('lb-sms-fields-wrap');
+  var tog = document.getElementById('tog-sms');
+  if (wrap && tog) wrap.style.display = tog.checked ? 'block' : 'none';
+}
+function lbToggleFormField() {
+  var wrap = document.getElementById('lb-form-field-wrap');
+  var tog = document.getElementById('tog-form');
+  if (wrap && tog) wrap.style.display = tog.checked ? 'block' : 'none';
+}
+
+// ── LINKBIO PALETTE TAB SYSTEM ──
+var lbCurrentPaletteTab = 'light';
+
+function lbSwitchPaletteTab(tab) {
+  lbCurrentPaletteTab = tab;
+  ['light','dark','mono'].forEach(function(t) {
+    var btn = document.getElementById('lb-ptab-' + t);
+    if (!btn) return;
+    if (t === tab) {
+      btn.style.background = 'var(--builtsy-blue)';
+      btn.style.color = 'white';
+      btn.style.border = '2px solid var(--builtsy-blue)';
+    } else {
+      btn.style.background = 'white';
+      btn.style.color = '#9ca3af';
+      btn.style.border = '1.5px solid #e5e7eb';
+    }
+  });
+  document.querySelectorAll('#lb-palette-grid .palette-card-light').forEach(function(c) {
+    c.style.display = c.getAttribute('data-tab') === tab ? 'block' : 'none';
+  });
+  var aiCard = document.getElementById('lb-pal-ai-card');
+  var customCard = document.getElementById('lb-pal-custom-card');
+  if (aiCard) aiCard.style.border = '1.5px solid #e5e7eb';
+  if (customCard) customCard.style.border = '1.5px solid #e5e7eb';
+}
+
+function lbPickSpecial(el, type) {
+  document.querySelectorAll('#lb-palette-grid .palette-card-light').forEach(function(c){ c.style.border = '1.5px solid #e5e7eb'; });
+  var aiCard = document.getElementById('lb-pal-ai-card');
+  var customCard = document.getElementById('lb-pal-custom-card');
+  if (aiCard) aiCard.style.border = '1.5px solid #e5e7eb';
+  if (customCard) customCard.style.border = '1.5px solid #e5e7eb';
+  el.style.border = '2px solid var(--builtsy-blue)';
+  var picker = document.getElementById('lb-custom-hex-fields');
+  if (type === 'custom') {
+    if (picker) picker.style.display = 'block';
+    bpPalette = { bg:'', primary:'', accent:'', surface:'', text:'', name:'Your colors' };
+  } else {
+    if (picker) picker.style.display = 'none';
+    bpPalette = { bg:'', primary:'', accent:'', surface:'', text:'', name:'AI chooses' };
+  }
+}
+
+function lbPickTabPalette(el, bg, pri, acc, sur, txt, name) {
+  document.querySelectorAll('#lb-palette-grid .palette-card-light').forEach(function(c){ c.style.border = '1.5px solid #e5e7eb'; });
+  var aiCard = document.getElementById('lb-pal-ai-card');
+  var customCard = document.getElementById('lb-pal-custom-card');
+  if (aiCard) aiCard.style.border = '1.5px solid #e5e7eb';
+  if (customCard) customCard.style.border = '1.5px solid #e5e7eb';
+  var picker = document.getElementById('lb-custom-hex-fields');
+  if (picker) picker.style.display = 'none';
+  el.style.border = '2px solid var(--builtsy-blue)';
+  bpPalette = { bg:bg, primary:pri, accent:acc, surface:sur, text:txt, name:name };
+}
+
+// Your Colors picker
+var lbUcCount = 3;
+function lbUcUpdate(idx, val) {
+  var swatch = document.getElementById('lb-uc-swatch-' + idx);
+  if (swatch) swatch.style.background = val;
+}
+function lbUcAddColor() {
+  if (lbUcCount >= 5) return;
+  var slot = document.getElementById('lb-uc-slot-' + lbUcCount);
+  if (slot) slot.style.display = 'block';
+  lbUcCount++;
+  if (lbUcCount >= 5) {
+    var btn = document.getElementById('lb-uc-add-btn');
+    if (btn) btn.style.display = 'none';
+  }
+}
+function lbGetUserColors() {
+  var colors = [];
+  for (var i = 0; i < 5; i++) {
+    var input = document.getElementById('lb-uc-input-' + i);
+    var slot = document.getElementById('lb-uc-slot-' + i);
+    var visible = i < 3 || (slot && slot.style.display !== 'none');
+    if (input && visible) colors.push(input.value);
+  }
+  return colors;
+}
+
+// ── LINKBIO CONFETTI FUNCTIONS ──
+function lbPickConfetti(el, type) {
+  document.querySelectorAll('.lb-confetti-card').forEach(function(c){ c.style.border = '1.5px solid #e5e7eb'; });
+  el.style.border = '2px solid var(--builtsy-blue)';
+  var hiddenEl = document.getElementById('lb-confetti-type');
+  if (hiddenEl) hiddenEl.value = type;
+  var placement = document.getElementById('lb-confetti-placement');
+  if (placement) placement.style.display = type !== 'none' ? 'block' : 'none';
+}
+
+function lbPickLayer(el, layer) {
+  document.querySelectorAll('.lb-layer-card').forEach(function(c){ c.style.border = '1.5px solid #e5e7eb'; });
+  el.style.border = '2px solid var(--builtsy-blue)';
+  var hiddenEl = document.getElementById('lb-confetti-layer');
+  if (hiddenEl) hiddenEl.value = layer;
+}
+
+// Init palette tab on load
+lbSwitchPaletteTab('light');
 </script>
 </body>
 </html>
