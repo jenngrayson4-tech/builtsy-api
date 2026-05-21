@@ -46,23 +46,26 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);bac
 .step-line.done{background:var(--lime);}
 
 /* ── STEP PANELS ── */
-.step-panel{display:none;padding-top:24px;}
+.step-panel{display:none;padding-top:28px;}
 .step-panel.active{display:block;}
-.step-label-top{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:5px;font-family:'DM Mono',monospace;}
-.step-title-main{font-family:'Playfair Display',serif;font-size:1.35rem;color:white;margin-bottom:5px;}
-.step-sub-main{color:rgba(255,255,255,0.5);font-size:.85rem;margin-bottom:22px;line-height:1.6;}
+/* First .sl inside a panel gets less top margin since the step title provides spacing */
+.step-panel .sl:first-of-type{margin-top:0;}
+.step-label-top{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:6px;font-family:'DM Mono',monospace;}
+.step-title-main{font-family:'DM Sans',sans-serif;font-size:1.65rem;font-weight:800;color:white;margin-bottom:6px;letter-spacing:-.01em;text-transform:uppercase;}
+.step-sub-main{color:rgba(255,255,255,0.38);font-size:.83rem;margin-bottom:28px;line-height:1.65;}
 
 /* ── FORM ELEMENTS ── */
-.field{margin-bottom:16px;}
-.field label{display:block;font-weight:700;font-size:.68rem;margin-bottom:6px;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;}
-.field label .opt{font-weight:400;color:rgba(255,255,255,0.35);font-size:.7rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
-.fi{width:100%;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s;}
-.fi:focus{border-color:var(--builtsy-blue);}
-.fi::placeholder{color:rgba(255,255,255,0.25);}
+.field{margin-bottom:20px;}
+.field label{display:block;font-weight:700;font-size:.64rem;margin-bottom:7px;color:var(--builtsy-blue);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .hint-inline{font-weight:400;color:rgba(255,255,255,0.3);font-size:.65rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;margin-left:6px;}
+.field label .opt{font-weight:400;color:rgba(255,255,255,0.3);font-size:.65rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+.fi{width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fi:focus{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.fi::placeholder{color:rgba(255,255,255,0.2);}
 textarea.fi{resize:vertical;min-height:80px;}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.field-hint{font-size:.7rem;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;}
-.sl{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:24px 0 11px;display:block;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);}
+.field-hint{font-size:.68rem;color:rgba(255,255,255,0.28);margin-top:5px;line-height:1.55;}
+.sl{font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin:32px 0 12px;display:block;padding:0;border-left:none;}
 
 /* ── TEMPLATE CARDS ── */
 .tpl-card{border:2px solid rgba(255,255,255,0.1);border-radius:14px;margin-bottom:12px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.04);overflow:hidden;user-select:none;}
@@ -114,29 +117,29 @@ textarea.fi{resize:vertical;min-height:80px;}
 .btn-apply-custom{width:100%;margin-top:12px;background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
 
 /* ── SERVICE BLOCKS ── */
-.svc-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.svc-block{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;margin-bottom:8px;overflow:hidden;}
 .svc-block-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;}
 .svc-block-title{font-size:.85rem;font-weight:700;color:white;}
-.svc-block-chevron{font-size:.7rem;color:rgba(255,255,255,0.35);transition:transform .2s;}
+.svc-block-chevron{font-size:.7rem;color:rgba(255,255,255,0.25);transition:transform .2s;}
 .svc-block-chevron.open{transform:rotate(180deg);}
-.svc-block-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,0.08);}
+.svc-block-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,0.06);}
 .svc-block-body.open{display:block;}
 
 /* ── PRICING BLOCKS ── */
-.price-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
-.price-block.popular{border-color:var(--yellow);background:rgba(232,212,0,0.06);}
+.price-block{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.price-block.popular{border-color:rgba(232,212,0,0.35);background:rgba(232,212,0,0.04);}
 .price-block-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px;font-family:'DM Mono',monospace;}
 .popular-toggle{display:flex;align-items:center;gap:6px;margin-bottom:8px;cursor:pointer;}
 .popular-toggle input[type=radio]{accent-color:var(--yellow);width:14px;height:14px;cursor:pointer;}
-.popular-toggle span{font-size:.72rem;color:rgba(255,255,255,0.45);font-family:'DM Mono',monospace;}
+.popular-toggle span{font-size:.72rem;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;}
 
 /* ── TESTIMONIAL BLOCKS ── */
-.testi-block{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
-.testi-num{font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:8px;}
+.testi-block{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+.testi-num{font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;margin-bottom:8px;}
 
 /* ── UPLOAD ZONES ── */
 .upload-zone-wrap{margin-bottom:12px;}
-.upload-zone-label-top{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-family:'DM Mono',monospace;margin-bottom:5px;display:block;}
+.upload-zone-label-top{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
 .upload-zone{border:none;border-radius:10px;padding:0;text-align:center;cursor:pointer;transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;min-height:140px;overflow:hidden;}
 .upload-zone-placeholder{position:absolute;inset:0;background:linear-gradient(180deg,#E4E4E6 0%,#CECECE 20%,#B8B8BC 45%,#A4A4A8 70%,#989898 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;transition:filter .2s;}
 .upload-zone:hover .upload-zone-placeholder{filter:brightness(0.93);}
@@ -210,14 +213,14 @@ textarea.fi{resize:vertical;min-height:80px;}
 .left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
 /* ── SMART CHIPS ── */
-.chip-hint{font-size:.62rem;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-top:6px;margin-bottom:5px;}
-.chips-row{display:flex;flex-wrap:wrap;gap:6px;}
-.chip-s{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:4px 12px;font-size:.73rem;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;line-height:1.5;}
-.chip-s:hover{border-color:rgba(200,224,0,0.35);color:var(--lime);}
-.chip-s.used{background:rgba(200,224,0,0.1);border-color:rgba(200,224,0,0.3);color:var(--lime);}
+.chip-hint{font-size:.6rem;color:rgba(255,255,255,0.22);font-family:'DM Mono',monospace;letter-spacing:.05em;margin-top:8px;margin-bottom:6px;text-transform:uppercase;}
+.chips-row{display:flex;flex-wrap:wrap;gap:5px;}
+.chip-s{background:rgba(255,255,255,0.04);border:none;border-radius:100px;padding:5px 13px;font-size:.72rem;color:rgba(255,255,255,0.4);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;line-height:1.5;}
+.chip-s:hover{background:rgba(67,97,238,0.12);color:rgba(255,255,255,0.8);}
+.chip-s.used{background:rgba(67,97,238,0.15);color:rgba(255,255,255,0.9);font-weight:600;}
 
 /* ── INCOME CALCULATOR ── */
-.ig-box{background:rgba(67,97,238,0.08);border:1.5px solid rgba(67,97,238,0.2);border-radius:12px;padding:16px;margin-bottom:20px;}
+.ig-box{background:rgba(67,97,238,0.05);border:1px solid rgba(67,97,238,0.12);border-radius:12px;padding:14px;margin-bottom:20px;}
 .ig-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
 .ig-icon{font-size:1.2rem;flex-shrink:0;}
 .ig-title{font-weight:700;font-size:.88rem;color:white;margin-bottom:2px;}
@@ -353,9 +356,9 @@ body.ms-s9 .topnav{display:none;}
 
     <div class="left-inner">
 
-      <div style="background:rgba(200,224,0,0.07);border:1px solid rgba(200,224,0,0.15);border-radius:10px;padding:10px 14px;margin:16px 0 4px;display:flex;align-items:flex-start;gap:10px;">
-        <span style="font-size:1rem;flex-shrink:0;">✦</span>
-        <span style="font-size:.78rem;color:rgba(255,255,255,0.65);line-height:1.55;">Fill in what you know — <strong style="color:var(--lime);">Builtsy AI writes the rest.</strong> Nothing is required.</span>
+      <div style="padding:12px 0 0;margin-bottom:0;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:.72rem;color:rgba(255,255,255,0.22);flex-shrink:0;">✦</span>
+        <span style="font-size:.72rem;color:rgba(255,255,255,0.28);line-height:1.5;font-family:'DM Sans',sans-serif;">Fill in what you know — <strong style="color:rgba(255,255,255,0.45);font-weight:600;">Builtsy AI writes the rest.</strong> Nothing is required.</span>
       </div>
 
       <!-- ══ STEP 1 (placeholder — real Step 1 is the full-page welcome screen) ══ -->
