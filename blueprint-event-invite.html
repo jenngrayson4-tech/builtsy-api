@@ -5,574 +5,189 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event Invite Blueprint — Builtsy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #12192B;
+    --dark: #0D1220;
     --lime: #C8E000;
     --pink: #ee70bc;
-    --iris: #8ba2f0;
     --builtsy-blue: #4361EE;
+    --iris: #8ba2f0;
     --white: #ffffff;
     --cream: #fafaf7;
     --mid: #6b7280;
-    --border: #e5e7eb;
+    --border: rgba(255,255,255,0.1);
     --radius: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--navy);
+    background: #12192B;
+    color: white;
     min-height: 100vh;
   }
 
-  /* ── TOP BAR ── */
-  .topbar {
-    background: var(--navy);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .topbar-logo {
-    font-family: 'Playfair Display', serif;
-    color: var(--lime);
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .topbar-tag {
-    background: var(--builtsy-blue);
-    color: var(--white);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-
-  /* ── WELCOME BANNER ── */
-  .stop-banner {
-    background: var(--builtsy-blue);
-    color: var(--white);
-    text-align: center;
-    padding: 8px 24px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: .04em;
-  }
-
-  /* ── HERO ── */
-  .bp-hero {
-    background: var(--navy);
-    color: var(--white);
-    padding: 48px 24px 40px;
-    text-align: center;
-  }
-  .bp-hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    line-height: 1.15;
-    margin-bottom: 12px;
-  }
-  .bp-hero h1 span { color: var(--lime); }
-  .bp-hero p {
-    color: rgba(255,255,255,0.7);
-    font-size: 1rem;
-    max-width: 520px;
-    margin: 0 auto;
-  }
+  /* ── TOP NAV ── */
+  .topnav{height:52px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:200;}
+  .logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;text-decoration:none;color:white;display:inline-flex;align-items:baseline;gap:0;}
+  .logo-text .logo-sy{color:var(--pink);font-style:italic;}
+  .logo-text .logo-dot{color:var(--builtsy-blue);font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
+  .tn-tag{background:rgba(67,97,238,0.15);color:var(--builtsy-blue);border:1px solid rgba(67,97,238,0.35);font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+  .tn-right{display:flex;align-items:center;gap:0.75rem;}
+  .tn-save{font-size:0.72rem;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;}
+  .tn-back{font-size:0.75rem;color:var(--builtsy-blue);font-family:'DM Sans',sans-serif;font-weight:700;text-decoration:none;cursor:pointer;transition:opacity .15s;}
+  .tn-back:hover{opacity:0.7;}
 
   /* ── STEP PROGRESS ── */
-  .step-progress {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    padding: 24px 24px 0;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .step-dot {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    background: var(--white);
-    color: var(--mid);
-    font-size: 0.78rem;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .3s;
-    flex-shrink: 0;
-    font-family: 'DM Mono', monospace;
-  }
-  .step-dot.active { background: var(--builtsy-blue); border-color: var(--builtsy-blue); color: white; }
-  .step-dot.done { background: var(--lime); border-color: var(--lime); color: var(--navy); }
-  .step-line { flex: 1; height: 2px; background: var(--border); min-width: 20px; }
-  .step-line.done { background: var(--lime); }
+  .step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;max-width:480px;margin:0 auto;}
+  .step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;cursor:pointer;}
+  .step-dot.active{background:var(--builtsy-blue);border-color:var(--builtsy-blue);color:white;}
+  .step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+  .step-line{flex:1;height:2px;background:rgba(255,255,255,0.1);min-width:4px;}
+  .step-line.done{background:var(--lime);}
 
-  /* ── FORM CARD ── */
-  .form-wrap {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 16px 80px;
-  }
-  .step-panel { display: none; padding-top: 28px; min-height: 200px; }
-  .step-panel.active { display: block; }
-  .step-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--pink);
-    margin-bottom: 6px;
-    font-family: 'DM Mono', monospace;
-  }
-  .step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-  .step-sub {
-    color: var(--mid);
-    font-size: 0.9rem;
-    margin-bottom: 28px;
-  }
+  /* ── FORM WRAP ── */
+  .form-wrap{max-width:440px;margin:0 auto;padding:0 16px 80px;}
+  .step-panel{display:none;padding-top:28px;min-height:200px;}
+  .step-panel.active{display:block;}
+  .step-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--builtsy-blue);margin-bottom:6px;font-family:'DM Mono',monospace;}
+  .step-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:white;margin-bottom:6px;line-height:1.1;letter-spacing:-.01em;}
+  .step-title em{color:var(--lime);font-style:italic;}
+  .step-sub{color:rgba(255,255,255,0.38);font-size:.83rem;margin-bottom:28px;line-height:1.65;}
 
   /* ── FORM ELEMENTS ── */
-  .field { margin-bottom: 22px; }
-  .field label {
-    display: block;
-    font-weight: 700;
-    font-size: 0.72rem;
-    margin-bottom: 7px;
-    color: #4361EE;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    font-family: 'DM Mono', monospace;
-  }
-  .field label .opt {
-    font-weight: 400;
-    color: var(--mid);
-    font-size: 0.72rem;
-    text-transform: none;
-    letter-spacing: 0;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .field input, .field textarea, .field select {
-    width: 100%;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    color: var(--navy);
-    background: var(--white);
-    transition: border-color .2s;
-    outline: none;
-  }
-  .field input:focus, .field textarea:focus { border-color: var(--navy); }
-  .field textarea { resize: vertical; min-height: 90px; }
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-weight:700;font-size:.64rem;margin-bottom:7px;color:var(--builtsy-blue);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+  .field label .opt{font-weight:400;color:rgba(255,255,255,0.3);font-size:.65rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;}
+  .field input, .field textarea, .field select{width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
+  .field input::placeholder, .field textarea::placeholder{color:rgba(255,255,255,0.2);}
+  .field select option{background:#12192B;color:white;}
+  .field textarea{resize:vertical;min-height:90px;}
 
   /* ── CHIP SELECTORS ── */
-  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    border: 1.5px solid rgba(139,162,240,0.35);
-    border-radius: 24px;
-    padding: 7px 16px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    background: var(--white);
-    color: var(--navy);
-    transition: all .2s;
-    user-select: none;
-  }
-  .chip:hover { border-color: var(--builtsy-blue); background: rgba(67,97,238,0.06); }
-  .chip.selected { background: var(--navy); color: var(--lime); border-color: var(--navy); font-weight: 600; }
-  .chip.multi.selected { background: var(--iris); color: var(--navy); border-color: var(--iris); }
+  .chip-group{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{border:1.5px solid rgba(255,255,255,0.15);border-radius:100px;padding:7px 16px;font-size:.82rem;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);transition:all .2s;user-select:none;}
+  .chip:hover{border-color:rgba(255,255,255,0.35);color:white;}
+  .chip.selected{background:rgba(67,97,238,0.2);color:white;border-color:var(--builtsy-blue);font-weight:600;}
+  .chip.multi.selected{background:rgba(67,97,238,0.2);color:white;border-color:var(--builtsy-blue);}
 
   /* ── PHOTO UPLOAD ── */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
-    text-align: center;
-    cursor: pointer;
-    transition: all .2s;
-    background: var(--white);
-    position: relative;
-  }
-  .upload-zone:hover { border-color: var(--navy); }
-  .upload-zone.has-file { border-color: var(--lime); background: #f7fde8; }
-  .upload-zone input[type=file] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
-  .upload-icon { font-size: 1.8rem; margin-bottom: 8px; }
-  .upload-label { font-size: 0.85rem; color: var(--mid); }
-  .upload-label strong { color: var(--navy); }
-  .upload-preview {
-    display: none;
-    margin-top: 12px;
-    font-size: 0.8rem;
-    color: var(--navy);
-    font-weight: 600;
-  }
+  .upload-zone{border:1.5px dashed rgba(255,255,255,0.12);border-radius:12px;background:rgba(255,255,255,0.03);text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;padding:28px;}
+  .upload-zone:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.06);}
+  .upload-zone.has-file{border-color:var(--lime);background:rgba(200,224,0,0.04);border-style:solid;}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:1.8rem;margin-bottom:8px;}
+  .upload-label{font-size:0.85rem;color:rgba(255,255,255,0.4);}
+  .upload-label strong{color:rgba(255,255,255,0.7);}
+  .upload-preview{display:none;margin-top:12px;font-size:0.8rem;color:white;font-weight:600;}
 
   /* ── GALLERY UPLOAD GRID ── */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .gallery-slot {
-    aspect-ratio: 1;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: var(--mid);
-    cursor: pointer;
-    background: var(--white);
-    transition: all .2s;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    padding: 8px;
-  }
-  .gallery-slot:hover { border-color: var(--navy); }
-  .gallery-slot.filled { border-color: var(--lime); background: #f7fde8; }
-  .gallery-slot input[type=file] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer;
-  }
-  .gallery-slot-label { pointer-events: none; font-size: 0.72rem; line-height: 1.3; }
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;}
+  .gallery-slot{aspect-ratio:1;border:1.5px dashed rgba(255,255,255,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.35);cursor:pointer;background:rgba(255,255,255,0.03);transition:all .2s;position:relative;overflow:hidden;text-align:center;padding:8px;}
+  .gallery-slot:hover{border-color:var(--builtsy-blue);background:rgba(67,97,238,0.06);}
+  .gallery-slot.filled{border-color:var(--lime);background:rgba(200,224,0,0.04);border-style:solid;}
+  .gallery-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+  .gallery-slot-label{pointer-events:none;font-size:0.72rem;line-height:1.3;}
 
   /* ── RSVP SECTION ── */
-  .rsvp-question-row {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-  .rsvp-question-row input { flex: 1; }
-  .rsvp-remove-btn {
-    background: none;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    width: 36px; height: 42px;
-    cursor: pointer;
-    color: var(--mid);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    transition: all .2s;
-  }
-  .rsvp-remove-btn:hover { border-color: var(--pink); color: var(--pink); }
-  .add-question-btn {
-    background: none;
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 10px 16px;
-    font-size: 0.85rem;
-    color: var(--mid);
-    cursor: pointer;
-    width: 100%;
-    font-family: 'DM Sans', sans-serif;
-    transition: all .2s;
-    margin-top: 4px;
-  }
-  .add-question-btn:hover { border-color: var(--navy); color: var(--navy); }
+  .rsvp-question-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;}
+  .rsvp-question-row input{flex:1;}
+  .rsvp-remove-btn{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;width:36px;height:42px;cursor:pointer;color:rgba(255,255,255,0.4);font-size:1.1rem;flex-shrink:0;transition:all .2s;}
+  .rsvp-remove-btn:hover{border-color:var(--pink);color:var(--pink);}
+  .add-question-btn{background:none;border:1.5px dashed rgba(255,255,255,0.12);border-radius:var(--radius);padding:10px 16px;font-size:0.85rem;color:rgba(255,255,255,0.4);cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:4px;}
+  .add-question-btn:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);}
 
   /* ── HELP LIST MODULE ── */
-  .helplist-chip{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid #e5e7eb;border-radius:8px;padding:6px 10px;font-size:.8rem;font-weight:500;color:var(--navy);}
-  .helplist-chip input{border:none;outline:none;font-size:.8rem;font-weight:500;color:var(--navy);min-width:60px;max-width:140px;font-family:'DM Sans',sans-serif;}
-  .helplist-chip .del-chip{cursor:pointer;color:#9ca3af;font-size:1.1rem;line-height:1;}
+  .helplist-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:.8rem;font-weight:500;color:white;}
+  .helplist-chip input{border:none;outline:none;font-size:.8rem;font-weight:500;color:white;background:transparent;min-width:60px;max-width:140px;font-family:'DM Sans',sans-serif;}
+  .helplist-chip .del-chip{cursor:pointer;color:rgba(255,255,255,0.35);font-size:1.1rem;line-height:1;}
   .helplist-chip .del-chip:hover{color:#ef4444;}
   @keyframes lb-wave{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-16px);}}
 
   /* ── NAV BUTTONS ── */
-  .step-nav {
-    display: flex;
-    gap: 12px;
-    margin-top: 32px;
-  }
-  .btn-back {
-    background: none;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--mid);
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .btn-back:hover { border-color: var(--navy); color: var(--navy); }
-  .btn-next {
-    flex: 1;
-    background: var(--lime);
-    color: var(--navy);
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .btn-next:hover { background: #b8d000; }
-  .btn-generate {
-    flex: 1;
-    background: var(--navy);
-    color: var(--lime);
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .btn-generate:hover { background: #1e2d4a; }
+  .step-nav{display:flex;gap:10px;margin-top:24px;}
+  .btn-back{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;}
+  .btn-back:hover{border-color:rgba(255,255,255,0.4);color:white;}
+  .btn-next{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
+  .btn-next:hover{background:#b8d000;}
+  .btn-generate{flex:1;background:linear-gradient(135deg,var(--lime),#a8c000);color:var(--navy);border:none;border-radius:10px;padding:13px 20px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn-generate:hover{filter:brightness(1.07);}
 
-  /* ── GENERATING STATE ── */
-  .generating-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(18,25,43,0.92);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-    padding: 24px;
-  }
-  .generating-overlay.active { display: flex; }
-  .generating-spinner {
-    width: 52px; height: 52px;
-    border: 3px solid rgba(200,224,0,0.2);
-    border-top-color: var(--lime);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .generating-title {
-    font-family: 'Playfair Display', serif;
-    color: var(--white);
-    font-size: 1.4rem;
-  }
-  .generating-sub {
-    color: rgba(255,255,255,0.6);
-    font-size: 0.9rem;
-    max-width: 320px;
-  }
-  .generating-messages {
-    color: var(--lime);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    min-height: 20px;
-  }
+  /* ── GENERATING OVERLAY ── */
+  .generating-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.96);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
+  .generating-overlay.active{display:flex;}
+  .generating-spinner{width:44px;height:44px;border:3px solid rgba(200,224,0,.2);border-top-color:var(--lime);border-radius:50%;animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .generating-title{font-family:'Playfair Display',serif;color:white;font-size:1.25rem;}
+  .generating-sub{color:rgba(255,255,255,.45);font-size:.85rem;max-width:300px;line-height:1.6;}
+  .generating-messages{color:var(--lime);font-family:'DM Mono',monospace;font-size:.75rem;min-height:20px;}
 
   /* ── OUTPUT PANEL ── */
-  #output-panel {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    background: #e8e8e0;
-    flex-direction: column;
-  }
-  #output-panel.active { display: flex; }
-  .output-toolbar {
-    background: var(--navy);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-  }
-  .output-badge {
-    background: var(--lime);
-    color: var(--navy);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-    white-space: nowrap;
-  }
-  .output-toolbar-title {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.8rem;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .btn-download {
-    background: var(--lime);
-    color: var(--navy);
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-  .btn-download:hover { background: #b8d000; }
-  .btn-revise {
-    background: none;
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-  .btn-revise:hover { border-color: rgba(255,255,255,0.5); color: white; }
-  .btn-rebuild {
-    background: none;
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-  .btn-rebuild:hover { border-color: rgba(255,255,255,0.5); color: white; }
-  .output-preview-wrap {
-    flex: 1;
-    overflow: auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 24px 20px;
-    min-height: 0;
-  }
-  .output-preview-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    overflow: hidden;
-    width: 390px;
-    flex-shrink: 0;
-  }
-  #preview-frame {
-    width: 390px;
-    height: calc(100vh - 120px);
-    min-height: 600px;
-    border: none;
-    display: block;
-    margin: 0 auto;
-  }
-  .error-msg {
-    background: #fff0f0;
-    border: 1.5px solid #fca5a5;
-    border-radius: var(--radius);
-    padding: 16px;
-    color: #b91c1c;
-    font-size: 0.9rem;
-    margin: 20px;
-    display: none;
-  }
-  .error-msg.active { display: block; }
+  #output-panel{display:none;position:fixed;inset:0;z-index:300;background:#e8e8e0;flex-direction:column;}
+  #output-panel.active{display:flex;}
+  .output-toolbar{background:#0D0D0D;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+  .output-badge{background:var(--lime);color:var(--navy);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
+  .output-toolbar-title{color:rgba(255,255,255,.6);font-size:.78rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .btn-download{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .btn-download:hover{background:#b8d000;}
+  .btn-revise{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;}
+  .btn-revise:hover{border-color:rgba(255,255,255,.5);color:white;}
+  .btn-rebuild{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;}
+  .btn-rebuild:hover{border-color:rgba(255,255,255,.5);color:white;}
+  .output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
+  .output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;}
+  #preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;margin:0 auto;}
+  .error-msg{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:var(--radius);padding:16px;color:#fca5a5;font-size:0.9rem;margin:20px;display:none;}
+  .error-msg.active{display:block;}
 
   /* ── REVISE DRAWER ── */
-  #revise-panel {
-    display: none;
-    background: var(--navy);
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 14px 16px;
-    flex-shrink: 0;
-  }
-  #revise-panel.active { display: flex; gap: 10px; align-items: flex-start; }
-  #revise-input {
-    flex: 1;
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    background: rgba(255,255,255,0.08);
-    color: white;
-    resize: none;
-    min-height: 42px;
-    outline: none;
-  }
-  #revise-input::placeholder { color: rgba(255,255,255,0.4); }
-  #revise-input:focus { border-color: rgba(255,255,255,0.4); }
-  .btn-revise-submit {
-    background: var(--pink);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all .2s;
-    flex-shrink: 0;
-  }
-  .btn-revise-submit:hover { background: #d45fa8; }
+  #revise-panel{display:none;background:#0D0D0D;border-top:1px solid rgba(255,255,255,.08);padding:11px 14px;flex-shrink:0;}
+  #revise-panel.active{display:flex;gap:10px;align-items:flex-start;}
+  #revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
+  #revise-input::placeholder{color:rgba(255,255,255,.3);}
+  .btn-revise-submit{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px 13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;flex-shrink:0;}
 
-  .chip-loading {
-    font-size: 0.8rem;
-    color: var(--mid);
-    font-style: italic;
-    padding: 6px 2px;
-    animation: pulse 1.2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .step-nav { flex-direction: column; }
-    .output-actions { flex-direction: column; }
+  .chip-loading{font-size:0.8rem;color:rgba(255,255,255,0.35);font-style:italic;padding:6px 2px;animation:pulse 1.2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+  /* ── SECTION LABEL ── */
+  .sl{font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);margin:32px 0 12px;display:block;padding:0;border-left:none;}
+
+  /* ── FI-LIGHT (helplist inputs) ── */
+  .fi-light{width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .fi-light:focus{border-color:var(--builtsy-blue);box-shadow:0 0 0 3px rgba(67,97,238,.18);}
+  .fi-light::placeholder{color:rgba(255,255,255,0.2);}
+
+  /* ── TOGGLE SWITCH DARK ── */
+  .switch{position:relative;display:inline-block;width:38px;height:22px;}
+  .switch input{opacity:0;width:0;height:0;}
+  .track{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.12);border-radius:22px;transition:.3s;}
+  .thumb{position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
+  .switch input:checked + .track{background:var(--builtsy-blue);}
+  .switch input:checked ~ .thumb{transform:translateX(16px);}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:600px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .step-nav{flex-direction:column;}
   }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <a href="dashboard.html" class="topbar-logo">builtsy</a>
-  <span class="topbar-tag">✦ Event Invite</span>
-</div>
-
-<!-- WELCOME BANNER -->
-<div class="stop-banner">
-  ✦ Builtsy writes the perfect prompt and designs your entire invite — download and drag to <a href="https://netlify.com/drop" target="_blank" style="color:var(--lime);text-decoration:underline;">Netlify Drop</a> in seconds ✦
-</div>
-
-<!-- HERO -->
-<div class="bp-hero">
-  <h1>Builtsy a <span>beautiful invite</span><br>in one shot.</h1>
-  <p>Answer a few questions. Builtsy writes the perfect prompt and designs your entire invite page — download it, drag it to <a href="https://netlify.com/drop" target="_blank" style="color:var(--lime);">Netlify Drop</a>, and your invite is live.</p>
-</div>
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+    <span class="tn-tag">Builtsy Blueprint</span>
+  </div>
+  <div class="tn-right">
+    <span class="tn-save">Auto-saved</span>
+    <a href="dashboard.html" class="tn-back">← Dashboard</a>
+  </div>
+</nav>
 
 <!-- STEP PROGRESS -->
 <div class="step-progress" id="stepProgress">
@@ -591,6 +206,10 @@
   <div class="step-dot" id="dot-7">7</div>
   <div class="step-dot" id="dot-8">8</div>
 </div>
+
+<!-- Hidden placeholders — referenced by showOutput/showError/rebuildFromScratch JS -->
+<div class="bp-hero" style="display:none;"></div>
+<div class="stop-banner" style="display:none;"></div>
 
 <!-- FORM -->
 <div class="form-wrap">
@@ -618,6 +237,9 @@
         <div class="chip" data-val="Team retreat">🤝 Team retreat</div>
         <div class="chip" data-val="Other">Other</div>
       </div>
+      <div id="otherEventTypeWrap" style="display:none;margin-top:10px;">
+        <input type="text" id="otherEventType" placeholder="e.g. Golden birthday, quinceañera, going away party…" />
+      </div>
     </div>
 
     <div class="field">
@@ -635,7 +257,7 @@
       <label>Start time <span class="opt">(optional — for countdown accuracy)</span></label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <input type="text" id="eventTime" placeholder="e.g. 4:30 PM" />
-        <select id="eventTimezone" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:var(--navy);background:white;outline:none;">
+        <select id="eventTimezone" style="border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:white;background:rgba(255,255,255,0.06);outline:none;">
           <option value="America/New_York">Eastern (ET)</option>
           <option value="America/Chicago">Central (CT)</option>
           <option value="America/Denver" selected>Mountain (MT)</option>
@@ -745,100 +367,100 @@
 
       <!-- AI + Custom always visible -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-        <div class="palette-card" data-palette="ai" data-tab="all" onclick="selectPalette(this,'ai')" style="border:2px solid #4361EE;border-radius:12px;padding:11px;cursor:pointer;background:white;">
+        <div class="palette-card" data-palette="ai" data-tab="all" onclick="selectPalette(this,'ai')" style="border:2px solid #4361EE;border-radius:12px;padding:11px;cursor:pointer;background:rgba(67,97,238,0.1);">
           <div style="display:flex;gap:4px;margin-bottom:7px;"><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#e879f9,#8b5cf6);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#10b981,#3b82f6);"></div><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#1e293b,#475569);"></div></div>
-          <div style="font-weight:700;font-size:.79rem;color:var(--navy);">✦ AI chooses</div>
-          <div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Best match for your vibe</div>
+          <div style="font-weight:700;font-size:.79rem;color:white;">✦ AI chooses</div>
+          <div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Best match for your vibe</div>
         </div>
-        <div class="palette-card" data-palette="custom" data-tab="all" onclick="selectPalette(this,'custom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;">
+        <div class="palette-card" data-palette="custom" data-tab="all" onclick="selectPalette(this,'custom')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);">
           <div style="display:flex;gap:4px;margin-bottom:7px;"><div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#ff6b6b,#4361EE,#C8E000,#1a1a2e);"></div></div>
-          <div style="font-weight:700;font-size:.79rem;color:var(--navy);">🎨 Your colors</div>
-          <div style="font-size:.69rem;color:#6b7280;margin-top:2px;">AI places them for you</div>
+          <div style="font-weight:700;font-size:.79rem;color:white;">🎨 Your colors</div>
+          <div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">AI places them for you</div>
         </div>
       </div>
 
       <!-- Tabs -->
       <div style="display:flex;gap:6px;margin-bottom:12px;">
         <button id="ptab-light" onclick="switchPaletteTab('light')" style="flex:1;padding:8px 6px;border:2px solid #4361EE;border-radius:8px;background:#4361EE;color:white;font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">☀ Light</button>
-        <button id="ptab-dark"  onclick="switchPaletteTab('dark')"  style="flex:1;padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;color:var(--navy);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🌙 Dark</button>
-        <button id="ptab-mono"  onclick="switchPaletteTab('mono')"  style="flex:1;padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;color:var(--navy);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">◑ Mono</button>
+        <button id="ptab-dark"  onclick="switchPaletteTab('dark')"  style="flex:1;padding:8px 6px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🌙 Dark</button>
+        <button id="ptab-mono"  onclick="switchPaletteTab('mono')"  style="flex:1;padding:8px 6px;border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);font-size:.79rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">◑ Mono</button>
       </div>
 
       <!-- Palette grid -->
       <div id="paletteGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-<div class="palette-card" data-palette="rosepetal" data-tab="light" onclick="selectPalette(this,'rosepetal')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c77dff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3d0066;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Rose Petal</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft rose, blush & ivory</div></div>
-<div class="palette-card" data-palette="ballerina" data-tab="light" onclick="selectPalette(this,'ballerina')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8e8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a0bf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ba90c6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c0a0bd;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Ballerina</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Powder pink, mauve & nude</div></div>
-<div class="palette-card" data-palette="lavcloud" data-tab="light" onclick="selectPalette(this,'lavcloud')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b72cf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1b69;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Lavender Cloud</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Lavender, lilac & soft white</div></div>
-<div class="palette-card" data-palette="magnolia" data-tab="light" onclick="selectPalette(this,'magnolia')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf7f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f2d4c2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8b4a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b6355;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Magnolia</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Cream, blush & champagne</div></div>
-<div class="palette-card" data-palette="sugarplum" data-tab="light" onclick="selectPalette(this,'sugarplum')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f9f0f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a5c9;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b4f7c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d0a22;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Sugar Plum</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Plum, dusty rose & warm white</div></div>
-<div class="palette-card" data-palette="cottagecore" data-tab="light" onclick="selectPalette(this,'cottagecore')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5ede0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4b8a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8fbc8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a6741;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Cottagecore</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dusty sage, rose & linen</div></div>
-<div class="palette-card" data-palette="champagne" data-tab="light" onclick="selectPalette(this,'champagne')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf6e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8c99a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Champagne Toast</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Champagne, blush & soft gold</div></div>
-<div class="palette-card" data-palette="buttersage" data-tab="light" onclick="selectPalette(this,'buttersage')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fef9e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d890;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6a8a50;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Butter & Sage</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Butter yellow, sage & cream</div></div>
-<div class="palette-card" data-palette="coastlinen" data-tab="light" onclick="selectPalette(this,'coastlinen')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a3a4a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Coastal Linen</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft blue, white & sandy beige</div></div>
-<div class="palette-card" data-palette="mornmist" data-tab="light" onclick="selectPalette(this,'mornmist')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f4f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8ccd8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6888a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a38;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Morning Mist</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale blue, silver & white</div></div>
-<div class="palette-card" data-palette="peach" data-tab="light" onclick="selectPalette(this,'peach')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff5f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb899;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e87050;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a1a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Peach Soirée</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Peach, apricot & soft ivory</div></div>
-<div class="palette-card" data-palette="ivgold" data-tab="light" onclick="selectPalette(this,'ivgold')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf6ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a843;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b5e3c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Ivory & Gold</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ivory, antique gold & cognac</div></div>
-<div class="palette-card" data-palette="slatblush" data-tab="light" onclick="selectPalette(this,'slatblush')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ddd0d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#383048;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Slate & Blush</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Soft slate, blush & pearl</div></div>
-<div class="palette-card" data-palette="citrus" data-tab="light" onclick="selectPalette(this,'citrus')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff3e0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff9505;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffca3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6bcbf0;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Citrus Pop</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Orange, lemon & sky blue</div></div>
-<div class="palette-card" data-palette="midnight" data-tab="dark" onclick="selectPalette(this,'midnight')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d1a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6c63ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e0e0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Midnight</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dark, violet & lavender</div></div>
-<div class="palette-card" data-palette="editorial" data-tab="dark" onclick="selectPalette(this,'editorial')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5f5f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9002b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e0d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Editorial</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Black, white & red</div></div>
-<div class="palette-card" data-palette="blacktie" data-tab="dark" onclick="selectPalette(this,'blacktie')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a2a2a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8b8b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Black Tie</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ink, silver & champagne</div></div>
-<div class="palette-card" data-palette="darkrom" data-tab="dark" onclick="selectPalette(this,'darkrom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0508;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b0000;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Dark Romance</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep red, black & gold</div></div>
-<div class="palette-card" data-palette="noirgar" data-tab="dark" onclick="selectPalette(this,'noirgar')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0d0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3320;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b7355;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f0ead6;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Noir Garden</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Near-black, forest & champagne</div></div>
-<div class="palette-card" data-palette="velvet" data-tab="dark" onclick="selectPalette(this,'velvet')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0818;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e0a4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7b5ea7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8c0e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Velvet Night</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep navy, violet & silver</div></div>
-<div class="palette-card" data-palette="moodvio" data-tab="dark" onclick="selectPalette(this,'moodvio')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a1a8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Moody Violet</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Dark plum, violet & blush</div></div>
-<div class="palette-card" data-palette="obsidian" data-tab="dark" onclick="selectPalette(this,'obsidian')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e1e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a3a3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e8e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Obsidian</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Jet black, charcoal & ice</div></div>
-<div class="palette-card" data-palette="goldgala" data-tab="dark" onclick="selectPalette(this,'goldgala')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a1a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fff8ee;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Golden Gala</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Navy, gold & warm cream</div></div>
-<div class="palette-card" data-palette="sunset" data-tab="dark" onclick="selectPalette(this,'sunset')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0533;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f97316;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fbbf24;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fde8d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Sunset</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Plum, orange & gold</div></div>
-<div class="palette-card" data-palette="berry" data-tab="dark" onclick="selectPalette(this,'berry')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0520;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b1d70;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e63995;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0f8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Berry Punch</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Berry, fuchsia & cream</div></div>
-<div class="palette-card" data-palette="neon" data-tab="dark" onclick="selectPalette(this,'neon')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#39ff14;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff10f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a1a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Neon Nights</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Neon green, hot pink & black</div></div>
-<div class="palette-card" data-palette="espresso" data-tab="dark" onclick="selectPalette(this,'espresso')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6b3e26;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9956c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6d3;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Espresso</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Deep brown, caramel & cream</div></div>
-<div class="palette-card" data-palette="bloom" data-tab="dark" onclick="selectPalette(this,'bloom')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf2f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f472b6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a855f7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e2e;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">Bloom</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Blush, pink & plum</div></div>
-<div class="palette-card" data-palette="mono-blush" data-tab="mono" onclick="selectPalette(this,'mono-blush')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8507a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7a1a35;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Blush</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale pink → deep rose</div></div>
-<div class="palette-card" data-palette="mono-sage" data-tab="mono" onclick="selectPalette(this,'mono-sage')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#eef5ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a8c8a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a7c4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Sage</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Mint → deep forest</div></div>
-<div class="palette-card" data-palette="mono-lavender" data-tab="mono" onclick="selectPalette(this,'mono-lavender')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7850c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1060;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Lavender</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Pale lilac → deep violet</div></div>
-<div class="palette-card" data-palette="mono-navy" data-tab="mono" onclick="selectPalette(this,'mono-navy')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#90b8d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a5888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#0a1828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Navy</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Powder blue → midnight</div></div>
-<div class="palette-card" data-palette="mono-noir" data-tab="mono" onclick="selectPalette(this,'mono-noir')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#ffffff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a0a0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#404040;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#080808;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Noir</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">White → jet black</div></div>
-<div class="palette-card" data-palette="mono-champagne" data-tab="mono" onclick="selectPalette(this,'mono-champagne')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a3010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Champagne</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ivory → cognac</div></div>
-<div class="palette-card" data-palette="mono-terra" data-tab="mono" onclick="selectPalette(this,'mono-terra')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a880;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c06030;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Terracotta</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Peach → burnt clay</div></div>
-<div class="palette-card" data-palette="mono-slate" data-tab="mono" onclick="selectPalette(this,'mono-slate')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f0f2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b0b8c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#607080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#182028;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Slate</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Silver → charcoal</div></div>
-<div class="palette-card" data-palette="mono-mauve" data-tab="mono" onclick="selectPalette(this,'mono-mauve')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d8b0b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a06878;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#481828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Mauve</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Blush beige → deep rose</div></div>
-<div class="palette-card" data-palette="mono-teal" data-tab="mono" onclick="selectPalette(this,'mono-teal')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f8f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#80c8c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#208888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#082828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Teal</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Ice → deep ocean</div></div>
-<div class="palette-card" data-palette="mono-gold" data-tab="mono" onclick="selectPalette(this,'mono-gold')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fffff0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09820;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#483800;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Gold</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Butter → antique bronze</div></div>
-<div class="palette-card" data-palette="mono-plum" data-tab="mono" onclick="selectPalette(this,'mono-plum')" style="border:1.5px solid #e5e7eb;border-radius:12px;padding:11px;cursor:pointer;background:white;display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d0a0d0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#904090;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#300830;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:var(--navy);">All Plum</div><div style="font-size:.69rem;color:#6b7280;margin-top:2px;">Lilac → deep eggplant</div></div>
+<div class="palette-card" data-palette="rosepetal" data-tab="light" onclick="selectPalette(this,'rosepetal')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c77dff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3d0066;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Rose Petal</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Soft rose, blush & ivory</div></div>
+<div class="palette-card" data-palette="ballerina" data-tab="light" onclick="selectPalette(this,'ballerina')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8e8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a0bf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ba90c6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c0a0bd;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Ballerina</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Powder pink, mauve & nude</div></div>
+<div class="palette-card" data-palette="lavcloud" data-tab="light" onclick="selectPalette(this,'lavcloud')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b72cf;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1b69;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Lavender Cloud</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Lavender, lilac & soft white</div></div>
+<div class="palette-card" data-palette="magnolia" data-tab="light" onclick="selectPalette(this,'magnolia')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf7f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f2d4c2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8b4a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b6355;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Magnolia</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Cream, blush & champagne</div></div>
+<div class="palette-card" data-palette="sugarplum" data-tab="light" onclick="selectPalette(this,'sugarplum')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f9f0f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a5c9;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b4f7c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d0a22;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Sugar Plum</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Plum, dusty rose & warm white</div></div>
+<div class="palette-card" data-palette="cottagecore" data-tab="light" onclick="selectPalette(this,'cottagecore')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5ede0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4b8a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8fbc8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a6741;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Cottagecore</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Dusty sage, rose & linen</div></div>
+<div class="palette-card" data-palette="champagne" data-tab="light" onclick="selectPalette(this,'champagne')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf6e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8c99a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Champagne Toast</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Champagne, blush & soft gold</div></div>
+<div class="palette-card" data-palette="buttersage" data-tab="light" onclick="selectPalette(this,'buttersage')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fef9e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d890;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6a8a50;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Butter & Sage</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Butter yellow, sage & cream</div></div>
+<div class="palette-card" data-palette="coastlinen" data-tab="light" onclick="selectPalette(this,'coastlinen')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8d8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a3a4a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Coastal Linen</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Soft blue, white & sandy beige</div></div>
+<div class="palette-card" data-palette="mornmist" data-tab="light" onclick="selectPalette(this,'mornmist')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f4f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8ccd8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6888a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a2a38;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Morning Mist</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Pale blue, silver & white</div></div>
+<div class="palette-card" data-palette="peach" data-tab="light" onclick="selectPalette(this,'peach')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff5f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb899;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e87050;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a1a10;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Peach Soirée</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Peach, apricot & soft ivory</div></div>
+<div class="palette-card" data-palette="ivgold" data-tab="light" onclick="selectPalette(this,'ivgold')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#faf6ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d4a843;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b5e3c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Ivory & Gold</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Ivory, antique gold & cognac</div></div>
+<div class="palette-card" data-palette="slatblush" data-tab="light" onclick="selectPalette(this,'slatblush')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f6f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ddd0d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9090a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#383048;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Slate & Blush</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Soft slate, blush & pearl</div></div>
+<div class="palette-card" data-palette="citrus" data-tab="light" onclick="selectPalette(this,'citrus')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff3e0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff9505;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffca3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6bcbf0;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Citrus Pop</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Orange, lemon & sky blue</div></div>
+<div class="palette-card" data-palette="midnight" data-tab="dark" onclick="selectPalette(this,'midnight')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d1a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6c63ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e0e0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Midnight</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Dark, violet & lavender</div></div>
+<div class="palette-card" data-palette="editorial" data-tab="dark" onclick="selectPalette(this,'editorial')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5f5f5;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9002b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e0d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Editorial</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Black, white & red</div></div>
+<div class="palette-card" data-palette="blacktie" data-tab="dark" onclick="selectPalette(this,'blacktie')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a2a2a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b8b8b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Black Tie</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Ink, silver & champagne</div></div>
+<div class="palette-card" data-palette="darkrom" data-tab="dark" onclick="selectPalette(this,'darkrom')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0508;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b0000;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Dark Romance</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Deep red, black & gold</div></div>
+<div class="palette-card" data-palette="noirgar" data-tab="dark" onclick="selectPalette(this,'noirgar')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0d0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3320;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#8b7355;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f0ead6;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Noir Garden</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Near-black, forest & champagne</div></div>
+<div class="palette-card" data-palette="velvet" data-tab="dark" onclick="selectPalette(this,'velvet')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0818;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e0a4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7b5ea7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8c0e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Velvet Night</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Deep navy, violet & silver</div></div>
+<div class="palette-card" data-palette="moodvio" data-tab="dark" onclick="selectPalette(this,'moodvio')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a1a8b;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c084fc;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0ff;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Moody Violet</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Dark plum, violet & blush</div></div>
+<div class="palette-card" data-palette="obsidian" data-tab="dark" onclick="selectPalette(this,'obsidian')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0a0a0a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e1e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#3a3a3a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8e8e8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Obsidian</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Jet black, charcoal & ice</div></div>
+<div class="palette-card" data-palette="goldgala" data-tab="dark" onclick="selectPalette(this,'goldgala')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a1a2e;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9a84c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fff8ee;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Golden Gala</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Navy, gold & warm cream</div></div>
+<div class="palette-card" data-palette="sunset" data-tab="dark" onclick="selectPalette(this,'sunset')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0533;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f97316;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fbbf24;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fde8d8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Sunset</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Plum, orange & gold</div></div>
+<div class="palette-card" data-palette="berry" data-tab="dark" onclick="selectPalette(this,'berry')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0520;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#9b1d70;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e63995;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#fdf0f8;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Berry Punch</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Berry, fuchsia & cream</div></div>
+<div class="palette-card" data-palette="neon" data-tab="dark" onclick="selectPalette(this,'neon')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#0d0d0d;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#39ff14;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ff10f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a1a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Neon Nights</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Neon green, hot pink & black</div></div>
+<div class="palette-card" data-palette="espresso" data-tab="dark" onclick="selectPalette(this,'espresso')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#1a0f08;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#6b3e26;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c9956c;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f5e6d3;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Espresso</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Deep brown, caramel & cream</div></div>
+<div class="palette-card" data-palette="bloom" data-tab="dark" onclick="selectPalette(this,'bloom')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf2f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#f472b6;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a855f7;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1e1e2e;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">Bloom</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Blush, pink & plum</div></div>
+<div class="palette-card" data-palette="mono-blush" data-tab="mono" onclick="selectPalette(this,'mono-blush')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0f3;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#ffb3c1;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8507a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7a1a35;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Blush</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Pale pink → deep rose</div></div>
+<div class="palette-card" data-palette="mono-sage" data-tab="mono" onclick="selectPalette(this,'mono-sage')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#eef5ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a8c8a8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#4a7c4a;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#1a3a1a;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Sage</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Mint → deep forest</div></div>
+<div class="palette-card" data-palette="mono-lavender" data-tab="mono" onclick="selectPalette(this,'mono-lavender')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f5f0ff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c8b8e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#7850c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2d1060;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Lavender</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Pale lilac → deep violet</div></div>
+<div class="palette-card" data-palette="mono-navy" data-tab="mono" onclick="selectPalette(this,'mono-navy')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#90b8d8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#2a5888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#0a1828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Navy</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Powder blue → midnight</div></div>
+<div class="palette-card" data-palette="mono-noir" data-tab="mono" onclick="selectPalette(this,'mono-noir')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#ffffff;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a0a0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#404040;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#080808;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Noir</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">White → jet black</div></div>
+<div class="palette-card" data-palette="mono-champagne" data-tab="mono" onclick="selectPalette(this,'mono-champagne')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fdf8ee;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d0a0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09060;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a3010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Champagne</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Ivory → cognac</div></div>
+<div class="palette-card" data-palette="mono-terra" data-tab="mono" onclick="selectPalette(this,'mono-terra')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fff0e8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a880;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c06030;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#5a2010;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Terracotta</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Peach → burnt clay</div></div>
+<div class="palette-card" data-palette="mono-slate" data-tab="mono" onclick="selectPalette(this,'mono-slate')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f0f0f2;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#b0b8c0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#607080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#182028;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Slate</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Silver → charcoal</div></div>
+<div class="palette-card" data-palette="mono-mauve" data-tab="mono" onclick="selectPalette(this,'mono-mauve')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d8b0b8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#a06878;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#481828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Mauve</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Blush beige → deep rose</div></div>
+<div class="palette-card" data-palette="mono-teal" data-tab="mono" onclick="selectPalette(this,'mono-teal')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#e8f8f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#80c8c8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#208888;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#082828;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Teal</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Ice → deep ocean</div></div>
+<div class="palette-card" data-palette="mono-gold" data-tab="mono" onclick="selectPalette(this,'mono-gold')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#fffff0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8d080;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#c09820;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#483800;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Gold</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Butter → antique bronze</div></div>
+<div class="palette-card" data-palette="mono-plum" data-tab="mono" onclick="selectPalette(this,'mono-plum')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px;cursor:pointer;background:rgba(255,255,255,0.04);display:none;"><div style="display:flex;gap:4px;margin-bottom:7px;flex-wrap:wrap;"><div style="width:16px;height:16px;border-radius:50%;background:#f8f0f8;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#d0a0d0;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#904090;flex-shrink:0;"></div><div style="width:16px;height:16px;border-radius:50%;background:#300830;flex-shrink:0;"></div></div><div style="font-weight:700;font-size:.79rem;color:white;">All Plum</div><div style="font-size:.69rem;color:rgba(255,255,255,0.4);margin-top:2px;">Lilac → deep eggplant</div></div>
       </div>
       <input type="hidden" id="paletteChoice" value="ai">
 
       <!-- Your Colors — simplified, AI places them -->
-      <div id="custom-hex-fields" style="display:none;margin-top:14px;background:white;border:1.5px solid #4361EE;border-radius:14px;padding:18px;">
+      <div id="custom-hex-fields" style="display:none;margin-top:14px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(67,97,238,0.35);border-radius:14px;padding:18px;">
         <div style="font-family:'DM Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4361EE;margin-bottom:6px;">🎨 Your Colors</div>
-        <div style="font-size:.78rem;color:#6b7280;margin-bottom:16px;line-height:1.5;">Pick up to 5 colors — AI decides the most beautiful way to use them in your invite.</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,0.4);margin-bottom:16px;line-height:1.5;">Pick up to 5 colors — AI decides the most beautiful way to use them in your invite.</div>
 
         <!-- Color swatches row -->
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
           <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
-            <div id="uc-swatch-0" style="width:48px;height:48px;border-radius:12px;background:#ee70bc;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <div id="uc-swatch-0" style="width:48px;height:48px;border-radius:12px;background:#ee70bc;border:2px solid rgba(255,255,255,0.15);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
             <input type="color" id="uc-input-0" value="#ee70bc" oninput="ucUpdate(0,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
           </div>
           <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
-            <div id="uc-swatch-1" style="width:48px;height:48px;border-radius:12px;background:#4361EE;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <div id="uc-swatch-1" style="width:48px;height:48px;border-radius:12px;background:#4361EE;border:2px solid rgba(255,255,255,0.15);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
             <input type="color" id="uc-input-1" value="#4361EE" oninput="ucUpdate(1,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
           </div>
           <div style="position:relative;width:48px;height:48px;flex-shrink:0;">
-            <div id="uc-swatch-2" style="width:48px;height:48px;border-radius:12px;background:#ffffff;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <div id="uc-swatch-2" style="width:48px;height:48px;border-radius:12px;background:#ffffff;border:2px solid rgba(255,255,255,0.15);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
             <input type="color" id="uc-input-2" value="#ffffff" oninput="ucUpdate(2,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
           </div>
           <div id="uc-slot-3" style="position:relative;width:48px;height:48px;flex-shrink:0;display:none;">
-            <div id="uc-swatch-3" style="width:48px;height:48px;border-radius:12px;background:#C8E000;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <div id="uc-swatch-3" style="width:48px;height:48px;border-radius:12px;background:#C8E000;border:2px solid rgba(255,255,255,0.15);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
             <input type="color" id="uc-input-3" value="#C8E000" oninput="ucUpdate(3,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
           </div>
           <div id="uc-slot-4" style="position:relative;width:48px;height:48px;flex-shrink:0;display:none;">
-            <div id="uc-swatch-4" style="width:48px;height:48px;border-radius:12px;background:#1a1a2e;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);"></div>
+            <div id="uc-swatch-4" style="width:48px;height:48px;border-radius:12px;background:#1a1a2e;border:2px solid rgba(255,255,255,0.15);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
             <input type="color" id="uc-input-4" value="#1a1a2e" oninput="ucUpdate(4,this.value)" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
           </div>
-          <button onclick="ucAddColor()" id="uc-add-btn" style="width:48px;height:48px;border-radius:12px;border:2px dashed #d1d5db;background:none;cursor:pointer;font-size:1.4rem;color:#9ca3af;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" title="Add a color">+</button>
+          <button onclick="ucAddColor()" id="uc-add-btn" style="width:48px;height:48px;border-radius:12px;border:2px dashed rgba(255,255,255,0.2);background:none;cursor:pointer;font-size:1.4rem;color:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" title="Add a color">+</button>
         </div>
-        <div style="font-size:.7rem;color:#9ca3af;">Click any swatch to change its color</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,0.3);">Click any swatch to change its color</div>
 
         <!-- Hidden passthrough inputs (kept for prompt compatibility) -->
         <input type="hidden" id="hex-bg-text"      value="">
@@ -866,17 +488,17 @@
         <!-- Font Selection -->
     <div class="field" style="margin-top:6px;">
       <label>Typography</label>
-      <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">AI picks fonts by default — or choose your own from Google Fonts.</div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,0.38);margin-bottom:10px;">AI picks fonts by default — or choose your own from Google Fonts.</div>
       <div style="display:flex;gap:10px;margin-bottom:12px;">
-        <div id="font-opt-ai" onclick="selectFontMode('ai')" style="flex:1;border:2px solid #4361EE;border-radius:12px;padding:12px;cursor:pointer;background:white;text-align:center;">
+        <div id="font-opt-ai" onclick="selectFontMode('ai')" style="flex:1;border:2px solid #4361EE;border-radius:12px;padding:12px;cursor:pointer;background:rgba(67,97,238,0.1);text-align:center;">
           <div style="font-size:1.1rem;margin-bottom:4px;">✦</div>
-          <div style="font-weight:700;font-size:.82rem;color:var(--navy);">AI chooses</div>
-          <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Best pair for your vibe</div>
+          <div style="font-weight:700;font-size:.82rem;color:white;">AI chooses</div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:2px;">Best pair for your vibe</div>
         </div>
-        <div id="font-opt-custom" onclick="selectFontMode('custom')" style="flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;cursor:pointer;background:white;text-align:center;">
+        <div id="font-opt-custom" onclick="selectFontMode('custom')" style="flex:1;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.1rem;margin-bottom:4px;">Aa</div>
-          <div style="font-weight:700;font-size:.82rem;color:var(--navy);">I'll choose</div>
-          <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">Pick from Google Fonts</div>
+          <div style="font-weight:700;font-size:.82rem;color:white;">I'll choose</div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:2px;">Pick from Google Fonts</div>
         </div>
       </div>
       <input type="hidden" id="fontChoice" value="ai">
@@ -885,16 +507,16 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div>
             <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:6px;">Display font</div>
-            <input type="text" id="displayFontName" placeholder="e.g. Playfair Display" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;">
-            <div style="font-size:.7rem;color:#9ca3af;margin-top:4px;">Headlines &amp; names</div>
+            <input type="text" id="displayFontName" placeholder="e.g. Playfair Display" style="width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;background:rgba(255,255,255,0.06);color:white;">
+            <div style="font-size:.7rem;color:rgba(255,255,255,0.3);margin-top:4px;">Headlines &amp; names</div>
           </div>
           <div>
             <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:6px;">Body font</div>
-            <input type="text" id="bodyFontName" placeholder="e.g. DM Sans" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;">
-            <div style="font-size:.7rem;color:#9ca3af;margin-top:4px;">Details &amp; copy</div>
+            <input type="text" id="bodyFontName" placeholder="e.g. DM Sans" style="width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 12px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;background:rgba(255,255,255,0.06);color:white;">
+            <div style="font-size:.7rem;color:rgba(255,255,255,0.3);margin-top:4px;">Details &amp; copy</div>
           </div>
         </div>
-        <div style="font-size:.72rem;color:#6b7280;margin-top:8px;">Any Google Font name works — <a href="https://fonts.google.com" target="_blank" style="color:#4361EE;">browse fonts.google.com</a></div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.38);margin-top:8px;">Any Google Font name works — <a href="https://fonts.google.com" target="_blank" style="color:#4361EE;">browse fonts.google.com</a></div>
       </div>
     </div>
 
@@ -905,31 +527,31 @@
     <!-- Photo Shape Picker -->
     <div class="field" style="margin-top:22px;">
       <label>Hero photo shape</label>
-      <div style="font-size:.78rem;color:#6b7280;margin-bottom:12px;">How should your hero photo be framed? AI also picks a border style that matches your overall design.</div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,0.38);margin-bottom:12px;">How should your hero photo be framed? AI also picks a border style that matches your overall design.</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" id="shapeChips">
-        <div class="shape-chip selected" data-shape="ai" onclick="selectShape(this)" style="border:2px solid var(--navy);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:var(--navy);color:var(--lime);transition:all .15s;">
+        <div class="shape-chip selected" data-shape="ai" onclick="selectShape(this)" style="border:2px solid var(--builtsy-blue);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(67,97,238,0.15);color:white;transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">✦</div>
           <div style="font-size:.72rem;font-weight:700;">AI chooses</div>
         </div>
-        <div class="shape-chip" data-shape="arch" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+        <div class="shape-chip" data-shape="arch" onclick="selectShape(this)" style="border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.04);transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">🔔</div>
-          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Arch</div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.7);">Arch</div>
         </div>
-        <div class="shape-chip" data-shape="circle" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+        <div class="shape-chip" data-shape="circle" onclick="selectShape(this)" style="border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.04);transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">⭕</div>
-          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Circle</div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.7);">Circle</div>
         </div>
-        <div class="shape-chip" data-shape="rectangle" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+        <div class="shape-chip" data-shape="rectangle" onclick="selectShape(this)" style="border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.04);transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">▭</div>
-          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Rectangle</div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.7);">Rectangle</div>
         </div>
-        <div class="shape-chip" data-shape="oval" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+        <div class="shape-chip" data-shape="oval" onclick="selectShape(this)" style="border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.04);transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">🥚</div>
-          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Oval</div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.7);">Oval</div>
         </div>
-        <div class="shape-chip" data-shape="polaroid" onclick="selectShape(this)" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:white;transition:all .15s;">
+        <div class="shape-chip" data-shape="polaroid" onclick="selectShape(this)" style="border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.04);transition:all .15s;">
           <div style="font-size:1.2rem;margin-bottom:4px;">📷</div>
-          <div style="font-size:.72rem;font-weight:700;color:var(--navy);">Polaroid</div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.7);">Polaroid</div>
         </div>
       </div>
       <input type="hidden" id="photoShape" value="ai">
@@ -966,19 +588,9 @@
     </div>
 
     <!-- Closing Section Background -->
-    <div class="field" style="margin-top:8px;">
-      <label>Closing Section Background <span class="opt">(optional — bottom of the invite)</span></label>
-      <div style="font-size:.78rem;color:#6b7280;margin-bottom:10px;">Add a second background for the closing/footer section — a different texture, pattern, or photo to bookend the design.</div>
-      <div class="upload-zone" id="closingBgZone" onclick="document.getElementById('closingBgInput').click()" style="padding:20px;">
-        <input type="file" id="closingBgInput" accept="image/*" onchange="handleClosingBgUpload(this)">
-        <div class="upload-icon">🎨</div>
-        <div class="upload-label"><strong>Click to upload</strong> — JPG, PNG, WebP</div>
-      </div>
-      <input type="hidden" id="closingBgB64">
-      <input type="hidden" id="closingBgMime">
-    </div>
-
     <!-- hidden base64 stores -->
+    <input type="hidden" id="closingBgB64">
+    <input type="hidden" id="closingBgMime">
     <input type="hidden" id="heroB64">
     <input type="hidden" id="heroMime">
 
@@ -1051,9 +663,9 @@
       <div style="font-size:.78rem;color:#6b7280;margin-bottom:12px;">The main RSVP button is always included. Add more here.</div>
 
       <!-- RSVP CTA toggle -->
-      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
         <div>
-          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">RSVP button in hero</div>
+          <div style="font-weight:600;font-size:.85rem;color:white;">RSVP button in hero</div>
           <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Scroll-to-RSVP button prominently in the hero section</div>
         </div>
         <label class="switch" style="flex-shrink:0;">
@@ -1072,54 +684,54 @@
 
       <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:8px;">Background animation</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-        <div class="confetti-card" data-confetti="sparkles" onclick="selectConfetti(this,'sparkles')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card" data-confetti="sparkles" onclick="selectConfetti(this,'sparkles')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">✦</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Sparkles</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">Sparkles</div>
           <div style="font-size:.7rem;color:#6b7280;">Floating particles</div>
         </div>
-        <div class="confetti-card" data-confetti="stars" onclick="selectConfetti(this,'stars')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card" data-confetti="stars" onclick="selectConfetti(this,'stars')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">⭐</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Stars</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">Stars</div>
           <div style="font-size:.7rem;color:#6b7280;">Twinkling stars</div>
         </div>
-        <div class="confetti-card" data-confetti="bubbles" onclick="selectConfetti(this,'bubbles')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card" data-confetti="bubbles" onclick="selectConfetti(this,'bubbles')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">○</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Bubbles</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">Bubbles</div>
           <div style="font-size:.7rem;color:#6b7280;">Rising circles</div>
         </div>
-        <div class="confetti-card" data-confetti="petals" onclick="selectConfetti(this,'petals')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card" data-confetti="petals" onclick="selectConfetti(this,'petals')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">🌸</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Petals</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">Petals</div>
           <div style="font-size:.7rem;color:#6b7280;">Falling petals</div>
         </div>
-        <div class="confetti-card" data-confetti="confetti" onclick="selectConfetti(this,'confetti')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card" data-confetti="confetti" onclick="selectConfetti(this,'confetti')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">🎊</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Confetti</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">Confetti</div>
           <div style="font-size:.7rem;color:#6b7280;">Classic confetti</div>
         </div>
-        <div class="confetti-card selected-confetti" data-confetti="none" onclick="selectConfetti(this,'none')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
+        <div class="confetti-card selected-confetti" data-confetti="none" onclick="selectConfetti(this,'none')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:rgba(67,97,238,0.1);text-align:center;">
           <div style="font-size:1.2rem;margin-bottom:4px;">○</div>
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">None</div>
+          <div style="font-weight:600;font-size:.8rem;color:white;">None</div>
           <div style="font-size:.7rem;color:#6b7280;">Clean & still</div>
         </div>
       </div>
 
       <div style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#4361EE;font-weight:700;margin-bottom:8px;">Background animation placement</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-        <div class="confetti-layer-card selected-layer" data-layer="above" onclick="selectConfettiLayer(this,'above')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Above content</div>
+        <div class="confetti-layer-card selected-layer" data-layer="above" onclick="selectConfettiLayer(this,'above')" style="border:2px solid #4361EE;border-radius:10px;padding:10px;cursor:pointer;background:rgba(67,97,238,0.1);text-align:center;">
+          <div style="font-weight:600;font-size:.8rem;color:white;">Above content</div>
           <div style="font-size:.7rem;color:#6b7280;">Always visible, floats on top</div>
         </div>
-        <div class="confetti-layer-card" data-layer="below" onclick="selectConfettiLayer(this,'below')" style="border:1.5px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;background:white;text-align:center;">
-          <div style="font-weight:600;font-size:.8rem;color:var(--navy);">Below content</div>
+        <div class="confetti-layer-card" data-layer="below" onclick="selectConfettiLayer(this,'below')" style="border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:center;">
+          <div style="font-weight:600;font-size:.8rem;color:white;">Below content</div>
           <div style="font-size:.7rem;color:#6b7280;">Subtle, behind sections</div>
         </div>
       </div>
 
       <!-- RSVP confetti burst toggle -->
-      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;">
         <div>
-          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">Confetti burst on RSVP</div>
+          <div style="font-weight:600;font-size:.85rem;color:white;">Confetti burst on RSVP</div>
           <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Celebration burst when a guest submits their RSVP</div>
         </div>
         <label class="switch" style="flex-shrink:0;">
@@ -1145,14 +757,14 @@
     <div class="step-sub">Let guests claim items to bring. AI builds the perfect list for your event.</div>
 
     <!-- Auto hero button note -->
-    <div style="background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:.78rem;color:#4a5568;">
-      <strong style="color:var(--navy);">✦ Auto hero button</strong> — when this section is enabled, a "Help Make It Happen" button will automatically appear in the invite hero linking here.
+    <div style="background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:.78rem;color:rgba(255,255,255,0.7);">
+      <strong style="color:white;">✦ Auto hero button</strong> — when this section is enabled, a "Help Make It Happen" button will automatically appear in the invite hero linking here.
     </div>
 
     <!-- Toggle to enable -->
-    <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-bottom:16px;">
       <div>
-        <div style="font-weight:700;font-size:.9rem;color:var(--navy);">Add a "Help make it happen" section</div>
+        <div style="font-weight:700;font-size:.9rem;color:white;">Add a "Help make it happen" section</div>
         <div style="font-size:.78rem;color:#6b7280;margin-top:3px;">Guests see a list of items and can claim one to bring.</div>
       </div>
       <label class="switch" style="flex-shrink:0;">
@@ -1186,7 +798,7 @@
         <div style="background:rgba(67,97,238,0.04);border:1.5px solid rgba(67,97,238,0.15);border-radius:10px;padding:12px;margin-bottom:12px;">
           <div style="font-size:.72rem;color:#4361EE;font-weight:600;margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;">Paste your list</div>
           <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">One item per line, or separated by commas. Paste your whole list at once.</div>
-          <textarea id="helplist-paste-box" rows="4" placeholder="Snacks&#10;Drinks&#10;Ice&#10;Birthday cake&#10;Balloons&#10;Photo booth props" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 10px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;"></textarea>
+          <textarea id="helplist-paste-box" rows="4" placeholder="Snacks&#10;Drinks&#10;Ice&#10;Birthday cake&#10;Balloons&#10;Photo booth props" style="width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 10px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;background:rgba(255,255,255,0.06);color:white;"></textarea>
           <button onclick="importPastedItems()" style="margin-top:8px;background:#4361EE;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;width:100%;">→ Turn into claimable items</button>
         </div>
 
@@ -1196,14 +808,14 @@
 
         <!-- Add single item -->
         <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
-          <input type="text" id="helplist-add-input" placeholder="Add one more item…" style="flex:1;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;" onkeydown="if(event.key==='Enter')addHelpItemFromInput();">
-          <button onclick="addHelpItemFromInput()" style="background:white;border:1.5px solid #4361EE;color:#4361EE;border-radius:8px;padding:8px 14px;font-size:.82rem;font-weight:600;cursor:pointer;">+ Add</button>
+          <input type="text" id="helplist-add-input" placeholder="Add one more item…" style="flex:1;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;background:rgba(255,255,255,0.06);color:white;" onkeydown="if(event.key==='Enter')addHelpItemFromInput();">
+          <button onclick="addHelpItemFromInput()" style="background:rgba(67,97,238,0.1);border:1.5px solid rgba(67,97,238,0.35);color:#4361EE;border-radius:8px;padding:8px 14px;font-size:.82rem;font-weight:600;cursor:pointer;">+ Add</button>
         </div>
       </div>
 
       <!-- Claims Script URL -->
       <div class="field" style="margin-top:18px;background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:14px 16px;">
-        <label style="color:var(--navy);">📋 Your Google Sheet tracking URL</label>
+        <label style="color:white;">📋 Your Google Sheet tracking URL</label>
         <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">Paste your Apps Script Web App URL here so claims save to your Google Sheet. <a href="https://script.google.com" target="_blank" style="color:#4361EE;">Set up at script.google.com →</a></div>
         <input class="fi-light" id="claimsScriptUrl" type="text" value="https://script.google.com/macros/s/AKfycbxwdYmxnTuD2knGVzhd7bqGl3SZSYUvDC9o82A-g6QHszlz84fhelVfnIKQBCLrHCvBzg/exec" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec" style="font-size:.78rem;">
         <div style="font-size:.72rem;color:#9ca3af;margin-top:6px;">Leave blank to skip claim tracking (claims won't persist across devices).</div>
@@ -1220,9 +832,9 @@
       </div>
 
       <!-- Allergy note -->
-      <div style="display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;margin:16px 0 10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;margin:16px 0 10px;">
         <div>
-          <div style="font-weight:600;font-size:.85rem;color:var(--navy);">Add allergy / dietary note</div>
+          <div style="font-weight:600;font-size:.85rem;color:white;">Add allergy / dietary note</div>
           <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">Especially useful for kid events</div>
         </div>
         <label class="switch" style="flex-shrink:0;">
@@ -1317,6 +929,8 @@
 </div>
 
 <script>
+var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? (window.location.protocol + '/\/' + window.location.host) : 'https://builtsy-api-production.up.railway.app';
+
 // ── STATE ──
 var currentStep = 1;
 var totalSteps = 8;
@@ -1372,7 +986,7 @@ function handleUpload(inputId, zoneId, previewId, b64Id, mimeId) {
       zone.classList.add('has-file');
       zone.innerHTML = '<input type="file" id="' + inputId + '" accept="image/*" onchange="handleUpload(\'' + inputId + '\',\'' + zoneId + '\',\'' + previewId + '\',\'' + b64Id + '\',\'' + mimeId + '\')">'
         + '<img src="' + result + '" style="max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
-        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + '</div>';
+        + '<div style="font-size:0.78rem;color:white;font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + '</div>';
     });
   };
   reader.readAsDataURL(file);
@@ -1392,7 +1006,7 @@ function handleHeroBgUpload(input) {
       zone.classList.add('has-file');
       zone.innerHTML = '<input type="file" id="heroBgInput" accept="image/*" onchange="handleHeroBgUpload(this)">'
         + '<img src="' + result + '" style="max-height:120px;max-width:100%;border-radius:8px;display:block;margin:0 auto;object-fit:cover;">'
-        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — hero background set</div>';
+        + '<div style="font-size:0.78rem;color:white;font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — hero background set</div>';
     });
   };
   reader.readAsDataURL(file);
@@ -1412,7 +1026,7 @@ function handleClosingBgUpload(input) {
       zone.classList.add('has-file');
       zone.innerHTML = '<input type="file" id="closingBgInput" accept="image/*" onchange="handleClosingBgUpload(this)">'
         + '<img src="' + result + '" style="max-height:120px;max-width:100%;border-radius:8px;display:block;margin:0 auto;object-fit:cover;">'
-        + '<div style="font-size:0.78rem;color:var(--navy);font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — closing background set</div>';
+        + '<div style="font-size:0.78rem;color:white;font-weight:600;margin-top:8px;text-align:center;">✓ ' + file.name + ' — closing background set</div>';
     });
   };
   reader.readAsDataURL(file);
@@ -1452,6 +1066,15 @@ function initChips(groupId, multi) {
 }
 initChips('eventTypeChips', false);
 initChips('rsvpMethodChips', false);
+
+// Show/hide Other field when Other chip selected
+document.querySelectorAll('#eventTypeChips .chip').forEach(function(chip) {
+  chip.addEventListener('click', function() {
+    var isOther = chip.getAttribute('data-val') === 'Other';
+    document.getElementById('otherEventTypeWrap').style.display = isOther ? 'block' : 'none';
+    if (isOther) setTimeout(function(){ document.getElementById('otherEventType').focus(); }, 50);
+  });
+});
 
 function getChipVal(groupId) {
   var sel = document.querySelector('#' + groupId + ' .chip.selected');
@@ -1530,7 +1153,7 @@ function loadAIVibeHints(eventType, honoree) {
     + 'Always include "🎲 Decide for me" as the last vibe option. Always include "Decide for me" as the last tone option. '
     + 'Respond ONLY with valid JSON, no markdown: { "vibes": ["emoji phrase", ...], "tones": ["phrase", ...] }';
 
-  fetch('https://builtsy-api-production.up.railway.app/grow', {
+  fetch(RAILWAY_URL + '/grow', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt })
@@ -1590,7 +1213,14 @@ function collectFormData() {
   }
 
   return {
-    eventType: getChipVal('eventTypeChips'),
+    eventType: (function() {
+      var t = getChipVal('eventTypeChips');
+      if (t === 'Other') {
+        var other = document.getElementById('otherEventType').value.trim();
+        return other || 'Other';
+      }
+      return t;
+    })(),
     honoreeNames: document.getElementById('honoreeNames').value.trim(),
     eventDate: document.getElementById('eventDate').value.trim(),
     eventTime: (document.getElementById('eventTime') ? document.getElementById('eventTime').value.trim() : ''),
@@ -1696,8 +1326,13 @@ function buildPrompt(data) {
       (data.rsvpQuestions.length ? data.rsvpQuestions.join(', ') : 'Guest name, Will they attend (Yes/No)') +
       '. The form should submit silently using fetch() with mode:"no-cors" to a placeholder Google Forms URL. Show a friendly confirmation message on success. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
   } else if (data.rsvpMethod === 'pre-filled-text') {
-    rsvpInstructions = 'RSVP button opens a pre-filled SMS text message to ' + (data.rsvpPhone || '[phone number]') +
-      '. Pre-fill with a friendly message like "Hi! [Guest name] would love to come to [event]!" — use a tel: href with body param. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
+    var smsBody = 'Hi! It\'s [add your name here] — counting [add your daughter\'s name here] in for ' + honoree + '\'s ' + (data.eventType || 'celebration') + '!';
+    rsvpInstructions = 'RSVP method is SMS/TEXT. Render ZERO form fields. The RSVP section contains ONLY:\n' +
+      '(1) Deadline badge if set\n' +
+      '(2) Emotional bold italic headline\n' +
+      '(3) One warm sentence like "Just tap below — we\'ll text you right back"\n' +
+      '(4) ONE large full-width tap-to-text button: <a href="sms:' + (data.rsvpPhone || '') + '?body=' + encodeURIComponent(smsBody) + '" style="display:block;background:[ACCENT];color:white;text-align:center;padding:18px 24px;border-radius:30px;font-weight:700;font-size:1rem;text-decoration:none;margin-top:16px">Text Us to RSVP</a>\n' +
+      'That is the entire section. Nothing else. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
   } else if (data.rsvpMethod === 'email-link') {
     rsvpInstructions = 'RSVP button is a mailto: link to ' + (data.rsvpEmail || '[email]') +
       ' with a pre-filled subject line. RSVP deadline: ' + (data.rsvpDeadline || 'not specified') + '.';
@@ -1738,11 +1373,7 @@ function buildPrompt(data) {
     photoInstructions += 'No hero photo or background. Create a beautiful full-bleed CSS gradient or illustrated texture hero. No broken img tags. ';
   }
 
-  if (data.closingBgB64) {
-    photoInstructions += 'CLOSING SECTION — NON-NEGOTIABLE: Use __CLOSING_BG__ as full-bleed CSS background: background-image:url(__CLOSING_BG__); background-size:cover; background-position:center. Preserve the image colors exactly — no heavy overlay. Text should contrast naturally with the background. ';
-  } else {
-    photoInstructions += 'No closing background. Use a CSS gradient or pattern for the closing section that complements the hero. ';
-  }
+  photoInstructions += 'CLOSING SECTION: No background image. Use a clean solid or very subtle gradient background in the palette colors. Never place text over any photo. Pure text section only.\n';
 
   if (data.galleryImages.length > 0) {
     photoInstructions += data.galleryImages.length + ' gallery photos provided. Place <img> tags with these src placeholders in the gallery section — they will be replaced with real photos after generation: ';
@@ -1810,18 +1441,20 @@ function buildPrompt(data) {
   else if (vibeL.indexOf('elegant') > -1 || vibeL.indexOf('chic') > -1) animType = 'stars';
 
   var animCode = '';
+  var zIdx = data.confettiLayer === 'above' ? '9999' : '0';
   if (animType_legacy === 'bubbles') {
-    animCode = 'Create 15 floating bubble divs (border-radius:50%, border:2px solid rgba(255,255,255,0.3), background:rgba(255,255,255,0.08), sizes 20-60px, position:fixed, z-index:0, pointer-events:none) that float upward continuously with CSS keyframes. Stagger delays 0-6s. Start immediately on load.';
+    animCode = 'Create 18 floating bubble divs (border-radius:50%, border:2px solid rgba(255,255,255,0.5), background:rgba(255,255,255,0.15), sizes 20-70px, position:fixed, z-index:' + zIdx + ', pointer-events:none) that float upward continuously with CSS keyframes. Stagger delays 0-6s. Start immediately on load.';
   } else if (animType_legacy === 'confetti') {
-    animCode = 'Canvas element (position:fixed, inset:0, pointer-events:none, z-index:0). JS particle system: 60 particles in palette colors that fall continuously from the top, each with x, y, rotation, speed, color, size. setInterval at 16ms. var/function(){} only. Subtle — not overwhelming.';
+    animCode = 'Canvas element (position:fixed, inset:0, pointer-events:none, z-index:' + zIdx + '). JS particle system: 80 particles in palette colors that fall continuously from the TOP of the screen (y starts at -10), each with random x across full width, rotation, speed 1-3px/frame, color from palette, size 6-12px. setInterval at 16ms. Particles reset to top when they reach bottom. var/function(){} only. Visible and celebratory.';
   } else if (animType_legacy === 'petals') {
-    animCode = 'Create 12 soft petal shapes (border-radius:60% 40% 60% 40%, pastel palette tones, 12-22px, opacity:0.5, position:fixed, pointer-events:none) drifting downward and rotating gently. CSS keyframes, 5-9s duration, staggered delays.';
+    animCode = 'Create 16 soft petal shapes (border-radius:60% 40% 60% 40%, pastel palette tones, 14-26px, opacity:0.65, position:fixed, z-index:' + zIdx + ', pointer-events:none) falling from the TOP of the screen and rotating gently. CSS keyframes translateY from -20px to 110vh, 5-9s duration, staggered delays, random x positions.';
   } else if (animType_legacy === 'stars') {
-    animCode = 'Create 20 small star shapes (✦, 3-7px, white/gold, opacity 0.3-0.6, position:fixed, pointer-events:none) twinkling via CSS opacity keyframes with staggered 0-4s delays. Spread across background.';
+    animCode = 'Create 25 small star shapes (✦, 5-10px, accent color, opacity 0.4-0.7, position:fixed, z-index:' + zIdx + ', pointer-events:none) twinkling via CSS opacity keyframes with staggered 0-4s delays. Spread across full background.';
   } else if (animType_legacy === 'bats') {
-    animCode = 'Create 6 bat emoji spans (font-size:14-20px, position:fixed, pointer-events:none) flying across screen at different heights using CSS translateX keyframes.';
+    animCode = 'Create 8 bat emoji spans (font-size:16-24px, position:fixed, z-index:' + zIdx + ', pointer-events:none) flying across screen at different heights using CSS translateX keyframes.';
   } else {
-    animCode = 'Create 20 small sparkle particles (✦ characters, 4-10px, palette accent color, opacity 0.25-0.55, position:fixed, pointer-events:none, z-index:0) drifting upward and fading. CSS keyframes, 4-7s duration, staggered delays.';
+    // sparkles — falling from top, visible, celebratory
+    animCode = 'Create 30 sparkle particles (✦ and ✧ characters alternating, 8-16px, palette accent color, opacity 0.5-0.85, position:fixed, z-index:' + zIdx + ', pointer-events:none) falling from the TOP of the screen. CSS keyframes: each starts at top:-20px with random left 0-100vw, falls to 110vh over 4-8s, gentle rotation, staggered delays 0-6s, loops infinitely. Make them visible and celebratory — not too subtle.';
   }
 
   var newPrompt =
@@ -1829,8 +1462,8 @@ function buildPrompt(data) {
 
     '!! BEFORE YOU WRITE A SINGLE LINE OF HTML — READ THIS FIRST !!\n' +
     'STEP 1: The very first element inside <body> MUST be this exact div:\n' +
-    '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden"></div>\n' +
-    'STEP 2: At the very end of <body>, before </body>, add a <script> that populates #bg-anim with animated particles. ' + (data.confettiType === 'none' ? 'Use sparkles: 20 spans inside #bg-anim, each position:absolute, random top/left across full viewport, ✦ char, palette accent color, CSS keyframe drifting upward.' : animCode + ' — append all elements INTO document.getElementById("bg-anim").') + '\n' +
+    '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:' + zIdx + ';pointer-events:none;overflow:hidden"></div>\n' +
+    'STEP 2: At the very end of <body>, before </body>, add a <script> that populates #bg-anim with animated particles. ' + animCode + ' — append all elements INTO document.getElementById("bg-anim").\n' +
     'If #bg-anim is not the first child of <body>, the animation WILL NOT WORK. Do not skip this. Do not nest it inside any section.\n\n' +
 
     '== DESIGNER PERSONA ==\n' +
@@ -1849,7 +1482,7 @@ function buildPrompt(data) {
     '10. WHEN/WHERE: Side by side with vertical divider: WHEN [date] | WHERE [location] — use micro-labels, italic serif for values\n' +
     '11. OMBRÉ CARDS: Gradient backgrounds are ONLY allowed inside individual cards — never on the page background, never full-width, never between sections. Inside cards use: background:linear-gradient(135deg,rgba(ACCENT,0.06),rgba(255,255,255,0.95)). The page body background must stay clean and flat.\n' +
     '12. MIXED BORDERS: Vary border styles — solid, dashed, none — across sections for editorial depth\n' +
-    '13. RSVP CONFETTI: ' + (data.rsvpConfetti ? 'On submit burst 50 colored particles from button.' : 'No confetti burst.') + '\n' +
+    '13. RSVP CONFETTI: ' + (data.rsvpConfetti ? 'Call burstConfetti(this) onclick on BOTH the hero RSVP button AND the RSVP section button. See RULE B for the function definition.' : 'No confetti burst.') + '\n' +
     '14. ZERO EMOJIS: No emojis anywhere on the page. Strip any from user-provided text.\n' +
     '15. ALL INPUTS — NO DEFAULT BROWSER STYLES: Every input, textarea, and text field on the page must have: outline:none; border:1.5px solid rgba(ACCENT,0.3); border-radius:12px; padding:12px 14px; font-family:inherit; background:white. On focus: border-color:[ACCENT]; box-shadow:0 0 0 3px rgba(ACCENT,0.12). NEVER allow the default blue browser outline to appear anywhere.\n' +
     '16. NOTE/CALLOUT CARDS: Any standalone note, instruction, or allergy callout must NOT be just plain italic text in a box. Every such card needs: (a) a small eyebrow label above it (e.g. "PLEASE NOTE", "GOOD TO KNOW", "FROM THE HOST") in accent color small caps, (b) the note text in body font at 0.9rem, (c) a left border accent: border-left:3px solid [ACCENT]; padding-left:16px. Never render a note as floating italic text alone.\n' +
@@ -1862,8 +1495,10 @@ function buildPrompt(data) {
     'Location: ' + (data.eventLocation || '') + '\n' +
     'INTERNAL VIBE NOTE [DO NOT DISPLAY — NEVER SHOW ON PAGE]: ' + (data.vibe || '') + '\n' +
     (data.eventTheme ? '[INTERNAL — DO NOT DISPLAY ON PAGE] Design direction: ' + data.eventTheme + '\n' : '') +
-    (data.vibeRef ? 'Tagline: \"' + data.vibeRef + '\"\n' : '') +
-    (data.eventDescription ? 'Description — use EXACT words: ' + data.eventDescription + '\n' : '') + '\n' +
+    (data.vibeRef ? '[INTERNAL — DO NOT DISPLAY ON PAGE] Vibe reference: ' + data.vibeRef + '\n' : '') +
+    (data.eventDescription ? 'Description — use EXACT words: ' + data.eventDescription + '\n' : '') +
+    (data.eventExtras ? 'What to bring / special notes — use EXACT words: ' + data.eventExtras + '\n' : '') +
+    (data.contactInfo ? 'Contact for questions: ' + data.contactInfo + ' — render this as an SMS link: <a href="sms:' + data.contactInfo.replace(/\D/g,'') + '" style="color:[ACCENT];font-weight:600;text-decoration:none">' + data.contactInfo + '</a>. NEVER render as a tel: phone call link.\n' : '') + '\n' +
 
     '== PALETTE ==\n' +
     (function() {
@@ -1920,21 +1555,23 @@ function buildPrompt(data) {
     '   - Date — ' + (data.eventDate || '') + '\n' +
     (data.eventTime ? '   - Time — ' + data.eventTime + '\n' : '') +
     '   - Location — ' + (data.eventLocation || '') + '\n' +
-    (data.eventTheme ? '   [DO NOT DISPLAY]\n' : '') +
-    (data.vibeRef ? '   - Tagline — "' + data.vibeRef + '"\n' : '') +
     (data.heroRsvpBtn ? '   - RSVP button — accent color, never blue, scrolls to #rsvp\n' : '') +
     (data.helpList && data.helpList.enabled ? '   - Help Make It Happen button — outline style, scrolls to #help\n' : '') +
+    (data.eventTheme || data.vibeRef ? 'DESIGN DIRECTION ONLY (do NOT print these on the page — use them to inform your visual choices): ' + (data.eventTheme ? 'Theme: ' + data.eventTheme + '. ' : '') + (data.vibeRef ? 'Vibe: ' + data.vibeRef + '.' : '') + '\n' : '') +
+    'HERO BUTTONS — MUST be wrapped in: <div style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:340px;margin:24px auto 0"> — each button inside must be width:100%;text-align:center;display:block. This wrapper MUST be centered with margin:0 auto.\n' +
     'Think: arch card over bold background, oversized typography, layered composition, floating badge — surprise us. No emojis.\n' +
     'HERO LAYOUT ORDER — always in this sequence: (1) event badge/label, (2) honoree name, (3) event type subtitle or tagline, (4) photo, (5) date/time/location, (6) buttons. The subtitle and label appear ABOVE the photo — never below it. This creates visual balance and context before the image.\n' +
-    'HERO DATE/LOCATION DISPLAY: Show date, time, and location as elegant micro-details — NOT in a chunky card or box. Use: small caps labels (WHEN / WHERE / TIME) in accent color at 0.6rem, values in italic display font at 0.95rem, arranged in a clean single row or two-column layout with a subtle vertical divider between them. Keep it refined and airy — not boxy or form-like.\n\n' +
+    'HERO DATE/LOCATION DISPLAY: Labels (WHEN / WHERE / TIME) in small caps accent color at 0.72rem font-weight:700 letter-spacing:.12em. Values in italic display font at 1.05rem — large enough to read easily. Arranged in clean rows or two-column with subtle vertical divider. NOT in a chunky card. Keep refined and airy. Subtitle/tagline color must harmonize with the palette — never a jarring contrast color.\n\n' +
 
-    '2. WHEN & WHERE — MUST start with eyebrow+line header labeled "THE DETAILS": Pink/tinted card. WHEN [date] | [vertical divider] | WHERE [location]. Micro-labels WHEN/WHERE in small caps. Date and location in italic display font.' + (data.venueLink ? ' Include a subtle "View venue →" link styled in accent color linking to: ' + data.venueLink + '. Place it below the location, small and refined — not a big button.' : '') + '\n\n' +
+    '2. STORY/DESCRIPTION — MUST start with eyebrow+line header labeled "THE CELEBRATION" or "THE STORY": ' + (data.eventDescription ? 'Use EXACT words from description below. Do NOT show vibe/theme text on page.\nDescription: ' + data.eventDescription : 'Write 2-3 warm sentences about the event from the details given.') + '\n\n' +
+
+    '3. GALLERY — MUST start with eyebrow+line header labeled "THE SPACE" or "MEMORIES". Place right after story. Layout: first photo full-width (width:100%), then remaining photos in pairs side by side (two columns, gap:8px), last photo full-width if odd number. Each image: object-fit:cover; border-radius:12px; width:100%; display:block. Use ALL photo placeholders from RULE F below — every single one must appear.\n\n' +
+
+    '4. WHEN & WHERE — MUST start with eyebrow+line header labeled "THE DETAILS": Pink/tinted card. WHEN [date] | [vertical divider] | WHERE [location]. Micro-labels WHEN/WHERE in small caps. Date and location in italic display font.' + (data.venueLink ? ' Include a subtle "View venue →" link styled in accent color linking to: ' + data.venueLink + '. Place it below the location, small and refined — not a big button.' : '') + '\n\n' +
 
     '3. ITINERARY — MUST start with eyebrow+line header labeled "THE DETAILS" or "THE PLAN": ' + (data.eventItinerary ?
       'Timeline layout with date labels in accent color (micro-label style), event name in italic display font, details in body font. Use EXACT details from itinerary below — do not add or change anything. Contained in white card. Include dashed callout box for any important notes/exceptions. No emojis.\nItinerary details: ' + data.eventItinerary :
       'No itinerary was provided — generate a simple, elegant itinerary based ONLY on the event date, time, location, and description already given. Keep it minimal — arrival, main event, departure. Use placeholder-style labels like "Arrive", "Celebration begins", "Evening ends". Do not invent specific activities not mentioned. Style as timeline with date/time labels in accent color micro-label style, details in body font, white card container.') + '\n\n' +
-
-    '4. STORY/DESCRIPTION — MUST start with eyebrow+line header labeled "THE STORY" or "THE CELEBRATION": ' + (data.eventDescription ? 'Use EXACT words from the description below — do not rewrite, summarize, or add to it. Ombré gradient card. Inline accent color on key names/phrases. Do NOT display the event theme or vibe field as a pull quote — it is a design direction only, not copy to show on the page.\nDescription: ' + data.eventDescription : 'Skip if no description provided.') + '\n\n' +
 
     '5. FAQ (id=\"faq\") — REQUIRED: Accordion with 4-6 event-specific questions parents/guests would ask. Warm conversational tone. Examples: drop-off/pickup, what to bring, food/allergies, contact info, parking. Style with eyebrow+line, border-bottom on each row, smooth expand.\n\n' +
 
@@ -2002,7 +1639,7 @@ function buildPrompt(data) {
       (data.helpList.allergyNote ? 'Allergy callout box below list: \"' + data.helpList.allergyNote + '\"\n' : '') :
       '') + '\n' +
 
-    '9. CLOSING CTA — CRITICAL LAYOUT RULE: This section MUST be a completely separate div that comes AFTER the gallery div is fully closed. NEVER use position:absolute or position:fixed. NEVER place this inside or overlapping the gallery. The closing div must have: display:block; width:100%; position:static; margin-top:0; padding:60px 24px; text-align:center; background:[soft gradient or closing bg]. It must appear as its own full-width row below all photos. Eyebrow+line header labeled "THE CLOSING" or "SEE YOU THERE". Large italic emotional message like "We cannot wait to celebrate with you!" in display font. If the closing text is appearing on top of photos, the structure is WRONG — close the gallery div first, then open a new section div.\n\n' +
+    '9. CLOSING CTA: A clean standalone full-width section with NO background image and NO photos anywhere near it. Use a solid or very subtle gradient background in the palette colors. Eyebrow+line header labeled "SEE YOU THERE" or "THE CLOSING". Large italic emotional message in display font centered on the page. Padding 60px 24px. This is pure text — nothing else.\n\n' +
 
     '== PHOTO ==\n' +
     photoInstructions + '\n' +
@@ -2015,7 +1652,28 @@ function buildPrompt(data) {
     'RULE A — BACKGROUND ANIMATION (REQUIRED): Copy this EXACT HTML structure as the very first element after <body>:\n' +
     '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden"></div>\n' +
     'Then in a <script> tag at the bottom of <body>, populate it with: ' + (data.confettiType === 'none' ? 'default sparkles: create 20 span elements inside #bg-anim, each with position:absolute, random top/left starting positions spread across the full 100vw x 100vh, ✦ character, font-size 4-10px, palette accent color, opacity 0.25-0.55, CSS animation drifting upward and fading over 4-7s with staggered delays.' : animCode + ' — append all animation elements INTO the #bg-anim div.') + ' Since #bg-anim is position:fixed top:0 left:0, particles will appear from the very top of the page immediately on load.\n' +
-    'RULE B — RSVP CONFETTI BURST (REQUIRED): ' + (data.rsvpConfetti ? 'When the RSVP submit button is clicked, burst 50 colored particles from the button. Use absolutely-positioned divs, animate outward with gravity, fade over 1.5s. var/function(){} only.' : 'No confetti burst — user opted out.') + '\n' +
+    'RULE B — CONFETTI BURST ON RSVP BUTTONS (REQUIRED): ' + (data.rsvpConfetti ?
+      'Add a confetti burst function that fires when ANY RSVP button is clicked — this includes BOTH the hero "RSVP Now" button AND the RSVP section submit/text button. ' +
+      'function burstConfetti(btn) { ' +
+        'var rect = btn.getBoundingClientRect(); ' +
+        'var cx = rect.left + rect.width/2; ' +
+        'var cy = rect.top + rect.height/2; ' +
+        'for (var i = 0; i < 150; i++) { ' +
+          'var p = document.createElement("div"); ' +
+          'var colors = ["var(--accent)","#ff6b9d","#ffd700","#ff85c2","#c084fc","#34d399"]; ' +
+          'p.style.cssText = "position:fixed;width:"+(6+Math.random()*10)+"px;height:"+(6+Math.random()*10)+"px;background:"+colors[Math.floor(Math.random()*colors.length)]+";border-radius:"+(Math.random()>0.5?"50%":"2px")+";left:"+cx+"px;top:"+cy+"px;pointer-events:none;z-index:99999;"; ' +
+          'document.body.appendChild(p); ' +
+          'var angle = Math.random()*Math.PI*2; ' +
+          'var speed = 4 + Math.random()*12; ' +
+          'var vx = Math.cos(angle)*speed; ' +
+          'var vy = Math.sin(angle)*speed - 6; ' +
+          'var gravity = 0.4; ' +
+          'var opacity = 1; ' +
+          '(function(el,vx,vy){var x=cx,y=cy,g=gravity,o=1;var id=setInterval(function(){x+=vx;y+=vy;vy+=g;o-=0.018;el.style.left=x+"px";el.style.top=y+"px";el.style.opacity=o;if(o<=0){clearInterval(id);el.remove();}},16);})(p,vx,vy); ' +
+        '} ' +
+      '} ' +
+      'Call burstConfetti(this) via onclick on BOTH the hero RSVP button AND the RSVP section button/link. var/function(){} syntax only.' :
+      'No confetti burst — user opted out.') + '\n' +
     'RULE C — SECTION SPACING: Between sections use simple whitespace (padding 32px top/bottom). Do NOT use full-width ombré gradient dividers or any background gradient that bleeds between sections. No full-width colored backgrounds between sections — the page background should be clean and consistent. The only gradients allowed are INSIDE cards, never as full-width background elements.\n' +
     'RULE D — FAQ SECTION IS REQUIRED: Section id="faq" MUST appear before the RSVP section. Generate 4-6 warm, conversational accordion questions. Each row: question bold left, arrow right, smooth expand/collapse on click, border-bottom divider. Eyebrow + line header above.\n' +
     'RULE E — SMS RSVP DISPLAY: ' + (data.rsvpMethod === 'pre-filled-text' ?
@@ -2077,7 +1735,7 @@ function doGenerate(data, built) {
 
 
   // Use /invite endpoint for invite-specific system prompt
-  fetch('https://builtsy-api-production.up.railway.app/invite', {
+  fetch(RAILWAY_URL + '/invite', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -2103,14 +1761,76 @@ function doGenerate(data, built) {
     // Photos now embedded directly in prompt — no injection needed
     // Inject real invite ID for claims
     html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
-    html = html.replace(/INVITE_ID_PLACEHOLDER/g, currentInviteId);
     var claimsUrl = 'https://builtsy-api-production.up.railway.app';
     html = html.replace(/CLAIMS_SCRIPT_URL/g, claimsUrl);
-    html = html.replace(/CLAIMS_BASE\s*=\s*["'][^"']*["']/g, 'CLAIMS_BASE = "' + claimsUrl + '"');
-    // Also fix any Google Apps Script URLs that may have slipped through
-    html = html.replace(/https:\/\/script\.google\.com[^"']*/g, claimsUrl);
+    html = html.replace(/https:\/\/script\.google\.com[^"\s]*/g, claimsUrl);
 
-    // Inject hero photo if provided
+    // OG social share
+    var ogTitle = (data.honoree || 'You') + ' — ' + (data.eventType || 'Invite');
+    var ogDesc = (data.eventDate || '') + (data.eventLocation ? ' · ' + data.eventLocation : '');
+    var ogImg = data.heroB64 ? 'data:' + data.heroMime + ';base64,' + data.heroB64 : (data.heroBgB64 ? 'data:' + data.heroBgMime + ';base64,' + data.heroBgB64 : '');
+    var ogTags = '<meta property="og:title" content="' + ogTitle.replace(/"/g,'&quot;') + '">' +
+      '<meta property="og:description" content="' + ogDesc.replace(/"/g,'&quot;') + '">' +
+      '<meta name="twitter:card" content="summary_large_image">' +
+      (ogImg ? '<meta property="og:image" content="' + ogImg + '">' : '');
+    html = html.replace(/<head>/i, '<head>' + ogTags);
+
+    // CSS fixes
+    var cssfix = '<style>' +
+      'button[type="submit"]{display:none!important}' +
+      '.closing-section,[class*="closing"],[id*="closing"],[class*="see-you"],[id*="see-you"]{position:relative!important;clear:both!important}' +
+      '</style>';
+    html = html.replace(/<\/head>/i, cssfix + '<\/head>');
+
+    // Move closing text out from under gallery — find any absolutely positioned closing div and fix it
+    html = html.replace(/(<[^>]*(?:class|id)="[^"]*(?:closing|see-you)[^"]*"[^>]*style="[^"]*?)position\s*:\s*absolute([^"]*")/gi, '$1position:relative$2');
+    html = html.replace(/(<[^>]*style="[^"]*?)position\s*:\s*absolute([^"]*"[^>]*(?:class|id)="[^"]*(?:closing|see-you)[^"]*")/gi, '$1position:relative$2');
+
+    // Force inject claims JS + UI builder
+    var invId = currentInviteId;
+    var claimsCode = [
+      'var INVITE_ID="' + invId + '";',
+      'var CLAIMS_BASE="' + claimsUrl + '";',
+      'var claimedItems={};',
+      'function loadClaims(){fetch(CLAIMS_BASE+"/claims/"+encodeURIComponent(INVITE_ID)).then(function(r){return r.json();}).then(function(d){if(d&&d.claims){claimedItems=d.claims;renderClaimStates();}}).catch(function(){});}',
+      'function renderClaimStates(){var rows=document.querySelectorAll("[data-item]");for(var i=0;i<rows.length;i++){var n=rows[i].getAttribute("data-item");if(claimedItems[n]){rows[i].innerHTML="<span style=\'background:#dcfce7;color:#16a34a;font-weight:700;padding:5px 12px;border-radius:20px;display:inline-block\'>&check; Claimed by "+claimedItems[n]+"</span>";}}}',
+      'function sanitizeId(s){return s.replace(/[^a-zA-Z0-9]/g,"_");}',
+      'function claimItem(n){var el=document.getElementById("claim-input-"+sanitizeId(n));if(!el){alert("Field not found.");return;}var v=el.value.trim();if(!v){alert("Enter your name first!");return;}fetch(CLAIMS_BASE+"/claim",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({inviteId:INVITE_ID,item:n,name:v})}).then(function(r){return r.json();}).then(function(d){if(d.ok){claimedItems[n]=v;renderClaimStates();}else{alert("Already claimed!");}}).catch(function(){alert("Could not connect.");});}',
+      'function rebuildClaimUIs(){var rows=document.querySelectorAll("[data-item]");for(var i=0;i<rows.length;i++){var n=rows[i].getAttribute("data-item");if(claimedItems[n])continue;var sid=sanitizeId(n);if(document.getElementById("claim-input-"+sid))continue;var inp=document.createElement("input");inp.id="claim-input-"+sid;inp.type="text";inp.placeholder="Your name";inp.style.cssText="border:1.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:.85rem;width:130px;outline:none;font-family:inherit";var btn=document.createElement("button");btn.textContent="Claim";btn.style.cssText="background:#ee70bc;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:.85rem;font-weight:700;cursor:pointer";(function(name){btn.onclick=function(){claimItem(name);};})(n);var wrap=document.createElement("div");wrap.style.cssText="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px";wrap.appendChild(inp);wrap.appendChild(btn);rows[i].innerHTML="";rows[i].appendChild(wrap);}}',
+      'loadClaims();rebuildClaimUIs();setInterval(function(){loadClaims();rebuildClaimUIs();},8000);',
+      'document.addEventListener("DOMContentLoaded",function(){',
+      '  var imgs=document.querySelectorAll("img");',
+      '  for(var i=0;i<imgs.length;i++){',
+      '    var p=imgs[i].parentElement;',
+      '    while(p){',
+      '      var st=p.style&&p.style.position;',
+      '      var cs=window.getComputedStyle&&window.getComputedStyle(p).position;',
+      '      if(st==="absolute"||cs==="absolute"){',
+      '        var txt=p.innerText||"";',
+      '        if(txt.indexOf("cannot wait")>-1||txt.indexOf("celebrate")>-1||txt.indexOf("See You")>-1||txt.indexOf("SEE YOU")>-1){',
+      '          p.style.position="relative";',
+      '          p.style.clear="both";',
+      '          p.style.marginTop="0";',
+      '          p.style.top="auto";',
+      '          p.style.left="auto";',
+      '          p.style.transform="none";',
+      '        }',
+      '      }',
+      '      p=p.parentElement;',
+      '    }',
+      '  }',
+      '});'
+    ].join('\n');
+    var claimsTag = '<scr'+'ipt>' + claimsCode + '<\/scr'+'ipt>';
+    html = html.replace(/<\/body>/i, claimsTag + '<\/body>');
+
+    // Strip vibe text if Claude showed it
+    if (data.vibe && data.vibe.length > 15) {
+      var vSnip = data.vibe.substring(0,20).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      html = html.replace(new RegExp('<p[^>]*>[^<]*'+vSnip+'[^<]*<\/p>','gi'),'');
+    }
+
+        // Inject hero photo if provided
     if (data.heroB64) {
       var heroSrc = 'data:' + data.heroMime + ';base64,' + data.heroB64;
       html = html.replace(/src="__HERO_PHOTO__"/g, 'src="' + heroSrc + '"');
@@ -2222,7 +1942,7 @@ function submitRevise() {
     + '\n\n===REVISION REQUEST===\n' + note
     + '\n\nOutput ONLY the complete revised HTML. No explanation. No markdown. Start with <!DOCTYPE html>.';
 
-  fetch('https://builtsy-api-production.up.railway.app/generate', {
+  fetch(RAILWAY_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt, max_tokens: 16000 })
@@ -2308,7 +2028,7 @@ function loadHelpSuggestions() {
     + 'Keep each item short (2-5 words). '
     + 'Respond ONLY with a JSON array of strings, nothing else: ["Item 1","Item 2",...]';
 
-  fetch('https://builtsy-api-production.up.railway.app/grow', {
+  fetch(RAILWAY_URL + '/grow', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt })
@@ -2471,7 +2191,7 @@ function handleInspoUpload(input, zoneId, b64Id, mimeId) {
         + '<img src="' + result + '" style="max-height:100px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">'
         + '<button onclick="event.stopPropagation();clearInspoPhoto(\'' + zoneId + '\',\'' + b64Id + '\',\'' + mimeId + '\')" style="position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:white;border:none;cursor:pointer;font-size:13px;line-height:1;font-weight:700;">×</button>'
         + '</div>'
-        + '<div style="font-size:0.72rem;color:var(--navy);font-weight:600;margin-top:6px;text-align:center;">✓ ' + (isColor ? 'Color inspo' : 'Vibe inspo') + ' uploaded</div>';
+        + '<div style="font-size:0.72rem;color:white;font-weight:600;margin-top:6px;text-align:center;">✓ ' + (isColor ? 'Color inspo' : 'Vibe inspo') + ' uploaded</div>';
     });
   };
   reader.readAsDataURL(file);
