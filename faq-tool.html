@@ -209,7 +209,7 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.55;}
       </div>
 
       <div class="success-msg" id="success-msg">
-        Your FAQs are saved and will be included when you generate your site.
+        ✦ Your FAQs are saved and will be included when Builtsy builds your site.
       </div>
     </div>
   </div>
@@ -466,12 +466,12 @@ function saveFaqs() {
       var msg = document.getElementById('success-msg');
       msg.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = 'Save FAQs';
+      btn.textContent = 'Save to Blueprint';
     })
     .catch(function(e) {
       setSaveStatus('error', 'Save failed');
       btn.disabled = false;
-      btn.textContent = 'Save FAQs';
+      btn.textContent = 'Save to Blueprint';
       alert('Save failed: ' + (e.message || 'Unknown error'));
     });
 }
