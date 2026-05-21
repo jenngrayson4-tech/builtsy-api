@@ -2625,6 +2625,37 @@ var _ctPhotoZones = {
 };
 var _ctPhotos = {};
 
+// Global template key map — shared by msGenerate AND msRevise
+var _ctTplKeyMap = {
+  sm_cherry:          'cherry_sm',
+  sm_bubbly:          'bubbly_sm',
+  sm_studio:          'social',
+  ai_design:          'social',
+  wellness_ember:     'caretaker_warm',
+  beauty_bloom:       'caretaker_warm',
+  creative_studio:    'social',
+  professional_slate: 'caretaker_clean',
+  brand_peach:        'social',
+  interior_linen:     'social',
+  pink_pixel:         'social',
+  flux_collective:    'social',
+  taylor_peach:       'social',
+  buzz_creative:      'social',
+  tuesday_marketing:  'social',
+  studio_georgia:     'social',
+  wylde_agency:       'social',
+  gemma_rose:         'social',
+  laguna_coastal:     'social',
+  ofirelle:           'caretaker_warm',
+  sierra_coach:       'caretaker_warm',
+  coral_coach:        'caretaker_warm',
+  mila_radiant:       'caretaker_warm',
+  studio_saraho:      'caretaker_warm',
+  healing_horizons:   'caretaker_warm',
+  alchemist:          'caretaker_warm',
+  kindred_wellness:   'caretaker_warm'
+};
+
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
@@ -3763,20 +3794,7 @@ function msGenerate() {
     if (bar) bar.style.width = _ctProgress + '%';
   }, 400);
 
-  // Map master blueprint template keys to Railway server keys
-  var _tplKeyMap = {
-    sm_cherry:       'cherry_sm',
-    sm_bubbly:       'bubbly_sm',
-    sm_studio:       'social',
-    ai_design:       'social',
-    wellness_ember:  'caretaker_warm',  // fallback to closest generate style until dedicated endpoint
-    beauty_bloom:    'caretaker_warm',
-    creative_studio: 'social',
-    professional_slate: 'caretaker_clean',
-    brand_peach:     'social',
-    interior_linen:  'social'
-  };
-  var _serverTplKey = _tplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate;
+  var _serverTplKey = _ctTplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate;
 
   fetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
@@ -3794,7 +3812,7 @@ function msGenerate() {
 
     function pump() {
       return reader.read().then(function(result) {
-        if (result.done) return;
+        if (result.done) { msFinishError('Generation stream ended unexpectedly. Please try again.'); return; }
         buffer += decoder.decode(result.value, { stream: true });
         var lines = buffer.split('\n');
         buffer = lines.pop();
@@ -3969,7 +3987,7 @@ function msRevise() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      templateType: (_tplKeyMap || {})[_ctSelectedTemplate] || _ctSelectedTemplate,
+      templateType: _ctTplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate,
       niche: msBuildNiche(),
       fields: revisedFields
     })
@@ -3981,7 +3999,7 @@ function msRevise() {
 
     function pumpRevise() {
       return reader.read().then(function(result) {
-        if (result.done) return;
+        if (result.done) { msFinishError('Revision stream ended unexpectedly. Please try again.'); return; }
         buffer += decoder.decode(result.value, { stream: true });
         var lines = buffer.split('\n');
         buffer = lines.pop();
