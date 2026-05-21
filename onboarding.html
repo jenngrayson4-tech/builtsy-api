@@ -14,6 +14,7 @@
     --navy-light: #243055;
     --lime: #C8E000;
     --pink: #ee70bc;
+    --builtsy-blue: #4361EE;
     --iris: #8ba2f0;
     --text: #f4f6ff;
     --text-muted: rgba(244,246,255,0.5);
@@ -77,13 +78,18 @@
     font-size: 22px;
     font-weight: 900;
     letter-spacing: -0.5px;
-    color: var(--lime);
+    color: white;
     text-align: center;
     margin-bottom: 40px;
     opacity: 0;
     animation: fadeDown 0.5s 0.1s ease forwards;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0;
   }
-  .wordmark span { color: var(--text); }
+  .wordmark .logo-sy { color: var(--pink); font-style: italic; }
+  .wordmark .logo-dot { color: var(--builtsy-blue); font-size: 1.7rem; font-weight: 900; margin-left: 2px; line-height: 1; }
 
   /* ── PICK SCREEN ── */
   .pick-heading {
@@ -413,7 +419,7 @@
 
 <div class="container">
 
-  <div class="wordmark">Builtsy<span>.</span></div>
+  <div class="wordmark">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></div>
 
   <!-- ── SCREEN 1: PICK YOUR PATH ── -->
   <div id="screen-pick" class="screen active">
@@ -422,11 +428,11 @@
     <p class="pick-sub" style="margin-bottom:1.75rem;">Start with one &#8212; we&#8217;ll guide you the rest of the way.</p>
 
     <!-- PRIMARY START CARD -->
-    <a href="blueprint-local-business.html" style="display:block;background:#0D1828;border:2px solid rgba(200,224,0,0.5);border-radius:18px;padding:2.25rem 1.75rem;margin-bottom:2rem;text-decoration:none;transition:all 0.18s;position:relative;" onmouseover="this.style.borderColor='rgba(200,224,0,0.85)';this.style.background='#0f1e30'" onmouseout="this.style.borderColor='rgba(200,224,0,0.5)';this.style.background='#0D1828'">
+    <a href="blueprint-master.html" style="display:block;background:#0D1828;border:2px solid rgba(200,224,0,0.5);border-radius:18px;padding:2.25rem 1.75rem;margin-bottom:2rem;text-decoration:none;transition:all 0.18s;position:relative;" onmouseover="this.style.borderColor='rgba(200,224,0,0.85)';this.style.background='#0f1e30'" onmouseout="this.style.borderColor='rgba(200,224,0,0.5)';this.style.background='#0D1828'">
       <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#C8E000;font-family:'DM Mono',monospace;margin-bottom:0.6rem;">Fastest way to get live</div>
-      <div style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:0.4rem;font-family:'Playfair Display',serif;line-height:1.2;">Start with a business site <span style="font-size:0.95rem;font-weight:400;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;">(done in ~30 minutes)</span></div>
-      <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:1.75rem;line-height:1.5;">The Local Business Blueprint. Works for any service business &#8212; restaurant, salon, plumber, contractor, and more.</div>
-      <div style="background:#C8E000;color:#12192B;border-radius:10px;padding:14px 0;font-size:1rem;font-weight:700;font-family:'DM Sans',sans-serif;text-align:center;box-shadow:0 0 24px rgba(200,224,0,0.2);">Start build &#8594;</div>
+      <div style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:0.4rem;font-family:'Playfair Display',serif;line-height:1.2;">Start with the Master Blueprint</div>
+      <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:1.75rem;line-height:1.5;">Works for any service business &#8212; build a full site, landing page, or more. Done in about 30 minutes.</div>
+      <div style="background:#C8E000;color:#12192B;border-radius:10px;padding:14px 0;font-size:1rem;font-weight:700;font-family:'DM Sans',sans-serif;text-align:center;box-shadow:0 0 24px rgba(200,224,0,0.2);">Start building &#8594;</div>
     </a>
 
 
@@ -439,8 +445,8 @@
         <div style="display:flex;align-items:center;gap:0.875rem;">
           <span style="font-size:1.25rem;flex-shrink:0;">&#128260;</span>
           <div>
-            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">Fix an existing site</div>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Outdated, broken, or missing from AI search</div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">Fix or refresh something I already have</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Outdated site, broken page, or missing from AI search</div>
           </div>
         </div>
         <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Improve my site &#8594;</div>
@@ -461,8 +467,8 @@
         <div style="display:flex;align-items:center;gap:0.875rem;">
           <span style="font-size:1.25rem;flex-shrink:0;">&#127807;</span>
           <div>
-            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">A site for myself</div>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Personal brand, portfolio, or link-in-bio</div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">A site or page for myself</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Personal brand, portfolio, creator page, or link-in-bio</div>
           </div>
         </div>
         <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Start my site &#8594;</div>
@@ -472,8 +478,8 @@
         <div style="display:flex;align-items:center;gap:0.875rem;">
           <span style="font-size:1.25rem;flex-shrink:0;">&#128161;</span>
           <div>
-            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">I have an idea or I&#8217;m exploring</div>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Tool, app, or creator brand</div>
+            <div style="font-size:0.9rem;font-weight:600;color:white;margin-bottom:2px;">I want to build something &#8212; not sure what yet</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Explore the full Builtsy toolkit</div>
           </div>
         </div>
         <div style="background:#C8E000;color:#12192B;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;">Explore ideas &#8594;</div>
@@ -481,8 +487,6 @@
 
     </div>
 
-    <!-- BASICS DE-EMPHASIZED -->
-    <p style="text-align:center;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-top:1.5rem;line-height:1.6;">&#9889; New? <a href="basics1.html" style="color:#8ba2f0;text-decoration:none;font-weight:600;" onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">Learn the system first &#8594;</a> &#8212; takes about 20 minutes.</p>
 
   </div>
 
@@ -576,30 +580,32 @@ var LANES = {
   },
   self: {
     badge: { text: 'Building for yourself', cls: 'badge-self', icon: '🌱' },
-    heading: 'Start with the <em>Personal Brand</em> Blueprint.',
-    sub: 'Tell us about yourself, pick your vibe, and we\'ll build your site. Whether you\'re a creator, coach, or just need a place to send people — this is your Blueprint.',
+    heading: 'Start with the <em>Master Blueprint.</em>',
+    sub: 'Tell us about yourself, pick your vibe, and we\'ll build your site. Whether you\'re a creator, coach, or just need a place to send people — the Master Blueprint handles it all.',
     primary: {
-      icon: '✨',
-      name: 'Personal Brand Blueprint',
-      desc: 'A full personal brand site built around you — bio, offers, social links, your style. Done in under 30 minutes.',
-      url: 'blueprint-personal-brand.html'
+      icon: '✦',
+      name: 'Master Blueprint',
+      desc: 'A full site built around you — bio, offers, social links, your style. Works for any service business or personal brand. Done in about 30 minutes.',
+      url: 'blueprint-master.html'
     },
     also: [
-      { icon: '🔗', name: 'Link in Bio Blueprint', desc: 'Just need a simple links page? Start here instead.', url: 'blueprint-link-in-bio.html' },
+      { icon: '🔗', name: 'Link in Bio Blueprint', desc: 'Just need a simple links page? Start here.', url: 'blueprint-linkbio.html' },
+      { icon: '🎉', name: 'Event Invite Blueprint', desc: 'Build a beautiful invite or event page.', url: 'blueprint-event-invite.html' }
     ]
   },
   explore: {
     badge: { text: 'Exploring & building ideas', cls: 'badge-explore', icon: '💡' },
-    heading: 'The <em>Personal Brand</em> Blueprint is a great first build.',
-    sub: 'Whether you\'re a creator, influencer, or just figuring out what you want to make — this Blueprint gets something live fast and teaches you the whole Builtsy system.',
+    heading: 'The <em>Master Blueprint</em> is your starting point.',
+    sub: 'Build anything — a full site, a landing page, an invite, a link-in-bio. The Master Blueprint handles it all. Pick your output and go.',
     primary: {
-      icon: '✨',
-      name: 'Personal Brand Blueprint',
-      desc: 'Your name, your story, your links — all in one site. Built in under 30 minutes. The best way to see what Builtsy can do.',
-      url: 'blueprint-personal-brand.html'
+      icon: '✦',
+      name: 'Master Blueprint',
+      desc: 'One blueprint, every output type. Sites, pages, invites, link-in-bio and more. The fastest way to see what Builtsy can do.',
+      url: 'blueprint-master.html'
     },
     also: [
-      { icon: '🌐', name: 'Local Business Website Blueprint', desc: 'Bigger build, bigger result — when you\'re ready.', url: 'blueprint-local-business.html' },
+      { icon: '🔗', name: 'Link in Bio Blueprint', desc: 'Just need a simple links page? Start here.', url: 'blueprint-linkbio.html' },
+      { icon: '🎉', name: 'Event Invite Blueprint', desc: 'Build a beautiful invite or event page.', url: 'blueprint-event-invite.html' }
     ]
   }
 };
