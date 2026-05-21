@@ -85,43 +85,45 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 .section-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
 
 /* ── PREVIEW PANEL ── */
-.preview-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;position:sticky;top:72px;}
-.preview-header{background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
-.preview-header-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);}
-.preview-header-title{font-size:0.85rem;font-weight:600;color:var(--text);}
-.preview-body{padding:1.5rem;}
+.preview-card{background:#f3f4f8;border:1px solid rgba(255,255,255,0.12);border-radius:var(--rl);overflow:hidden;position:sticky;top:72px;box-shadow:0 8px 40px rgba(0,0,0,.35);}
+.preview-chrome{background:var(--navy);padding:0.6rem 1rem;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.preview-chrome-dot{width:10px;height:10px;border-radius:50%;}
+.preview-label-bar{background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.08);padding:0.65rem 1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.preview-header-label{font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);}
+.preview-header-title{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.7);}
+.preview-body{padding:1.5rem;background:#f3f4f8;}
 
-/* ── LIVE CALCULATOR ── */
-.calc-total{background:rgba(67,97,238,0.1);border:1.5px solid rgba(67,97,238,0.25);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+/* ── LIVE CALCULATOR (light preview) ── */
+.calc-total{background:rgba(67,97,238,0.08);border:1.5px solid rgba(67,97,238,0.18);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
 .calc-total-left{}
-.calc-total-label{font-size:0.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:0.1rem;font-family:'DM Mono',monospace;}
-.calc-total-note{font-size:0.68rem;color:var(--muted);}
+.calc-total-label{font-size:0.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:0.1rem;font-family:'DM Mono',monospace;}
+.calc-total-note{font-size:0.68rem;color:#9ca3af;}
 .calc-total-amount{font-size:2.2rem;font-weight:900;color:var(--blue);line-height:1;}
 
 .calc-section-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;}
 .calc-section-label span{background:var(--blue);color:white;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:900;flex-shrink:0;}
 
 .session-pills{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.1rem;}
-.session-pill{border:1.5px solid rgba(67,97,238,0.25);border-radius:100px;padding:0.45rem 0.9rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:0.4rem;white-space:nowrap;background:transparent;font-family:'DM Sans',sans-serif;}
+.session-pill{border:1.5px solid rgba(67,97,238,0.25);border-radius:100px;padding:0.45rem 0.9rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:0.4rem;white-space:nowrap;background:white;font-family:'DM Sans',sans-serif;}
 .session-pill:hover{border-color:var(--blue);}
-.session-pill.active{border-color:var(--blue);background:rgba(67,97,238,0.15);}
-.session-pill-name{font-size:0.82rem;font-weight:600;color:var(--text);}
+.session-pill.active{border-color:var(--blue);background:rgba(67,97,238,0.08);}
+.session-pill-name{font-size:0.82rem;font-weight:600;color:#12192B;}
 .session-pill-price{font-size:0.82rem;font-weight:800;color:var(--blue);}
 
 .addon-rows{margin-bottom:1.1rem;}
-.calc-addon{border:1px solid rgba(67,97,238,0.15);border-radius:9px;padding:0.55rem 0.9rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-bottom:0.35rem;}
-.calc-addon:hover{border-color:rgba(67,97,238,0.4);background:rgba(67,97,238,0.06);}
-.calc-addon.active{border-color:var(--blue);background:rgba(67,97,238,0.12);}
+.calc-addon{border:1px solid #e5e7eb;border-radius:9px;padding:0.55rem 0.9rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-bottom:0.35rem;background:white;}
+.calc-addon:hover{border-color:rgba(67,97,238,0.4);background:rgba(67,97,238,0.03);}
+.calc-addon.active{border-color:var(--blue);background:rgba(67,97,238,0.06);}
 .calc-addon-left{display:flex;align-items:center;gap:0.5rem;}
-.calc-check{width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(67,97,238,0.3);flex-shrink:0;transition:all .15s;}
+.calc-check{width:16px;height:16px;border-radius:4px;border:1.5px solid #d1d5db;flex-shrink:0;transition:all .15s;}
 .calc-addon.active .calc-check{background:var(--blue);border-color:var(--blue);}
-.calc-addon-name{font-size:0.82rem;font-weight:600;color:var(--text);}
+.calc-addon-name{font-size:0.82rem;font-weight:600;color:#12192B;}
 .calc-addon-price{font-size:0.82rem;font-weight:800;color:var(--blue);flex-shrink:0;}
 
 .calc-book-btn{background:var(--blue);color:white;border:none;border-radius:100px;padding:0.8rem 1.5rem;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .calc-book-btn:hover{opacity:0.9;transform:translateY(-1px);}
 
-.empty-state{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:0.85rem;line-height:1.6;}
+.empty-state{text-align:center;padding:2rem 1rem;color:#9ca3af;font-size:0.85rem;line-height:1.6;}
 .empty-icon{font-size:2rem;margin-bottom:0.5rem;opacity:0.4;}
 
 /* ── AI SUGGEST ── */
@@ -202,7 +204,7 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
         <hr class="section-divider">
 
         <!-- Add-ons -->
-        <div class="card-label" style="margin-top:0;"><span>2</span> Add-ons <span style="background:none;color:var(--muted);font-size:0.72rem;font-weight:400;text-transform:none;letter-spacing:0;width:auto;height:auto;">optional</span></div>
+        <div class="card-label" style="margin-top:0;"><span>2</span> Add-ons <span style="background:none;color:var(--muted);font-size:0.72rem;font-weight:400;text-transform:none;letter-spacing:0;width:auto;height:auto;border-radius:0;display:inline;padding:0;line-height:inherit;">optional</span></div>
         <div id="addon-rows"></div>
         <button class="add-btn" onclick="addAddon()">+ Add add-on</button>
 
@@ -226,11 +228,14 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
     <!-- RIGHT: Live Preview -->
     <div>
       <div class="preview-card">
-        <div class="preview-header">
-          <div>
-            <div class="preview-header-label">Live Preview</div>
-            <div class="preview-header-title">What visitors will see</div>
-          </div>
+        <div class="preview-chrome">
+          <div class="preview-chrome-dot" style="background:#FF5F57;"></div>
+          <div class="preview-chrome-dot" style="background:#FEBC2E;"></div>
+          <div class="preview-chrome-dot" style="background:#28C840;"></div>
+        </div>
+        <div class="preview-label-bar">
+          <div class="preview-header-label">Live Preview</div>
+          <div class="preview-header-title">What visitors will see</div>
         </div>
         <div class="preview-body" id="preview-body">
           <div class="empty-state"><div class="empty-icon">💰</div>Add a session above to see your estimator.</div>
