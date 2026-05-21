@@ -413,14 +413,11 @@ var bizCtx      = null;
 // ── AUTH ─────────────────────────────────────────────────────────────────────
 (async function init() {
   var user = await getUser();
-  if (!user) {
-    sessionStorage.setItem('builtsy-redirect', 'builtsy-brain.html');
-    window.location.href = 'login.html';
-    return;
+  if (user) {
+    var email    = user.email || '';
+    var userName = email.split('@')[0] || 'Beta User';
+    setUserDisplay(userName);
   }
-  var email    = user.email || '';
-  var userName = email.split('@')[0] || 'Beta User';
-  setUserDisplay(userName);
   await loadContext();
 })();
 
