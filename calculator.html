@@ -213,7 +213,14 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
         <input type="text" id="btn-label" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text);background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;" onfocus="this.style.borderColor='var(--blue)';this.style.boxShadow='0 0 0 3px rgba(67,97,238,.12)';" onblur="this.style.borderColor='';this.style.boxShadow='';" value="Book This Session →" oninput="renderPreview();scheduleSave();">
 
       </div>
-      <p class="footer-note">Changes save automatically to your blueprint.</p>
+
+      <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+        <button onclick="saveToBlueprint()" style="flex:1;background:var(--lime);color:#0D1220;border:none;border-radius:10px;padding:0.85rem 1.5rem;font-size:0.95rem;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Save to Blueprint</button>
+      </div>
+      <div id="rb-success-msg" style="display:none;background:rgba(200,224,0,0.07);border:1px solid rgba(200,224,0,0.2);border-radius:10px;padding:0.9rem 1.1rem;font-size:0.85rem;color:var(--lime);margin-top:0.75rem;line-height:1.6;">
+        ✦ Your Revenue Booster is saved and will be embedded in your site when Builtsy builds it.
+      </div>
+      <p class="footer-note" style="margin-top:0.75rem;">Changes also save automatically as you type.</p>
     </div>
 
     <!-- RIGHT: Live Preview -->
@@ -326,6 +333,15 @@ async function loadConfig() {
 }
 
 // ── SUPABASE SAVE ──────────────────────────────────
+async function saveToBlueprint() {
+  var btn = document.querySelector('[onclick="saveToBlueprint()"]');
+  if (btn) { btn.textContent = 'Saving…'; btn.style.opacity = '.6'; }
+  await saveConfig();
+  if (btn) { btn.textContent = 'Save to Blueprint'; btn.style.opacity = '1'; }
+  var msg = document.getElementById('rb-success-msg');
+  if (msg) { msg.style.display = 'block'; setTimeout(function(){ msg.style.display = 'none'; }, 5000); }
+}
+
 function scheduleSave() {
   setSaveStatus('saving', '● Saving…');
   if (saveTimer) clearTimeout(saveTimer);
