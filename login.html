@@ -94,7 +94,7 @@
     font-size: 0.65rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--papaya);
+    color: #4361EE;
     display: block;
     margin-bottom: 0.75rem;
   }
@@ -141,25 +141,25 @@
     transition: border-color 0.2s;
   }
 
-  input:focus { border-color: var(--papaya); }
+  input:focus { border-color: #4361EE; box-shadow: 0 0 0 3px rgba(67,97,238,0.12); }
   input::placeholder { color: rgba(74,63,53,0.4); }
 
   .login-btn {
     width: 100%;
     padding: 1rem;
-    background: var(--papaya);
-    color: white;
+    background: #C8E000;
+    color: #12192B;
     border: none;
     border-radius: 2rem;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
     margin-top: 0.5rem;
   }
 
-  .login-btn:hover { background: var(--tide); transform: translateY(-1px); }
+  .login-btn:hover { background: #d4ee00; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,224,0,0.3); }
   .login-btn:active { transform: translateY(0); }
 
   .error-msg {
@@ -197,7 +197,7 @@
     line-height: 1.6;
   }
 
-  .beta-note a { color: var(--papaya); text-decoration: none; }
+  .beta-note a { color: #4361EE; text-decoration: none; }
   .beta-note a:hover { text-decoration: underline; }
 </style>
 </head>
@@ -233,7 +233,7 @@
     </div>
   </div>
 
-  <a href="index.html" class="back-link">← Back to main site</a>
+
 </div>
 
 <script>
@@ -249,7 +249,7 @@ function checkLogin(e) {
   if (pw === BETA_PASSWORD) {
     // Store session
     sessionStorage.setItem('builtsy-auth', 'true');
-    window.location.href = 'welcome.html';
+    window.location.href = 'onboarding.html';
   } else {
     errorEl.style.display = 'block';
     document.getElementById('password').value = '';
