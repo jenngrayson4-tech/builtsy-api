@@ -2765,12 +2765,25 @@ function msOpenRevBooster() {
   window.open(url, '_blank');
 }
 
+function _ctRBNavLabel(config) {
+  var label = (config.bookingLabel || '').toLowerCase();
+  var sessions = (config.sessions || []).map(function(s){ return (s.name||'').toLowerCase(); }).join(' ');
+  var all = label + ' ' + sessions;
+  if (/visit|day care|drop.?in|childcare|nanny|babysit/.test(all)) return 'Build Your Visit';
+  if (/coach|program|transform|mindset|breakthrough|accountability/.test(all)) return 'Build Your Package';
+  if (/facial|treatment|blowout|lash|brow|beauty|glow|wax|nail|spray/.test(all)) return 'Book Your Service';
+  if (/session|therapy|healing|wellness|reiki|massage|yoga|meditation/.test(all)) return 'Book a Session';
+  if (/social|content|manage|post|strateg|brand|creative|market/.test(all)) return 'Get a Quote';
+  if (/interior|design|staging|decor|space/.test(all)) return 'Start Your Project';
+  return config.bookingLabel || 'Build Your Package';
+}
+
 function msBuildRBSection(config) {
   if (!config || !config.sessions || !config.sessions.length) return '';
   var sessions = config.sessions;
   var addons = config.addons || [];
   var btnLabel = config.bookingLabel || 'Book Now';
-  var html = '<section style="background:#2C1810;padding:80px 40px;"><div style="max-width:700px;margin:0 auto;">'
+  var html = '<section id="builtsy-rb" style="background:#2C1810;padding:80px 40px;"><div style="max-width:700px;margin:0 auto;">'
     + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#D4745A;margin-bottom:16px;">Interactive Pricing</div>'
     + '<h2 style="font-family:\'Playfair Display\',serif;font-size:42px;font-style:italic;color:white;margin-bottom:8px;">Build Your Package.</h2>'
     + '<p style="color:#A89070;margin-bottom:40px;font-size:15px;">Select a care type and add any extras you need.</p>';
@@ -3617,14 +3630,42 @@ function msInjectAssets(html) {
     }
   }
 
-  // Inject Revenue Booster section before footer
+  // Inject Revenue Booster section — after services/packages/pricing, else before footer
   if (_ctRBOn && window._ctRevBoosterConfig) {
     var rbSection = msBuildRBSection(window._ctRevBoosterConfig);
     if (rbSection) {
-      if (html.indexOf('<footer') !== -1) {
-        html = html.replace('<footer', rbSection + '\n<footer');
-      } else {
-        html = html.replace('</body>', rbSection + '\n</body>');
+      // Try to place after services / packages / pricing / rates section
+      var rbPlaced = false;
+      var sectionAnchors = ['id="services"','id="packages"','id="pricing"','id="rates"','id="services-section"','id="packages-section"'];
+      for (var si = 0; si < sectionAnchors.length; si++) {
+        var anchorIdx = html.indexOf(sectionAnchors[si]);
+        if (anchorIdx !== -1) {
+          // Find the closing </section> after this anchor
+          var closeIdx = html.indexOf('</section>', anchorIdx);
+          if (closeIdx !== -1) {
+            html = html.slice(0, closeIdx + 10) + '\n' + rbSection + html.slice(closeIdx + 10);
+            rbPlaced = true;
+            break;
+          }
+        }
+      }
+      if (!rbPlaced) {
+        // Fallback: before footer (or end of body)
+        if (html.indexOf('<footer') !== -1) {
+          html = html.replace('<footer', rbSection + '\n<footer');
+        } else {
+          html = html.replace('</body>', rbSection + '\n</body>');
+        }
+      }
+
+      // Inject nav CTA link pointing to #builtsy-rb
+      var rbNavLabel = _ctRBNavLabel(window._ctRevBoosterConfig);
+      var rbNavLink = '<a href="#builtsy-rb" style="background:var(--accent,#D4745A);color:#fff;padding:7px 16px;border-radius:20px;font-weight:700;font-size:.82rem;text-decoration:none;white-space:nowrap;margin-left:8px;">' + rbNavLabel + '</a>';
+      // Try common nav patterns: last </a> before </nav>, or inside .nav-cta, or before </nav>
+      if (html.indexOf('</nav>') !== -1) {
+        html = html.replace('</nav>', rbNavLink + '\n</nav>');
+      } else if (html.indexOf('</header>') !== -1) {
+        html = html.replace('</header>', rbNavLink + '\n</header>');
       }
     }
   }
