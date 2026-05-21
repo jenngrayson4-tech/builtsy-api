@@ -264,8 +264,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
-    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--builtsy-blue);
     cursor: pointer;
     margin-bottom: 28px;
     background: none;
@@ -273,8 +274,9 @@
     padding: 0;
     font-family: 'DM Sans', sans-serif;
     transition: color 0.15s;
+    letter-spacing: 0.01em;
   }
-  .back-link:hover { color: var(--text); }
+  .back-link:hover { color: white; }
 
   .result-lane-badge {
     display: inline-flex;
@@ -290,11 +292,11 @@
     margin-bottom: 20px;
     border: 1px solid;
   }
-  .badge-self    { color: var(--lime); border-color: rgba(200,224,0,0.35); background: rgba(200,224,0,0.08); }
-  .badge-biz     { color: var(--pink); border-color: rgba(238,112,188,0.35); background: rgba(238,112,188,0.08); }
-  .badge-client  { color: var(--iris); border-color: rgba(139,162,240,0.35); background: rgba(139,162,240,0.08); }
-  .badge-explore { color: var(--pink); border-color: rgba(238,112,188,0.35); background: rgba(238,112,188,0.08); }
-  .badge-refresh { color: var(--iris); border-color: rgba(139,162,240,0.35); background: rgba(139,162,240,0.08); }
+  .badge-self,
+  .badge-biz,
+  .badge-client,
+  .badge-explore,
+  .badge-refresh { color: var(--builtsy-blue); border-color: rgba(67,97,238,0.35); background: rgba(67,97,238,0.12); }
 
   .result-heading {
     font-family: 'Playfair Display', serif;
@@ -303,7 +305,7 @@
     line-height: 1.2;
     margin-bottom: 12px;
   }
-  .result-heading em { font-style: normal; color: var(--lime); }
+  .result-heading em { font-style: italic; color: var(--lime); }
 
   .result-sub {
     font-size: 15px;
@@ -329,8 +331,8 @@
     cursor: default;
   }
   .bp-card.primary {
-    border-color: var(--lime);
-    background: linear-gradient(135deg, rgba(200,224,0,0.07), var(--navy-mid));
+    border-color: var(--builtsy-blue);
+    background: linear-gradient(135deg, rgba(67,97,238,0.1), var(--navy-mid));
     position: relative;
     overflow: hidden;
   }
@@ -340,11 +342,11 @@
     top: 14px; right: 14px;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--navy);
-    background: var(--lime);
+    color: white;
+    background: var(--builtsy-blue);
     padding: 4px 10px;
     border-radius: 99px;
   }
@@ -361,7 +363,7 @@
     margin-bottom: 4px;
     color: var(--text);
   }
-  .bp-card.primary .bp-name { color: var(--lime); }
+  .bp-card.primary .bp-name { color: var(--builtsy-blue); }
   .bp-desc {
     font-size: 13px;
     color: var(--text-muted);
@@ -495,9 +497,9 @@
   <div id="screen-result" class="screen">
 
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:1.5rem;">
-      <div style="width:28px;height:28px;border-radius:50%;background:rgba(200,224,0,0.2);color:var(--lime);border:1.5px solid rgba(200,224,0,0.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">&#10003;</div>
-      <div style="height:2px;width:40px;background:rgba(200,224,0,0.3);border-radius:99px;"></div>
-      <div style="width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</div>
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(67,97,238,0.15);color:var(--builtsy-blue);border:1.5px solid rgba(67,97,238,0.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">&#10003;</div>
+      <div style="height:2px;width:40px;background:rgba(67,97,238,0.3);border-radius:99px;"></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--builtsy-blue);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</div>
     </div>
     <button class="back-link" id="back-btn" aria-label="Go back">&#8592; Back</button>
 
