@@ -64,6 +64,22 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 
 /* ── ADDON ROWS ── */
 .addon-row{display:grid;grid-template-columns:1fr 90px 32px;gap:0.5rem;align-items:center;margin-bottom:0.5rem;}
+.addon-row input[type=text],.addon-row input[type=number]{border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text);background:rgba(255,255,255,0.06);outline:none;width:100%;transition:border-color .2s,box-shadow .2s;}
+.addon-row input[type=text]:focus,.addon-row input[type=number]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.addon-row input::placeholder{color:rgba(255,255,255,0.2);}
+/* ── CUSTOM MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:999;align-items:center;justify-content:center;}
+.modal-overlay.active{display:flex;}
+.modal-box{background:#1A2338;border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem 2rem 1.5rem;max-width:400px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,.5);}
+.modal-icon{font-size:1.6rem;margin-bottom:0.75rem;}
+.modal-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.5rem;}
+.modal-body{font-size:0.88rem;color:var(--dim);line-height:1.6;margin-bottom:1.5rem;}
+.modal-actions{display:flex;gap:0.75rem;justify-content:flex-end;}
+.modal-cancel{background:none;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:0.55rem 1.1rem;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.modal-cancel:hover{border-color:rgba(255,255,255,0.3);color:var(--text);}
+.modal-confirm{background:var(--blue);border:none;border-radius:8px;padding:0.55rem 1.25rem;font-size:0.85rem;font-weight:700;color:white;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;}
+.modal-confirm:hover{opacity:0.85;}
+.modal-confirm.danger{background:#ef4444;}
 
 /* ── DIVIDER ── */
 .section-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
@@ -127,6 +143,19 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 </head>
 <body>
 
+<!-- ── CUSTOM CONFIRM MODAL ── -->
+<div class="modal-overlay" id="ms-modal">
+  <div class="modal-box">
+    <div class="modal-icon" id="ms-modal-icon">✦</div>
+    <div class="modal-title" id="ms-modal-title"></div>
+    <div class="modal-body" id="ms-modal-body"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="msModalResolve(false)">Cancel</button>
+      <button class="modal-confirm" id="ms-modal-confirm" onclick="msModalResolve(true)">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <nav class="topnav">
   <div class="logo-wrap">
     <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
@@ -181,7 +210,7 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 
         <!-- Book Button Label -->
         <div class="card-label" style="margin-top:0;"><span>3</span> Button Label</div>
-        <input type="text" id="btn-label" class="session-row" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:white;outline:none;" value="Book This Session →" oninput="renderPreview();scheduleSave();">
+        <input type="text" id="btn-label" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text);background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;" onfocus="this.style.borderColor='var(--blue)';this.style.boxShadow='0 0 0 3px rgba(67,97,238,.12)';" onblur="this.style.borderColor='';this.style.boxShadow='';" value="Book This Session →" oninput="renderPreview();scheduleSave();">
 
       </div>
       <p class="footer-note">Changes save automatically to your blueprint.</p>
@@ -206,6 +235,28 @@ html,body{min-height:100%;background:var(--dark);font-family:'DM Sans',sans-seri
 </div>
 
 <script>
+// ── CUSTOM MODAL ──
+var _msModalResolve = null;
+function msConfirm(icon, title, body, confirmLabel, isDanger) {
+  return new Promise(function(resolve) {
+    _msModalResolve = resolve;
+    document.getElementById('ms-modal-icon').textContent = icon;
+    document.getElementById('ms-modal-title').textContent = title;
+    document.getElementById('ms-modal-body').textContent = body;
+    var btn = document.getElementById('ms-modal-confirm');
+    btn.textContent = confirmLabel || 'Confirm';
+    btn.className = 'modal-confirm' + (isDanger ? ' danger' : '');
+    document.getElementById('ms-modal').classList.add('active');
+  });
+}
+function msModalResolve(val) {
+  document.getElementById('ms-modal').classList.remove('active');
+  if (_msModalResolve) { _msModalResolve(val); _msModalResolve = null; }
+}
+document.getElementById('ms-modal').addEventListener('click', function(e) {
+  if (e.target === this) msModalResolve(false);
+});
+
 // ── SUPABASE ───────────────────────────────────────
 var _sb = window.supabase.createClient(
   'https://nukcbqlxxrfsgchqyxud.supabase.co',
@@ -329,7 +380,8 @@ function renderRows() {
     ar.appendChild(row);
   });
 
-  renderPreview();
+    renderPreview();
+  }); // end msConfirm clearAll
 }
 
 function addSession() {
@@ -350,7 +402,8 @@ function addAddon() {
 function removeAddon(i) { addons.splice(i,1); renderRows(); scheduleSave(); }
 
 function clearAll() {
-  if (!confirm('Start over? This will clear all sessions, add-ons, and your business description.')) return;
+  msConfirm('↺', 'Start Over?', 'This will clear all sessions, add-ons, and your business description.', 'Yes, Start Over', true).then(function(ok) {
+    if (!ok) return;
   sessions = [{name:'', price:0}];
   addons = [];
   var input = document.getElementById('ai-business-input');
@@ -480,10 +533,9 @@ async function suggestAddons() {
     var data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Request failed');
     var hasExisting = sessions.some(function(s){ return s.name.trim(); }) || addons.some(function(a){ return a.name.trim(); });
-    if (hasExisting && !confirm('Replace your current sessions and add-ons with new AI suggestions?')) {
-      status.textContent = 'Kept your existing setup.';
-      status.className = 'ai-status';
-      return;
+    if (hasExisting) {
+      var ok = await new Promise(function(r){ msConfirm('✦', 'Replace existing setup?', 'This will replace your current sessions and add-ons with new Builtsy suggestions.', 'Yes, Replace', false).then(r); });
+      if (!ok) { status.textContent = 'Kept your existing setup.'; status.className = 'ai-status'; return; }
     }
     if (data.sessions && data.sessions.length) {
       sessions = data.sessions.map(function(s) {
