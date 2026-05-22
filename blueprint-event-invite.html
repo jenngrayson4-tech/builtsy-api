@@ -1786,10 +1786,11 @@ function doGenerate(data, built) {
   startGenMessages();
 
 
-  apiFetch(RAILWAY_URL + '/invite', {
+  var inviteSystemPreamble = 'You are an expert event invite designer. Generate a complete, beautiful, self-contained single-file HTML event invite page. All CSS in <style> tags, all JS in <script> tags, no external dependencies except Google Fonts. Output ONLY raw HTML — no markdown, no code fences, no explanation.\n\n';
+  apiFetch(RAILWAY_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: built.prompt })
+    body: JSON.stringify({ prompt: inviteSystemPreamble + built.prompt })
   })
   .then(function(res) { return res.json(); })
   .then(function(json) {
