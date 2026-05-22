@@ -1790,7 +1790,7 @@ function doGenerate(data, built) {
   apiFetch(RAILWAY_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: inviteSystemPreamble + built.prompt })
+    body: JSON.stringify({ prompt: inviteSystemPreamble + built.prompt, max_tokens: 8192 })
   })
   .then(function(res) { return res.json(); })
   .then(function(json) {

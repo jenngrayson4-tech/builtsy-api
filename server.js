@@ -162,9 +162,10 @@ app.post('/generate', requireAuth, rateLimit, async function(req, res) {
       return res.status(400).json({ error: 'No prompt provided' });
     }
 
+    var maxTok = req.body.max_tokens ? Math.min(parseInt(req.body.max_tokens), MAX_TOKENS) : MAX_TOKENS;
     var message = await client.messages.create({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: maxTok,
       messages: [{ role: 'user', content: prompt }]
     });
 
