@@ -184,23 +184,37 @@ var INVITE_SYSTEM = 'You are an expert event invite designer. Generate a complet
 app.post('/invite', requireAuth, rateLimit, async function(req, res) {
   try {
     var prompt = req.body.prompt;
-    if (!prompt) {
-      return res.status(400).json({ error: 'No prompt provided' });
+    if (!prompt) return res.status(400).json({ error: 'No prompt provided' });
+
+    // SSE keeps the connection alive through Railway's proxy timeout
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+
+    var keepalive = setInterval(function() { res.write(': ping\n\n'); }, 5000);
+
+    try {
+      var message = await client.messages.create({
+        model: MODEL,
+        max_tokens: 8192,
+        system: INVITE_SYSTEM,
+        messages: [{ role: 'user', content: prompt }]
+      });
+      clearInterval(keepalive);
+      var html = message.content[0].text;
+      res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
+      res.end();
+    } catch (err) {
+      clearInterval(keepalive);
+      console.error('Invite error:', err.message);
+      res.write('data: ' + JSON.stringify({ error: err.message || 'Generation failed' }) + '\n\n');
+      res.end();
     }
 
-    var message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 8192,
-      system: INVITE_SYSTEM,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    var html = message.content[0].text;
-    res.json({ html: html });
-
   } catch (err) {
-    console.error('Invite error:', err.message);
-    res.status(500).json({ error: err.message || 'Generation failed' });
+    console.error('Invite setup error:', err.message);
+    if (!res.headersSent) res.status(500).json({ error: err.message || 'Generation failed' });
   }
 });
 
