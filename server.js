@@ -187,41 +187,19 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
       return res.status(400).json({ error: 'No prompt provided' });
     }
 
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
-
-    var fullText = '';
-
-    // Keepalive ping every 10s so Railway doesn't kill the SSE connection during generation
-    var keepAlive = setInterval(function() { res.write(': ping\n\n'); }, 10000);
-
-    var stream = client.messages.stream({
+    var message = await client.messages.create({
       model: MODEL,
       max_tokens: 8192,
       system: INVITE_SYSTEM,
       messages: [{ role: 'user', content: prompt }]
     });
 
-    stream.on('text', function(text) {
-      fullText += text;
-      res.write('data: ' + JSON.stringify({ chunk: text }) + '\n\n');
-    });
-
-    await stream.finalMessage();
-    clearInterval(keepAlive);
-    res.write('data: ' + JSON.stringify({ done: true, html: fullText }) + '\n\n');
-    res.end();
+    var html = message.content[0].text;
+    res.json({ html: html });
 
   } catch (err) {
     console.error('Invite error:', err.message);
-    if (!res.headersSent) {
-      res.status(500).json({ error: err.message || 'Generation failed' });
-    } else {
-      res.write('data: ' + JSON.stringify({ error: err.message || 'Generation failed' }) + '\n\n');
-      res.end();
-    }
+    res.status(500).json({ error: err.message || 'Generation failed' });
   }
 });
 

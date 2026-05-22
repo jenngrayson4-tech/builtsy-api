@@ -1786,53 +1786,26 @@ function doGenerate(data, built) {
   startGenMessages();
 
 
-  // Use /invite endpoint with SSE streaming to avoid Railway timeout
   apiFetch(RAILWAY_URL + '/invite', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: built.prompt })
   })
-  .then(function(response) {
-    if (!response.ok && response.headers.get('content-type') && response.headers.get('content-type').indexOf('application/json') !== -1) {
-      return response.json().then(function(j) { throw new Error(j.error || 'Generation failed'); });
-    }
-    var reader = response.body.getReader();
-    var decoder = new TextDecoder();
-    var fullHtml = '';
-    var buffer = '';
+  .then(function(res) { return res.json(); })
+  .then(function(json) {
+    stopGenMessages();
+    document.getElementById('generatingOverlay').classList.remove('active');
 
-    function pump() {
-      return reader.read().then(function(result) {
-        if (result.done) {
-          stopGenMessages();
-          document.getElementById('generatingOverlay').classList.remove('active');
-          if (!fullHtml || fullHtml.length < 100) {
-            showError('Generation returned an empty response. Please try again.');
-          }
-          return;
-        }
-        buffer += decoder.decode(result.value, { stream: true });
-        var lines = buffer.split('\n');
-        buffer = lines.pop();
-        lines.forEach(function(line) {
-          if (!line.startsWith('data: ')) return;
-          try {
-            var evt = JSON.parse(line.slice(6));
-            if (evt.error) { stopGenMessages(); document.getElementById('generatingOverlay').classList.remove('active'); showError(evt.error); return; }
-            if (evt.chunk) fullHtml += evt.chunk;
-            if (evt.done) {
-              stopGenMessages();
-              document.getElementById('generatingOverlay').classList.remove('active');
-              var html = fullHtml.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
-              if (!html || html.length < 100) { showError('Generation returned an empty response. Please try again.'); return; }
-              processGeneratedHTML(html, data, built);
-            }
-          } catch(e) {}
-        });
-        return pump();
-      });
+    if (json.error) { showError(json.error); return; }
+
+    var html = json.html || json.text || '';
+    html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+
+    if (!html || html.length < 100) {
+      showError('Generation returned an empty response. Please try again.');
+      return;
     }
-    return pump();
+    processGeneratedHTML(html, data, built);
   })
   .catch(function(err) {
     stopGenMessages();
