@@ -187,19 +187,43 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
       return res.status(400).json({ error: 'No prompt provided' });
     }
 
-    var message = await client.messages.create({
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    var fullText = '';
+    var stream = client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
       system: INVITE_SYSTEM,
       messages: [{ role: 'user', content: prompt }]
     });
 
-    var html = message.content[0].text;
-    res.json({ html: html });
+    stream.on('text', function(text) {
+      fullText += text;
+      res.write('data: ' + JSON.stringify({ chunk: text }) + '\n\n');
+    });
+
+    stream.on('finalMessage', function() {
+      res.write('data: ' + JSON.stringify({ done: true, html: fullText }) + '\n\n');
+      res.end();
+    });
+
+    stream.on('error', function(err) {
+      console.error('Invite stream error:', err.message);
+      res.write('data: ' + JSON.stringify({ error: err.message || 'Generation failed' }) + '\n\n');
+      res.end();
+    });
 
   } catch (err) {
     console.error('Invite error:', err.message);
-    res.status(500).json({ error: err.message || 'Generation failed' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message || 'Generation failed' });
+    } else {
+      res.write('data: ' + JSON.stringify({ error: err.message || 'Generation failed' }) + '\n\n');
+      res.end();
+    }
   }
 });
 
