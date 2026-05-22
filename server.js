@@ -177,6 +177,32 @@ app.post('/generate', requireAuth, rateLimit, async function(req, res) {
   }
 });
 
+// Event invite generation endpoint
+var INVITE_SYSTEM = 'You are an expert event invite designer. Generate a complete, beautiful, self-contained single-file HTML event invite page. The HTML must be fully inline — all CSS in <style> tags, all JS in <script> tags, no external dependencies except Google Fonts. Make it stunning, mobile-first, and ready to publish. Output ONLY the raw HTML — no markdown, no code fences, no explanation.';
+
+app.post('/invite', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var prompt = req.body.prompt;
+    if (!prompt) {
+      return res.status(400).json({ error: 'No prompt provided' });
+    }
+
+    var message = await client.messages.create({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      system: INVITE_SYSTEM,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var html = message.content[0].text;
+    res.json({ html: html });
+
+  } catch (err) {
+    console.error('Invite error:', err.message);
+    res.status(500).json({ error: err.message || 'Generation failed' });
+  }
+});
+
 // Grow / revise endpoint
 app.post('/grow', requireAuth, rateLimit, async function(req, res) {
   try {

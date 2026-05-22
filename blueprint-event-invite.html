@@ -187,7 +187,8 @@
   </div>
   <div class="tn-right">
     <button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button>
-    <span class="tn-save">Auto-saved</span>
+    <button id="ei-save-btn" onclick="eiSaveNow()" style="background:rgba(200,224,0,0.12);border:1px solid rgba(200,224,0,0.35);color:#c8e000;border-radius:100px;padding:5px 14px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;">Save progress</button>
+    <span class="tn-save" id="tn-save-status"></span>
     <a href="dashboard.html" class="tn-back">← Dashboard</a>
   </div>
 </nav>
@@ -247,19 +248,19 @@
 
     <div class="field">
       <label>Name(s) of the guest(s) of honor</label>
-      <input type="text" id="honoreeNames" placeholder="e.g. Everlynn & Vivian, or just Sarah" />
+      <input type="text" id="honoreeNames" placeholder="e.g. Everlynn & Vivian, or just Sarah" oninput="eiAutoSave()" />
     </div>
 
     <div class="field">
       <label>Event date(s) <span class="opt">(or 'TBD')</span></label>
-      <input type="text" id="eventDate" placeholder="e.g. June 16–18, 2026" />
+      <input type="text" id="eventDate" placeholder="e.g. June 16–18, 2026" oninput="eiAutoSave()" />
       <div style="font-size:.72rem;color:#9ca3af;margin-top:4px;">Include the year for an accurate countdown timer.</div>
     </div>
 
     <div class="field">
       <label>Start time <span class="opt">(optional — for countdown accuracy)</span></label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <input type="text" id="eventTime" placeholder="e.g. 4:30 PM" />
+        <input type="text" id="eventTime" placeholder="e.g. 4:30 PM" oninput="eiAutoSave()" />
         <select id="eventTimezone" style="border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:white;background:rgba(255,255,255,0.06);outline:none;">
           <option value="America/New_York">Eastern (ET)</option>
           <option value="America/Chicago">Central (CT)</option>
@@ -275,7 +276,7 @@
 
     <div class="field">
       <label>Location / venue <span class="opt">(or 'TBD' or 'Private location')</span></label>
-      <input type="text" id="eventLocation" placeholder="e.g. Private Airbnb, Arvada CO" />
+      <input type="text" id="eventLocation" placeholder="e.g. Private Airbnb, Arvada CO" oninput="eiAutoSave()" />
     </div>
 
     <div class="field">
@@ -286,7 +287,7 @@
     <div class="field">
       <label>Event vibe / theme <span class="opt">(optional)</span></label>
       <div style="font-size:.75rem;color:#6b7280;margin-bottom:6px;">Describe the aesthetic, mood, or dress code. Claude uses this for design direction.</div>
-      <input type="text" id="eventTheme" placeholder="e.g. Pink retro glam pool party, All black, Coachella vibes" />
+      <input type="text" id="eventTheme" placeholder="e.g. Pink retro glam pool party, All black, Coachella vibes" oninput="eiAutoSave()" />
     </div>
 
     <div class="step-nav">
@@ -333,17 +334,17 @@
 
     <div class="field">
       <label>What should guests know? <span class="opt">(the plan, what's included, vibe notes)</span></label>
-      <textarea id="eventDescription" placeholder="e.g. Two nights at a private Airbnb — indoor pool, karaoke, hot tub, flamingo floats. This is a sleepover so pack for two nights!"></textarea>
+      <textarea id="eventDescription" placeholder="e.g. Two nights at a private Airbnb — indoor pool, karaoke, hot tub, flamingo floats. This is a sleepover so pack for two nights!" oninput="eiAutoSave()"></textarea>
     </div>
 
     <div class="field">
       <label>Itinerary / schedule <span class="opt">(optional — list items, times, or just leave blank)</span></label>
-      <textarea id="eventItinerary" placeholder="e.g. Tuesday June 16 — Drop-off 2:30pm at Chaparral HS&#10;Thursday June 18 — Pickup 12pm same spot"></textarea>
+      <textarea id="eventItinerary" placeholder="e.g. Tuesday June 16 — Drop-off 2:30pm at Chaparral HS&#10;Thursday June 18 — Pickup 12pm same spot" oninput="eiAutoSave()"></textarea>
     </div>
 
     <div class="field">
       <label>Anything else to include? <span class="opt">(what to bring, special notes, hashtag, etc.)</span></label>
-      <input type="text" id="eventExtras" placeholder="e.g. 'Bring swimsuit & sleeping bag', 'cash gift only', 'no phones rule'" />
+      <input type="text" id="eventExtras" placeholder="e.g. 'Bring swimsuit & sleeping bag', 'cash gift only', 'no phones rule'" oninput="eiAutoSave()" />
     </div>
 
     <div class="field">
@@ -816,14 +817,6 @@
         </div>
       </div>
 
-      <!-- Claims Script URL -->
-      <div class="field" style="margin-top:18px;background:rgba(200,224,0,0.08);border:1.5px solid rgba(200,224,0,0.4);border-radius:12px;padding:14px 16px;">
-        <label style="color:white;">📋 Your Google Sheet tracking URL</label>
-        <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">Paste your Apps Script Web App URL here so claims save to your Google Sheet. <a href="https://script.google.com" target="_blank" style="color:#4361EE;">Set up at script.google.com →</a></div>
-        <input class="fi-light" id="claimsScriptUrl" type="text" value="https://script.google.com/macros/s/AKfycbxwdYmxnTuD2knGVzhd7bqGl3SZSYUvDC9o82A-g6QHszlz84fhelVfnIKQBCLrHCvBzg/exec" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec" style="font-size:.78rem;">
-        <div style="font-size:.72rem;color:#9ca3af;margin-top:6px;">Leave blank to skip claim tracking (claims won't persist across devices).</div>
-      </div>
-
       <!-- Section copy -->
       <div class="field" style="margin-top:18px;">
         <label>Section headline</label>
@@ -933,6 +926,62 @@
 
 <script>
 var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? (window.location.protocol + '/\/' + window.location.host) : 'https://builtsy-api-production.up.railway.app';
+
+// ── SAVE ──
+var _eiSaveTimer = null;
+
+async function eiSaveNow() {
+  var btn = document.getElementById('ei-save-btn');
+  var status = document.getElementById('tn-save-status');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+  try {
+    var d = {
+      honoreeNames: (document.getElementById('honoreeNames')||{}).value||'',
+      eventDate: (document.getElementById('eventDate')||{}).value||'',
+      eventTime: (document.getElementById('eventTime')||{}).value||'',
+      eventLocation: (document.getElementById('eventLocation')||{}).value||'',
+      eventTheme: (document.getElementById('eventTheme')||{}).value||'',
+      eventDescription: (document.getElementById('eventDescription')||{}).value||'',
+      eventItinerary: (document.getElementById('eventItinerary')||{}).value||'',
+      eventExtras: (document.getElementById('eventExtras')||{}).value||''
+    };
+    var payload = { title: d.honoreeNames || 'Event Invite', fields: d };
+    var result = await saveBlueprint('event-invite', payload);
+    if (result && result.error) {
+      if (status) { status.textContent = 'Not signed in — log in to save'; status.style.color = '#f87171'; }
+    } else {
+      if (status) { status.textContent = 'Saved ✓'; status.style.color = '#c8e000'; setTimeout(function(){ status.textContent=''; }, 3000); }
+    }
+  } catch(e) {
+    if (status) { status.textContent = 'Error: ' + e.message; status.style.color = '#f87171'; }
+  }
+  if (btn) { btn.textContent = 'Save progress'; btn.disabled = false; }
+}
+
+function eiAutoSave() {
+  clearTimeout(_eiSaveTimer);
+  _eiSaveTimer = setTimeout(function() {
+    try {
+      var d = {
+        honoreeNames: (document.getElementById('honoreeNames')||{}).value||'',
+        eventDate: (document.getElementById('eventDate')||{}).value||'',
+        eventTime: (document.getElementById('eventTime')||{}).value||'',
+        eventLocation: (document.getElementById('eventLocation')||{}).value||'',
+        eventTheme: (document.getElementById('eventTheme')||{}).value||'',
+        eventDescription: (document.getElementById('eventDescription')||{}).value||'',
+        eventItinerary: (document.getElementById('eventItinerary')||{}).value||'',
+        eventExtras: (document.getElementById('eventExtras')||{}).value||''
+      };
+      var payload = { title: d.honoreeNames || 'Event Invite', fields: d, _savedAt: new Date().toISOString() };
+      localStorage.setItem('builtsy_save_event-invite', JSON.stringify(payload));
+      var el = document.getElementById('tn-save-status');
+      if (el) { el.textContent = 'Saved ✓'; el.style.color = '#c8e000'; setTimeout(function(){ el.textContent = ''; }, 3000); }
+    } catch(err) {
+      var el = document.getElementById('tn-save-status');
+      if (el) { el.textContent = 'Save error'; el.style.color = '#f87171'; }
+    }
+  }, 1500);
+}
 
 // ── STATE ──
 var currentStep = 1;
@@ -1156,7 +1205,7 @@ function loadAIVibeHints(eventType, honoree) {
     + 'Always include "🎲 Decide for me" as the last vibe option. Always include "Decide for me" as the last tone option. '
     + 'Respond ONLY with valid JSON, no markdown: { "vibes": ["emoji phrase", ...], "tones": ["phrase", ...] }';
 
-  fetch(RAILWAY_URL + '/grow', {
+  apiFetch(RAILWAY_URL + '/grow', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt })
@@ -1738,7 +1787,7 @@ function doGenerate(data, built) {
 
 
   // Use /invite endpoint for invite-specific system prompt
-  fetch(RAILWAY_URL + '/invite', {
+  apiFetch(RAILWAY_URL + '/invite', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -1916,7 +1965,35 @@ function showOutput(html) {
   // Save progress to Supabase (silent — does nothing if not logged in)
   try {
     var d = collectFormData();
-    saveBlueprint('event-invite', { title: d.honoreeNames || d.eventType || 'Event Invite', eventType: d.eventType, eventDate: d.eventDate, honoree: d.honoreeNames });
+    saveBlueprint('event-invite', { title: d.honoreeNames || d.eventType || 'Event Invite', fields: {
+      honoreeNames: (document.getElementById('honoreeNames')||{}).value||'',
+      eventDate: (document.getElementById('eventDate')||{}).value||'',
+      eventTime: (document.getElementById('eventTime')||{}).value||'',
+      eventLocation: (document.getElementById('eventLocation')||{}).value||'',
+      eventTheme: (document.getElementById('eventTheme')||{}).value||'',
+      eventDescription: (document.getElementById('eventDescription')||{}).value||'',
+      eventItinerary: (document.getElementById('eventItinerary')||{}).value||'',
+      eventExtras: (document.getElementById('eventExtras')||{}).value||''
+    }});
+  } catch(e) {}
+}
+
+async function eiRestoreSave() {
+  try {
+    var save = await loadSave('event-invite');
+    if (!save || !save.fields) return;
+    var f = save.fields;
+    var ids = ['honoreeNames','eventDate','eventTime','eventLocation','eventTheme','eventDescription','eventItinerary','eventExtras'];
+    ids.forEach(function(id) {
+      if (f[id] == null) return;
+      var el = document.getElementById(id);
+      if (el) el.value = f[id];
+    });
+    var toast = document.createElement('div');
+    toast.textContent = 'Your blueprint has been restored ✓';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c8e000;color:#0d1829;border-radius:100px;padding:8px 20px;font-weight:700;font-size:0.8rem;z-index:9999;pointer-events:none;';
+    document.body.appendChild(toast);
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
   } catch(e) {}
 }
 
@@ -1989,7 +2066,7 @@ function submitRevise() {
     + '\n\n===REVISION REQUEST===\n' + note
     + '\n\nOutput ONLY the complete revised HTML. No explanation. No markdown. Start with <!DOCTYPE html>.';
 
-  fetch(RAILWAY_URL + '/generate', {
+  apiFetch(RAILWAY_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt, max_tokens: 16000 })
@@ -2076,7 +2153,7 @@ function loadHelpSuggestions() {
     + 'Keep each item short (2-5 words). '
     + 'Respond ONLY with a JSON array of strings, nothing else: ["Item 1","Item 2",...]';
 
-  fetch(RAILWAY_URL + '/grow', {
+  apiFetch(RAILWAY_URL + '/grow', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt })
@@ -2342,6 +2419,7 @@ function selectPalette(el, val) {
 // Init palette tab on load
 document.addEventListener('DOMContentLoaded', function() {
   switchPaletteTab('light');
+  eiRestoreSave();
 });
 
 // ── YOUR COLORS PICKER ──
