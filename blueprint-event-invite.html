@@ -2309,7 +2309,7 @@ function toggleCustomCta(el) {
 
 function selectConfetti(el, val) {
   document.querySelectorAll('.confetti-card').forEach(function(c) {
-    c.style.border = '1.5px solid #e5e7eb';
+    c.style.border = '1.5px solid rgba(255,255,255,0.1)';
   });
   el.style.border = '2px solid #4361EE';
   document.getElementById('confettiType').value = val;
@@ -2317,7 +2317,7 @@ function selectConfetti(el, val) {
 
 function selectConfettiLayer(el, val) {
   document.querySelectorAll('.confetti-layer-card').forEach(function(c) {
-    c.style.border = '1.5px solid #e5e7eb';
+    c.style.border = '1.5px solid rgba(255,255,255,0.1)';
   });
   el.style.border = '2px solid #4361EE';
   document.getElementById('confettiLayer').value = val;
@@ -2421,7 +2421,7 @@ function switchPaletteTab(tab) {
     } else {
       btn.style.background = 'white';
       btn.style.color = 'var(--navy)';
-      btn.style.border = '1.5px solid #e5e7eb';
+      btn.style.border = '1.5px solid rgba(255,255,255,0.1)';
     }
   });
   // Show/hide cards
@@ -2437,7 +2437,7 @@ function switchPaletteTab(tab) {
 
 function selectPalette(el, val) {
   document.querySelectorAll('.palette-card').forEach(function(c) {
-    c.style.border = '1.5px solid #e5e7eb';
+    c.style.border = '1.5px solid rgba(255,255,255,0.1)';
   });
   el.style.border = '2px solid #4361EE';
   document.getElementById('paletteChoice').value = val;
@@ -2485,7 +2485,7 @@ function getUserColors() {
 // ── PHOTO SHAPE ──
 function selectShape(el) {
   document.querySelectorAll('.shape-chip').forEach(function(c) {
-    c.style.border = '1.5px solid #e5e7eb';
+    c.style.border = '1.5px solid rgba(255,255,255,0.1)';
     c.style.background = 'white';
     c.style.color = 'var(--navy)';
   });
@@ -2537,10 +2537,10 @@ function selectFontMode(mode) {
   document.getElementById('fontChoice').value = mode;
   if (mode === 'ai') {
     document.getElementById('font-opt-ai').style.border = '2px solid #4361EE';
-    document.getElementById('font-opt-custom').style.border = '1.5px solid #e5e7eb';
+    document.getElementById('font-opt-custom').style.border = '1.5px solid rgba(255,255,255,0.1)';
     document.getElementById('custom-font-fields').style.display = 'none';
   } else {
-    document.getElementById('font-opt-ai').style.border = '1.5px solid #e5e7eb';
+    document.getElementById('font-opt-ai').style.border = '1.5px solid rgba(255,255,255,0.1)';
     document.getElementById('font-opt-custom').style.border = '2px solid #4361EE';
     document.getElementById('custom-font-fields').style.display = 'block';
   }
