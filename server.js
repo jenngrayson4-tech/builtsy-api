@@ -193,9 +193,13 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
     res.flushHeaders();
 
     var fullText = '';
+
+    // Keepalive ping every 10s so Railway doesn't kill the SSE connection during generation
+    var keepAlive = setInterval(function() { res.write(': ping\n\n'); }, 10000);
+
     var stream = client.messages.stream({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: 8192,
       system: INVITE_SYSTEM,
       messages: [{ role: 'user', content: prompt }]
     });
@@ -205,8 +209,8 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
       res.write('data: ' + JSON.stringify({ chunk: text }) + '\n\n');
     });
 
-    // finalMessage() is a method (Promise), not an event — await it to know when the stream is done
     await stream.finalMessage();
+    clearInterval(keepAlive);
     res.write('data: ' + JSON.stringify({ done: true, html: fullText }) + '\n\n');
     res.end();
 
