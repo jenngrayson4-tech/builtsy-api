@@ -205,16 +205,10 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
       res.write('data: ' + JSON.stringify({ chunk: text }) + '\n\n');
     });
 
-    stream.on('finalMessage', function() {
-      res.write('data: ' + JSON.stringify({ done: true, html: fullText }) + '\n\n');
-      res.end();
-    });
-
-    stream.on('error', function(err) {
-      console.error('Invite stream error:', err.message);
-      res.write('data: ' + JSON.stringify({ error: err.message || 'Generation failed' }) + '\n\n');
-      res.end();
-    });
+    // finalMessage() is a method (Promise), not an event — await it to know when the stream is done
+    await stream.finalMessage();
+    res.write('data: ' + JSON.stringify({ done: true, html: fullText }) + '\n\n');
+    res.end();
 
   } catch (err) {
     console.error('Invite error:', err.message);
