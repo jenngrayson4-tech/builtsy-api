@@ -581,7 +581,7 @@ app.post('/test-sms', requireAuth, rateLimit, async function(req, res) {
 
 // ── Contact Form + SMS notify (used by generated sites) ──
 // Hidden fields _smsTo, _smsSid, _smsTok, _smsFrom, _smsTpl injected into site at generate time
-app.post('/contact-notify', rateLimit, async function(req, res) {
+app.post('/contact-notify', cors(), rateLimit, async function(req, res) {
   try {
     var name       = req.body.name     || '';
     var email      = req.body.email    || '';
