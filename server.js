@@ -54,9 +54,11 @@ try {
   console.warn('caretaker-clean.html not found:', e.message);
 }
 
+const https = require('https');
+
 const app = express();
-app.use(cors());
-app.use(express.json({ limit: '30mb' }));
+app.use(cors({ origin: ['https://builtsy.ai', 'http://localhost:3000', 'http://127.0.0.1:3000'] }));
+app.use(express.json({ limit: '5mb' }));
 
 // Serve static HTML files from the same directory
 app.use(express.static(__dirname));
@@ -65,13 +67,49 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = 'claude-sonnet-4-20250514';
 const MAX_TOKENS = 32000;
 
+// ── Simple in-memory rate limiter ─────────────────────────────────────────────
+var _rateCounts = {};
+setInterval(function() { _rateCounts = {}; }, 60 * 1000); // reset every minute
+function rateLimit(req, res, next) {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+  _rateCounts[ip] = (_rateCounts[ip] || 0) + 1;
+  if (_rateCounts[ip] > 30) {
+    return res.status(429).json({ error: 'Too many requests — slow down.' });
+  }
+  next();
+}
+
+// ── Supabase auth middleware ───────────────────────────────────────────────────
+var SUPABASE_URL  = 'nukcbqlxxrfsgchqyxud.supabase.co';
+var SUPABASE_ANON = process.env.SUPABASE_ANON_KEY || 'sb_publishable_UDXeGe2ngBJsj_lwYkRF1A_igvEU6nX';
+
+function requireAuth(req, res, next) {
+  var auth = req.headers['authorization'] || '';
+  var token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+
+  var options = {
+    hostname: SUPABASE_URL,
+    path: '/auth/v1/user',
+    method: 'GET',
+    headers: { 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_ANON }
+  };
+  var supaReq = https.request(options, function(supaRes) {
+    if (supaRes.statusCode !== 200) return res.status(401).json({ error: 'Not authenticated' });
+    req._authed = true;
+    next();
+  });
+  supaReq.on('error', function() { res.status(401).json({ error: 'Auth check failed' }); });
+  supaReq.end();
+}
+
 // Health check
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'blueprint-master.html'));
 });
 
 // ── Detect Industry — AI-powered Step 1 analysis ──────────────────────────────
-app.post('/detect-industry', async function(req, res) {
+app.post('/detect-industry', requireAuth, rateLimit, async function(req, res) {
   try {
     var description = req.body.description || req.body.prompt || '';
     if (!description) return res.status(400).json({ error: 'No description' });
@@ -117,7 +155,7 @@ app.post('/detect-industry', async function(req, res) {
 });
 
 // Main site generation endpoint
-app.post('/generate', async function(req, res) {
+app.post('/generate', requireAuth, rateLimit, async function(req, res) {
   try {
     var prompt = req.body.prompt;
     if (!prompt) {
@@ -140,7 +178,7 @@ app.post('/generate', async function(req, res) {
 });
 
 // Grow / revise endpoint
-app.post('/grow', async function(req, res) {
+app.post('/grow', requireAuth, rateLimit, async function(req, res) {
   try {
     var prompt = req.body.prompt;
     if (!prompt) {
@@ -163,7 +201,7 @@ app.post('/grow', async function(req, res) {
 });
 
 // Template fill — takes social-media-manager-site.html and swaps content with user's real info
-app.post('/generate-template', async function(req, res) {
+app.post('/generate-template', requireAuth, rateLimit, async function(req, res) {
   try {
     var fields = req.body.fields || {};
     if (!SOCIAL_TEMPLATE) return res.status(500).json({ error: 'Template not loaded on server' });
@@ -204,7 +242,7 @@ app.post('/generate-template', async function(req, res) {
 });
 
 // Creative Agency Template — streams to handle large template HTML
-app.post('/generate-template-agency', async function(req, res) {
+app.post('/generate-template-agency', requireAuth, rateLimit, async function(req, res) {
   try {
     var fields = req.body.fields || {};
     if (!AGENCY_TEMPLATE) return res.status(500).json({ error: 'Agency template not loaded on server' });
@@ -271,7 +309,7 @@ app.post('/generate-template-agency', async function(req, res) {
 });
 
 // Universal Template Fill — supports social, cherry_sm, bubbly_sm, agency, etc.
-app.post('/generate-template-universal', async function(req, res) {
+app.post('/generate-template-universal', requireAuth, rateLimit, async function(req, res) {
   try {
     var templateType = req.body.templateType || 'social';
     var fields       = req.body.fields || {};
@@ -380,7 +418,7 @@ app.post('/generate-template-universal', async function(req, res) {
 });
 
 // PDF Template Blueprint — streams response to avoid Railway timeout on large PDFs
-app.post('/generate-from-pdf', async function(req, res) {
+app.post('/generate-from-pdf', requireAuth, rateLimit, async function(req, res) {
   try {
     var pdfBase64 = req.body.pdf;
     var fields    = req.body.fields || {};
@@ -474,7 +512,7 @@ app.post('/generate-from-pdf', async function(req, res) {
 });
 
 // ── FAQ Generator ──
-app.post('/generate-faq', async function(req, res) {
+app.post('/generate-faq', requireAuth, rateLimit, async function(req, res) {
   try {
     var businessName  = req.body.businessName  || '';
     var niche         = req.body.niche         || '';
@@ -517,7 +555,7 @@ app.post('/generate-faq', async function(req, res) {
 });
 
 // ── SMS Test — uses user's own Twilio credentials ──
-app.post('/test-sms', async function(req, res) {
+app.post('/test-sms', requireAuth, rateLimit, async function(req, res) {
   try {
     var to         = req.body.phone;
     var accountSid = req.body.accountSid;
@@ -543,7 +581,7 @@ app.post('/test-sms', async function(req, res) {
 
 // ── Contact Form + SMS notify (used by generated sites) ──
 // Hidden fields _smsTo, _smsSid, _smsTok, _smsFrom, _smsTpl injected into site at generate time
-app.post('/contact-notify', async function(req, res) {
+app.post('/contact-notify', rateLimit, async function(req, res) {
   try {
     var name       = req.body.name     || '';
     var email      = req.body.email    || '';
@@ -571,18 +609,23 @@ app.post('/contact-notify', async function(req, res) {
 });
 
 // ── Builtsy Brain AI chat ────────────────────────────────────────────────────
-app.post('/chat', async function(req, res) {
+var CHAT_SYSTEM = 'You are Builtsy Brain AI, a creative and business expert assistant built into Builtsy — a platform that helps small business owners, creators, and entrepreneurs build beautiful websites and grow their brand online. You help with anything: writing copy, content creation, marketing, strategy, social media, business growth, and more. Be warm, encouraging, sharp, and direct. Give real, actionable, specific answers. Format responses cleanly with **bold**, bullets, and ### headings when helpful.';
+
+app.post('/chat', requireAuth, rateLimit, async function(req, res) {
   try {
     var messages = req.body.messages;
-    var system   = req.body.system || '';
+    var context  = req.body.context || ''; // user business context only, not system override
     if (!messages || !messages.length) return res.status(400).json({ error: 'No messages' });
+
+    var system = CHAT_SYSTEM;
+    if (context) system += '\n\n' + context;
 
     var params = {
       model: MODEL,
       max_tokens: 2048,
-      messages: messages
+      messages: messages,
+      system: system
     };
-    if (system) params.system = system;
 
     var msg = await client.messages.create(params);
     var text = msg.content[0].text;
