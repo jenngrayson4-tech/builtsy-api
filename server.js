@@ -65,7 +65,7 @@ app.use(express.static(__dirname));
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = 'claude-sonnet-4-20250514';
-const MAX_TOKENS = 32000;
+const MAX_TOKENS = 8192;
 
 // ── Simple in-memory rate limiter ─────────────────────────────────────────────
 var _rateCounts = {};
