@@ -198,14 +198,109 @@ h1{font-family:var(--serif);font-size:clamp(2.6rem,6vw,4.5rem);font-weight:900;l
 .mockup-cap{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--navy-muted);text-align:center;margin-top:1.1rem;}
 
 /* ═══ BLUEPRINTS — white ═══ */
-.bp-section{background:#FFFFFF;border-top:2px solid var(--navy);}
-.bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;margin-bottom:2.5rem;}
-.bp-card{background:#FFFFFF;border:1.5px solid var(--navy-border);border-radius:var(--rxl);padding:1.75rem;text-decoration:none;color:var(--navy-text);transition:all .2s;display:block;}
-.bp-card:hover{border-color:var(--navy);box-shadow:var(--shadow-md);transform:translateY(-3px);}
-.bp-card-num{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--navy-muted);display:block;margin-bottom:.75rem;}
-.bp-card h3{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;line-height:1.3;}
-.bp-card p{font-size:.82rem;color:rgba(13,13,85,0.62);line-height:1.65;margin-bottom:1rem;}
-.bp-tag{display:inline-flex;background:var(--lime-dim);border:1.5px solid var(--lime-border);border-radius:100px;padding:2px 10px;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);}
+/* ── Brain AI section ── */
+.brain-section{background:#0D1220;border-top:2px solid var(--navy);padding:3.5rem 0;}
+.brain-mock{display:grid;grid-template-columns:1fr;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);box-shadow:0 40px 100px rgba(0,0,0,0.6);margin-bottom:2.5rem;}
+@media(min-width:768px){.brain-section{padding:5rem 0;}.brain-mock{grid-template-columns:300px 1fr;max-height:640px;}}
+.brain-sidebar{background:#0f1623;border-right:1px solid rgba(255,255,255,0.08);padding:1.25rem;overflow:hidden;display:flex;flex-direction:column;gap:.1rem;}
+.brain-sidebar-top{margin-bottom:.75rem;}
+.brain-sidebar-title{font-size:.9rem;font-weight:700;color:#fff;margin-bottom:.2rem;}
+.brain-sidebar-sub{font-size:.7rem;color:rgba(255,255,255,0.45);}
+.brain-profile-card{background:rgba(67,97,238,0.1);border:1.5px solid rgba(67,97,238,0.3);border-radius:12px;padding:.85rem;margin-bottom:.85rem;}
+.brain-profile-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.brain-profile-label{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.brain-profile-btn{background:#C8E000;color:#0D1220;font-size:.58rem;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.05em;}
+.brain-biz-name{font-family:var(--serif);font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:.3rem;line-height:1.1;}
+.brain-biz-desc{font-size:.75rem;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:.45rem;}
+.brain-profile-ok{font-size:.68rem;color:#C8E000;font-weight:600;}
+.brain-cat-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin:.6rem 0 .3rem;padding-left:.1rem;}
+.brain-prompt{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .25rem;border-radius:6px;}
+.brain-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.25);flex-shrink:0;margin-top:.3rem;}
+.brain-prompt-name{font-size:.8rem;color:#fff;font-weight:600;}
+.brain-prompt-desc{font-size:.68rem;color:rgba(255,255,255,0.45);margin-top:.1rem;}
+.brain-sidebar{display:none;}
+@media(min-width:768px){.brain-sidebar{display:flex;flex-direction:column;gap:.1rem;}}
+.brain-chat{background:#12192B;display:flex;flex-direction:column;min-height:480px;}
+@media(min-width:768px){.brain-chat{min-height:unset;}}
+.brain-chat-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.4rem;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.brain-chat-header-left{display:flex;align-items:center;gap:.75rem;}
+.brain-chat-star{width:34px;height:34px;background:rgba(67,97,238,0.2);border:1px solid rgba(67,97,238,0.4);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#8ba2f0;flex-shrink:0;}
+.brain-chat-title{font-size:.95rem;font-weight:700;color:#fff;}
+.brain-chat-sub{font-size:.67rem;color:rgba(255,255,255,0.45);}
+.brain-new-chat{font-size:.72rem;color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.18);border-radius:100px;padding:4px 14px;white-space:nowrap;}
+.brain-chat-body{flex:1;overflow-y:auto;padding:1.1rem 1.4rem;display:flex;flex-direction:column;gap:1.1rem;}
+.brain-messages{display:flex;flex-direction:column;gap:1rem;}
+.brain-msg-user{background:rgba(67,97,238,0.18);border:1px solid rgba(67,97,238,0.3);border-radius:14px 14px 4px 14px;padding:.8rem 1.1rem;font-size:.83rem;color:#fff;line-height:1.6;align-self:flex-end;max-width:85%;}
+.brain-msg-ai{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px 14px 14px 14px;padding:.95rem 1.1rem;font-size:.83rem;color:#fff;line-height:1.65;}
+.brain-ai-tag{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8ba2f0;margin-bottom:.55rem;font-weight:600;}
+.brain-ai-svc-name{font-weight:700;color:#fff;font-size:.85rem;}
+.brain-ai-svc-desc{color:rgba(255,255,255,0.8);font-size:.8rem;line-height:1.6;}
+.brain-ai-svc{margin:.6rem 0;}
+.brain-msg-actions{display:flex;align-items:center;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;}
+.brain-copy-btn{font-size:.68rem;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:4px 12px;background:none;}
+.brain-return-btn{font-size:.72rem;font-weight:700;color:#0D1220;background:#C8E000;border:none;border-radius:100px;padding:5px 16px;letter-spacing:.01em;}
+.brain-input-bar{display:flex;align-items:center;gap:.75rem;margin:.5rem 1.1rem .4rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:.75rem 1rem;flex-shrink:0;}
+.brain-input-text{flex:1;font-size:.8rem;color:rgba(255,255,255,0.3);}
+.brain-input-send{width:30px;height:30px;background:#C8E000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#0D1220;font-weight:700;flex-shrink:0;}
+.brain-input-hint{font-size:.6rem;color:rgba(255,255,255,0.25);text-align:center;padding-bottom:.85rem;font-family:var(--mono);letter-spacing:.06em;flex-shrink:0;}
+.brain-panels{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-bottom:2.5rem;}
+@media(min-width:768px){.brain-panels{grid-template-columns:1fr 1fr;gap:2rem;}}
+.brain-panel{background:#0f1623;border:1px solid rgba(255,255,255,0.12);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.45);}
+.brain-panel-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.brain-panel-ctx{background:rgba(67,97,238,0.08);border-bottom:1px solid rgba(67,97,238,0.2);padding:.9rem 1.25rem;}
+.brain-ctx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.brain-ctx-label{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);}
+.brain-panel-body{flex:1;padding:.85rem 1.25rem 1rem;display:flex;flex-direction:column;gap:.85rem;overflow:hidden;}
+.brain-panel-label-badge{background:rgba(200,224,0,0.1);border-top:1px solid rgba(200,224,0,0.2);padding:.6rem 1.25rem;font-size:.72rem;font-weight:700;color:#C8E000;letter-spacing:.02em;flex-shrink:0;}
+.brain-features{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-top:2rem;}
+.brain-feat{display:flex;align-items:center;gap:.4rem;font-size:.82rem;color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:7px 18px;}
+.brain-feat-icon{color:#8ba2f0;font-size:.75rem;}
+
+/* ── Portfolio section ── */
+.bp-section{background:#FAFAF8;border-top:2px solid var(--navy);}
+.pf-filters{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:2rem 0 2.5rem;}
+.pf-filter{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:100px;border:1.5px solid var(--navy-border);background:transparent;color:var(--navy-muted);cursor:pointer;transition:all .18s;}
+.pf-filter:hover{border-color:var(--navy);color:var(--navy);}
+.pf-filter.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.pf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:2.5rem;}
+.pf-card{background:#fff;border:1.5px solid var(--navy-border);border-radius:var(--rxl);overflow:hidden;transition:all .2s;}
+.pf-card:hover{border-color:var(--navy);box-shadow:var(--shadow-md);transform:translateY(-3px);}
+.pf-card-img{width:100%;height:180px;object-fit:cover;object-position:top center;display:block;}
+.pf-card-body{padding:.9rem 1rem 1rem;}
+.pf-cat{display:inline-flex;background:var(--lime-dim);border:1.5px solid var(--lime-border);border-radius:100px;padding:2px 10px;font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.6rem;}
+.pf-name{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--navy);line-height:1.3;}
+.pf-card[data-cat].hidden{display:none;}
+.pf-cat-tool{background:rgba(67,97,238,0.1);border-color:rgba(67,97,238,0.25);color:#4361EE;}
+.pf-card-icon .pf-icon-preview{height:180px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#f5f5f3;}
+.pf-card{cursor:pointer;}
+.pf-card:hover .pf-card-img{transform:scale(1.03);}
+.pf-card-img{transition:transform .3s;}
+/* Card carousels */
+.pf-slides{position:relative;height:180px;overflow:hidden;background:#f5f5f3;flex-shrink:0;}
+.pf-slide{position:absolute;inset:0;opacity:0;transition:opacity .4s ease;pointer-events:none;overflow:hidden;}
+.pf-slide.pf-active{opacity:1;pointer-events:auto;}
+.pf-slide>img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.pf-dots{display:flex;gap:5px;justify-content:center;align-items:center;padding:7px 12px 5px;background:#fff;flex-shrink:0;}
+.pf-dot{width:5px;height:5px;border-radius:50%;background:rgba(13,13,85,.18);cursor:pointer;transition:background .2s,transform .2s;flex-shrink:0;border:none;padding:0;outline:none;}
+.pf-dot.pf-active{background:var(--navy);transform:scale(1.3);}
+.pf-slabel{position:absolute;bottom:0;left:0;right:0;padding:5px 8px 6px;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.88);z-index:5;pointer-events:none;}
+/* Lightbox */
+.pf-lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(13,13,85,0.93);backdrop-filter:blur(10px);align-items:center;justify-content:center;gap:1rem;padding:1rem;}
+.pf-lb.open{display:flex;}
+.pf-lb-inner{background:#fff;border-radius:16px;overflow:hidden;max-width:680px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 40px 100px rgba(0,0,0,0.5);position:relative;}
+.pf-lb-img{width:100%;object-fit:contain;max-height:calc(90vh - 72px);display:block;background:#f5f5f3;}
+.pf-lb-footer{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-top:1px solid rgba(13,13,85,0.1);flex-shrink:0;gap:.75rem;}
+.pf-lb-info{display:flex;align-items:center;gap:.65rem;flex:1;min-width:0;overflow:hidden;}
+.pf-lb-info span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pf-lb-counter{font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(13,13,85,0.4);white-space:nowrap;flex-shrink:0;}
+.pf-lb-icon-wrap{background:#f5f5f3;display:flex;align-items:center;justify-content:center;font-size:2rem;min-height:200px;}
+.pf-lb-mockup{background:#f5f5f3;display:flex;align-items:center;justify-content:center;overflow:hidden;height:340px;flex-shrink:0;}
+.pf-lb-x{position:absolute;top:.65rem;right:.65rem;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;border:none;font-size:.95rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .15s,transform .15s;line-height:1;}
+.pf-lb-x:hover{background:#000;transform:scale(1.12);}
+.pf-lb-arrow{width:52px;height:52px;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.28);font-size:1.4rem;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;padding:0;}
+.pf-lb-arrow:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.65);}
+.pf-lb-arrow:disabled{opacity:.18;cursor:default;pointer-events:none;}
+@media(max-width:680px){.pf-lb{gap:.4rem;padding:.4rem;}.pf-lb-inner{max-height:93vh;border-radius:12px;}.pf-lb-arrow{width:38px;height:38px;font-size:1.1rem;}}
 
 /* ═══ CAUSE — navy ═══ */
 .cause-section{background:var(--navy);position:relative;overflow:hidden;}
@@ -294,7 +389,7 @@ footer{background:var(--navy);border-top:1.5px solid rgba(255,255,255,.08);paddi
 @media(max-width:768px){
   .nav-links{display:none;}.hamburger{display:flex;}
   .cause-grid,.story-grid,.what-grid,.contrast-grid{grid-template-columns:1fr;gap:2.5rem;}
-  .steps-grid,.fw-grid,.bp-grid{grid-template-columns:1fr;}
+  .steps-grid,.fw-grid,.bp-grid,.pf-grid{grid-template-columns:1fr 1fr;}
   .found-grid{grid-template-columns:1fr!important;gap:2rem!important;}
   .story-stats{grid-template-columns:1fr 1fr;}
   .story-photo-circle{width:200px;height:200px;}
@@ -653,24 +748,693 @@ footer{background:var(--navy);border-top:1.5px solid rgba(255,255,255,.08);paddi
 <section class="bp-section" id="blueprints">
   <div class="inner">
     <div class="reveal" style="text-align:center;">
-      <span class="sl" style="display:block;">Builtsy Blueprints</span>
-      <h2 style="color:var(--navy);">Pick what you want to build.<br><em style="color:var(--pink);">BB writes the prompt.</em></h2>
-      <p class="body-text" style="color:var(--navy-dim);max-width:500px;margin:0 auto;">Each Builtsy Blueprint is a ready-made prompt system built for a specific type of business.</p>
+      <span class="sl" style="display:block;">Portfolio</span>
+      <h2 style="color:var(--navy);">Built with Builtsy.<br><em style="color:var(--pink);">Real businesses. Real results.</em></h2>
+      <p class="body-text" style="color:var(--navy-dim);max-width:520px;margin:0 auto;">Every site here started with one guided prompt. Builtsy handled the structure, the copy, the design — and the results.</p>
     </div>
-    <div class="bp-grid reveal">
-      <a href="blueprint-site-refresh.html" class="bp-card"><span class="bp-card-num">Site Refresh</span><h3>Already have a site? Make it better.</h3><p>Scan your existing site, pick what to fix — technical, visual, or both.</p><span class="bp-tag">Any site</span></a>
-      <a href="blueprint-master.html" class="bp-card"><span class="bp-card-num">Private Lessons</span><h3>Website for teachers &amp; coaches</h3><p>Music, academic, sports, arts — your signature service, pricing, booking flow. Done.</p><span class="bp-tag">Service Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Caretaker</span><h3>Website for care &amp; support services</h3><p>Nannies, elder care, pet sitting — build trust and book clients from day one.</p><span class="bp-tag">Service Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Service Provider</span><h3>Website for any local service</h3><p>Plumber, cleaner, landscaper, handyman — complete site with AI search built in.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Health &amp; Wellness</span><h3>Website for studios &amp; practitioners</h3><p>Yoga studios, personal trainers, massage therapists. Booking-ready.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Beauty</span><h3>Website for salons &amp; beauty pros</h3><p>Hair, nails, lashes, esthetics — a site as polished as your work.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Fitness</span><h3>Website for trainers &amp; studios</h3><p>Personal trainers, gyms, CrossFit, bootcamp — built to convert visitors into members.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Food &amp; Hospitality</span><h3>Restaurant site with digital menu</h3><p>Full site plus a beautiful digital menu. Replace paper menus forever.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Home &amp; Trades</span><h3>Website for contractors &amp; builders</h3><p>Remodelers, electricians, HVAC, painters — built to rank locally and book jobs.</p><span class="bp-tag">Small Business</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Professional Services</span><h3>Website for consultants &amp; experts</h3><p>Coaches, consultants, lawyers, accountants — authority-first design that converts.</p><span class="bp-tag">Professional</span></a>
-      <a href="login.html" class="bp-card"><span class="bp-card-num">Creative</span><h3>Website for artists &amp; creators</h3><p>Photographers, designers, musicians, writers — a portfolio that does the talking.</p><span class="bp-tag">Creative</span></a>
+
+    <div class="pf-filters reveal">
+      <button class="pf-filter active" data-filter="all">All</button>
+      <button class="pf-filter" data-filter="beauty">Beauty &amp; Wellness</button>
+      <button class="pf-filter" data-filter="fitness">Fitness</button>
+      <button class="pf-filter" data-filter="food">Food &amp; Hospitality</button>
+      <button class="pf-filter" data-filter="creative">Creative</button>
+      <button class="pf-filter" data-filter="invite">Event Invite</button>
+      <button class="pf-filter" data-filter="ugc">UGC Creator</button>
+      <button class="pf-filter" data-filter="care">Care &amp; Support</button>
+      <button class="pf-filter" data-filter="tools">Builtsy Tools</button>
     </div>
-    <div style="text-align:center;"><a href="beta.html" class="btn-secondary">See all Builtsy Blueprints →</a></div>
+
+    <div class="pf-grid reveal">
+      <div class="pf-card" data-cat="beauty" id="pfc-luna">
+        <div class="pf-slides" id="luna-slides">
+          <!-- Slide 1: Hero -->
+          <div class="pf-slide pf-active">
+            <img src="luna-1.png" alt="Luna Lash Studio — Home" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Home</div>
+          </div>
+          <!-- Slide 2: Booking -->
+          <div class="pf-slide">
+            <img src="luna-2.png" alt="Luna Lash Studio — Booking" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Booking</div>
+          </div>
+          <!-- Slide 3: FAQ -->
+          <div class="pf-slide">
+            <img src="luna-3.png" alt="Luna Lash Studio — FAQ" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">FAQ Builder</div>
+          </div>
+          <!-- Slide 4: Revenue Booster -->
+          <div class="pf-slide">
+            <img src="luna-4.png" alt="Luna Lash Studio — Revenue Booster" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Revenue Booster</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="luna-dots">
+          <button class="pf-dot pf-active" data-cid="luna" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="luna" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="luna" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="luna" data-idx="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">Beauty &amp; Wellness</span><div class="pf-name">Luna Lash Studio</div></div>
+      </div>
+      <div class="pf-card" data-cat="invite" id="pfc-inv">
+        <div class="pf-slides" id="inv-slides">
+          <!-- Slide 1: Main invite image -->
+          <div class="pf-slide pf-active">
+            <img src="bp-invite-1.jpg" alt="Event Invite" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">The Invite</div>
+          </div>
+          <!-- Slide 3: Birthday Brunch -->
+          <div class="pf-slide">
+            <img src="invite-2.png" alt="Birthday Brunch Invite" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            <div class="pf-slabel">Birthday Brunch</div>
+          </div>
+          <!-- Slide 4: Birthday Bash -->
+          <div class="pf-slide">
+            <img src="invite-3.png" alt="Birthday Bash Invite" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            <div class="pf-slabel">Birthday Bash</div>
+          </div>
+          <!-- Slide 5: Yoga Retreat -->
+          <div class="pf-slide">
+            <img src="invite-4.png" alt="Yoga Retreat Invite" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            <div class="pf-slabel">Yoga Retreat</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="inv-dots">
+          <button class="pf-dot pf-active" data-cid="inv" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="inv" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="inv" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="inv" data-idx="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">Event Invite</span><div class="pf-name">Invite Blueprint</div></div>
+      </div>
+      <div class="pf-card" data-cat="ugc" id="pfc-ugc">
+        <div class="pf-slides" id="ugc-slides">
+          <!-- Slide 1: Hero -->
+          <div class="pf-slide pf-active">
+            <img src="ugc-1.png" alt="Lexi Rose – Home" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 2: Services & Rates -->
+          <div class="pf-slide">
+            <img src="ugc-2.png" alt="Lexi Rose – Services" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 3: Kind Words v2 -->
+          <div class="pf-slide">
+            <img src="ugc-4.png" alt="Lexi Rose – Kind Words 2" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 4: About Me -->
+          <div class="pf-slide">
+            <img src="ugc-5.png" alt="Lexi Rose – About Me" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+        </div>
+        <div class="pf-dots" id="ugc-dots">
+          <button class="pf-dot pf-active" data-cid="ugc" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="ugc" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="ugc" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="ugc" data-idx="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">UGC Creator</span><div class="pf-name">Content Creator Hub</div></div>
+      </div>
+      <div class="pf-card" data-cat="food" id="pfc-bkry">
+        <div class="pf-slides" id="bkry-slides">
+          <!-- Slide 1: Invite Main -->
+          <div class="pf-slide pf-active">
+            <img src="bkry-1.png" alt="Sweet Crumbs Bakery – Invite" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 2: Build a Box -->
+          <div class="pf-slide">
+            <img src="bkry-2.png" alt="Sweet Crumbs Bakery – Build a Box" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 3: Choose Other Treats -->
+          <div class="pf-slide">
+            <img src="bkry-3.png" alt="Sweet Crumbs Bakery – Our Treats" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 4: FAQ -->
+          <div class="pf-slide">
+            <img src="bkry-4.png" alt="Sweet Crumbs Bakery – FAQ" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 5: Testimonials -->
+          <div class="pf-slide">
+            <img src="bkry-5.png" alt="Sweet Crumbs Bakery – Testimonials" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+        </div>
+        <div class="pf-dots" id="bkry-dots">
+          <button class="pf-dot pf-active" data-cid="bkry" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="bkry" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="bkry" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="bkry" data-idx="3" aria-label="Slide 4"></button>
+          <button class="pf-dot" data-cid="bkry" data-idx="4" aria-label="Slide 5"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">Food &amp; Hospitality</span><div class="pf-name">Sweet Crumbs Bakery</div></div>
+      </div>
+      <div class="pf-card" data-cat="food" id="pfc-art">
+        <div class="pf-slides" id="art-slides">
+          <div class="pf-slide pf-active">
+            <img src="sc-1.png" alt="Sweet Crumbs – Invite Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">The Invite</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-2.png" alt="Sweet Crumbs – Invite Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Mobile Invite</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-3.png" alt="Sweet Crumbs – Build a Box Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Build Your Box</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-4.png" alt="Sweet Crumbs – Build a Box Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Box Builder Mobile</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-5.png" alt="Sweet Crumbs – Our Treats Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Our Treats</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-6.png" alt="Sweet Crumbs – Our Treats Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Treats Mobile</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-7.png" alt="Sweet Crumbs – FAQ Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">FAQ</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-8.png" alt="Sweet Crumbs – FAQ Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">FAQ Mobile</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-9.png" alt="Sweet Crumbs – Reviews Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Reviews</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-10.png" alt="Sweet Crumbs – Reviews Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Reviews Mobile</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-11.png" alt="Sweet Crumbs – RSVP CTA Desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Save Your Seat</div>
+          </div>
+          <div class="pf-slide">
+            <img src="sc-12.png" alt="Sweet Crumbs – SMS Mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">SMS View</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="art-dots">
+          <button class="pf-dot pf-active" data-cid="art" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="art" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="art" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="art" data-idx="3" aria-label="Slide 4"></button>
+          <button class="pf-dot" data-cid="art" data-idx="4" aria-label="Slide 5"></button>
+          <button class="pf-dot" data-cid="art" data-idx="5" aria-label="Slide 6"></button>
+          <button class="pf-dot" data-cid="art" data-idx="6" aria-label="Slide 7"></button>
+          <button class="pf-dot" data-cid="art" data-idx="7" aria-label="Slide 8"></button>
+          <button class="pf-dot" data-cid="art" data-idx="8" aria-label="Slide 9"></button>
+          <button class="pf-dot" data-cid="art" data-idx="9" aria-label="Slide 10"></button>
+          <button class="pf-dot" data-cid="art" data-idx="10" aria-label="Slide 11"></button>
+          <button class="pf-dot" data-cid="art" data-idx="11" aria-label="Slide 12"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">Food &amp; Hospitality</span><div class="pf-name">Sweet Crumbs Bakery</div></div>
+      </div>
+      <div class="pf-card" data-cat="beauty" id="pfc-lnk">
+        <div class="pf-slides" id="lnk-slides">
+          <!-- Slide 1 -->
+          <div class="pf-slide pf-active">
+            <img src="lnk-1.jpg" alt="Link in Bio – Style 1" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 2 -->
+          <div class="pf-slide">
+            <img src="lnk-2.jpg" alt="Link in Bio – Style 2" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+          <!-- Slide 3 -->
+          <div class="pf-slide">
+            <img src="lnk-3.jpg" alt="Link in Bio – Style 3" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          </div>
+        </div>
+        <div class="pf-dots" id="lnk-dots">
+          <button class="pf-dot pf-active" data-cid="lnk" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="lnk" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="lnk" data-idx="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat">Beauty &amp; Wellness</span><div class="pf-name">Link in Bio</div></div>
+      </div>
+      <!-- Revenue Booster carousel -->
+      <div class="pf-card" data-cat="tools" id="pfc-rev">
+        <div class="pf-slides" id="rev-slides">
+          <!-- Slide 1: Housecleaner -->
+          <div class="pf-slide pf-active" style="background:#fafaf8;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:11px 12px;font-family:'DM Sans',sans-serif;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <div style="font-size:8px;font-weight:700;color:#12192B;">Sparkle Clean Co.</div>
+              <div style="background:#C8E000;color:#12192B;font-size:6.5px;font-weight:700;border-radius:100px;padding:2px 7px;letter-spacing:.05em;">REVENUE BOOSTER</div>
+            </div>
+            <div style="background:#fff;border:1.5px solid rgba(19,21,43,0.1);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <div><div style="font-size:8px;font-weight:700;color:#12192B;">Standard Home Clean</div><div style="font-size:7px;color:#888;margin-top:1px;">2 bed · 1 bath · 2hrs</div></div>
+              <div style="font-size:10px;font-weight:700;color:#12192B;">$95</div>
+            </div>
+            <div style="font-size:6.5px;font-weight:700;color:#888;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;">Boost your booking</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid #C8E000;border-radius:7px;padding:5px 9px;">
+                <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;border-radius:3px;background:#C8E000;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><span style="color:#12192B;font-size:7px;font-weight:900;">✓</span></div><div style="font-size:7.5px;font-weight:600;color:#12192B;">Deep Clean Add-On</div></div>
+                <div style="font-size:8px;font-weight:700;color:#12192B;">+$45</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid rgba(19,21,43,0.1);border-radius:7px;padding:5px 9px;">
+                <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;border-radius:3px;border:1.5px solid #ddd;flex-shrink:0;"></div><div style="font-size:7.5px;color:#555;">Inside Oven Cleaning</div></div>
+                <div style="font-size:8px;font-weight:600;color:#555;">+$30</div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(19,21,43,0.08);padding-top:5px;margin-top:auto;flex-shrink:0;">
+              <div style="font-size:7.5px;color:#888;">Total · 1 add-on</div>
+              <div style="font-size:11px;font-weight:900;color:#12192B;">$140</div>
+            </div>
+            <div class="pf-slabel">Housecleaning</div>
+          </div>
+          <!-- Slide 2: Bakery Build Your Box -->
+          <div class="pf-slide" style="background:#fffbf5;overflow:hidden;display:flex;flex-direction:column;gap:5px;padding:10px 12px;font-family:'DM Sans',sans-serif;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <div style="font-size:8px;font-weight:700;color:#12192B;">Sugar &amp; Co. Bakery</div>
+              <div style="background:#C8E000;color:#12192B;font-size:6.5px;font-weight:700;border-radius:100px;padding:2px 7px;letter-spacing:.05em;">BUILD YOUR BOX</div>
+            </div>
+            <div style="background:#fff;border:1.5px solid rgba(19,21,43,0.1);border-radius:8px;padding:6px 9px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <div><div style="font-size:8px;font-weight:700;color:#12192B;">Classic Box · 6 pieces</div><div style="font-size:7px;color:#888;margin-top:1px;">Your choice of base assortment</div></div>
+              <div style="font-size:10px;font-weight:700;color:#12192B;">$28</div>
+            </div>
+            <div style="font-size:6.5px;font-weight:700;color:#888;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;">Add à la carte</div>
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid #C8E000;border-radius:7px;padding:5px 9px;">
+                <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;border-radius:3px;background:#C8E000;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#12192B;">✓</div><div style="font-size:7.5px;font-weight:600;color:#12192B;">🥐 Chocolate Croissant</div></div>
+                <div style="font-size:8px;font-weight:700;color:#12192B;">+$4</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid #C8E000;border-radius:7px;padding:5px 9px;">
+                <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;border-radius:3px;background:#C8E000;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#12192B;">✓</div><div style="font-size:7.5px;font-weight:600;color:#12192B;">🍋 Lemon Tart</div></div>
+                <div style="font-size:8px;font-weight:700;color:#12192B;">+$3.50</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid rgba(19,21,43,0.1);border-radius:7px;padding:5px 9px;">
+                <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;border-radius:3px;border:1.5px solid #ddd;flex-shrink:0;"></div><div style="font-size:7.5px;color:#555;">🍪 Brown Butter Cookie</div></div>
+                <div style="font-size:8px;font-weight:600;color:#555;">+$3</div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(19,21,43,0.08);padding-top:4px;margin-top:auto;flex-shrink:0;">
+              <div style="font-size:7.5px;color:#888;">Box total · 2 extras added</div>
+              <div style="font-size:11px;font-weight:900;color:#12192B;">$35.50</div>
+            </div>
+            <div class="pf-slabel">Bakery Build-a-Box</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="rev-dots">
+          <button class="pf-dot pf-active" data-cid="rev" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="rev" data-idx="1" aria-label="Slide 2"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat pf-cat-tool">Builtsy Tool</span><div class="pf-name">Revenue Booster</div></div>
+      </div>
+
+      <div class="pf-card" data-cat="tools" id="pfc-faq">
+        <div class="pf-slides" id="faq-slides">
+          <div class="pf-slide pf-active">
+            <img src="bp-faq-1.jpg" alt="FAQ Builder" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">FAQ Page</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-faq-2.jpg" alt="FAQ Builder" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Categories</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-faq-3.jpg" alt="FAQ Builder" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Search</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-faq-4.jpg" alt="FAQ Builder" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Admin Editor</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="faq-dots">
+          <button class="pf-dot pf-active" data-cid="faq" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="faq" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="faq" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="faq" data-idx="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat pf-cat-tool">Builtsy Tool</span><div class="pf-name">FAQ Builder</div></div>
+      </div>
+      <div class="pf-card" data-cat="tools" id="pfc-frm">
+        <div class="pf-slides" id="frm-slides">
+          <div class="pf-slide pf-active">
+            <img src="bp-forms-1.jpg" alt="Forms" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Contact Form</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-forms-2.jpg" alt="Forms" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Intake Form</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-forms-3.jpg" alt="Forms" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Booking Request</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-forms-4.jpg" alt="Forms" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Responses</div>
+          </div>
+          <div class="pf-slide">
+            <img src="bp-forms-5.jpg" alt="Forms" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+            <div class="pf-slabel">Notifications</div>
+          </div>
+        </div>
+        <div class="pf-dots" id="frm-dots">
+          <button class="pf-dot pf-active" data-cid="frm" data-idx="0" aria-label="Slide 1"></button>
+          <button class="pf-dot" data-cid="frm" data-idx="1" aria-label="Slide 2"></button>
+          <button class="pf-dot" data-cid="frm" data-idx="2" aria-label="Slide 3"></button>
+          <button class="pf-dot" data-cid="frm" data-idx="3" aria-label="Slide 4"></button>
+          <button class="pf-dot" data-cid="frm" data-idx="4" aria-label="Slide 5"></button>
+        </div>
+        <div class="pf-card-body"><span class="pf-cat pf-cat-tool">Builtsy Tool</span><div class="pf-name">Forms</div></div>
+      </div>
+
+
+    </div>
+
+    <div style="text-align:center;"><a href="beta.html" class="btn-secondary">Build yours free →</a></div>
+  </div>
+</section>
+
+
+<!-- Portfolio lightbox -->
+<div class="pf-lb" id="pfLb">
+  <button class="pf-lb-arrow" id="pfLbPrev" onclick="pfLbNav(-1)" aria-label="Previous">&#8592;</button>
+  <div class="pf-lb-inner">
+    <button class="pf-lb-x" onclick="closePfLb()" aria-label="Close">&#x2715;</button>
+    <img class="pf-lb-img" id="pfLbImg" src="" alt="" style="display:none;">
+    <div class="pf-lb-icon-wrap" id="pfLbIcon" style="display:none;"></div>
+    <div class="pf-lb-mockup" id="pfLbMockup" style="display:none;"></div>
+    <div class="pf-lb-footer">
+      <div class="pf-lb-info">
+        <span class="pf-cat" id="pfLbCat"></span>
+        <span style="font-family:var(--serif);font-weight:700;color:var(--navy);font-size:1rem;" id="pfLbName"></span>
+      </div>
+      <span class="pf-lb-counter" id="pfLbCounter"></span>
+    </div>
+  </div>
+  <button class="pf-lb-arrow" id="pfLbNext" onclick="pfLbNav(1)" aria-label="Next">&#8594;</button>
+</div>
+
+<script>
+// ── Portfolio filter + lightbox ──
+var _pfCards      = [];
+var _pfIdx        = 0;
+var _pfLbInterval = null;
+var _pfLbSlides   = [];
+var _pfLbSlideIdx = 0;
+
+function _pfClearLbInterval(){
+  if (_pfLbInterval){ clearInterval(_pfLbInterval); _pfLbInterval = null; }
+}
+
+function _pfLbShowSlide(slideEl){
+  var lbImg  = document.getElementById('pfLbImg');
+  var lbMock = document.getElementById('pfLbMockup');
+  lbImg.style.display  = 'none';
+  lbMock.style.display = 'none';
+  var imgEl = slideEl.querySelector('img');
+  if (imgEl) {
+    lbImg.src = imgEl.src;
+    lbImg.alt = imgEl.alt || '';
+    lbImg.style.display = 'block';
+  } else {
+    lbMock.innerHTML = '';
+    var clone = slideEl.cloneNode(true);
+    clone.style.cssText += ';position:relative;opacity:1;pointer-events:auto;inset:auto;';
+    var card  = _pfCards[_pfIdx];
+    var w     = (card && card.offsetWidth)  || 260;
+    var h     = 180;
+    var scale = Math.min(600 / w, 320 / h, 2.4);
+    var wrap  = document.createElement('div');
+    wrap.style.cssText = 'width:' + w + 'px;height:' + h + 'px;transform:scale(' + scale.toFixed(2) + ');transform-origin:center center;pointer-events:none;flex-shrink:0;';
+    wrap.appendChild(clone);
+    lbMock.style.cssText = 'display:flex;align-items:center;justify-content:center;background:#f0f0ee;height:' + Math.round(h * scale + 48) + 'px;overflow:hidden;flex-shrink:0;';
+    lbMock.appendChild(wrap);
+  }
+}
+
+(function(){
+  var filters  = document.querySelectorAll('.pf-filter');
+  var allCards = document.querySelectorAll('.pf-card');
+
+  // Filter
+  filters.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filters.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var f = btn.dataset.filter;
+      allCards.forEach(function(c){
+        c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
+      });
+    });
+  });
+
+  // Open on card click
+  allCards.forEach(function(card){
+    card.addEventListener('click', function(){
+      _pfCards = Array.from(document.querySelectorAll('.pf-card:not(.hidden)'));
+      _pfIdx   = _pfCards.indexOf(card);
+      if (_pfIdx < 0) return;
+      _pfRender();
+      document.getElementById('pfLb').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Close on backdrop
+  document.getElementById('pfLb').addEventListener('click', function(e){
+    if (e.target === this) closePfLb();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if (!document.getElementById('pfLb').classList.contains('open')) return;
+    if (e.key === 'Escape')      closePfLb();
+    if (e.key === 'ArrowLeft')   pfLbNav(-1);
+    if (e.key === 'ArrowRight')  pfLbNav(1);
+  });
+})();
+
+function pfLbNav(dir){
+  _pfCards = Array.from(document.querySelectorAll('.pf-card:not(.hidden)'));
+  _pfIdx   = Math.max(0, Math.min(_pfCards.length - 1, _pfIdx + dir));
+  _pfRender();
+}
+
+function _pfRender(){
+  _pfClearLbInterval();
+  var card = _pfCards[_pfIdx];
+  if (!card) return;
+
+  var name  = card.querySelector('.pf-name').textContent;
+  var catEl = card.querySelector('.pf-cat');
+  document.getElementById('pfLbName').textContent    = name;
+  document.getElementById('pfLbCat').textContent     = catEl.textContent;
+  document.getElementById('pfLbCat').className       = catEl.className;
+  document.getElementById('pfLbCounter').textContent = (_pfIdx + 1) + ' / ' + _pfCards.length;
+  document.getElementById('pfLbPrev').disabled       = _pfIdx === 0;
+  document.getElementById('pfLbNext').disabled       = _pfIdx === _pfCards.length - 1;
+
+  var slidesContainer = card.querySelector('.pf-slides');
+  if (slidesContainer) {
+    // Carousel card — cycle through all slides in the lightbox
+    _pfLbSlides   = Array.from(slidesContainer.querySelectorAll('.pf-slide'));
+    var activeIdx = _pfLbSlides.indexOf(slidesContainer.querySelector('.pf-slide.pf-active'));
+    _pfLbSlideIdx = Math.max(0, activeIdx);
+    _pfLbShowSlide(_pfLbSlides[_pfLbSlideIdx]);
+    if (_pfLbSlides.length > 1) {
+      _pfLbInterval = setInterval(function(){
+        _pfLbSlideIdx = (_pfLbSlideIdx + 1) % _pfLbSlides.length;
+        _pfLbShowSlide(_pfLbSlides[_pfLbSlideIdx]);
+      }, 2200);
+    }
+  } else {
+    // Static card
+    var firstEl = card.firstElementChild;
+    var lbImg   = document.getElementById('pfLbImg');
+    var lbMock  = document.getElementById('pfLbMockup');
+    lbImg.style.display  = 'none';
+    lbMock.style.display = 'none';
+    if (firstEl && firstEl.tagName === 'IMG') {
+      lbImg.src = firstEl.src; lbImg.alt = name; lbImg.style.display = 'block';
+    } else if (firstEl) {
+      lbMock.innerHTML = '';
+      var clone = firstEl.cloneNode(true);
+      var w     = firstEl.offsetWidth  || 260;
+      var h     = firstEl.offsetHeight || 180;
+      var scale = Math.min(600 / w, 300 / h, 2.1);
+      var wrap  = document.createElement('div');
+      wrap.style.cssText = 'width:' + w + 'px;height:' + h + 'px;transform:scale(' + scale.toFixed(2) + ');transform-origin:center center;pointer-events:none;flex-shrink:0;';
+      wrap.appendChild(clone);
+      lbMock.style.cssText = 'display:flex;align-items:center;justify-content:center;background:#f0f0ee;height:' + Math.round(h * scale + 48) + 'px;overflow:hidden;flex-shrink:0;';
+      lbMock.appendChild(wrap);
+    }
+  }
+}
+
+function closePfLb(){
+  _pfClearLbInterval();
+  document.getElementById('pfLb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+
+<script>
+// ── Card carousel system ──
+(function(){
+  var state = {};
+
+  function goTo(cid, idx) {
+    var slides = document.querySelectorAll('#' + cid + '-slides .pf-slide');
+    var dots   = document.querySelectorAll('#' + cid + '-dots .pf-dot');
+    slides.forEach(function(s,i){ s.classList.toggle('pf-active', i===idx); });
+    dots.forEach(function(d,i){ d.classList.toggle('pf-active', i===idx); });
+    if (state[cid]) state[cid].cur = idx;
+  }
+
+  // Dot click
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.pf-dot');
+    if (!btn) return;
+    var cid = btn.dataset.cid;
+    var idx = parseInt(btn.dataset.idx, 10);
+    if (!cid || isNaN(idx)) return;
+    e.stopPropagation();
+    goTo(cid, idx);
+  });
+
+  // Auto-advance
+  var carousels = [
+    { id: 'inv',  count: 5 },
+    { id: 'rev',  count: 2 },
+    { id: 'ugc',  count: 5 },
+    { id: 'lnk',  count: 3 },
+    { id: 'faq',  count: 4 },
+    { id: 'frm',  count: 5 },
+    { id: 'luna', count: 4 },
+    { id: 'bkry', count: 5 },
+    { id: 'art',  count: 3 },
+  ];
+  carousels.forEach(function(c){
+    state[c.id] = { cur: 0, paused: false };
+    var cardEl = document.getElementById('pfc-' + c.id);
+    if (cardEl) {
+      cardEl.addEventListener('mouseenter', function(){ state[c.id].paused = true; });
+      cardEl.addEventListener('mouseleave', function(){ state[c.id].paused = false; });
+    }
+    setInterval(function(){
+      if (!state[c.id].paused) {
+        var next = (state[c.id].cur + 1) % c.count;
+        goTo(c.id, next);
+      }
+    }, 3200);
+  });
+})();
+</script>
+
+<!-- ═══ BRAIN AI ═══ -->
+<section class="brain-section" id="brain">
+  <div class="inner" style="max-width:1200px;">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+      <span class="sl" style="display:block;color:rgba(255,255,255,0.4);">Builtsy Brain AI</span>
+      <h2 style="color:#fff;">Your business brain.<br><em style="color:var(--pink);">Always on. Always yours.</em></h2>
+      <p class="body-text" style="color:rgba(255,255,255,0.5);max-width:520px;margin:1rem auto 0;">It knows your name, your business, and how you write. Ask it anything — bios, captions, launch plans, pricing strategy — and it answers like it's been on your team for years.</p>
+    </div>
+
+    <!-- Two screenshot panels -->
+    <div class="brain-panels reveal">
+
+      <!-- Panel 1: Context greeting -->
+      <div class="brain-panel">
+        <div class="brain-panel-header">
+          <div class="brain-chat-header-left">
+            <div class="brain-chat-star">✦</div>
+            <div>
+              <div class="brain-chat-title">Builtsy <em style="font-style:italic;color:#C8E000;">Brain</em> AI</div>
+              <div class="brain-chat-sub">Builtsy knows your business — ask anything</div>
+            </div>
+          </div>
+          <div class="brain-new-chat">+ New chat</div>
+        </div>
+        <div class="brain-panel-ctx">
+          <div class="brain-ctx-row">
+            <span class="brain-ctx-label">✦ FROM YOUR BLUEPRINT</span>
+            <span class="brain-profile-btn">Builtsy Blueprint</span>
+          </div>
+          <div class="brain-biz-name">Jayne Consulting</div>
+          <div class="brain-biz-desc">Marketing consulting for small businesses · customer experience &amp; retention</div>
+          <div class="brain-profile-ok">Brain AI has your context ✓</div>
+        </div>
+        <div class="brain-panel-body">
+          <div class="brain-msg-ai">
+            <div class="brain-ai-tag">✦ Builtsy Brain AI</div>
+            <p style="margin-bottom:.55rem;">Hey, Jennifer! I just loaded your <strong>Builtsy Blueprint</strong>. Here's what I have on you:</p>
+            <p style="margin:.15rem 0;"><strong>Business:</strong> Jayne Consulting</p>
+            <p style="margin:.15rem 0;"><strong>About:</strong> Marketing consulting for small businesses. Focus is customer experience &amp; retention.</p>
+            <p style="margin:.55rem 0 .2rem;"><strong>Your services:</strong></p>
+            <p style="margin:.1rem 0;">• <strong>Customer Experience Audit</strong> — Comprehensive review of your customer touchpoints</p>
+            <p style="margin:.1rem 0;">• <strong>Retention Strategy Development</strong> — Custom plans to keep customers loyal</p>
+            <p style="margin:.1rem 0;">• <strong>Customer Journey Mapping</strong> — Visualize &amp; optimize every step</p>
+            <p style="margin:.1rem 0;">• <strong>Ongoing Marketing Consulting</strong> — Monthly strategic guidance</p>
+            <p style="margin-top:.65rem;color:rgba(255,255,255,0.7);">What are we working on today?</p>
+            <div class="brain-msg-actions">
+              <button class="brain-copy-btn">copy</button>
+              <button class="brain-return-btn">Copy &amp; return to Builtsy Blueprint →</button>
+            </div>
+          </div>
+        </div>
+        <div class="brain-panel-label-badge">Step 1 — Brain AI loads your blueprint</div>
+      </div>
+
+      <!-- Panel 2: Service descriptions output -->
+      <div class="brain-panel">
+        <div class="brain-panel-header">
+          <div class="brain-chat-header-left">
+            <div class="brain-chat-star">✦</div>
+            <div>
+              <div class="brain-chat-title">Builtsy <em style="font-style:italic;color:#C8E000;">Brain</em> AI</div>
+              <div class="brain-chat-sub">Builtsy knows your business — ask anything</div>
+            </div>
+          </div>
+          <div class="brain-new-chat">+ New chat</div>
+        </div>
+        <div class="brain-panel-body" style="padding-top:1rem;">
+          <div class="brain-msg-user" style="margin-bottom:.85rem;">Write persuasive service descriptions for 3–4 of my core offerings. Make them irresistible.</div>
+          <div class="brain-msg-ai">
+            <div class="brain-ai-tag">✦ Builtsy Brain AI</div>
+            <p style="margin-bottom:.65rem;">Here are your irresistible service descriptions:</p>
+            <div class="brain-ai-svc">
+              <div class="brain-ai-svc-name">Customer Experience Audit</div>
+              <div class="brain-ai-svc-desc">Stop wondering why customers aren't coming back — start knowing exactly what's driving them away. This audit reveals hidden friction points and delivers a clear roadmap to transform frustrated customers into raving fans.</div>
+            </div>
+            <div class="brain-ai-svc">
+              <div class="brain-ai-svc-name">Retention Strategy Development</div>
+              <div class="brain-ai-svc-desc">Turn your existing customers into your most profitable revenue stream without spending another dollar on ads. You'll get a custom blueprint that transforms one-time buyers into loyal customers who refer others.</div>
+            </div>
+            <div class="brain-ai-svc">
+              <div class="brain-ai-svc-name">Customer Journey Mapping</div>
+              <div class="brain-ai-svc-desc">Finally see your business through your customer's eyes and discover golden opportunities you've been missing. Small changes, massive improvements in satisfaction and lifetime value.</div>
+            </div>
+            <div class="brain-ai-svc">
+              <div class="brain-ai-svc-name">Ongoing Marketing Consulting</div>
+              <div class="brain-ai-svc-desc">Never second-guess your customer strategy again. Expert monthly guidance that keeps your retention rates climbing and every marketing decision strengthening customer relationships.</div>
+            </div>
+            <div class="brain-msg-actions">
+              <button class="brain-copy-btn">copy</button>
+              <button class="brain-return-btn">Copy &amp; return to Builtsy Blueprint →</button>
+            </div>
+          </div>
+        </div>
+        <div class="brain-panel-label-badge">Step 2 — Copy ready to paste into your blueprint</div>
+      </div>
+
+    </div>
+
+    <!-- Feature pills -->
+    <div class="brain-features reveal">
+      <div class="brain-feat"><span class="brain-feat-icon">✦</span>Writes in your voice</div>
+      <div class="brain-feat"><span class="brain-feat-icon">✦</span>Knows your business</div>
+      <div class="brain-feat"><span class="brain-feat-icon">✦</span>Auto-saves to your Blueprint</div>
+      <div class="brain-feat"><span class="brain-feat-icon">✦</span>13 ready-made prompts</div>
+      <div class="brain-feat"><span class="brain-feat-icon">✦</span>Always in your sidebar</div>
+    </div>
   </div>
 </section>
 
@@ -926,6 +1690,15 @@ function joinBeta(e){
     e.target.style.display='none';
   });
 }
+</script>
+<!-- Supabase auth redirect handler — catches magic link tokens that land here -->
+<script>
+(function() {
+  var hash = window.location.hash;
+  if (hash && (hash.indexOf('access_token') !== -1 || hash.indexOf('type=magiclink') !== -1 || hash.indexOf('type=recovery') !== -1)) {
+    window.location.href = 'login.html' + hash;
+  }
+})();
 </script>
 </body>
 </html>

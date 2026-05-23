@@ -196,11 +196,46 @@ textarea.fi{resize:vertical;min-height:80px;}
 #ms-output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
 .output-error{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:13px;color:#fca5a5;font-size:.85rem;margin:14px;display:none;}
 .output-error.active{display:block;}
-#ms-revise-drawer{display:none;background:#0D0D0D;border-top:1px solid rgba(255,255,255,.08);padding:11px 14px;flex-shrink:0;}
-#ms-revise-drawer.active{display:flex;gap:10px;align-items:flex-start;}
-#ms-revise-input{flex:1;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:rgba(255,255,255,.08);color:white;resize:none;min-height:40px;outline:none;}
-#ms-revise-input::placeholder{color:rgba(255,255,255,.3);}
-.btn-revise-submit{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px 13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;flex-shrink:0;}
+/* ── REVISE CHAT DRAWER — Brain AI branded ── */
+#ms-revise-drawer{display:none;flex-direction:column;flex-shrink:0;max-height:52vh;
+  background:#0a0f1e;
+  background-image:linear-gradient(rgba(67,97,238,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(67,97,238,0.04) 1px,transparent 1px);
+  background-size:52px 52px;
+  border-top:1px solid rgba(67,97,238,0.2);
+  position:relative;overflow:hidden;}
+#ms-revise-drawer::before{content:'';position:absolute;top:-40px;left:20%;width:400px;height:300px;background:radial-gradient(ellipse,rgba(67,97,238,0.14) 0%,transparent 70%);pointer-events:none;z-index:0;}
+#ms-revise-drawer.active{display:flex;}
+#ms-revise-drawer-header{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(67,97,238,0.15);flex-shrink:0;position:relative;z-index:2;}
+.rch-icon{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,rgba(67,97,238,0.3),rgba(238,112,188,0.2));border:1px solid rgba(67,97,238,0.4);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;box-shadow:0 0 8px rgba(67,97,238,0.2);}
+.rch-title{font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;color:white;}
+.rch-title em{font-style:italic;color:var(--lime);}
+.rch-sub{font-size:.62rem;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-left:auto;}
+#ms-chat-log{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-height:60px;position:relative;z-index:1;}
+#ms-chat-log::-webkit-scrollbar{width:3px;}
+#ms-chat-log::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
+.rc-msg-row{display:flex;gap:8px;align-items:flex-start;}
+.rc-msg-row.rc-user{flex-direction:row-reverse;align-self:flex-end;max-width:85%;}
+.rc-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;margin-top:2px;}
+.rc-av.av-ai{background:linear-gradient(135deg,rgba(67,97,238,0.3),rgba(238,112,188,0.2));border:1px solid rgba(67,97,238,0.4);box-shadow:0 0 6px rgba(67,97,238,0.2);}
+.rc-av.av-user{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;font-size:.55rem;}
+.rc-bubble{border-radius:12px;padding:8px 12px;font-size:.8rem;line-height:1.6;color:rgba(255,255,255,.88);}
+.rc-msg-row:not(.rc-user) .rc-bubble{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:2px solid rgba(67,97,238,0.4);max-width:360px;}
+.rc-msg-row.rc-user .rc-bubble{background:linear-gradient(135deg,rgba(67,97,238,.18),rgba(67,97,238,.1));border:1px solid rgba(67,97,238,.28);color:white;}
+.rc-bubble.thinking{opacity:.55;font-style:italic;}
+.rc-bubble.error{background:rgba(239,68,68,.1) !important;border-color:rgba(239,68,68,.25) !important;border-left-color:rgba(239,68,68,.5) !important;color:#fca5a5 !important;}
+.rc-bubble.patch{background:rgba(200,224,0,.06) !important;border-color:rgba(200,224,0,.2) !important;border-left-color:rgba(200,224,0,.5) !important;color:rgba(255,255,255,.85) !important;}
+.rc-typing{display:flex;gap:3px;align-items:center;padding:4px 0;}
+.rc-td{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:rctdot 1.2s ease-in-out infinite;opacity:.3;}
+.rc-td:nth-child(2){animation-delay:.2s;}.rc-td:nth-child(3){animation-delay:.4s;}
+@keyframes rctdot{0%,60%,100%{opacity:.2;transform:scale(.8);}30%{opacity:1;transform:scale(1);}}
+#ms-chat-input-row{display:flex;gap:8px;align-items:flex-end;padding:10px 14px;border-top:1px solid rgba(67,97,238,0.15);flex-shrink:0;position:relative;z-index:2;}
+.rc-input-wrap{flex:1;display:flex;align-items:flex-end;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 10px;transition:border-color .15s;}
+.rc-input-wrap:focus-within{border-color:rgba(67,97,238,0.45);box-shadow:0 0 0 3px rgba(67,97,238,.06);}
+#ms-revise-input{flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.84rem;color:white;resize:none;max-height:90px;line-height:1.5;padding:0;}
+#ms-revise-input::placeholder{color:rgba(255,255,255,.28);}
+.btn-revise-submit{width:32px;height:32px;background:var(--lime);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
+.btn-revise-submit:hover:not(:disabled){opacity:.88;transform:scale(1.04);}
+.btn-revise-submit:disabled{background:rgba(255,255,255,0.08);cursor:default;transform:none;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
@@ -321,15 +356,15 @@ body.ms-s9 .topnav{display:none;}
       <div class="ms-welcome-fields">
         <div class="field">
           <label>Your Name</label>
-          <input class="fi" id="ms-owner-name" type="text" placeholder="Sophie Lane" autocomplete="given-name">
+          <input class="fi" id="ms-owner-name" type="text" placeholder="Sophie Lane" autocomplete="given-name" oninput="msAutoSave()">
         </div>
         <div class="field">
           <label>Business / Brand Name <span class="opt">or just your name</span></label>
-          <input class="fi" id="ms-biz-name" type="text" placeholder="e.g. Jennifer Lane Studio">
+          <input class="fi" id="ms-biz-name" type="text" placeholder="e.g. Jennifer Lane Studio" oninput="msAutoSave()">
         </div>
         <div class="field">
           <label>What do you do? <span class="opt">in your own words</span></label>
-          <textarea class="fi" id="ms-description" placeholder="Tell us what you do, who you help, and where you're based. The more detail, the better Builtsy AI can personalize your site." style="min-height:110px;"></textarea>
+          <textarea class="fi" id="ms-description" placeholder="Tell us what you do, who you help, and where you're based. The more detail, the better Builtsy AI can personalize your site." style="min-height:110px;" oninput="msAutoSave()"></textarea>
         </div>
         <div id="ms-detecting" style="display:none;flex-direction:column;align-items:center;gap:10px;padding:10px 0;">
           <div style="width:22px;height:22px;border:2px solid rgba(200,224,0,0.15);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
@@ -997,8 +1032,20 @@ body.ms-s9 .topnav{display:none;}
   </div>
   <div class="output-error" id="ms-error"></div>
   <div id="ms-revise-drawer">
-    <textarea id="ms-revise-input" placeholder="Describe what to change&#8230; e.g. Make the hero headline warmer and more personal" rows="2"></textarea>
-    <button class="btn-revise-submit" onclick="msRevise()">Apply &#8594;</button>
+    <div id="ms-revise-drawer-header">
+      <div class="rch-icon">✦</div>
+      <span class="rch-title">Builtsy <em>Revise</em></span>
+      <span class="rch-sub">AI · section-aware</span>
+    </div>
+    <div id="ms-chat-log"></div>
+    <div id="ms-chat-input-row">
+      <div class="rc-input-wrap">
+        <textarea id="ms-revise-input" placeholder="Describe a change&#8230; e.g. Make the hero button pink" rows="1"></textarea>
+      </div>
+      <button class="btn-revise-submit" id="ms-chat-send-btn" onclick="msChatSend()" title="Send">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="#12192B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
   </div>
   <div class="output-preview-wrap">
     <div class="output-preview-card">
@@ -1008,6 +1055,21 @@ body.ms-s9 .topnav{display:none;}
 </div>
 
 <script>
+// ── AUTO-SAVE ──
+var _msSaveTimer = null;
+var _msLastSave = null; // cached save data for Brain AI
+function msAutoSave() {
+  clearTimeout(_msSaveTimer);
+  _msSaveTimer = setTimeout(function() {
+    var d = msCollect();
+    var title = d.businessName || d.ownerName || 'My Blueprint';
+    var save = { title: title, fields: d };
+    _msLastSave = save;
+    localSave('master', save);
+    saveBlueprint('master', save).catch(function(){});
+  }, 2000);
+}
+
 // ══════════════════════════════════════════════
 // TEMPLATES
 // ══════════════════════════════════════════════
@@ -2877,7 +2939,13 @@ function msBuildRBSection(config) {
     + '<div><div style="font-size:12px;color:#A89070;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Total</div>'
     + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:white;">$0</div></div>'
     + '<a href="#contact" style="background:#D4745A;color:white;border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;">' + btnLabel + '</a></div>'
-    + '</div></section>';
+    + '</div></section>'
+    + '<script>'
+    + 'var _rbSession=0,_rbAddons={};'
+    + 'function _rbCalc(){var t=_rbSession;for(var k in _rbAddons)t+=_rbAddons[k];var el=document.getElementById("rb-total");if(el)el.textContent="$"+t;}'
+    + 'function _rbPick(el,price){var cards=document.querySelectorAll(".rb-session-card");for(var i=0;i<cards.length;i++){cards[i].style.borderColor="rgba(212,116,90,0.2)";cards[i].style.background="rgba(255,255,255,0.03)";}el.style.borderColor="#D4745A";el.style.background="rgba(212,116,90,0.08)";_rbSession=price;_rbCalc();}'
+    + 'function _rbToggle(idx,price){var check=document.getElementById("rb-check-"+idx);if(_rbAddons[idx]){delete _rbAddons[idx];if(check){check.style.background="transparent";check.style.borderColor="#D4745A";}}else{_rbAddons[idx]=price;if(check){check.style.background="#D4745A";check.style.borderColor="#D4745A";}}  _rbCalc();}'
+    + '<\/script>';
   return html;
 }
 
@@ -3826,6 +3894,7 @@ function msInjectAssets(html) {
     if (_ctPhotos[k]) { hasPhotos = true; break; }
   }
   if (hasPhotos) {
+    // Primary: DOMParser approach
     try {
       var parser = new DOMParser();
       var doc = parser.parseFromString(html, 'text/html');
@@ -3843,12 +3912,25 @@ function msInjectAssets(html) {
         }
       }
       html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
-    } catch(e) {
-      for (var pId in _ctPhotos) {
-        if (!_ctPhotos[pId]) continue;
-        var re = new RegExp('(<img[^>]*id="' + pId + '"[^>]*src=")[^"]*(")', 'i');
-        html = html.replace(re, '$1' + _ctPhotos[pId] + '$2');
-      }
+    } catch(e) {}
+    // Secondary: regex pass — always runs to catch cases where DOMParser
+    // found no matching element (e.g. Claude altered the img id attribute)
+    for (var pId in _ctPhotos) {
+      if (!_ctPhotos[pId]) continue;
+      // Inject src
+      html = html.replace(
+        new RegExp('(<img[^>]*id="' + pId + '"[^>]*src=")[^"]*(")', 'i'),
+        '$1' + _ctPhotos[pId] + '$2'
+      );
+      // Remove display:none (style attr before or after id)
+      html = html.replace(
+        new RegExp('(<img[^>]*id="' + pId + '"[^>]*)display\\s*:\\s*none\\s*;?', 'i'),
+        '$1display:block;'
+      );
+      html = html.replace(
+        new RegExp('display\\s*:\\s*none\\s*;?([^>]*id="' + pId + '")', 'i'),
+        'display:block;$1'
+      );
     }
   }
 
@@ -3932,14 +4014,6 @@ function msInjectAssets(html) {
     html=html.replace(/(<form[^>]*>)/,'$1\n'+smsFields);
   }
 
-  // Inject "Made with love" credit bar
-  var bizName = (_ctLastFields.businessName || _ctLastFields.ownerName || 'You').trim();
-  var creditBar = '<div id="builtsy-credit" style="text-align:center;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#999;letter-spacing:0.02em;background:transparent;">'
-    + 'Made with love for ' + bizName + ' &nbsp;&middot;&nbsp; '
-    + 'Built<span style="color:#ee70bc;font-weight:700;">sy</span>'
-    + '<span style="color:#C8E000;font-weight:700;">.</span>'
-    + '</div>';
-  html = html.replace('</body>', creditBar + '\n</body>');
 
   // Inject GDPR/CCPA cookie consent banner
   var cookieBanner = '<div id="builtsy-cookie" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a1a1a;color:#f5f5f5;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:sans-serif;font-size:14px;line-height:1.5;">'
@@ -3987,7 +4061,7 @@ function msGenerate() {
 
   var _serverTplKey = _ctTplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate;
 
-  fetch(RAILWAY_URL + '/generate-template-universal', {
+  apiFetch(RAILWAY_URL + '/generate-template-universal', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -4023,7 +4097,7 @@ function msGenerate() {
                 var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
                 if (html.length < 200) { msFinishError('Generation returned empty content. Please try again.'); return; }
                 html = msInjectAssets(html);
-                html = builtsyInjectFooter(html, (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || 'Your Business');
+                html = builtsyInjectFooter(html, (function(){ var m=html.match(/<title[^>]*>([^<]{2,80})<\/title>/i); var t=m?m[1].replace(/\s*[\|\-–—]\s*.+$/,'').trim():''; return t||((document.getElementById('ms-biz-name')||{}).value||(document.getElementById('ms-owner-name')||{}).value||'Your Business'); })());
                 _ctHTML = html;
                 msFinishGenerate();
                 msShowOutput(html);
@@ -4147,56 +4221,86 @@ function msStartOver() {
 function msToggleRevise() {
   var drawer = document.getElementById('ms-revise-drawer');
   if (!drawer) return;
-  drawer.className = (drawer.className === 'active' ? '' : 'active');
+  var open = drawer.className === 'active';
+  drawer.className = open ? '' : 'active';
+  if (!open) {
+    // Show welcome message if log is empty
+    var log = document.getElementById('ms-chat-log');
+    if (log && !log.children.length) {
+      msChatAppend('system', 'What would you like to change? I\'ll patch just the section you describe — or rebuild the whole site for style changes.');
+    }
+    setTimeout(function() {
+      var inp = document.getElementById('ms-revise-input');
+      if (inp) inp.focus();
+    }, 80);
+  }
 }
 
-function msRevise() {
-  var note = (document.getElementById('ms-revise-input') || {}).value;
-  if (!note || !note.trim()) return;
-  var drawer = document.getElementById('ms-revise-drawer');
-  if (drawer) drawer.className = '';
-  var overlay = document.getElementById('ms-overlay');
-  if (overlay) overlay.className = 'gen-overlay active';
-  _ctMsgIdx = 0;
-  _ctProgress = 0;
-  var msgEl = document.getElementById('ms-gen-msg');
-  var barEl = document.getElementById('ms-progress-fill');
-  if (msgEl) msgEl.textContent = 'Applying your changes…';
-  if (barEl) barEl.style.width = '0%';
+function msChatAppend(role, text, extraClass) {
+  var log = document.getElementById('ms-chat-log');
+  if (!log) return null;
+  var isUser = role === 'user';
 
-  _ctMsgInterval = setInterval(function() {
-    _ctMsgIdx = (_ctMsgIdx + 1) % _ctGenMsgs.length;
-    var el = document.getElementById('ms-gen-msg');
-    if (el) el.textContent = _ctGenMsgs[_ctMsgIdx];
-  }, 5000);
+  var row = document.createElement('div');
+  row.className = 'rc-msg-row' + (isUser ? ' rc-user' : '');
 
-  _ctProgressInterval = setInterval(function() {
-    _ctProgress = Math.min(_ctProgress + 0.8, 92);
-    var bar = document.getElementById('ms-progress-fill');
-    if (bar) bar.style.width = _ctProgress + '%';
-  }, 400);
+  var av = document.createElement('div');
+  av.className = 'rc-av ' + (isUser ? 'av-user' : 'av-ai');
+  av.textContent = isUser ? 'You' : '✦';
 
-  var revisedFields = {};
-  for (var k in _ctLastFields) { revisedFields[k] = _ctLastFields[k]; }
-  revisedFields['_revisionNote'] = note.trim();
+  var bubble = document.createElement('div');
+  bubble.className = 'rc-bubble' + (extraClass ? ' ' + extraClass : '');
 
-  fetch(RAILWAY_URL + '/generate-template-universal', {
+  if (extraClass === 'typing') {
+    // Animated typing dots
+    bubble.classList.remove('rc-bubble');
+    bubble.className = 'rc-typing';
+    for (var d = 0; d < 3; d++) {
+      var dot = document.createElement('span');
+      dot.className = 'rc-td';
+      bubble.appendChild(dot);
+    }
+  } else {
+    bubble.textContent = text;
+  }
+
+  row.appendChild(av);
+  row.appendChild(bubble);
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  return row;
+}
+
+function msChatSend() {
+  var inp = document.getElementById('ms-revise-input');
+  var btn = document.getElementById('ms-chat-send-btn');
+  if (!inp) return;
+  var msg = inp.value.trim();
+  if (!msg || !_ctHTML) return;
+
+  inp.value = '';
+  inp.style.height = '';
+  msChatAppend('user', msg);
+  var thinking = msChatAppend('system', '', 'typing');
+  if (btn) btn.disabled = true;
+
+  apiFetch(RAILWAY_URL + '/revise-section', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      templateType: _ctTplKeyMap[_ctSelectedTemplate] || _ctSelectedTemplate,
-      niche: msBuildNiche(),
-      fields: revisedFields
-    })
+    body: JSON.stringify({ html: _ctHTML.replace(/src="data:[^"]{20,}"/g, 'src=""'), message: msg, niche: msBuildNiche() })
   })
   .then(function(response) {
     var reader = response.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
-
-    function pumpRevise() {
+    function pump() {
       return reader.read().then(function(result) {
-        if (result.done) { msFinishError('Revision stream ended unexpectedly. Please try again.'); return; }
+        if (result.done) {
+          if (thinking) thinking.remove();
+          msChatAppend('system', 'Stream ended unexpectedly. Try again.', 'error');
+          if (btn) btn.disabled = false;
+          return;
+        }
         buffer += decoder.decode(result.value, { stream: true });
         var lines = buffer.split('\n');
         buffer = lines.pop();
@@ -4206,36 +4310,59 @@ function msRevise() {
           if (line.startsWith('data: ')) {
             var payload = line.slice(6);
             if (payload === '[DONE]') {
-              msFinishGenerate();
+              if (btn) btn.disabled = false;
               return;
             }
             try {
               var data = JSON.parse(payload);
-              if (data.error) { msFinishError(data.error); return; }
+              if (data.error) {
+                if (thinking) thinking.remove();
+                msChatAppend('system', 'Error: ' + data.error, 'error');
+                if (btn) btn.disabled = false;
+                return;
+              }
               if (data.html) {
-                var html = data.html.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-                if (html.length < 200) { msFinishError('Revision returned empty content. Please try again.'); return; }
-                html = msInjectAssets(html);
-                html = builtsyInjectFooter(html, (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || 'Your Business');
+                var html = msInjectAssets(data.html);
+                html = builtsyInjectFooter(html, (function(){ var m=html.match(/<title[^>]*>([^<]{2,80})<\/title>/i); var t=m?m[1].replace(/\s*[\|\-–—]\s*.+$/,'').trim():''; return t||((document.getElementById('ms-biz-name')||{}).value||(document.getElementById('ms-owner-name')||{}).value||'Your Business'); })());
                 _ctHTML = html;
-                var inp = document.getElementById('ms-revise-input');
-                if (inp) inp.value = '';
-                msFinishGenerate();
-                msShowOutput(html);
+                var frame = document.getElementById('ms-output-preview-frame');
+                if (frame) frame.srcdoc = html;
+                if (thinking) thinking.remove();
+                var label = data.mode === 'patch'
+                  ? '✓ Patched the ' + data.section + ' section'
+                  : '↺ Full rebuild applied';
+                msChatAppend('system', label, 'patch');
+                if (btn) btn.disabled = false;
                 return;
               }
             } catch(e) {}
           }
         }
-        return pumpRevise();
+        return pump();
       });
     }
-    return pumpRevise();
+    return pump();
   })
   .catch(function(err) {
-    msFinishError('Revision error: ' + err.message);
+    if (thinking) thinking.remove();
+    msChatAppend('system', 'Connection error: ' + err.message, 'error');
+    if (btn) btn.disabled = false;
   });
 }
+
+// Allow Enter to send (Shift+Enter for newline)
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.getElementById('ms-revise-input');
+  if (inp) {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); msChatSend(); }
+    });
+    inp.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+  }
+});
 
 // ── BUILTSY FOOTER ──
 function builtsyInjectFooter(html, name) {
@@ -4545,13 +4672,62 @@ function msSetupLivePreview() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+async function msRestoreSave() {
+  try {
+    var save = await loadSave('master');
+    if (!save || !save.fields) return;
+    _msLastSave = save;
+    var f = save.fields;
+    var map = {
+      ownerName: 'ms-owner-name', businessName: 'ms-biz-name', description: 'ms-description',
+      location: 'ms-location', handle: 'ms-handle', tagline: 'ms-tagline',
+      yearsExp: 'ms-years-exp', clientsServed: 'ms-clients-served',
+      heroHeadline: 'ms-hero-headline', heroSub: 'ms-hero-sub',
+      bio: 'ms-bio', funFacts: 'ms-fun-facts', credentials: 'ms-credentials',
+      svc1Name: 'ms-svc1-name', svc1Desc: 'ms-svc1-desc', svc1Tags: 'ms-svc1-tags',
+      svc2Name: 'ms-svc2-name', svc2Desc: 'ms-svc2-desc', svc2Tags: 'ms-svc2-tags',
+      svc3Name: 'ms-svc3-name', svc3Desc: 'ms-svc3-desc', svc3Tags: 'ms-svc3-tags',
+      svc4Name: 'ms-svc4-name', svc4Desc: 'ms-svc4-desc', svc4Tags: 'ms-svc4-tags',
+      rate1Name: 'ms-rate1-name', rate1Price: 'ms-rate1-price', rate1Desc: 'ms-rate1-desc',
+      rate2Name: 'ms-rate2-name', rate2Price: 'ms-rate2-price', rate2Desc: 'ms-rate2-desc',
+      rate3Name: 'ms-rate3-name', rate3Price: 'ms-rate3-price', rate3Desc: 'ms-rate3-desc',
+      popularRate: 'ms-popular-rate',
+      serviceArea: 'ms-service-area', email: 'ms-email', phone: 'ms-phone',
+      instagram: 'ms-instagram', facebook: 'ms-facebook', availability: 'ms-availability',
+      ftesti1Quote: 'ms-ftesti1-quote', ftesti1Name: 'ms-ftesti1-name', ftesti1Ctx: 'ms-ftesti1-ctx',
+      ftesti2Quote: 'ms-ftesti2-quote', ftesti2Name: 'ms-ftesti2-name', ftesti2Ctx: 'ms-ftesti2-ctx',
+      ftesti3Quote: 'ms-ftesti3-quote', ftesti3Name: 'ms-ftesti3-name', ftesti3Ctx: 'ms-ftesti3-ctx'
+    };
+    Object.keys(map).forEach(function(key) {
+      if (f[key] == null) return;
+      var el = document.getElementById(map[key]);
+      if (el) el.value = f[key];
+    });
+    if (f.paletteCSS != null) _ctSelectedPalette = f.paletteCSS;
+    if (f.paletteName != null) _ctSelectedPaletteName = f.paletteName;
+    // Show lime toast
+    var toast = document.createElement('div');
+    toast.textContent = 'Your blueprint has been restored ✓';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c8e000;color:#0d1829;border-radius:100px;padding:8px 20px;font-weight:700;font-size:0.8rem;z-index:9999;pointer-events:none;';
+    document.body.appendChild(toast);
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+  } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  var u = await getUser();
+  if (!u) {
+    sessionStorage.setItem('builtsy-redirect', 'blueprint-master.html');
+    window.location.href = 'login.html';
+    return;
+  }
   msRenderTemplateCards();
   msHideEmptyFilterPills();
   msSelectPaletteTab('light');
   msGoStep(1);
   msSetupLivePreview();
   msInitChips();
+  msRestoreSave();
 });
 
 function msHideEmptyFilterPills() {
@@ -4572,12 +4748,50 @@ function msHideEmptyFilterPills() {
 <style>.btn-brain-ai{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.3);color:#8ba2f0;border-radius:100px;padding:5px 13px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}.btn-brain-ai:hover{background:rgba(67,97,238,0.22);color:white;border-color:rgba(67,97,238,0.5);}</style>
 <script>
 function openBrainAI() {
+  // Use the in-memory save (always current — updated by msAutoSave and msRestoreSave)
+  // Fall back to live DOM values for anything not yet saved
+  var mf = (_msLastSave && _msLastSave.fields) ? _msLastSave.fields : {};
+  var fv = function(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  var get = function(key, domId) { return mf[key] || fv(domId) || ''; };
+
+  var services = [];
+  for (var i = 1; i <= 4; i++) {
+    var sname = mf['svc'+i+'Name'] || fv('ms-svc'+i+'-name');
+    var sdesc  = mf['svc'+i+'Desc'] || fv('ms-svc'+i+'-desc');
+    var stags  = mf['svc'+i+'Tags'] || fv('ms-svc'+i+'-tags');
+    if (sname) services.push({ name: sname, desc: sdesc, tags: stags });
+  }
+
+  var rates = [];
+  for (var j = 1; j <= 3; j++) {
+    var rname  = mf['rate'+j+'Name']  || fv('ms-rate'+j+'-name');
+    var rprice = mf['rate'+j+'Price'] || fv('ms-rate'+j+'-price');
+    var rdesc  = mf['rate'+j+'Desc']  || fv('ms-rate'+j+'-desc');
+    if (rname || rprice) rates.push({ name: rname, price: rprice, desc: rdesc });
+  }
+
   var ctx = {
-    bp: 'master',
-    bpLabel: 'Builtsy Blueprint',
-    name: (document.getElementById('ms-biz-name')||{}).value || (document.getElementById('ms-owner-name')||{}).value || '',
-    description: (document.getElementById('ms-description')||{}).value || '',
-    location: (document.getElementById('ms-location')||{}).value || ''
+    bp:           'master',
+    bpLabel:      'Builtsy Blueprint',
+    ownerName:    get('ownerName',    'ms-owner-name'),
+    name:         get('businessName', 'ms-biz-name') || get('ownerName', 'ms-owner-name'),
+    description:  get('description',  'ms-description'),
+    tagline:      get('tagline',      'ms-tagline'),
+    location:     get('location',     'ms-location'),
+    handle:       get('handle',       'ms-handle'),
+    yearsExp:     get('yearsExp',     'ms-years-exp'),
+    clientsServed:get('clientsServed','ms-clients-served'),
+    heroHeadline: get('heroHeadline', 'ms-hero-headline'),
+    heroSub:      get('heroSub',      'ms-hero-sub'),
+    bio:          get('bio',          'ms-bio'),
+    funFacts:     get('funFacts',     'ms-fun-facts'),
+    credentials:  get('credentials',  'ms-credentials'),
+    services:     services,
+    rates:        rates,
+    serviceArea:  get('serviceArea',  'ms-service-area'),
+    availability: get('availability', 'ms-availability'),
+    email:        get('email',        'ms-email'),
+    phone:        get('phone',        'ms-phone')
   };
   sessionStorage.setItem('bb-ctx', JSON.stringify(ctx));
   window.location.href = 'builtsy-brain.html';
