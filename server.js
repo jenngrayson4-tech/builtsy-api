@@ -385,7 +385,7 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
       + '- Do NOT change any CSS, layout, classes, IDs, or structural HTML whatsoever\n'
       + '- Do NOT change fonts, spacing, animations, colors, or any visual design\n'
       + '- ONLY replace text content inside elements — nothing else\n'
-      + '- Preserve ALL photo zone divs and img tags exactly — especially any img IDs\n'
+      + '- CRITICAL: every <img> tag with an id attribute (e.g. id="cw-hero-photo") must be copied to the output EXACTLY as-is — same id, same src="", same style, same everything. These ids are used by the system to inject real photos. Changing or removing them breaks the site.\n'
       + '- If the template has a testimonial JS array (var testis = [...]), update text, name, and initial fields only\n'
       + '- The press bar / marquee — replace publication names with the user\'s press mentions (or keep defaults if none provided)\n'
       + '- Portfolio cards — replace client names and service lists with the user\'s real clients/services\n'
