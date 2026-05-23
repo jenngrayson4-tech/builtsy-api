@@ -58,7 +58,7 @@ const https = require('https');
 
 const app = express();
 app.use(cors({ origin: ['https://builtsy.ai', 'http://localhost:3000', 'http://127.0.0.1:3000'] }));
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '12mb' }));
 
 // Serve static HTML files from the same directory
 app.use(express.static(__dirname));
