@@ -458,6 +458,136 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
   }
 });
 
+// ── Section extractor helper ──────────────────────────────────────────────────
+function extractSectionById(html, sectionId) {
+  var openTagRe = new RegExp('<section[^>]+id=["\']' + sectionId + '["\'][^>]*>', 'i');
+  var match = openTagRe.exec(html);
+  if (!match) return null;
+  var start = match.index;
+  var pos = start + match[0].length;
+  var depth = 1;
+  while (depth > 0 && pos < html.length) {
+    var nextOpen = html.indexOf('<section', pos);
+    var nextClose = html.indexOf('</section>', pos);
+    if (nextClose === -1) break;
+    if (nextOpen !== -1 && nextOpen < nextClose) { depth++; pos = nextOpen + 8; }
+    else { depth--; pos = nextClose + 10; }
+  }
+  if (depth !== 0) return null;
+  return { content: html.substring(start, pos), start: start, end: pos };
+}
+
+// ── Chat-driven section revise ────────────────────────────────────────────────
+app.post('/revise-section', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var html    = req.body.html    || '';
+    var message = req.body.message || '';
+    var niche   = req.body.niche   || 'business';
+
+    if (!html || !message) return res.status(400).json({ error: 'html and message required' });
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.flushHeaders();
+
+    var keepalive = setInterval(function() { res.write(': keep-alive\n\n'); }, 5000);
+
+    // Step 1: classify (~1-2s, cheap call)
+    var classifyMsg = await client.messages.create({
+      model: MODEL,
+      max_tokens: 120,
+      messages: [{ role: 'user', content:
+        'Classify this website edit request. Return JSON only, nothing else.\n'
+        + 'Request: "' + message + '"\n\n'
+        + '{"sectionId":"hero|about|services|pricing|testimonials|faq|contact|footer|nav|null","isGlobalStyle":true_or_false}\n\n'
+        + 'sectionId=null if multiple sections or unclear. isGlobalStyle=true only if the change requires editing global CSS (brand colors, fonts, spacing).'
+      }]
+    });
+
+    var classify = { sectionId: null, isGlobalStyle: false };
+    try {
+      var cm = classifyMsg.content[0].text.match(/\{[\s\S]*?\}/);
+      if (cm) classify = JSON.parse(cm[0]);
+    } catch(e) {}
+
+    var sectionId = (classify.sectionId && classify.sectionId !== 'null') ? classify.sectionId : null;
+
+    // Step 2a: targeted section patch
+    if (!classify.isGlobalStyle && sectionId) {
+      var section = extractSectionById(html, sectionId);
+      if (section) {
+        var cssMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        var cssCtx = cssMatch ? cssMatch[1].substring(0, 2500) : '';
+        var patchPrompt = 'Apply ONLY this change to the HTML section below: "' + message + '"\n\n'
+          + 'CSS context (reference only — do NOT output it):\n' + cssCtx + '\n\n'
+          + 'SECTION TO MODIFY:\n' + section.content + '\n\n'
+          + 'Rules:\n'
+          + '- Return ONLY the modified <section>...</section> HTML\n'
+          + '- Preserve ALL id and class attributes exactly\n'
+          + '- Preserve ALL <img> tags and their id attributes exactly\n'
+          + '- No <html>, <head>, <body>, <style> tags — section only\n'
+          + '- No markdown, no explanation';
+
+        var stream = await client.messages.stream({
+          model: MODEL, max_tokens: 8000,
+          messages: [{ role: 'user', content: patchPrompt }]
+        });
+        var patched = '';
+        stream.on('text', function(c) { patched += c; res.write(': keep-alive\n\n'); });
+        stream.on('finalMessage', function() {
+          clearInterval(keepalive);
+          patched = patched.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+          var newHtml = html.substring(0, section.start) + patched + html.substring(section.end);
+          res.write('data: ' + JSON.stringify({ html: newHtml, mode: 'patch', section: sectionId }) + '\n\n');
+          res.write('data: [DONE]\n\n');
+          res.end();
+        });
+        stream.on('error', function(err) {
+          clearInterval(keepalive);
+          res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+          res.end();
+        });
+        return;
+      }
+    }
+
+    // Step 2b: full-HTML revision fallback (global style change or section not found)
+    var fullPrompt = 'Apply this change to the website: "' + message + '"\n\n'
+      + 'Rules:\n'
+      + '- Return the COMPLETE modified HTML\n'
+      + '- Preserve all <img> tags and their id attributes exactly\n'
+      + '- Preserve all structure, JS, and img IDs\n'
+      + '- No markdown, no explanation\n\n'
+      + 'HTML:\n' + html;
+
+    var stream2 = await client.messages.stream({
+      model: MODEL, max_tokens: MAX_TOKENS_STREAM,
+      messages: [{ role: 'user', content: fullPrompt }]
+    });
+    var fullText = '';
+    stream2.on('text', function(c) { fullText += c; res.write(': keep-alive\n\n'); });
+    stream2.on('finalMessage', function() {
+      clearInterval(keepalive);
+      var newHtml = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+      res.write('data: ' + JSON.stringify({ html: newHtml, mode: 'full' }) + '\n\n');
+      res.write('data: [DONE]\n\n');
+      res.end();
+    });
+    stream2.on('error', function(err) {
+      clearInterval(keepalive);
+      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      res.end();
+    });
+
+  } catch(err) {
+    console.error('Revise-section error:', err.message);
+    if (!res.headersSent) res.status(500).json({ error: err.message });
+    else { res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n'); res.end(); }
+  }
+});
+
 // PDF Template Blueprint — streams response to avoid Railway timeout on large PDFs
 app.post('/generate-from-pdf', requireAuth, rateLimit, async function(req, res) {
   try {
