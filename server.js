@@ -65,7 +65,8 @@ app.use(express.static(__dirname));
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = 'claude-sonnet-4-20250514';
-const MAX_TOKENS = 8192;
+const MAX_TOKENS = 8192;        // non-streaming limit for this model
+const MAX_TOKENS_STREAM = 32000; // streaming supports higher output
 
 // ── Simple in-memory rate limiter ─────────────────────────────────────────────
 var _rateCounts = {};
@@ -266,10 +267,9 @@ app.post('/generate-template', requireAuth, rateLimit, async function(req, res) 
       + 'USER\'S BUSINESS INFORMATION:\n' + fieldText + '\n\n'
       + 'TEMPLATE TO FILL IN:\n' + SOCIAL_TEMPLATE;
 
-    // Template is ~550 lines — 10k tokens is plenty, avoids streaming warning
     var message = await client.messages.create({
       model: MODEL,
-      max_tokens: 10000,
+      max_tokens: MAX_TOKENS,
       messages: [{ role: 'user', content: prompt }]
     });
 
@@ -316,7 +316,7 @@ app.post('/generate-template-agency', requireAuth, rateLimit, async function(req
 
     var stream = await client.messages.stream({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: MAX_TOKENS_STREAM,
       messages: [{ role: 'user', content: prompt }]
     });
 
@@ -425,7 +425,7 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
 
     var stream = await client.messages.stream({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: MAX_TOKENS_STREAM,
       messages: [{ role: 'user', content: prompt }]
     });
 
@@ -481,7 +481,7 @@ app.post('/generate-from-pdf', requireAuth, rateLimit, async function(req, res) 
 
     var stream = await client.messages.stream({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: MAX_TOKENS_STREAM,
       messages: [{
         role: 'user',
         content: [
