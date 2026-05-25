@@ -198,7 +198,7 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
     try {
       var message = await client.messages.create({
         model: MODEL,
-        max_tokens: 8192,
+        max_tokens: MAX_TOKENS_STREAM,
         system: INVITE_SYSTEM,
         messages: [{ role: 'user', content: prompt }]
       });
