@@ -1473,16 +1473,13 @@ function buildPrompt(data) {
   }
 
   // Compute animation — user selection overrides event type
-  var animType = data.confettiType && data.confettiType !== 'none' ? data.confettiType : 'none';
-  if (animType === 'none') {
-    // Auto-select based on event type if user picked none
-    animType = 'sparkles'; // default
-    var etL2 = eventType.toLowerCase();
+  // Auto-select animation based on event type — always pick something
+  var animType = data.confettiType && data.confettiType !== 'none' ? data.confettiType : 'sparkles';
+  var etL2 = eventType.toLowerCase();
+  if (animType === 'sparkles') {
     if (etL2.indexOf('pool') > -1 || etL2.indexOf('beach') > -1 || etL2.indexOf('splash') > -1) animType = 'bubbles';
     else if (etL2.indexOf('bridal') > -1 || etL2.indexOf('wedding') > -1) animType = 'petals';
     else if (etL2.indexOf('birthday') > -1 || etL2.indexOf('sweet') > -1 || etL2.indexOf('grad') > -1) animType = 'confetti';
-    // But if user explicitly chose none, respect that
-    animType = data.confettiType === 'none' ? 'none' : animType;
   }
   var animType_legacy = animType;
   var etL = eventType.toLowerCase();
@@ -1522,9 +1519,9 @@ function buildPrompt(data) {
     'You are a world-class editorial art director and immersive digital designer. You craft emotional, cinematic, custom-feeling digital invitations. Every design decision is intentional. This must feel like it was designed for THIS event and THESE guests — never a template.\n\n' +
 
     '== NON-NEGOTIABLE RULES ==\n' +
-    '1. FONTS: Display=' + displayFont + ' Body=' + bodyFont + ' — load BOTH from Google Fonts. Use display font bold italic for ALL headlines. Body font for everything else. Honoree name max 2.8rem. Subheadline italic 1.1rem. NEVER use other fonts.\n' +
+    '1. FONTS: Display=' + displayFont + ' Body=' + bodyFont + ' — load BOTH from Google Fonts. Use display font for general headlines. Body font for all body text. Honoree name in display font at 1.6rem. THIRD FONT — EVENT TYPE HEADLINE ONLY: Choose ONE expressive Google Font that matches the event\'s personality and load it via Google Fonts. Pick based on vibe: script/romantic (Great Vibes, Pacifico, Satisfy, Pinyon Script) for weddings/showers/elegant; bold display (Abril Fatface, Bebas Neue, Oswald Heavy) for big celebrations; playful rounded (Fredoka, Baloo 2, Boogaloo) for birthdays/kids/fun. Use this third font ONLY for the event type headline at 3.2–4rem, bold. NEVER use it anywhere else.\n' +
     '2. NO BLUE BUTTONS: ALL buttons/CTAs use palette accent color. Never #4361EE, never any default blue.\n' +
-    '3. ANIMATION: ' + (data.confettiType === 'none' ? 'No background animation.' : animCode) + ' CRITICAL: Place the animation container as the VERY FIRST child of <body>, before any other elements. Use position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; pointer-events:none; overflow:hidden — it must cover the entire screen from the top and stay fixed as the user scrolls. Never nest it inside a section or wrapper div.\n' +
+    '3. ANIMATION: ' + animCode + ' CRITICAL: Place the animation container as the VERY FIRST child of <body>, before any other elements. Use position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; pointer-events:none; overflow:hidden — it must cover the entire screen from the top and stay fixed as the user scrolls. Never nest it inside a section or wrapper div.\n' +
     '4. TEXT CONTAINERS: Every body text block inside a card. Preferred: <div style=\"background:linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.6));border-radius:16px;padding:24px 20px;border:1px solid rgba(0,0,0,0.07)\">\n' +
     '5. EYEBROW+LINE — CRITICAL, EVERY SECTION, NO EXCEPTIONS: Every section MUST begin with this exact HTML eyebrow pattern. Count your sections and verify each one has it before outputting. EXACT HTML: <div style=\"display:flex;align-items:center;gap:10px;margin-bottom:16px\"><span style=\"font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:[ACCENT];font-weight:800;white-space:nowrap;font-family:[BODY_FONT];text-shadow:none\">[SECTION LABEL]</span><span style=\"flex:1;height:1.5px;background:[ACCENT];opacity:.4;margin-left:4px\"></span></div> — [ACCENT] = actual hex color (NOT a variable name), [BODY_FONT] = actual font name, [SECTION LABEL] = short all-caps label like THE PLAN · THE DETAILS · MEMORIES · QUESTIONS · RSVP · HELP US OUT · THE CLOSING. The line rule must be visible. Bold, colored, uppercase. Missing eyebrow = broken design.\n' +
     '6. DIVIDERS: Between sections use only clean whitespace — no full-width color blocks or gradients between sections.\n' +
@@ -1602,22 +1599,22 @@ function buildPrompt(data) {
     '== PAGE SECTIONS (in order) ==\n' +
     '1. HERO (full viewport) — design it however feels right for this event and vibe. Be creative. This is your canvas.\n' +
     'REQUIRED CONTENT — the hero MUST include all of these, styled however you choose:\n' +
-    '   - Honoree name — ' + displayFont + ', bold, large (2.4-2.8rem max)\n' +
-    '   - Event type / occasion — ' + (data.eventType || '') + '\n' +
-    '   - Date — ' + (data.eventDate || '') + '\n' +
-    (data.eventTime ? '   - Time — ' + data.eventTime + '\n' : '') +
-    '   - Location — ' + (data.eventLocation || '') + '\n' +
+    '   - Event type / occasion — THE DOMINANT HERO HEADLINE. ' + (data.eventType || '') + ' — use the THIRD expressive font you chose, bold, 3.2–4rem. This is the first thing guests see and it must make an impact. Split across 1-2 lines for drama (e.g. "Birthday" big on one line, "Brunch" in a contrasting style below). Mix weights, sizes, or styles between the two words for editorial punch.\n' +
+    '   - Honoree name — SECONDARY, labeled "HONORING" or "for" above it in small caps (0.65rem, letter-spacing:.14em). The name itself in display font at 1.4-1.8rem — elegant but clearly subordinate to the event type.\n' +
     (data.heroRsvpBtn ? '   - RSVP button — accent color, never blue, scrolls to #rsvp\n' : '') +
     (data.helpList && data.helpList.enabled ? '   - Help Make It Happen button — outline style, scrolls to #help\n' : '') +
     (data.eventTheme || data.vibeRef ? 'DESIGN DIRECTION ONLY (do NOT print these on the page — use them to inform your visual choices): ' + (data.eventTheme ? 'Theme: ' + data.eventTheme + '. ' : '') + (data.vibeRef ? 'Vibe: ' + data.vibeRef + '.' : '') + '\n' : '') +
     'HERO BUTTONS — MUST be wrapped in: <div style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:340px;margin:24px auto 0"> — each button inside must be width:100%;text-align:center;display:block. This wrapper MUST be centered with margin:0 auto.\n' +
-    'Think: arch card over bold background, oversized typography, layered composition, floating badge — surprise us. No emojis.\n' +
-    'HERO LAYOUT ORDER — always in this sequence: (1) event badge/label, (2) honoree name, (3) event type subtitle or tagline, (4) photo, (5) date/time/location, (6) buttons. The subtitle and label appear ABOVE the photo — never below it. This creates visual balance and context before the image.\n' +
-    'HERO DATE/LOCATION DISPLAY: Labels (WHEN / WHERE / TIME) in small caps accent color at 0.72rem font-weight:700 letter-spacing:.12em. Values in italic display font at 1.05rem — large enough to read easily. Arranged in clean rows or two-column with subtle vertical divider. NOT in a chunky card. Keep refined and airy. Subtitle/tagline color must harmonize with the palette — never a jarring contrast color.\n\n' +
+    'Think: arch card over bold background, oversized event-type typography, layered composition, floating badge — surprise us. No emojis.\n' +
+    'HERO LAYOUT ORDER — always in this sequence: (1) small eyebrow badge ("YOU\'RE INVITED TO A" or "PLEASE JOIN US FOR A"), (2) EVENT TYPE large dominant headline, (3) "HONORING" label + honoree name, (4) photo, (5) buttons. DO NOT put date/time/location in the hero — those belong in the WHEN & WHERE section below.\n\n' +
 
     '2. STORY/DESCRIPTION — MUST start with eyebrow+line header labeled "THE CELEBRATION" or "THE STORY": ' + (data.eventDescription ? 'Use EXACT words from description below. Do NOT show vibe/theme text on page.\nDescription: ' + data.eventDescription : 'Write 2-3 warm sentences about the event from the details given.') + '\n\n' +
 
-    '3. GALLERY — MUST start with eyebrow+line header labeled "THE SPACE" or "MEMORIES". Place right after story. Layout: first photo full-width (width:100%), then remaining photos in pairs side by side (two columns, gap:8px), last photo full-width if odd number. Each image: object-fit:cover; border-radius:12px; width:100%; display:block. Use ALL photo placeholders from RULE F below — every single one must appear.\n\n' +
+    '3. GALLERY — MUST start with eyebrow+line header labeled "THE SPACE" or "MEMORIES". Place right after story. Use ALL photo placeholders from RULE F — every single one must appear. EXACT LAYOUT STRUCTURE:\n' +
+    '   - First photo: <div style="width:100%;margin-bottom:8px;"><img src="__GALLERY_PHOTO_1__" style="width:100%;display:block;object-fit:cover;border-radius:12px;"></div>\n' +
+    '   - Remaining photos in pairs: <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;"><img src="__GALLERY_PHOTO_2__" style="width:100%;display:block;object-fit:cover;border-radius:12px;aspect-ratio:1"><img src="__GALLERY_PHOTO_3__" style="width:100%;display:block;object-fit:cover;border-radius:12px;aspect-ratio:1"></div>\n' +
+    '   - If odd number of remaining photos, last photo goes full-width like the first.\n' +
+    '   Do NOT use float, flex-direction:row on the outer container, or any other layout — ONLY the grid pattern above for pairs.\n\n' +
 
     '4. WHEN & WHERE — MUST start with eyebrow+line header labeled "THE DETAILS": Pink/tinted card. WHEN [date] | [vertical divider] | WHERE [location]. Micro-labels WHEN/WHERE in small caps. Date and location in italic display font.' + (data.venueLink ? ' Include a subtle "View venue →" link styled in accent color linking to: ' + data.venueLink + '. Place it below the location, small and refined — not a big button.' : '') + '\n\n' +
 
@@ -1698,12 +1695,12 @@ function buildPrompt(data) {
     'Gallery: asymmetric mixed crops, thin white borders, curated editorial feel — never uniform grid.\n\n' +
 
     '== FORBIDDEN ==\n' +
-    'No blue buttons. No raw text on colored backgrounds without a card. No plain <hr>. No uniform grids. No emojis in hero/nav. No fonts larger than 2.8rem hero name. No SaaS/template feeling. No generic layouts. No equal-spacing sections. No browser prompt() or alert().\n\n' +
+    'No blue buttons. No raw text on colored backgrounds without a card. No plain <hr>. No uniform grids. No emojis in hero/nav. Event type headline max 4rem — nothing else on the page exceeds 2rem. No SaaS/template feeling. No generic layouts. No equal-spacing sections. No browser prompt() or alert().\n\n' +
 
     '== CRITICAL LAST-PASS RULES — THESE OVERRIDE EVERYTHING ABOVE ==\n' +
     'RULE A — BACKGROUND ANIMATION (REQUIRED): Copy this EXACT HTML structure as the very first element after <body>:\n' +
     '<div id="bg-anim" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden"></div>\n' +
-    'Then in a <script> tag at the bottom of <body>, populate it with: ' + (data.confettiType === 'none' ? 'default sparkles: create 20 span elements inside #bg-anim, each with position:absolute, random top/left starting positions spread across the full 100vw x 100vh, ✦ character, font-size 4-10px, palette accent color, opacity 0.25-0.55, CSS animation drifting upward and fading over 4-7s with staggered delays.' : animCode + ' — append all animation elements INTO the #bg-anim div.') + ' Since #bg-anim is position:fixed top:0 left:0, particles will appear from the very top of the page immediately on load.\n' +
+    'Then in a <script> tag at the bottom of <body>, populate it with: ' + animCode + ' — append all animation elements INTO the #bg-anim div. Since #bg-anim is position:fixed top:0 left:0, particles will appear from the very top of the page immediately on load.\n' +
     'RULE B — CONFETTI BURST ON RSVP BUTTONS (REQUIRED): ' + (data.rsvpConfetti ?
       'Add a confetti burst function that fires when ANY RSVP button is clicked — this includes BOTH the hero "RSVP Now" button AND the RSVP section submit/text button. ' +
       'function burstConfetti(btn) { ' +
@@ -1740,7 +1737,8 @@ function buildPrompt(data) {
     'RULE H — CLAIMS UX: In the Help Make It Happen section, the name input must be HIDDEN by default (display:none). When a guest clicks the Claim button, ONLY THEN show the input field and a Submit button for that row. The default state shows only the item name and a Claim button — clean and uncluttered.\n\n' +
 
     '== OUTPUT ==\n' +
-    'Start IMMEDIATELY with <!DOCTYPE html> — nothing before it. Single self-contained HTML. All CSS/JS inline. Google Fonts via <link>. Mobile-first 390px max-width 480px centered. var/function(){}/onclick= only, no const/let/arrow. Footer: \"Made with love for ' + honoree + ' · <a href=\'https://builtsy.ai\'>builtsy</a>\".\n';
+    'Start IMMEDIATELY with <!DOCTYPE html> — nothing before it. Single self-contained HTML. All CSS/JS inline. Google Fonts via <link>. Mobile-first 390px max-width 480px centered. var/function(){}/onclick= only, no const/let/arrow. Do NOT generate any footer — one will be added automatically.\n' +
+    'COLORS: Inside the <head>, include this exact HTML comment with your actual chosen hex values: <!-- builtsy-og:{"bg":"#YOURBG","accent":"#YOURACCENT","text":"#YOURTEXT"} --> where bg = page background color, accent = primary accent/brand color, text = primary body text color. Use real hex codes from your design.\n';
 
   var prompt = newPrompt;
   var prompt = newPrompt;
@@ -1781,31 +1779,46 @@ function generateInvite() {
 }
 
 function doGenerate(data, built) {
-
   document.getElementById('generatingOverlay').classList.add('active');
   startGenMessages();
 
-
-  var inviteSystemPreamble = 'You are an expert event invite designer. Generate a complete, beautiful, self-contained single-file HTML event invite page. All CSS in <style> tags, all JS in <script> tags, no external dependencies except Google Fonts. Output ONLY raw HTML — no markdown, no code fences, no explanation.\n\n';
-  apiFetch(RAILWAY_URL + '/generate', {
+  apiFetch(RAILWAY_URL + '/invite', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: inviteSystemPreamble + built.prompt, max_tokens: 8192 })
+    body: JSON.stringify({ prompt: built.prompt })
   })
-  .then(function(res) { return res.json(); })
+  .then(function(res) {
+    if (!res.ok && !res.headers.get('content-type').includes('text/event-stream')) {
+      return res.json().then(function(j) { throw new Error(j.error || 'Generation failed'); });
+    }
+    // Read SSE stream — server sends keepalive pings then one data: event with the result
+    return new Promise(function(resolve, reject) {
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buf = '';
+      function pump() {
+        reader.read().then(function(chunk) {
+          if (chunk.done) { reject(new Error('Stream ended without result')); return; }
+          buf += decoder.decode(chunk.value, { stream: true });
+          var lines = buf.split('\n');
+          buf = lines.pop();
+          for (var i = 0; i < lines.length; i++) {
+            if (lines[i].indexOf('data: ') === 0) {
+              try { resolve(JSON.parse(lines[i].slice(6))); return; } catch(e) {}
+            }
+          }
+          pump();
+        }).catch(reject);
+      }
+      pump();
+    });
+  })
   .then(function(json) {
     stopGenMessages();
     document.getElementById('generatingOverlay').classList.remove('active');
-
     if (json.error) { showError(json.error); return; }
-
-    var html = json.html || json.text || '';
-    html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
-
-    if (!html || html.length < 100) {
-      showError('Generation returned an empty response. Please try again.');
-      return;
-    }
+    var html = (json.html || '').replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+    if (!html || html.length < 100) { showError('Generation returned an empty response. Please try again.'); return; }
     processGeneratedHTML(html, data, built);
   })
   .catch(function(err) {
@@ -1826,14 +1839,35 @@ function processGeneratedHTML(html, data, built) {
     html = html.replace(/CLAIMS_SCRIPT_URL/g, SUPA_URL);
     html = html.replace(/https:\/\/script\.google\.com[^"\s]*/g, SUPA_URL);
 
-    // OG social share
-    var ogTitle = (data.honoree || 'You') + ' — ' + (data.eventType || 'Invite');
-    var ogDesc = (data.eventDate || '') + (data.eventLocation ? ' · ' + data.eventLocation : '');
-    var ogImg = data.heroB64 ? 'data:' + data.heroMime + ';base64,' + data.heroB64 : (data.heroBgB64 ? 'data:' + data.heroBgMime + ';base64,' + data.heroBgB64 : '');
-    var ogTags = '<meta property="og:title" content="' + ogTitle.replace(/"/g,'&quot;') + '">' +
-      '<meta property="og:description" content="' + ogDesc.replace(/"/g,'&quot;') + '">' +
-      '<meta name="twitter:card" content="summary_large_image">' +
-      (ogImg ? '<meta property="og:image" content="' + ogImg + '">' : '');
+    // Extract AI color palette from embedded comment
+    var ogColors = { bg: '#0a0a0a', accent: '#ee70bc', text: '#ffffff' };
+    var ogColorMatch = html.match(/<!--\s*builtsy-og:(\{[^}]+\})\s*-->/);
+    if (ogColorMatch) {
+      try { ogColors = JSON.parse(ogColorMatch[1]); } catch(e) {}
+      html = html.replace(ogColorMatch[0], '');
+    }
+
+    // Build OG share card URL using Railway /og-image endpoint
+    var ogCardTitle  = (data.eventType || "You're Invited");
+    var ogHonoree    = (document.getElementById('honoreeNames')||{}).value || '';
+    var ogDate       = built.cleanDate || data.eventDate || '';
+    var ogImgUrl = RAILWAY_URL + '/og-image'
+      + '?bg='      + encodeURIComponent(ogColors.bg     || '#0a0a0a')
+      + '&accent='  + encodeURIComponent(ogColors.accent || '#ee70bc')
+      + '&text='    + encodeURIComponent(ogColors.text   || '#ffffff')
+      + '&title='   + encodeURIComponent(ogCardTitle)
+      + '&honoree=' + encodeURIComponent(ogHonoree)
+      + '&date='    + encodeURIComponent(ogDate);
+
+    var ogDisplayTitle = ogHonoree ? ogHonoree + ' — ' + ogCardTitle : ogCardTitle;
+    var ogDesc = ogDate + (data.eventLocation ? ' · ' + data.eventLocation : '');
+    var ogTags = '<meta property="og:title" content="' + ogDisplayTitle.replace(/"/g,'&quot;') + '">'
+      + '<meta property="og:description" content="' + ogDesc.replace(/"/g,'&quot;') + '">'
+      + '<meta property="og:image" content="' + ogImgUrl + '">'
+      + '<meta property="og:image:width" content="1200">'
+      + '<meta property="og:image:height" content="630">'
+      + '<meta name="twitter:card" content="summary_large_image">'
+      + '<meta name="twitter:image" content="' + ogImgUrl + '">';
     html = html.replace(/<head>/i, '<head>' + ogTags);
 
     // CSS fixes
@@ -1910,7 +1944,12 @@ function processGeneratedHTML(html, data, built) {
       '});'
     ].join('\n');
     var claimsTag = '<scr'+'ipt>' + claimsCode + '<\/scr'+'ipt>';
-    html = html.replace(/<\/body>/i, claimsTag + '<\/body>');
+    var claimsBodyIdx = html.lastIndexOf('</body>');
+    if (claimsBodyIdx !== -1) {
+      html = html.slice(0, claimsBodyIdx) + claimsTag + '</body>' + html.slice(claimsBodyIdx + 7);
+    } else {
+      html = html.replace(/<\/body>/i, claimsTag + '<\/body>');
+    }
 
     // Strip vibe text if Claude showed it
     if (data.vibe && data.vibe.length > 15) {
@@ -2028,13 +2067,26 @@ function rebuildFromScratch() {
 
 // ── BUILTSY FOOTER ──
 function builtsyInjectFooter(html, name) {
-  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
-    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
-    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
-    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
-    + '</section>';
-  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
+  var honoree = (name||'You').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  // Pure JS footer — creates element programmatically, appends to body.
+  // No HTML fragments that can land inside a script block.
+  var footerScript = '(function(){'
+    + 'var b=document.body;'
+    + 'b.style.setProperty("overflow-y","auto","important");'
+    + 'b.style.setProperty("height","auto","important");'
+    + 'b.style.setProperty("min-height","0","important");'
+    + 'var s=document.createElement("section");'
+    + 's.id="builtsy-made-with";'
+    + 's.style.cssText="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);display:block;width:100%;box-sizing:border-box;margin:0;";'
+    + 's.innerHTML="<p style=\\"margin:0 0 14px;font-family:monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.9)\\">MADE WITH<\\/p>"'
+    + '+"<a href=\\"https:\\/\\/builtsy.ai\\/\\" target=\\"_blank\\" rel=\\"noopener\\" style=\\"display:block;margin:0 auto 16px;width:fit-content\\"><img src=\\"https:\\/\\/builtsy.ai\\/builtsy-footer-logo.png\\" alt=\\"Builtsy\\" style=\\"height:80px;width:auto;display:block\\"><\\/a>"'
+    + '+"<p style=\\"margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:15px;color:rgba(255,255,255,0.9)\\">with love for <strong style=\\"color:#ee70bc;font-weight:600\\">' + honoree + '<\\/strong> 🌸<\\/p>";'
+    + 'b.appendChild(s);'
+    + '})()';
+  var footer = '<scr'+'ipt>' + footerScript + '<\/scr'+'ipt>';
+  // Always append after everything — script uses document.body.appendChild so it
+  // always appears visually last regardless of where in the HTML the tag lives.
+  return html + '\n' + footer;
 }
 
 // ── DOWNLOAD ──
