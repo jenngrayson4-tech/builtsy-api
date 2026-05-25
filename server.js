@@ -196,14 +196,21 @@ app.post('/invite', requireAuth, rateLimit, async function(req, res) {
     var keepalive = setInterval(function() { res.write(': ping\n\n'); }, 5000);
 
     try {
-      var message = await client.messages.create({
+      // Use Anthropic streaming so long responses don't hit SDK timeout
+      var stream = await client.messages.create({
         model: MODEL,
         max_tokens: MAX_TOKENS_STREAM,
+        stream: true,
         system: INVITE_SYSTEM,
         messages: [{ role: 'user', content: prompt }]
       });
+      var html = '';
+      for await (var event of stream) {
+        if (event.type === 'content_block_delta' && event.delta && event.delta.type === 'text_delta') {
+          html += event.delta.text;
+        }
+      }
       clearInterval(keepalive);
-      var html = message.content[0].text;
       res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
       res.end();
     } catch (err) {
