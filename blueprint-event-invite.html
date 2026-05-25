@@ -1841,17 +1841,18 @@ function processGeneratedHTML(html, data, built) {
 
     // Extract AI color palette from embedded comment
     var ogColors = { bg: '#0a0a0a', accent: '#ee70bc', text: '#ffffff' };
-    var ogColorMatch = html.match(/<!--\s*builtsy-og:(\{[^}]+\})\s*-->/);
+    var ogColorMatch = html.match(/<!--\s*builtsy-og:([\s\S]*?)\s*-->/);
     if (ogColorMatch) {
       try { ogColors = JSON.parse(ogColorMatch[1]); } catch(e) {}
       html = html.replace(ogColorMatch[0], '');
     }
 
-    // Build OG share card URL using Railway /og-image endpoint
-    var ogCardTitle  = (data.eventType || "You're Invited");
-    var ogHonoree    = (document.getElementById('honoreeNames')||{}).value || '';
-    var ogDate       = built.cleanDate || data.eventDate || '';
-    var ogImgUrl = RAILWAY_URL + '/og-image'
+    // Build OG share card URL — always use production Railway URL (not localhost)
+    var OG_BASE = 'https://builtsy-api-production.up.railway.app';
+    var ogCardTitle = (data.eventType || "You're Invited");
+    var ogHonoree   = data.honoreeNames || '';
+    var ogDate      = built.cleanDate || data.eventDate || '';
+    var ogImgUrl = OG_BASE + '/og-image'
       + '?bg='      + encodeURIComponent(ogColors.bg     || '#0a0a0a')
       + '&accent='  + encodeURIComponent(ogColors.accent || '#ee70bc')
       + '&text='    + encodeURIComponent(ogColors.text   || '#ffffff')
@@ -1868,7 +1869,7 @@ function processGeneratedHTML(html, data, built) {
       + '<meta property="og:image:height" content="630">'
       + '<meta name="twitter:card" content="summary_large_image">'
       + '<meta name="twitter:image" content="' + ogImgUrl + '">';
-    html = html.replace(/<head>/i, '<head>' + ogTags);
+    html = html.replace(/<head[^>]*>/i, function(m) { return m + ogTags; });
 
     // CSS fixes
     var cssfix = '<style>' +
