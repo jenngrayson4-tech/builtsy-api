@@ -204,44 +204,29 @@ function wrapTitle(text, max) {
 
 app.get('/og-image', async function(req, res) {
   try {
-    var honoree = xmlEnc(String(req.query.honoree || 'You').slice(0, 32));
-    var event   = xmlEnc(String(req.query.title   || '').slice(0, 50));
-    var date    = xmlEnc(String(req.query.date    || '').slice(0, 50));
-    var logoImg = BUILTSY_LOGO_B64
-      ? '<image href="data:image/png;base64,' + BUILTSY_LOGO_B64 + '" x="250" y="95" width="700" height="233" preserveAspectRatio="xMidYMid meet"/>'
-      : '<text x="600" y="240" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="90" font-weight="bold" fill="#ffffff">builtsy<tspan fill="#ee70bc">.</tspan></text>';
+    var honoree = xmlEnc(String(req.query.honoree || 'You').slice(0, 30));
+    var event   = xmlEnc(String(req.query.title   || '').slice(0, 40));
+    var date    = xmlEnc(String(req.query.date    || '').slice(0, 40));
+    var sub     = [event, date].filter(Boolean).join('  ·  ');
 
-    // Heart path centered at 600,340
-    var heart = '<path d="M600,355 C600,355 562,322 544,304 C526,286 526,260 548,253 C566,248 582,264 600,280 C618,264 634,248 652,253 C674,260 674,286 656,304 C638,322 600,355 600,355 Z" fill="none" stroke="#ee70bc" stroke-width="4"/>';
-
-    var subline = (event && date) ? event + '  ·  ' + date : (event || date);
-
-    var svg = '<?xml version="1.0" encoding="UTF-8"?>'
-      + '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630">'
-      + '<rect width="1200" height="630" fill="#000000"/>'
-      // Subtle top glow
-      + '<ellipse cx="600" cy="-30" rx="480" ry="160" fill="#ee70bc" opacity="0.06"/>'
-      // MADE WITH
-      + '<text x="600" y="78" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="19" font-weight="bold" letter-spacing="9" fill="#ffffff" opacity="0.55">MADE WITH</text>'
-      // Logo
-      + logoImg
-      // Heart
-      + heart
-      // "with love for"
-      + '<text x="600" y="420" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="36" fill="#ffffff">with love for</text>'
-      // Honoree — pink, bold, large
-      + '<text x="600" y="515" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="76" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
-      // Pink bullet dots + tagline
-      + '<circle cx="310" cy="590" r="5" fill="#ee70bc"/>'
-      + '<circle cx="890" cy="590" r="5" fill="#ee70bc"/>'
-      + '<text x="600" y="595" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="16" letter-spacing="4" fill="#ffffff" opacity="0.45">BUILT BY CREATORS, FOR CREATORS</text>'
-      // Event/date if provided
-      + (subline ? '<text x="600" y="570" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="22" fill="#ffffff" opacity="0.3">' + subline + '</text>' : '')
-      + '</svg>';
+    var svg = [
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">',
+      '  <rect width="1200" height="630" fill="#0a0a0a"/>',
+      '  <rect x="0" y="0" width="10" height="630" fill="#ee70bc"/>',
+      '  <rect x="0" y="0" width="1200" height="6" fill="#ee70bc" opacity="0.5"/>',
+      '  <text x="600" y="175" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="22" letter-spacing="8" fill="#ffffff" opacity="0.4">M A D E  W I T H</text>',
+      '  <text x="600" y="295" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="110" font-weight="bold" fill="#ffffff">builtsy</text>',
+      '  <text x="864" y="295" font-family="Liberation Sans,sans-serif" font-size="110" font-weight="bold" fill="#ee70bc">.</text>',
+      '  <rect x="480" y="320" width="240" height="3" fill="#ee70bc" opacity="0.5"/>',
+      '  <text x="600" y="395" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="34" fill="#ffffff" opacity="0.65">with love for</text>',
+      '  <text x="600" y="490" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="80" font-weight="bold" fill="#ee70bc">' + honoree + '</text>',
+      sub ? '  <text x="600" y="575" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="24" fill="#ffffff" opacity="0.3">' + sub + '</text>' : '',
+      '</svg>'
+    ].join('\n');
 
     var png = await sharp(Buffer.from(svg)).png().toBuffer();
     res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     res.send(png);
   } catch (err) {
     console.error('OG image error:', err.message);
