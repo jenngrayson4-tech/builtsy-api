@@ -27,8 +27,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 
 .sb-logo{padding:1.25rem 1rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
 .sb-logo-wrap{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
-.sb-logo-mark{width:34px;height:34px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.sb-logo-mark svg{width:16px;height:16px;}
+.sb-logo-mark{display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-logo-mark img{width:160px;height:auto;object-fit:contain;}
 .sb-logo-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;letter-spacing:-0.02em;line-height:1;}
 .sb-logo-name em{font-style:italic;color:var(--pink);}
 .sb-logo-name .dot{color:var(--blue);}
@@ -42,8 +42,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .sb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;margin:0 7px 0 0;}
 .sb-item:hover .sb-dot{background:var(--blue);}
 .sb-item.active .sb-dot{background:var(--lime);}
-.ai-star{display:inline-block;color:var(--blue);font-size:1rem;animation:sparkle-spin 3s ease-in-out infinite;}
-@keyframes sparkle-spin{0%{transform:rotate(0deg) scale(1);opacity:0.7;}25%{transform:rotate(45deg) scale(1.3);opacity:1;}50%{transform:rotate(0deg) scale(1);opacity:0.7;}75%{transform:rotate(-45deg) scale(1.3);opacity:1;}100%{transform:rotate(0deg) scale(1);opacity:0.7;}}
+.ai-star{display:inline-block;color:var(--blue);font-size:1rem;animation:twinkle 2.4s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{transform:scale(1) rotate(0deg);opacity:0.6;}20%{transform:scale(1.4) rotate(20deg);opacity:1;color:#c8e000;}40%{transform:scale(0.9) rotate(-10deg);opacity:0.7;}60%{transform:scale(1.3) rotate(15deg);opacity:1;}80%{transform:scale(1) rotate(-5deg);opacity:0.75;}}
+#nav-boost{background:linear-gradient(135deg,rgba(67,97,238,0.12),rgba(238,112,188,0.06));border-left:2px solid var(--blue) !important;color:white !important;position:relative;overflow:hidden;}
+#nav-boost::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(67,97,238,0.08),transparent);animation:shimmer 3s infinite;}
+@keyframes shimmer{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+#nav-boost .ai-star{font-size:1.1rem;}
+#nav-boost .brain-label{background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;}
 
 .sb-footer{margin-top:auto;padding:1rem;border-top:1px solid var(--border);flex-shrink:0;}
 .sb-user{display:flex;align-items:center;gap:0.55rem;}
@@ -107,6 +112,55 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .section-link{font-size:0.72rem;color:var(--iris);cursor:pointer;text-decoration:none;transition:color 0.15s;font-family:'DM Sans',sans-serif;}
 .section-link:hover{color:white;}
 
+/* ── BUILTSY BOOSTS ── */
+.boosts-wrap{padding:0 2.5rem;margin-bottom:2rem;}
+.boosts-row{display:flex;gap:1rem;overflow-x:auto;overflow-y:visible;padding:6px 2px 0.75rem;-ms-overflow-style:none;scrollbar-width:none;}
+.boosts-row::-webkit-scrollbar{display:none;}
+.boost-tile{flex-shrink:0;width:200px;height:160px;background:var(--navy);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.18s;position:relative;}
+.boost-tile:hover{border-color:var(--iris);transform:translateY(-3px);box-shadow:0 12px 40px rgba(139,162,240,0.15);}
+.boost-tile-img{width:100%;height:115px;object-fit:cover;object-position:top center;display:block;background:var(--surface);}
+.boost-tile-img-placeholder{width:100%;height:115px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.boost-tile-footer{padding:7px 10px;display:flex;align-items:center;justify-content:space-between;}
+.boost-tile-label{font-size:0.7rem;font-weight:700;color:white;font-family:'DM Sans',sans-serif;}
+.boost-tile-badge{font-size:0.55rem;font-family:'DM Mono',monospace;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.06em;}
+.boost-tile-badge.soon{background:rgba(200,224,0,0.12);color:var(--lime);border:1px solid rgba(200,224,0,0.3);}
+.boost-tile-badge.live{background:rgba(67,238,127,0.12);color:#43ef7f;border:1px solid rgba(67,238,127,0.3);}
+.boost-tile-carousel{position:relative;width:100%;height:115px;overflow:hidden;}
+.boost-tile-slides{display:flex;height:100%;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);}
+.boost-tile-slide{flex-shrink:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
+.boost-tile-dots{position:absolute;bottom:5px;left:0;right:0;display:flex;justify-content:center;gap:3px;z-index:3;}
+.boost-tile-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.2s;border:none;padding:0;}
+.boost-tile-dot.active{background:white;width:10px;border-radius:2px;}
+
+/* ── PREVIEW MODAL ── */
+.preview-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.22s;}
+.preview-modal-overlay.open{opacity:1;pointer-events:all;}
+.preview-modal{background:var(--navy);border:1px solid var(--border-mid);border-radius:20px;width:680px;max-width:90vw;overflow:hidden;transform:scale(0.93) translateY(16px);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 32px 80px rgba(0,0,0,0.5);}
+.preview-modal-overlay.open .preview-modal{transform:scale(1) translateY(0);}
+.preview-modal-carousel{position:relative;width:100%;height:380px;overflow:hidden;background:#0a1020;}
+.preview-modal-slides{display:flex;height:100%;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);}
+.preview-modal-slide{flex-shrink:0;width:100%;height:100%;object-fit:contain;object-position:top center;}
+.preview-modal-prev,.preview-modal-next{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-size:0.9rem;transition:all 0.15s;backdrop-filter:blur(4px);}
+.preview-modal-prev:hover,.preview-modal-next:hover{background:rgba(255,255,255,0.22);}
+.preview-modal-prev{left:12px;}
+.preview-modal-next{right:12px;}
+.preview-modal-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:5;}
+.preview-modal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;border:none;padding:0;transition:all 0.2s;}
+.preview-modal-dot.active{background:white;width:18px;border-radius:3px;}
+.preview-modal-body{padding:1.25rem 1.5rem 1.5rem;}
+.preview-modal-title{font-size:1.05rem;font-weight:700;color:white;margin-bottom:0.3rem;}
+.preview-modal-desc{font-size:0.78rem;color:var(--dim);margin-bottom:1.1rem;line-height:1.5;}
+.preview-modal-footer{display:flex;align-items:center;justify-content:space-between;}
+.preview-modal-cta{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.6rem 1.4rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.preview-modal-cta:hover{opacity:0.88;transform:translateY(-1px);}
+.preview-modal-cta.soon{background:rgba(200,224,0,0.12);color:var(--lime);border:1px solid rgba(200,224,0,0.3);cursor:default;}
+.preview-modal-cta.soon:hover{opacity:1;transform:none;}
+.preview-modal-close{position:absolute;top:12px;right:12px;z-index:10;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.7);font-size:0.85rem;transition:all 0.15s;}
+.preview-modal-close:hover{background:rgba(0,0,0,0.65);color:white;}
+.preview-modal-counter{font-size:0.68rem;color:var(--dim);font-family:'DM Mono',monospace;}
+
+.bt-beta-pill{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:4;background:#ff4b91;border-radius:100px;padding:5px 16px;white-space:nowrap;box-shadow:0 4px 16px rgba(255,75,145,0.55),0 1px 0 rgba(255,255,255,0.15) inset;border:1px solid rgba(255,255,255,0.2);font-family:'DM Mono',monospace;font-size:0.52rem;font-weight:700;color:white;letter-spacing:0.1em;text-shadow:0 1px 2px rgba(0,0,0,0.2);}
+
 /* ── BLUEPRINT CAROUSEL ── */
 .carousel-wrap{padding:0 2.5rem;margin-bottom:2rem;}
 .blueprint-carousel{display:flex;gap:1rem;overflow-x:auto;overflow-y:visible;padding:6px 2px 0.75rem;-ms-overflow-style:none;scrollbar-width:none;}
@@ -117,24 +171,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .bp-card-wrap:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 12px 40px rgba(67,97,238,0.15);}
 .bp-card-wrap.has-save{border-color:rgba(67,97,238,0.35);}
 .bp-card-wrap.has-save:hover{border-color:var(--blue);box-shadow:0 12px 40px rgba(67,97,238,0.2);}
+.bp-card-wrap.recommended{border-color:rgba(200,224,0,0.5);box-shadow:0 0 0 1px rgba(200,224,0,0.2),0 8px 32px rgba(200,224,0,0.12);}
+.bp-card-wrap.recommended:hover{border-color:var(--lime);box-shadow:0 0 0 1px rgba(200,224,0,0.35),0 12px 40px rgba(200,224,0,0.18);}
+.bp-rec-badge{position:absolute;top:8px;right:8px;background:var(--lime);color:#0d1220;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-family:'DM Mono',monospace;z-index:10;}
 
 /* Thumbnail area */
 .bp-thumb{height:148px;position:relative;overflow:hidden;flex-shrink:0;}
 .bp-card-wrap:hover .bp-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(67,97,238,0.18) 0%,transparent 65%);pointer-events:none;z-index:2;}
 
-/* ── MASTER THUMBNAIL ── */
-.bt-master{background:linear-gradient(145deg,#0d1829 0%,#1a2744 100%);}
-.bt-master .bt-nav{position:absolute;top:0;left:0;right:0;height:16px;background:rgba(0,0,0,0.3);display:flex;align-items:center;padding:0 6px;gap:4px;}
-.bt-master .bt-nav-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.18);}
-.bt-master .bt-nav-spacer{flex:1;}
-.bt-master .bt-nav-btn{width:28px;height:5px;border-radius:3px;background:rgba(200,224,0,0.4);}
-.bt-master .bt-hero{position:absolute;top:22px;left:12px;right:12px;}
-.bt-master .bt-tag{font-size:5px;font-family:'DM Mono',monospace;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);background:rgba(200,224,0,0.1);border:1px solid rgba(200,224,0,0.25);padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:5px;}
-.bt-master .bt-h1{font-family:'Playfair Display',serif;font-size:13px;font-weight:900;color:white;line-height:1.2;margin-bottom:5px;}
-.bt-master .bt-line{height:3px;border-radius:2px;background:rgba(255,255,255,0.12);margin-bottom:3px;}
-.bt-master .bt-line.short{width:60%;}
-.bt-master .bt-cta{position:absolute;bottom:10px;left:12px;background:var(--lime);color:#0d1829;font-size:6px;font-weight:700;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px;letter-spacing:0.08em;}
-.bt-master .bt-glow{position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(67,97,238,0.2) 0%,transparent 70%);}
+/* ── MASTER THUMBNAIL — image carousel ── */
+.bt-master{background:#0d1829;overflow:hidden;}
+.bt-master-slides{position:absolute;inset:0;display:flex;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);}
+.bt-master-slide{flex-shrink:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
+.bt-master-dots{position:absolute;bottom:7px;left:0;right:0;display:flex;justify-content:center;gap:4px;z-index:3;}
+.bt-master-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.2s;border:none;padding:0;}
+.bt-master-dot.active{background:white;width:14px;border-radius:3px;}
+.bt-master-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.35) 0%,transparent 55%);pointer-events:none;z-index:2;}
 
 /* ── EVENT INVITE THUMBNAIL ── */
 .bt-event{background:linear-gradient(160deg,#faf4ef 0%,#f0ddd5 100%);}
@@ -228,6 +280,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 .rec-thumb-ugc{background:linear-gradient(135deg,rgba(238,112,188,0.12) 0%,rgba(8,13,24,0.9) 100%);}
 .rec-thumb-collab{background:linear-gradient(135deg,rgba(139,162,240,0.12) 0%,rgba(13,18,32,0.85) 100%);}
 .rec-thumb-refresh{background:linear-gradient(135deg,rgba(200,224,0,0.08) 0%,rgba(13,18,32,0.8) 100%);}
+
+/* ── CONTINUE BUILDING SAVE CARDS ── */
+.cb-card{background:var(--navy);border:1px solid rgba(67,97,238,0.35);border-radius:12px;padding:0.9rem 1rem;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;gap:0.5rem;position:relative;overflow:hidden;}
+.cb-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(67,97,238,0.15);}
+.cb-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at top right,rgba(67,97,238,0.12) 0%,transparent 70%);pointer-events:none;}
+.cb-card-top{display:flex;align-items:center;justify-content:space-between;}
+.cb-card-icon{font-size:1.1rem;}
+.cb-card-type{font-family:'DM Mono',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--iris);opacity:0.8;}
+.cb-card-title{font-size:0.85rem;font-weight:700;color:white;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cb-card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:0.1rem;}
+.cb-card-date{font-size:0.62rem;color:var(--muted);}
+.cb-card-cta{font-size:0.62rem;font-weight:700;color:var(--lime);letter-spacing:0.04em;}
+
 .rec-badge{position:absolute;top:7px;left:7px;font-family:'DM Mono',monospace;font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;font-weight:500;}
 .rec-badge-new{background:rgba(200,224,0,0.15);color:var(--lime);border:1px solid rgba(200,224,0,0.3);}
 .rec-badge-trending{background:rgba(238,112,188,0.15);color:var(--pink);border:1px solid rgba(238,112,188,0.3);}
@@ -279,6 +344,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 /* ── GROW STUDIO ── */
 .gs-panel{display:none;flex:1;overflow:hidden;flex-direction:column;}
 .gs-panel.gs-active{display:flex;}
+.mbp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:2rem;}
+.mbp-card{background:var(--navy);border:1px solid rgba(67,97,238,0.3);border-radius:14px;padding:1.25rem 1.25rem 1rem;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;gap:0.6rem;position:relative;overflow:hidden;}
+.mbp-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 28px rgba(67,97,238,0.18);}
+.mbp-card::before{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle at top right,rgba(67,97,238,0.1) 0%,transparent 70%);pointer-events:none;}
+.mbp-card-top{display:flex;align-items:center;justify-content:space-between;}
+.mbp-card-icon{font-size:1.4rem;}
+.mbp-card-type{font-family:'DM Mono',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--iris);background:rgba(139,162,240,0.1);border:1px solid rgba(139,162,240,0.2);padding:3px 8px;border-radius:20px;}
+.mbp-card-title{font-size:1rem;font-weight:700;color:white;line-height:1.3;}
+.mbp-card-date{font-size:0.65rem;color:var(--muted);}
+.mbp-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:0.25rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.06);}
+.mbp-card-cta{font-size:0.72rem;font-weight:700;color:var(--lime);letter-spacing:0.03em;}
+.mbp-empty{text-align:center;padding:4rem 2rem;color:var(--muted);}
+.mbp-empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.3;}
+.mbp-empty-title{font-size:1.1rem;font-weight:700;color:white;margin-bottom:0.4rem;}
+.mbp-empty-desc{font-size:0.82rem;line-height:1.6;margin-bottom:1.5rem;}
+.mbp-start-btn{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:10px 24px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .gs-topbar{height:48px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:0.75rem;flex-shrink:0;background:var(--navy);}
 .gs-topbar-title{font-size:0.88rem;font-weight:500;flex:1;color:white;}
 .gs-topbar-title span{color:var(--muted);font-weight:400;}
@@ -381,11 +462,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
   <div class="sb-logo">
     <a href="/" class="sb-logo-wrap" title="Back to Builtsy">
       <div class="sb-logo-mark">
-        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#12192B"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#12192B"/><rect x="9" y="9" width="5" height="5" rx="1" fill="rgba(18,25,43,0.4)"/></svg>
-      </div>
-      <div>
-        <div class="sb-logo-name">Built<em>sy</em><span class="dot">.</span></div>
-        <div class="sb-logo-sub">Blueprints</div>
+        <img src="builtsy-platform-logo.png" alt="Builtsy Blueprints">
       </div>
     </a>
   </div>
@@ -400,7 +477,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 
   <div class="sb-section">AI</div>
   <a class="sb-item" id="nav-boost" href="builtsy-brain.html">
-    <span class="ai-star">✦</span>Builtsy Brain AI
+    <span class="ai-star">✦</span><span class="brain-label">Builtsy Brain AI</span>
   </a>
 
   <div class="sb-section">Blueprints</div>
@@ -420,7 +497,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
     <div class="sb-dot"></div>Collab Booking
   </div>
 
-  <div class="sb-section">Tools</div>
+  <div class="sb-section">Builtsy Boosts</div>
   <div class="sb-item" onclick="location.href='builtsy-audit.html'">
     <div class="sb-dot"></div>Audit Tools
   </div>
@@ -458,18 +535,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
   <!-- TOP BAR -->
   <div class="dash-topbar">
     <span class="beta-tag">Beta</span>
-    <button class="logout-btn" onclick="doLogout()">Log out</button>
-    <div class="topbar-avatar" id="topbar-avatar">?</div>
+    <div style="position:relative;">
+      <div class="topbar-avatar" id="topbar-avatar" onclick="toggleProfileMenu()" style="cursor:pointer;" title="Your profile">?</div>
+      <div id="profile-menu" style="display:none;position:absolute;top:40px;right:0;width:220px;background:#1a2236;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+        <div id="pm-name" style="font-weight:700;font-size:0.9rem;color:white;margin-bottom:2px;"></div>
+        <div id="pm-tagline" style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-bottom:2px;line-height:1.4;"></div>
+        <div id="pm-location" style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-bottom:14px;font-family:'DM Mono',monospace;"></div>
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:12px;display:flex;flex-direction:column;gap:8px;">
+          <button onclick="location.href='profile.html'" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:0.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;padding:0;">Edit profile</button>
+          <button onclick="resetOnboarding()" style="background:none;border:none;color:rgba(255,255,255,0.25);font-size:0.7rem;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;padding:0;">Redo onboarding</button>
+          <button onclick="doLogout()" style="background:none;border:none;color:#f87171;font-size:0.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;padding:0;">Log out</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- HERO -->
   <div class="dash-hero">
     <div class="hero-glow-extra"></div>
     <div class="hero-left">
-      <p class="hero-greeting">Good <span id="greeting-time">morning</span>, <span id="user-first">there</span>.</p>
-      <h1 class="hero-title">Build something <em>worth sharing.</em></h1>
-      <p class="hero-sub">Pick up where you left off, start a new blueprint, or let AI help you build faster.</p>
-      <div class="hero-stats">
+      <p class="hero-greeting" id="hero-greeting">Hey, <span id="user-first">there</span>.</p>
+      <h1 class="hero-title" id="hero-title">Build something <em>worth sharing.</em></h1>
+      <p class="hero-sub" id="hero-sub">Pick up where you left off, start a new blueprint, or let AI help you build faster.</p>
+      <button id="hero-new-cta" onclick="document.getElementById('blueprint-carousel').scrollIntoView({behavior:'smooth'})" style="display:none;background:var(--lime);color:#0d1220;border:none;border-radius:100px;padding:13px 28px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:1.25rem;transition:opacity .15s;">Pick your first blueprint ↓</button>
+      <div class="hero-stats" id="hero-stats">
         <div class="hero-stat">
           <div class="hs-icon-wrap hs-icon-blue">◫</div>
           <div>
@@ -493,7 +582,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
         </div>
       </div>
     </div>
-    <div class="hero-right">
+    <div class="hero-right" id="hero-right">
       <div class="ai-card">
         <div class="ai-card-top">
           <div class="ai-card-icon"><span class="ai-star">✦</span></div>
@@ -507,10 +596,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
     </div>
   </div>
 
-  <!-- CONTINUE BUILDING -->
+  <!-- CONTINUE BUILDING (hidden until saves exist) -->
+  <div class="carousel-wrap" id="continue-building-section" style="display:none;">
+    <div class="section-hdr">
+      <span class="section-title">Continue Building</span>
+      <a class="section-link" onclick="showSection('blueprints')">View all →</a>
+    </div>
+    <div id="continue-grid" class="rec-grid"></div>
+  </div>
+
+  <!-- BLUEPRINTS CAROUSEL -->
   <div class="carousel-wrap">
     <div class="section-hdr">
-      <span class="section-title">Continue building</span>
+      <span class="section-title">Builtsy Blueprints <span style="font-size:0.7em;font-weight:400;opacity:0.5;letter-spacing:0.03em;">recommended for you</span></span>
       <a class="section-link" onclick="openNewModal()">+ New blueprint</a>
     </div>
     <div class="blueprint-carousel" id="blueprint-carousel">
@@ -518,50 +616,74 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
     </div>
   </div>
 
+  <!-- BUILTSY BOOSTS -->
+  <div class="boosts-wrap" id="boosts-wrap">
+    <div class="section-hdr">
+      <span class="section-title">Builtsy Boosts</span>
+    </div>
+    <div class="boosts-row">
+      <div class="boost-tile" onclick="openPreviewModal('Forms','Branded intake and contact forms that match your style.',['bp-forms-1.jpg','bp-forms-2.jpg','bp-forms-3.jpg','bp-forms-4.jpg','bp-forms-5.jpg'],'Coming Soon',null,'cover')">
+        <div class="boost-tile-carousel">
+          <div class="boost-tile-slides" id="forms-slides"></div>
+          <div class="boost-tile-dots" id="forms-dots"></div>
+        </div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">Forms</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+      <div class="boost-tile" onclick="openPreviewModal('FAQ Builder','Auto-generate a beautiful FAQ page for your business.',['bp-faq-1.jpg','bp-faq-2.jpg','bp-faq-3.jpg','bp-faq-4.jpg'],'Coming Soon',null,'cover')">
+        <div class="boost-tile-carousel">
+          <div class="boost-tile-slides" id="faq-slides"></div>
+          <div class="boost-tile-dots" id="faq-dots"></div>
+        </div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">FAQ Builder</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+      <div class="boost-tile" onclick="openPreviewModal('Revenue Booster','Interactive pricing estimator that upsells your services.',['bp-revenue-1.jpg','bp-revenue-2.jpg','bp-revenue-3.jpg','bp-revenue-4.jpg','bp-revenue-5.jpg'],'Coming Soon',null,'cover')">
+        <div class="boost-tile-carousel">
+          <div class="boost-tile-slides" id="revenue-slides"></div>
+          <div class="boost-tile-dots" id="revenue-dots"></div>
+        </div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">Revenue Booster</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+      <div class="boost-tile" onclick="openPreviewModal('Booking Page','A dedicated booking page to fill your calendar fast.',[],'Coming Soon',null,'cover')">
+        <div class="boost-tile-img-placeholder">📅</div>
+        <div class="bt-beta-pill">✦ BUILTSY BETA LAUNCHING SOON</div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">Booking Page</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+      <div class="boost-tile" onclick="openPreviewModal('Lead Magnet','Capture leads with a free guide or freebie landing page.',[],'Coming Soon',null,'cover')">
+        <div class="boost-tile-img-placeholder">🎁</div>
+        <div class="bt-beta-pill">✦ BUILTSY BETA LAUNCHING SOON</div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">Lead Magnet</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+      <div class="boost-tile" onclick="openPreviewModal('Promo Page','A limited-time offer page to drive urgency and sales.',[],'Coming Soon',null,'cover')">
+        <div class="boost-tile-img-placeholder">📣</div>
+        <div class="bt-beta-pill">✦ BUILTSY BETA LAUNCHING SOON</div>
+        <div class="boost-tile-footer">
+          <span class="boost-tile-label">Promo Page</span>
+          <span class="boost-tile-badge soon">SOON</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- BOTTOM GRID -->
   <div class="bottom-grid">
 
-    <!-- LEFT: Recommended -->
+    <!-- LEFT: Quick actions placeholder (continue building moved to top) -->
     <div>
-      <div class="section-hdr">
-        <span class="section-title">Recommended for you</span>
-      </div>
-      <div class="rec-grid">
-        <div class="rec-card" onclick="location.href='blueprint-master.html'">
-          <div class="rec-thumb rec-thumb-master">◫<span class="rec-badge rec-badge-popular">Popular</span></div>
-          <div class="rec-info">
-            <div class="rec-name">Builtsy Blueprint</div>
-            <div class="rec-desc">Any service business — AI detects your industry</div>
-            <div class="rec-match">✦ Best match</div>
-          </div>
-        </div>
-        <div class="rec-card" onclick="location.href='blueprint-event-invite.html'">
-          <div class="rec-thumb rec-thumb-event">🎉<span class="rec-badge rec-badge-new">New</span></div>
-          <div class="rec-info">
-            <div class="rec-name">Event Invite</div>
-            <div class="rec-desc">Birthdays, showers &amp; celebrations</div>
-            <div class="rec-match">✦ Best match</div>
-          </div>
-        </div>
-        <div class="rec-card" onclick="location.href='blueprint-linkbio.html'">
-          <div class="rec-thumb rec-thumb-linkbio">🔗<span class="rec-badge rec-badge-trending">Trending</span></div>
-          <div class="rec-info">
-            <div class="rec-name">Link in Bio</div>
-            <div class="rec-desc">Mobile page for Instagram &amp; TikTok</div>
-            <div class="rec-match">✦ Best match</div>
-          </div>
-        </div>
-        <div class="rec-card" onclick="location.href='blueprint-ugc.html'">
-          <div class="rec-thumb rec-thumb-ugc">🎬<span class="rec-badge rec-badge-new">New</span></div>
-          <div class="rec-info">
-            <div class="rec-name">UGC Creator</div>
-            <div class="rec-desc">Portfolio &amp; packages for content creators</div>
-            <div class="rec-match">✦ Best match</div>
-          </div>
-        </div>
-      </div>
-      <a class="browse-link" onclick="openNewModal()">Browse all blueprints →</a>
-    </div>
 
     <!-- RIGHT: Quick actions + Recent activity -->
     <div class="right-col">
@@ -621,6 +743,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
   </div>
 
 </main>
+
+<!-- ── MY BLUEPRINTS PANEL ── -->
+<div class="gs-panel" id="my-blueprints-panel">
+  <div class="gs-topbar">
+    <div class="gs-topbar-title">My Blueprints <span>/ All your saved work in one place.</span></div>
+    <button style="background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.72rem;font-family:'DM Sans',sans-serif;" onclick="showSection('dashboard')">← Dashboard</button>
+  </div>
+  <div style="padding:2rem 2.5rem;overflow-y:auto;flex:1;">
+    <div id="mbp-grid" class="mbp-grid"></div>
+    <div id="mbp-empty" class="mbp-empty" style="display:none;">
+      <div class="mbp-empty-icon">◫</div>
+      <div class="mbp-empty-title">No blueprints yet</div>
+      <div class="mbp-empty-desc">Start building and your work will appear here automatically.</div>
+      <button class="mbp-start-btn" onclick="showSection('dashboard');openNewModal()">+ Start a Blueprint</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── BOOST PANEL ── -->
 <div class="gs-panel" id="gs-panel">
@@ -756,6 +895,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy-deep);color:white;di
 <script>
 var currentUser = null;
 var _isPreview = window.location.search.indexOf('preview=1') !== -1;
+var _isNewUser = window.location.search.indexOf('newuser=1') !== -1;
 
 // Time-based greeting
 (function(){
@@ -772,15 +912,23 @@ var _isPreview = window.location.search.indexOf('preview=1') !== -1;
     return;
   }
   currentUser = await getUser();
-  if (!currentUser) {
-    sessionStorage.setItem('builtsy-redirect', 'dashboard.html');
-    window.location.href = 'login.html';
-    return;
+  // New user — send to onboarding (unless forcing newuser preview)
+  if (!_isNewUser) {
+    try {
+      var profile = await loadSave('profile');
+      if (!profile || !profile.name) { window.location.href = 'onboarding.html'; return; }
+    } catch(e) {}
   }
+  loadProfileMenu();
   var email = currentUser.email || '';
   var userName = email.split('@')[0] || 'Beta User';
   setUserDisplay(userName);
-  loadProjects();
+  loadProjects(_isNewUser ? [] : undefined);
+
+  // Refresh saves whenever user returns to this tab
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) loadProjects();
+  });
 })();
 
 function setUserDisplay(name) {
@@ -827,62 +975,194 @@ var CAROUSEL_TYPES = [
   { type:'collab',       label:'Collab Booking',      thumbClass:'bt-collab',  defaultTitle:'Collab Booking Page' }
 ];
 
+var _masterCarouselTimer = null;
+var _masterCarouselIdx   = 0;
+var MASTER_SLIDES = ['bp-master-1.jpg','bp-master-2.jpg','bp-master-3.jpg','bp-master-4.jpg'];
+
+function masterCarouselGoTo(idx) {
+  _masterCarouselIdx = (idx + MASTER_SLIDES.length) % MASTER_SLIDES.length;
+  var wrap = document.getElementById('bt-master-slides');
+  if (wrap) wrap.style.transform = 'translateX(-' + (_masterCarouselIdx * 100) + '%)';
+  document.querySelectorAll('.bt-master-dot').forEach(function(d,i){
+    d.classList.toggle('active', i === _masterCarouselIdx);
+  });
+}
+
+function masterCarouselStart() {
+  if (_masterCarouselTimer) clearInterval(_masterCarouselTimer);
+  _masterCarouselTimer = setInterval(function() {
+    masterCarouselGoTo(_masterCarouselIdx + 1);
+  }, 2800);
+}
+
+var _inviteCarouselTimer = null;
+var _inviteCarouselIdx   = 0;
+var INVITE_SLIDES = ['bp-invite-1.jpg','bp-invite-2.jpg','bp-invite-3.jpg'];
+
+function inviteCarouselGoTo(idx) {
+  _inviteCarouselIdx = (idx + INVITE_SLIDES.length) % INVITE_SLIDES.length;
+  var wrap = document.getElementById('bt-invite-slides');
+  if (wrap) wrap.style.transform = 'translateX(-' + (_inviteCarouselIdx * 100) + '%)';
+  document.querySelectorAll('.bt-invite-dot').forEach(function(d,i){
+    d.classList.toggle('active', i === _inviteCarouselIdx);
+  });
+}
+
+function inviteCarouselStart() {
+  if (_inviteCarouselTimer) clearInterval(_inviteCarouselTimer);
+  _inviteCarouselTimer = setInterval(function() {
+    inviteCarouselGoTo(_inviteCarouselIdx + 1);
+  }, 3100);
+}
+
+var _linkbioCarouselTimer = null;
+var _linkbioCarouselIdx   = 0;
+var LINKBIO_SLIDES = ['bp-linkbio-1.jpg','bp-linkbio-2.jpg','bp-linkbio-3.jpg'];
+
+function linkbioCarouselGoTo(idx) {
+  _linkbioCarouselIdx = (idx + LINKBIO_SLIDES.length) % LINKBIO_SLIDES.length;
+  var wrap = document.getElementById('bt-linkbio-slides');
+  if (wrap) wrap.style.transform = 'translateX(-' + (_linkbioCarouselIdx * 100) + '%)';
+  document.querySelectorAll('.bt-linkbio-dot').forEach(function(d,i){
+    d.classList.toggle('active', i === _linkbioCarouselIdx);
+  });
+}
+
+function linkbioCarouselStart() {
+  if (_linkbioCarouselTimer) clearInterval(_linkbioCarouselTimer);
+  _linkbioCarouselTimer = setInterval(function() {
+    linkbioCarouselGoTo(_linkbioCarouselIdx + 1);
+  }, 2500);
+}
+
+var _ugcCarouselTimer = null;
+var _ugcCarouselIdx   = 0;
+var UGC_SLIDES = ['bp-ugc-1.jpg','bp-ugc-2.jpg','bp-ugc-3.jpg','bp-ugc-4.jpg'];
+
+function ugcCarouselGoTo(idx) {
+  _ugcCarouselIdx = (idx + UGC_SLIDES.length) % UGC_SLIDES.length;
+  var wrap = document.getElementById('bt-ugc-slides');
+  if (wrap) wrap.style.transform = 'translateX(-' + (_ugcCarouselIdx * 100) + '%)';
+  document.querySelectorAll('.bt-ugc-dot').forEach(function(d,i){
+    d.classList.toggle('active', i === _ugcCarouselIdx);
+  });
+}
+
+function ugcCarouselStart() {
+  if (_ugcCarouselTimer) clearInterval(_ugcCarouselTimer);
+  _ugcCarouselTimer = setInterval(function() {
+    ugcCarouselGoTo(_ugcCarouselIdx + 1);
+  }, 3300);
+}
+
+var _collabCarouselTimer = null;
+var _collabCarouselIdx   = 0;
+var COLLAB_SLIDES = ['bp-collab-1.jpg','bp-collab-2.jpg','bp-collab-3.jpg','bp-collab-4.jpg'];
+
+function collabCarouselGoTo(idx) {
+  _collabCarouselIdx = (idx + COLLAB_SLIDES.length) % COLLAB_SLIDES.length;
+  var wrap = document.getElementById('bt-collab-slides');
+  if (wrap) wrap.style.transform = 'translateX(-' + (_collabCarouselIdx * 100) + '%)';
+  document.querySelectorAll('.bt-collab-dot').forEach(function(d,i){
+    d.classList.toggle('active', i === _collabCarouselIdx);
+  });
+}
+
+function collabCarouselStart() {
+  if (_collabCarouselTimer) clearInterval(_collabCarouselTimer);
+  _collabCarouselTimer = setInterval(function() {
+    collabCarouselGoTo(_collabCarouselIdx + 1);
+  }, 3600);
+}
+
+function boostCarouselInit(slidesId, dotsId, imgs, interval) {
+  var slidesEl = document.getElementById(slidesId);
+  var dotsEl   = document.getElementById(dotsId);
+  if (!slidesEl || !dotsEl) return;
+  var idx = 0;
+  slidesEl.innerHTML = imgs.map(function(src) {
+    return '<img class="boost-tile-slide" src="' + src + '" loading="lazy">';
+  }).join('');
+  dotsEl.innerHTML = imgs.map(function(_, i) {
+    return '<button class="boost-tile-dot' + (i===0?' active':'') + '" onclick="event.stopPropagation()"></button>';
+  }).join('');
+  var dots = dotsEl.querySelectorAll('.boost-tile-dot');
+  function goTo(n) {
+    idx = (n + imgs.length) % imgs.length;
+    slidesEl.style.transform = 'translateX(-' + (idx*100) + '%)';
+    dots.forEach(function(d,i){ d.classList.toggle('active', i===idx); });
+  }
+  dots.forEach(function(d,i){ d.addEventListener('click', function(){ goTo(i); }); });
+  setInterval(function(){ goTo(idx+1); }, interval);
+}
+
 function getBlueprintThumb(type) {
   if (type === 'master') {
+    var slides = MASTER_SLIDES.map(function(src) {
+      return '<img class="bt-master-slide" src="' + src + '" alt="Builtsy Blueprint example" loading="lazy">';
+    }).join('');
+    var dots = MASTER_SLIDES.map(function(_, i) {
+      return '<button class="bt-master-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();masterCarouselGoTo(' + i + ')"></button>';
+    }).join('');
     return '<div class="bp-thumb bt-master">'
-      + '<div class="bt-glow"></div>'
-      + '<div class="bt-nav"><div class="bt-nav-dot"></div><div class="bt-nav-dot"></div><div class="bt-nav-dot"></div><div class="bt-nav-spacer"></div><div class="bt-nav-btn"></div></div>'
-      + '<div class="bt-hero">'
-      + '<div class="bt-tag">◫ SERVICE</div>'
-      + '<div class="bt-h1">Build Your Brand</div>'
-      + '<div class="bt-line"></div>'
-      + '<div class="bt-line short"></div>'
-      + '</div>'
-      + '<div class="bt-cta">Book Now →</div>'
+      + '<div class="bt-master-slides" id="bt-master-slides">' + slides + '</div>'
+      + '<div class="bt-master-overlay"></div>'
+      + '<div class="bt-master-dots">' + dots + '</div>'
       + '</div>';
   }
   if (type === 'event-invite') {
-    return '<div class="bp-thumb bt-event">'
-      + '<div class="bt-ev-top">CELEBRATION</div>'
-      + '<div class="bt-ev-flourish">✦</div>'
-      + '<div class="bt-ev-you">you\'re</div>'
-      + '<div class="bt-ev-invited">invited.</div>'
-      + '<div class="bt-ev-div"></div>'
-      + '<div class="bt-ev-date">Saturday, June 14th · 6pm</div>'
-      + '<div class="bt-ev-rsvp">RSVP Now</div>'
+    var islides = INVITE_SLIDES.map(function(src) {
+      return '<img class="bt-master-slide" src="' + src + '" alt="Event invite example" loading="lazy" style="object-fit:contain;background:#f5f0eb;">';
+    }).join('');
+    var idots = INVITE_SLIDES.map(function(_, i) {
+      return '<button class="bt-master-dot bt-invite-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();inviteCarouselGoTo(' + i + ')"></button>';
+    }).join('');
+    return '<div class="bp-thumb bt-master" style="background:#0d1829;">'
+      + '<div class="bt-master-slides" id="bt-invite-slides">' + islides + '</div>'
+      + '<div class="bt-master-overlay"></div>'
+      + '<div class="bt-master-dots">' + idots + '</div>'
       + '</div>';
   }
   if (type === 'linkbio') {
-    return '<div class="bp-thumb bt-linkbio">'
-      + '<div class="bt-lb-av"></div>'
-      + '<div class="bt-lb-handle">@yourhandle</div>'
-      + '<div class="bt-lb-line" style="top:60px;"></div>'
-      + '<div class="bt-lb-btn" style="top:68px;"><span class="bt-lb-btn-txt">BOOK A SESSION</span></div>'
-      + '<div class="bt-lb-btn lime-btn" style="top:86px;"><span class="bt-lb-btn-txt">MY PORTFOLIO</span></div>'
-      + '<div class="bt-lb-btn" style="top:104px;"><span class="bt-lb-btn-txt">CONTACT ME</span></div>'
-      + '<div class="bt-lb-socials"><div class="bt-lb-soc"></div><div class="bt-lb-soc"></div><div class="bt-lb-soc"></div></div>'
+    var lbslides = LINKBIO_SLIDES.map(function(src) {
+      return '<img class="bt-master-slide" src="' + src + '" alt="Link in bio example" loading="lazy" style="object-fit:contain;background:#f5f0eb;">';
+    }).join('');
+    var lbdots = LINKBIO_SLIDES.map(function(_, i) {
+      return '<button class="bt-master-dot bt-linkbio-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();linkbioCarouselGoTo(' + i + ')"></button>';
+    }).join('');
+    return '<div class="bp-thumb bt-master" style="background:#0d1829;">'
+      + '<div class="bt-master-slides" id="bt-linkbio-slides">' + lbslides + '</div>'
+      + '<div class="bt-master-overlay"></div>'
+      + '<div class="bt-master-dots">' + lbdots + '</div>'
       + '</div>';
   }
   if (type === 'ugc') {
-    return '<div class="bp-thumb bt-ugc">'
-      + '<div class="bt-ugc-hdr">🎬 UGC CREATOR</div>'
-      + '<div class="bt-ugc-grid">'
-      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
-      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
-      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
-      + '<div class="bt-ugc-cell"><div class="bt-play">▶</div></div>'
-      + '</div>'
-      + '<div class="bt-ugc-price">PACKAGES FROM $499</div>'
+    var ugcslides = UGC_SLIDES.map(function(src) {
+      return '<img class="bt-master-slide" src="' + src + '" alt="UGC creator example" loading="lazy" style="object-fit:cover;object-position:top center;">';
+    }).join('');
+    var ugcdots = UGC_SLIDES.map(function(_, i) {
+      return '<button class="bt-master-dot bt-ugc-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();ugcCarouselGoTo(' + i + ')"></button>';
+    }).join('');
+    return '<div class="bp-thumb bt-master" style="background:#0d1829;">'
+      + '<div class="bt-master-slides" id="bt-ugc-slides">' + ugcslides + '</div>'
+      + '<div class="bt-master-overlay"></div>'
+      + '<div class="bt-master-dots">' + ugcdots + '</div>'
       + '</div>';
   }
   if (type === 'collab') {
-    return '<div class="bp-thumb bt-collab">'
-      + '<div class="bt-cl-hdr"><span class="bt-cl-title">New Collaboration</span><span class="bt-cl-arrow">→</span></div>'
-      + '<div class="bt-cl-div"></div>'
-      + '<div class="bt-cl-step done" style="top:30px;"><div class="bt-cl-check">✓</div>Proposal Sent</div>'
-      + '<div class="bt-cl-step done" style="top:46px;"><div class="bt-cl-check">✓</div>Contract Signed</div>'
-      + '<div class="bt-cl-step pending" style="top:62px;"><div class="bt-cl-check"></div>Content Delivered</div>'
-      + '<div class="bt-cl-btn"><span class="bt-cl-btn-txt">ACCEPT COLLAB</span></div>'
+    var cslides = COLLAB_SLIDES.map(function(src) {
+      return '<img class="bt-master-slide" src="' + src + '" alt="Collab booking example" loading="lazy" style="object-fit:cover;object-position:top center;">';
+    }).join('');
+    var cdots = COLLAB_SLIDES.map(function(_, i) {
+      return '<button class="bt-master-dot bt-collab-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();collabCarouselGoTo(' + i + ')"></button>';
+    }).join('');
+    return '<div class="bp-thumb bt-master" style="background:#0d1829;">'
+      + '<div class="bt-master-slides" id="bt-collab-slides">' + cslides + '</div>'
+      + '<div class="bt-master-overlay"></div>'
+      + '<div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:4;background:#ff4b91;border-radius:100px;padding:5px 16px;white-space:nowrap;box-shadow:0 4px 16px rgba(255,75,145,0.55),0 1px 0 rgba(255,255,255,0.15) inset;border:1px solid rgba(255,255,255,0.2);">'
+      + '<span style="font-family:\'DM Mono\',monospace;font-size:0.58rem;font-weight:700;color:white;letter-spacing:0.1em;text-shadow:0 1px 2px rgba(0,0,0,0.2);">✦ BUILTSY BETA LAUNCHING SOON</span>'
+      + '</div>'
+      + '<div class="bt-master-dots" style="bottom:38px;">' + cdots + '</div>'
       + '</div>';
   }
   return '<div class="bp-thumb" style="background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:2rem;">◫</div>';
@@ -891,8 +1171,9 @@ function getBlueprintThumb(type) {
 // ── PROJECTS ──
 var allProjects = [];
 
-async function loadProjects() {
-  var saves = await loadSaves();
+async function loadProjects(forceSaves) {
+  var saves = (forceSaves !== undefined) ? forceSaves : await loadSaves();
+  window._allSaves = saves;
   // Build a map of type → save
   var saveMap = {};
   saves.forEach(function(s) { saveMap[s.blueprint_type] = s; });
@@ -913,17 +1194,107 @@ async function loadProjects() {
   document.getElementById('stat-ready').textContent = allProjects.filter(function(p){ return p.status==='ready'; }).length;
   // Render carousel with saveMap
   renderCarousel(saveMap);
-  // Render recent activity
+  // Render continue building section
+  renderContinueBuilding(saves);
   renderRecentActivity(allProjects);
+  applyDashboardMode(saves.length > 0);
+}
+
+var BP_ICONS = { 'master':'◫', 'event-invite':'🎉', 'linkbio':'🔗', 'ugc':'🎬', 'collab':'🤝' };
+var BP_LABELS = { 'master':'Builtsy Blueprint', 'event-invite':'Event Invite', 'linkbio':'Link in Bio', 'ugc':'UGC Creator', 'collab':'Collab Booking' };
+
+function renderContinueBuilding(saves) {
+  var grid = document.getElementById('continue-grid');
+  var section = document.getElementById('continue-building-section');
+  if (!saves || saves.length === 0) {
+    if (section) section.style.display = 'none';
+    return;
+  }
+  if (section) section.style.display = '';
+
+  var html = saves.map(function(s) {
+    var meta = BP_META[s.blueprint_type] || { url: 'blueprint-master.html' };
+    var icon = BP_ICONS[s.blueprint_type] || '◫';
+    var label = BP_LABELS[s.blueprint_type] || s.blueprint_type;
+    var title = (s.data && s.data.title) ? s.data.title : label;
+    var dateStr = '';
+    if (s.updated_at) {
+      var diff = Date.now() - new Date(s.updated_at).getTime();
+      var mins  = Math.floor(diff / 60000);
+      var hours = Math.floor(diff / 3600000);
+      var days  = Math.floor(diff / 86400000);
+      if (mins < 60) dateStr = 'Edited ' + (mins < 2 ? 'just now' : mins + 'm ago');
+      else if (hours < 24) dateStr = 'Edited ' + hours + 'h ago';
+      else if (days === 1) dateStr = 'Edited yesterday';
+      else if (days < 30) dateStr = 'Edited ' + days + 'd ago';
+      else dateStr = 'Edited ' + new Date(s.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    }
+    return '<div class="cb-card" onclick="location.href=\'' + meta.url + '\'">'
+      + '<div class="cb-card-top"><span class="cb-card-icon">' + icon + '</span><span class="cb-card-type">' + label + '</span></div>'
+      + '<div class="cb-card-title">' + escapeHtml(title) + '</div>'
+      + '<div class="cb-card-meta"><span class="cb-card-date">' + dateStr + '</span><span class="cb-card-cta">Continue →</span></div>'
+      + '</div>';
+  }).join('');
+
+  // Pad to even number so grid looks clean
+  if (saves.length % 2 !== 0) {
+    html += '<div class="cb-card" style="opacity:0;pointer-events:none;"></div>';
+  }
+
+  grid.innerHTML = html;
+}
+
+function renderMyBlueprints(saves) {
+  var grid = document.getElementById('mbp-grid');
+  var empty = document.getElementById('mbp-empty');
+  if (!saves || saves.length === 0) {
+    grid.innerHTML = '';
+    grid.style.display = 'none';
+    empty.style.display = '';
+    return;
+  }
+  grid.style.display = '';
+  empty.style.display = 'none';
+  var icons = BP_ICONS;
+  var labels = BP_LABELS;
+  var meta = BP_META;
+  grid.innerHTML = saves.map(function(s) {
+    var icon = icons[s.blueprint_type] || '◫';
+    var label = labels[s.blueprint_type] || s.blueprint_type;
+    var url = (meta[s.blueprint_type] || {}).url || 'blueprint-master.html';
+    var title = (s.data && s.data.title) ? s.data.title : label;
+    var dateStr = '';
+    if (s.updated_at) {
+      var diff = Date.now() - new Date(s.updated_at).getTime();
+      var mins = Math.floor(diff / 60000);
+      var hours = Math.floor(diff / 3600000);
+      var days = Math.floor(diff / 86400000);
+      if (mins < 2) dateStr = 'Just now';
+      else if (mins < 60) dateStr = 'Edited ' + mins + 'm ago';
+      else if (hours < 24) dateStr = 'Edited ' + hours + 'h ago';
+      else if (days === 1) dateStr = 'Edited yesterday';
+      else if (days < 30) dateStr = 'Edited ' + days + 'd ago';
+      else dateStr = new Date(s.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    }
+    return '<div class="mbp-card" onclick="location.href=\'' + url + '\'">'
+      + '<div class="mbp-card-top"><span class="mbp-card-icon">' + icon + '</span><span class="mbp-card-type">' + label + '</span></div>'
+      + '<div class="mbp-card-title">' + escapeHtml(title) + '</div>'
+      + '<div class="mbp-card-date">' + dateStr + '</div>'
+      + '<div class="mbp-card-footer"><span class="mbp-card-cta">Continue Building →</span></div>'
+      + '</div>';
+  }).join('');
 }
 
 function renderCarousel(saveMap) {
   var carousel = document.getElementById('blueprint-carousel');
   document.getElementById('carousel-loading').style.display = 'none';
+  var recBp = '';
+  try { var prof = localLoad('profile'); if (prof && prof.recommended_bp) recBp = prof.recommended_bp; } catch(e) {}
   var html = '';
   CAROUSEL_TYPES.forEach(function(ct) {
     var save = saveMap[ct.type];
     var hasSave = !!save;
+    var isRec = !hasSave && recBp === ct.type;
     var title = hasSave && save.data && save.data.title ? save.data.title : ct.defaultTitle;
     var meta = BP_META[ct.type] || {};
     var url = meta.url || 'blueprint-master.html';
@@ -939,7 +1310,18 @@ function renderCarousel(saveMap) {
       else dateStr = new Date(save.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
     }
     var progressPct = hasSave ? 100 : 0;
-    html += '<div class="bp-card-wrap' + (hasSave ? ' has-save' : '') + '" onclick="location.href=\'' + url + '\'">'
+    // Store preview data by type for safe onclick (avoids JSON quoting issues in HTML attrs)
+    window._bpPreview = window._bpPreview || {};
+    window._bpPreview[ct.type] = {
+      label: ct.label,
+      desc: { 'master':'AI-powered website blueprint for any service business.','event-invite':'Beautiful digital invitations for any celebration.','linkbio':'Mobile-first link in bio page for Instagram & TikTok.','ugc':'Professional UGC creator page to attract brand deals.','collab':'Booking page for brand collaborations & discovery calls.' }[ct.type] || '',
+      slides: { 'master':MASTER_SLIDES,'event-invite':INVITE_SLIDES,'linkbio':LINKBIO_SLIDES,'ugc':UGC_SLIDES,'collab':COLLAB_SLIDES }[ct.type] || [],
+      fit: (ct.type==='linkbio'||ct.type==='event-invite') ? 'contain' : 'cover',
+      url: url,
+      hasSave: hasSave
+    };
+    html += '<div class="bp-card-wrap' + (hasSave ? ' has-save' : '') + (isRec ? ' recommended' : '') + '" onclick="openBpPreview(\'' + ct.type + '\')" style="position:relative;">'
+      + (isRec ? '<div class="bp-rec-badge">✦ For you</div>' : '')
       + getBlueprintThumb(ct.type)
       + '<div class="bp-card-info">'
       + '<div class="bpci-top">'
@@ -948,12 +1330,20 @@ function renderCarousel(saveMap) {
       + '</div>'
       + '<div class="bpci-title">' + escapeHtml(title) + '</div>'
       + '<div class="bpci-progress"><div class="bpci-progress-fill" style="width:' + progressPct + '%"></div></div>'
-      + '<button class="bp-continue-btn' + (hasSave ? '' : ' start-btn') + '" onclick="event.stopPropagation();location.href=\'' + url + '\'">'
-      + (hasSave ? 'Continue building →' : 'Start this blueprint →')
+      + '<button class="bp-continue-btn' + (hasSave ? '' : ' start-btn') + '" onclick="event.stopPropagation();openBpPreview(\'' + ct.type + '\')">'
+      + '✦ Builtsy This →'
       + '</button>'
       + '</div></div>';
   });
   carousel.innerHTML = html;
+  masterCarouselStart();
+  inviteCarouselStart();
+  linkbioCarouselStart();
+  ugcCarouselStart();
+  collabCarouselStart();
+  boostCarouselInit('forms-slides','forms-dots',['bp-forms-1.jpg','bp-forms-2.jpg','bp-forms-3.jpg','bp-forms-4.jpg','bp-forms-5.jpg'],3000);
+  boostCarouselInit('faq-slides','faq-dots',['bp-faq-1.jpg','bp-faq-2.jpg','bp-faq-3.jpg','bp-faq-4.jpg'],3200);
+  boostCarouselInit('revenue-slides','revenue-dots',['bp-revenue-1.jpg','bp-revenue-2.jpg','bp-revenue-3.jpg','bp-revenue-4.jpg','bp-revenue-5.jpg'],2800);
 }
 
 function renderRecentActivity(projects) {
@@ -999,12 +1389,18 @@ function showSection(section) {
     document.getElementById('nav-boost').classList.add('active');
     gsInitContext();
   } else if (section === 'blueprints') {
-    window.location.href = 'dashboard.html';
+    mainContent.style.display = 'none';
+    gsPanel.classList.remove('gs-active');
+    document.getElementById('my-blueprints-panel').classList.add('gs-active');
+    document.getElementById('nav-blueprints').classList.add('active');
+    renderMyBlueprints(window._allSaves || []);
+    return;
   } else if (section === 'tools') {
     window.location.href = 'builtsy-audit.html';
   } else {
     mainContent.style.display = '';
     gsPanel.classList.remove('gs-active');
+    document.getElementById('my-blueprints-panel').classList.remove('gs-active');
     document.getElementById('nav-dashboard').classList.add('active');
   }
 }
@@ -1141,8 +1537,87 @@ function gsSendMessage(){
   .catch(function(){gsHideTyping();gsAppendMessage('assistant','Could not reach the server. Try again in a moment.');});
 }
 
+// ── DASHBOARD MODE ──
+function applyDashboardMode(hasSaves) {
+  var firstName = (document.getElementById('user-first') || {}).textContent || '';
+  if (hasSaves) {
+    // Returning user
+    var greet = document.getElementById('hero-greeting');
+    if (greet && firstName && firstName !== 'there') {
+      greet.innerHTML = 'Welcome back, <span id="user-first">' + firstName + '</span>! ✦';
+    }
+    return;
+  }
+  // New user — strip back
+  var greet = document.getElementById('hero-greeting');
+  if (greet && firstName && firstName !== 'there') {
+    greet.innerHTML = 'Hey, <span id="user-first">' + firstName + '</span>. You made it.';
+  }
+  var title = document.getElementById('hero-title');
+  if (title) title.innerHTML = "Let's build something <em>worth sharing.</em>";
+  var sub = document.getElementById('hero-sub');
+  if (sub) sub.textContent = "You're in. Pick a blueprint below and we'll build it together.";
+  var stats = document.getElementById('hero-stats');
+  if (stats) stats.style.display = 'none';
+  var right = document.getElementById('hero-right');
+  if (right) right.style.display = 'none';
+  var boosts = document.getElementById('boosts-wrap');
+  if (boosts) boosts.style.display = 'none';
+  var cta = document.getElementById('hero-new-cta');
+  if (cta) cta.style.display = 'inline-block';
+}
+
+// ── PROFILE MENU ──
+function toggleProfileMenu() {
+  var menu = document.getElementById('profile-menu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+  var avatar = document.getElementById('topbar-avatar');
+  var menu = document.getElementById('profile-menu');
+  if (menu && avatar && !avatar.contains(e.target) && !menu.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+async function loadProfileMenu() {
+  try {
+    var p = await loadSave('profile');
+    if (!p) return;
+    var n = document.getElementById('pm-name');
+    var t = document.getElementById('pm-tagline');
+    var l = document.getElementById('pm-location');
+    if (n) n.textContent = p.name || '';
+    if (t) t.textContent = p.tagline || '';
+    if (l) l.textContent = p.location || '';
+    // Use real first name in hero greeting
+    if (p.name) {
+      var firstName = p.name.split(' ')[0];
+      var fn = document.getElementById('user-first');
+      if (fn) fn.textContent = firstName;
+      var sbName = document.getElementById('user-name');
+      if (sbName) sbName.textContent = p.name;
+      // Update avatars with initial
+      ['topbar-avatar','sb-avatar'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (p.photo) {
+          el.innerHTML = '<img src="'+p.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        } else {
+          el.textContent = firstName.charAt(0).toUpperCase();
+        }
+      });
+    }
+  } catch(e) {}
+}
+
 // ── LOGOUT ──
+async function resetOnboarding() {
+  await deleteSave('profile');
+  window.location.href = 'onboarding.html';
+}
+
 async function doLogout() {
+  sessionStorage.removeItem('builtsy-redirect');
   await _supabase.auth.signOut();
   window.location.href = 'login.html';
 }
@@ -1150,6 +1625,78 @@ async function doLogout() {
 // ── MODAL ──
 function openNewModal() { document.getElementById('new-modal').classList.add('open'); }
 function closeNewModal() { document.getElementById('new-modal').classList.remove('open'); }
+
+// ── PREVIEW MODAL ──
+var _pm = { slides:[], idx:0, timer:null };
+
+function openPreviewModal(title, desc, slides, ctaLabel, ctaUrl, fit) {
+  _pm.slides = slides;
+  _pm.idx = 0;
+  if (_pm.timer) clearInterval(_pm.timer);
+  var slidesEl = document.getElementById('pm-slides');
+  var dotsEl   = document.getElementById('pm-dots');
+  var objFit   = fit || 'contain';
+  slidesEl.innerHTML = slides.map(function(s){
+    return '<img class="preview-modal-slide" src="'+s+'" loading="lazy" style="object-fit:'+objFit+';object-position:top center;">';
+  }).join('');
+  dotsEl.innerHTML = slides.map(function(_,i){
+    return '<button class="preview-modal-dot'+(i===0?' active':'')+'" onclick="pmGoTo('+i+')"></button>';
+  }).join('');
+  document.getElementById('pm-title').textContent = title;
+  document.getElementById('pm-desc').textContent  = desc;
+  var cta = document.getElementById('pm-cta');
+  cta.textContent = ctaLabel;
+  if (ctaUrl) {
+    cta.className = 'preview-modal-cta';
+    cta.onclick = function(){ location.href = ctaUrl; };
+  } else {
+    cta.className = 'preview-modal-cta soon';
+    cta.onclick = null;
+  }
+  document.getElementById('pm-counter').textContent = '1 / ' + slides.length;
+  document.getElementById('preview-modal-overlay').classList.add('open');
+  _pm.timer = setInterval(function(){ pmGoTo(_pm.idx+1); }, 3000);
+}
+
+function closePreviewModal() {
+  document.getElementById('preview-modal-overlay').classList.remove('open');
+  if (_pm.timer) clearInterval(_pm.timer);
+}
+
+function openBpPreview(type) {
+  var d = (window._bpPreview || {})[type];
+  if (!d) return;
+  var ctaLabel = d.hasSave ? 'Continue Building →' : '✦ Builtsy This →';
+  openPreviewModal(d.label, d.desc, d.slides, ctaLabel, d.url, d.fit);
+}
+
+function pmGoTo(n) {
+  _pm.idx = (n + _pm.slides.length) % _pm.slides.length;
+  document.getElementById('pm-slides').style.transform = 'translateX(-'+(_pm.idx*100)+'%)';
+  document.querySelectorAll('.preview-modal-dot').forEach(function(d,i){ d.classList.toggle('active',i===_pm.idx); });
+  document.getElementById('pm-counter').textContent = (_pm.idx+1) + ' / ' + _pm.slides.length;
+}
 </script>
+
+<!-- PREVIEW MODAL -->
+<div class="preview-modal-overlay" id="preview-modal-overlay" onclick="if(event.target===this)closePreviewModal()">
+  <div class="preview-modal" style="position:relative;">
+    <button class="preview-modal-close" onclick="closePreviewModal()">✕</button>
+    <div class="preview-modal-carousel">
+      <div class="preview-modal-slides" id="pm-slides"></div>
+      <button class="preview-modal-prev" onclick="pmGoTo(_pm.idx-1)">‹</button>
+      <button class="preview-modal-next" onclick="pmGoTo(_pm.idx+1)">›</button>
+      <div class="preview-modal-dots" id="pm-dots"></div>
+    </div>
+    <div class="preview-modal-body">
+      <div class="preview-modal-title" id="pm-title"></div>
+      <div class="preview-modal-desc" id="pm-desc"></div>
+      <div class="preview-modal-footer">
+        <button class="preview-modal-cta" id="pm-cta"></button>
+        <span class="preview-modal-counter" id="pm-counter"></span>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
