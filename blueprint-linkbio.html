@@ -266,7 +266,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 <!-- TOPNAV -->
 <div class="topnav">
   <div class="logo-wrap">
-    <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+    <a href="dashboard.html"><img src="builtsy-logo.png" alt="Builtsy Blueprints" style="height:32px;width:auto;display:block;"></a>
   </div>
   <span class="tn-tag">✦ Link in Bio</span>
   <div class="tn-right">
@@ -329,15 +329,15 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 
     <div class="field">
       <label>Your name</label>
-      <input class="fi-light" id="f-name" placeholder="e.g. Sarah M." oninput="onInput();">
+      <input class="fi-light" id="f-name" placeholder="e.g. Sarah M." oninput="onInput();lbAutoSave();">
     </div>
     <div class="field">
       <label>What you do — one line</label>
-      <input class="fi-light" id="f-tagline" placeholder="e.g. French & Spanish tutor in Denver" oninput="onInput();">
+      <input class="fi-light" id="f-tagline" placeholder="e.g. French & Spanish tutor in Denver" oninput="onInput();lbAutoSave();">
     </div>
     <div class="field">
       <label>A little more about you <span class="opt">(optional)</span></label>
-      <textarea class="fi-light" id="f-bio" rows="2" placeholder="Native speaker · 10+ years · All ages welcome" oninput="onInput();"></textarea>
+      <textarea class="fi-light" id="f-bio" rows="2" placeholder="Native speaker · 10+ years · All ages welcome" oninput="onInput();lbAutoSave();"></textarea>
     </div>
 
     <span class="sl-light">What's the main thing people do on your page?</span>
@@ -403,7 +403,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
     <div class="toggle-row-light"><div><div class="tg-label-light">&#128197; Online Booking</div><div class="tg-desc-light">Calendly booking link &mdash; live on your page</div></div><label class="switch"><input type="checkbox" id="tog-booking" checked onchange="onInput();lbToggleBookingField();"><span class="track"></span><span class="thumb"></span></label></div>
     <div id="lb-booking-field-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
       <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Your Calendly URL</label>
-      <input type="text" id="f-calendly-lb" placeholder="e.g. calendly.com/yourname" class="fi-light" oninput="onInput();" style="width:100%;">
+      <input type="text" id="f-calendly-lb" placeholder="e.g. calendly.com/yourname" class="fi-light" oninput="onInput();lbAutoSave();" style="width:100%;">
       <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">Paste your booking link &mdash; we'll embed it directly on your page.</div>
     </div>
 
@@ -411,9 +411,9 @@ textarea.fi-light{resize:vertical;min-height:80px;}
     <div class="toggle-row-light"><div><div class="tg-label-light">&#128172; SMS Booking Button</div><div class="tg-desc-light">Big tap-to-text button at the top</div></div><label class="switch"><input type="checkbox" id="tog-sms" checked onchange="onInput();lbToggleSmsFields();"><span class="track"></span><span class="thumb"></span></label></div>
     <div id="lb-sms-fields-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
       <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Phone number for texts</label>
-      <input type="tel" id="f-phone" placeholder="e.g. (720) 555-0123" class="fi-light" oninput="onInput();" style="width:100%;margin-bottom:10px;">
+      <input type="tel" id="f-phone" placeholder="e.g. (720) 555-0123" class="fi-light" oninput="onInput();lbAutoSave();" style="width:100%;margin-bottom:10px;">
       <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Pre-filled message <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,0.3);">(edit to customize)</span></label>
-      <textarea id="f-sms-message-lb" class="fi-light" rows="2" oninput="onInput();" style="width:100%;font-size:.82rem;line-height:1.6;resize:vertical;">Hi! I found you and would love to connect. When are you available?</textarea>
+      <textarea id="f-sms-message-lb" class="fi-light" rows="2" oninput="onInput();lbAutoSave();" style="width:100%;font-size:.82rem;line-height:1.6;resize:vertical;">Hi! I found you and would love to connect. When are you available?</textarea>
       <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">This is what visitors see when they tap your SMS button.</div>
     </div>
 
@@ -421,7 +421,7 @@ textarea.fi-light{resize:vertical;min-height:80px;}
     <div class="toggle-row-light"><div><div class="tg-label-light">&#128221; Contact / Intake Form</div><div class="tg-desc-light">Embed a Google Form or AI builds a simple one</div></div><label class="switch"><input type="checkbox" id="tog-form" checked onchange="onInput();lbToggleFormField();"><span class="track"></span><span class="thumb"></span></label></div>
     <div id="lb-form-field-wrap" style="margin:0 0 8px;padding:14px 16px;background:rgba(67,97,238,.08);border:1px solid rgba(67,97,238,.25);border-radius:10px;">
       <label style="font-size:.69rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--builtsy-blue);display:block;margin-bottom:6px;font-family:'DM Mono',monospace;">Google Form URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,0.3);">(optional)</span></label>
-      <input type="text" id="f-form-url-lb" placeholder="e.g. forms.gle/yourformlink" class="fi-light" oninput="onInput();" style="width:100%;">
+      <input type="text" id="f-form-url-lb" placeholder="e.g. forms.gle/yourformlink" class="fi-light" oninput="onInput();lbAutoSave();" style="width:100%;">
       <div style="font-size:.67rem;color:rgba(255,255,255,0.3);margin-top:5px;">Leave blank and AI builds a simple contact form.</div>
     </div>
     <div class="step-nav-light">
@@ -611,6 +611,23 @@ textarea.fi-light{resize:vertical;min-height:80px;}
 
 <script>
 var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? (window.location.protocol + '/\/' + window.location.host) : 'https://builtsy-api-production.up.railway.app';
+
+// ── AUTO-SAVE ──
+var _lbSaveTimer = null;
+function lbAutoSave() {
+  clearTimeout(_lbSaveTimer);
+  _lbSaveTimer = setTimeout(function() {
+    var v = function(id){ return (document.getElementById(id)||{}).value||''; };
+    var name = v('f-name');
+    var d = { title: name || 'Link in Bio', fields: {
+      name: name, tagline: v('f-tagline'), bio: v('f-bio'),
+      calendly: v('f-calendly-lb'), phone: v('f-phone'),
+      smsMessage: v('f-sms-message-lb'), formUrl: v('f-form-url-lb')
+    }};
+    localSave('linkbio', d);
+    saveBlueprint('linkbio', d).catch(function(){});
+  }, 1500);
+}
 
 var currentStep = 0;
 var totalSteps = 5;
@@ -1101,7 +1118,7 @@ async function startGenerate(){
     var prompt=buildPrompt();
     // Strip photo data from prompt to avoid payload size issues — inject after
     var promptForAPI = prompt.replace(/data:image\/[^;]+;base64,[A-Za-z0-9+\/=]{100,}/g, '[PHOTO_PLACEHOLDER]');
-    var response=await fetch(RAILWAY_URL + '/generate',{
+    var response=await apiFetch(RAILWAY_URL + '/generate',{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:promptForAPI})
     });
     if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error(err.error||'API error '+response.status);}
@@ -1229,7 +1246,7 @@ function saveProject(){
     var name=(document.getElementById('f-name')||{value:''}).value||'';
     if(!name)return;
     var p={id:'lb-'+Date.now(),type:'link-bio',name:name,industry:'Link in Bio',savedAt:new Date().toISOString(),status:'ready',url:'blueprint-linkbio.html'};
-    fetch(RAILWAY_URL + '/projects/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).catch(function(){});
+    apiFetch(RAILWAY_URL + '/projects/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).catch(function(){});
     try{var ex=JSON.parse(localStorage.getItem('builtsy-boost-projects')||'[]');var found=false;for(var i=0;i<ex.length;i++){if(ex[i].name===p.name){ex[i]=p;found=true;break;}}if(!found)ex.push(p);localStorage.setItem('builtsy-boost-projects',JSON.stringify(ex));}catch(e){}
   }catch(e){}
 }
@@ -1478,7 +1495,7 @@ function lbLoadServiceSuggestions() {
     + 'Format as JSON array: [{"name":"Service name","price":75},{"name":"...","price":...}]. '
     + 'Keep service names short (2-4 words). Prices should be realistic. Output ONLY valid JSON.';
 
-  fetch(RAILWAY_URL + '/grow', {
+  apiFetch(RAILWAY_URL + '/grow', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({prompt: prompt})
   })
@@ -1651,7 +1668,7 @@ function lbLoadPaletteSuggestions() {
     + 'Palettes: ' + allNames.join(', ') + '. '
     + 'Respond ONLY with valid JSON: [{"name":"...","vibe":"...","recommended":true|false},...]';
 
-  fetch(RAILWAY_URL + '/grow', {
+  apiFetch(RAILWAY_URL + '/grow', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({prompt: prompt})
   })
@@ -1756,7 +1773,7 @@ function lbGenerate(){
   document.getElementById('lb-gen-msg').textContent=lbGenMsgsArr[0];
   lbGenInterval=setInterval(function(){msgIdx=(msgIdx+1)%lbGenMsgsArr.length;document.getElementById('lb-gen-msg').textContent=lbGenMsgsArr[msgIdx];},3000);
 
-  fetch(RAILWAY_URL + '/generate',{
+  apiFetch(RAILWAY_URL + '/generate',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({prompt:promptForAPI})
   })
@@ -1802,8 +1819,38 @@ function lbShowOutput(html){
   // Save progress to Supabase (silent — does nothing if not logged in)
   try {
     var name=(document.getElementById('f-name')||{value:''}).value||'Link in Bio';
-    var tagline=(document.getElementById('f-tagline')||{value:''}).value||'';
-    saveBlueprint('linkbio', { title: name, tagline: tagline });
+    saveBlueprint('linkbio', { title: name, fields: {
+      name: (document.getElementById('f-name')||{}).value||'',
+      tagline: (document.getElementById('f-tagline')||{}).value||'',
+      bio: (document.getElementById('f-bio')||{}).value||'',
+      calendly: (document.getElementById('f-calendly-lb')||{}).value||'',
+      phone: (document.getElementById('f-phone')||{}).value||'',
+      smsMessage: (document.getElementById('f-sms-message-lb')||{}).value||'',
+      formUrl: (document.getElementById('f-form-url-lb')||{}).value||''
+    }});
+  } catch(e) {}
+}
+
+async function lbRestoreSave() {
+  try {
+    var save = await loadSave('linkbio');
+    if (!save || !save.fields) return;
+    var f = save.fields;
+    var map = {
+      name: 'f-name', tagline: 'f-tagline', bio: 'f-bio',
+      calendly: 'f-calendly-lb', phone: 'f-phone',
+      smsMessage: 'f-sms-message-lb', formUrl: 'f-form-url-lb'
+    };
+    Object.keys(map).forEach(function(key) {
+      if (f[key] == null) return;
+      var el = document.getElementById(map[key]);
+      if (el) el.value = f[key];
+    });
+    var toast = document.createElement('div');
+    toast.textContent = 'Your blueprint has been restored ✓';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c8e000;color:#0d1829;border-radius:100px;padding:8px 20px;font-weight:700;font-size:0.8rem;z-index:9999;pointer-events:none;';
+    document.body.appendChild(toast);
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
   } catch(e) {}
 }
 
@@ -1834,13 +1881,22 @@ function lbRebuild(){
 
 // ── BUILTSY FOOTER ──
 function builtsyInjectFooter(html, name) {
-  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
-    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
-    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
-    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
-    + '</section>';
-  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
+  var honoree = (name||'You').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var footerScript = '(function(){'
+    + 'var b=document.body;'
+    + 'b.style.setProperty("overflow-y","auto","important");'
+    + 'b.style.setProperty("height","auto","important");'
+    + 'b.style.setProperty("min-height","0","important");'
+    + 'var s=document.createElement("section");'
+    + 's.id="builtsy-made-with";'
+    + 's.style.cssText="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);display:block;width:100%;box-sizing:border-box;margin:0;";'
+    + 's.innerHTML="<p style=\\"margin:0 0 14px;font-family:monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.9)\\">MADE WITH<\\/p>"'
+    + '+"<a href=\\"https:\\/\\/builtsy.ai\\/\\" target=\\"_blank\\" rel=\\"noopener\\" style=\\"display:block;margin:0 auto 16px;width:fit-content\\"><img src=\\"https:\\/\\/builtsy.ai\\/builtsy-footer-logo.png\\" alt=\\"Builtsy\\" style=\\"height:80px;width:auto;display:block\\"><\\/a>"'
+    + '+"<p style=\\"margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:15px;color:rgba(255,255,255,0.9)\\">with love for <strong style=\\"color:#ee70bc;font-weight:600\\">' + honoree + '<\\/strong> 🌸<\\/p>";'
+    + 'b.appendChild(s);'
+    + '})()';
+  var footer = '<scr'+'ipt>' + footerScript + '<\/scr'+'ipt>';
+  return html + '\n' + footer;
 }
 
 function lbDownload(){
@@ -1868,7 +1924,7 @@ function lbSubmitRevise(){
   document.getElementById('lb-gen-overlay').style.justifyContent='center';
   document.getElementById('lb-gen-msg').textContent='Applying your changes…';
   var prompt='Here is the current page HTML:\n\n'+lbGeneratedHTML+'\n\nPlease make these revisions: '+note+'\n\nOutput ONLY the complete revised HTML. No explanation, no markdown fences.';
-  fetch(RAILWAY_URL + '/generate',{
+  apiFetch(RAILWAY_URL + '/generate',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({prompt:prompt})
   })
@@ -2009,6 +2065,16 @@ function lbPickLayer(el, layer) {
 
 // Init palette tab on load
 lbSwitchPaletteTab('light');
+
+document.addEventListener('DOMContentLoaded', async function() {
+  var u = await getUser();
+  if (!u) {
+    sessionStorage.setItem('builtsy-redirect', 'blueprint-linkbio.html');
+    window.location.href = 'login.html';
+    return;
+  }
+  lbRestoreSave();
+});
 </script>
 <style>.btn-brain-ai{background:rgba(67,97,238,0.12);border:1px solid rgba(67,97,238,0.3);color:#8ba2f0;border-radius:100px;padding:5px 13px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}.btn-brain-ai:hover{background:rgba(67,97,238,0.22);color:white;border-color:rgba(67,97,238,0.5);}</style>
 <script>

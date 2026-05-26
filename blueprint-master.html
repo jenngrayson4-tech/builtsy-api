@@ -337,7 +337,7 @@ body.ms-s9 .topnav{display:none;}
 <body class="ms-s1">
 
 <div class="topnav">
-  <a href="dashboard.html" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+  <a href="dashboard.html"><img src="builtsy-logo.png" alt="Builtsy Blueprints" style="height:32px;width:auto;display:block;"></a>
   <span class="tn-tag" id="ms-tn-tag">Builtsy Blueprint In Progress</span>
   <div class="tn-right"><button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button></div>
 </div>
@@ -4366,13 +4366,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── BUILTSY FOOTER ──
 function builtsyInjectFooter(html, name) {
-  var safe = (name||'Your Business').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
-    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
-    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
-    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
-    + '</section>';
-  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
+  var honoree = (name||'Your Business').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var footerScript = '(function(){'
+    + 'var b=document.body;'
+    + 'b.style.setProperty("overflow-y","auto","important");'
+    + 'b.style.setProperty("height","auto","important");'
+    + 'b.style.setProperty("min-height","0","important");'
+    + 'var s=document.createElement("section");'
+    + 's.id="builtsy-made-with";'
+    + 's.style.cssText="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);display:block;width:100%;box-sizing:border-box;margin:0;";'
+    + 's.innerHTML="<p style=\\"margin:0 0 14px;font-family:monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.9)\\">MADE WITH<\\/p>"'
+    + '+"<a href=\\"https:\\/\\/builtsy.ai\\/\\" target=\\"_blank\\" rel=\\"noopener\\" style=\\"display:block;margin:0 auto 16px;width:fit-content\\"><img src=\\"https:\\/\\/builtsy.ai\\/builtsy-footer-logo.png\\" alt=\\"Builtsy\\" style=\\"height:80px;width:auto;display:block\\"><\\/a>"'
+    + '+"<p style=\\"margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:15px;color:rgba(255,255,255,0.9)\\">with love for <strong style=\\"color:#ee70bc;font-weight:600\\">' + honoree + '<\\/strong> 🌸<\\/p>";'
+    + 'b.appendChild(s);'
+    + '})()';
+  var footer = '<scr'+'ipt>' + footerScript + '<\/scr'+'ipt>';
+  return html + '\n' + footer;
 }
 
 function msDownload() {

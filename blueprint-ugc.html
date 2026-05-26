@@ -152,7 +152,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.5;}
 
 <!-- NAV -->
 <nav class="bp-nav">
-  <a href="dashboard.html" class="bp-logo">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+  <a href="dashboard.html"><img src="builtsy-logo.png" alt="Builtsy Blueprints" style="height:32px;width:auto;display:block;"></a>
   <span class="bp-nav-tag">UGC Creator Blueprint</span>
   <button class="btn-brain-ai" onclick="openBrainAI()">✦ Brain AI</button>
   <a href="dashboard.html" class="bp-back">← Dashboard</a>
@@ -182,11 +182,11 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.5;}
     <p class="step-sub">The basics that make you, you.</p>
 
     <div class="field-row">
-      <div class="ff"><label>Your name</label><input class="fi" id="ugc-name" placeholder="e.g. Mia Torres"></div>
-      <div class="ff"><label>Your handle</label><input class="fi" id="ugc-handle" placeholder="e.g. @mia.creates"></div>
+      <div class="ff"><label>Your name</label><input class="fi" id="ugc-name" placeholder="e.g. Mia Torres" oninput="ugcAutoSave()"></div>
+      <div class="ff"><label>Your handle</label><input class="fi" id="ugc-handle" placeholder="e.g. @mia.creates" oninput="ugcAutoSave()"></div>
     </div>
-    <div class="ff"><label>Your niche</label><input class="fi" id="ugc-niche" placeholder="e.g. Beauty & Skincare, Home & Lifestyle"></div>
-    <div class="ff"><label>Content style in one line</label><input class="fi" id="ugc-style" placeholder="e.g. Authentic, relatable, scroll-stopping"></div>
+    <div class="ff"><label>Your niche</label><input class="fi" id="ugc-niche" placeholder="e.g. Beauty & Skincare, Home & Lifestyle" oninput="ugcAutoSave()"></div>
+    <div class="ff"><label>Content style in one line</label><input class="fi" id="ugc-style" placeholder="e.g. Authentic, relatable, scroll-stopping" oninput="ugcAutoSave()"></div>
     <div class="ff"><label>Your tagline</label><input class="fi" id="ms-tagline" placeholder="e.g. Real content. Real results."></div>
     <div class="field-row">
       <div class="ff"><label>Location <span class="opt">(optional)</span></label><input class="fi" id="ms-location" placeholder="e.g. Denver, CO"></div>
@@ -217,8 +217,8 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.5;}
     <div class="ff"><label>Your bio</label><textarea class="fi" id="ms-bio" style="min-height:110px;" placeholder="Tell your story — who you are, what you create, why brands love working with you"></textarea></div>
     <div class="ff"><label>Content style pillars <span class="opt">(3 things that define your style)</span></label><textarea class="fi" id="ms-fun-facts" placeholder="e.g. Authentic storytelling, Hook-first editing, Raw & relatable POV"></textarea></div>
     <div class="ff"><label>Platforms you post on</label><input class="fi" id="ms-credentials" placeholder="e.g. TikTok, Instagram Reels, YouTube Shorts"></div>
-    <div class="ff"><label>Featured hero video URL <span class="opt">(optional)</span></label><input class="fi" id="ugc-hero-video" placeholder="e.g. https://www.youtube.com/watch?v=... or TikTok URL"></div>
-    <div class="ff"><label>Brand collabs for scrolling bar <span class="opt">(comma separated)</span></label><input class="fi" id="ugc-brands" placeholder="e.g. Glossier, LMNT, Notion, Fenty Beauty"></div>
+    <div class="ff"><label>Featured hero video URL <span class="opt">(optional)</span></label><input class="fi" id="ugc-hero-video" placeholder="e.g. https://www.youtube.com/watch?v=... or TikTok URL" oninput="ugcAutoSave()"></div>
+    <div class="ff"><label>Brand collabs for scrolling bar <span class="opt">(comma separated)</span></label><input class="fi" id="ugc-brands" placeholder="e.g. Glossier, LMNT, Notion, Fenty Beauty" oninput="ugcAutoSave()"></div>
 
     <button class="btn-next" onclick="goStep(3)">Next — Portfolio →</button>
     <button class="btn-back" onclick="goStep(1)">← Back</button>
@@ -447,6 +447,26 @@ var RAILWAY_URL = (window.location.hostname === 'localhost' || window.location.h
   ? (window.location.protocol + '//' + window.location.host)
   : 'https://builtsy-api-production.up.railway.app';
 
+// ── AUTO-SAVE ──
+var _ugcSaveTimer = null;
+function ugcAutoSave() {
+  clearTimeout(_ugcSaveTimer);
+  _ugcSaveTimer = setTimeout(function() {
+    var v = function(id){ return (document.getElementById(id)||{}).value||''; };
+    var name = v('ugc-name');
+    var d = { title: name || 'UGC Creator', fields: {
+      name: name, handle: v('ugc-handle'), niche: v('ugc-niche'), style: v('ugc-style'),
+      heroVideo: v('ugc-hero-video'), brands: v('ugc-brands'),
+      vid1Brand: v('ugc-vid1-brand'), vid1Url: v('ugc-vid1-url'),
+      vid2Brand: v('ugc-vid2-brand'), vid2Url: v('ugc-vid2-url'),
+      vid3Brand: v('ugc-vid3-brand'), vid3Url: v('ugc-vid3-url'),
+      vid4Brand: v('ugc-vid4-brand'), vid4Url: v('ugc-vid4-url')
+    }};
+    localSave('ugc', d);
+    saveBlueprint('ugc', d).catch(function(){});
+  }, 1500);
+}
+
 var _currentStep = 1;
 var _totalSteps = 6;
 var _generatedHTML = '';
@@ -645,7 +665,7 @@ function startGenerate() {
   var prompt = buildUGCPrompt();
   _generatedHTML = '';
 
-  fetch(RAILWAY_URL + '/generate', {
+  apiFetch(RAILWAY_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt, stream: true })
@@ -703,13 +723,22 @@ function showError(msg) {
 
 // ── BUILTSY FOOTER ──
 function builtsyInjectFooter(html, name) {
-  var safe = (name||'You').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var footer = '\n<section id="builtsy-made-with" style="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);">'
-    + '<p style="margin:0 0 14px;font-family:monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.2);">MADE WITH</p>'
-    + '<p style="margin:0 0 12px;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.01em;">Built<em style="font-style:italic;color:#ee70bc;">sy</em><span style="color:#C8E000;">.</span></p>'
-    + '<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;color:rgba(255,255,255,0.38);">with love for <strong style="color:#ee70bc;font-weight:600;">' + safe + '</strong> 🌸</p>'
-    + '</section>';
-  return html.indexOf('</body>') !== -1 ? html.replace('</body>', footer + '\n</body>') : html + footer;
+  var honoree = (name||'You').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var footerScript = '(function(){'
+    + 'var b=document.body;'
+    + 'b.style.setProperty("overflow-y","auto","important");'
+    + 'b.style.setProperty("height","auto","important");'
+    + 'b.style.setProperty("min-height","0","important");'
+    + 'var s=document.createElement("section");'
+    + 's.id="builtsy-made-with";'
+    + 's.style.cssText="background:#0a0a0a;text-align:center;padding:4.5rem 2rem 3.5rem;border-top:1px solid rgba(255,255,255,0.08);display:block;width:100%;box-sizing:border-box;margin:0;";'
+    + 's.innerHTML="<p style=\\"margin:0 0 14px;font-family:monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.9)\\">MADE WITH<\\/p>"'
+    + '+"<a href=\\"https:\\/\\/builtsy.ai\\/\\" target=\\"_blank\\" rel=\\"noopener\\" style=\\"display:block;margin:0 auto 16px;width:fit-content\\"><img src=\\"https:\\/\\/builtsy.ai\\/builtsy-footer-logo.png\\" alt=\\"Builtsy\\" style=\\"height:80px;width:auto;display:block\\"><\\/a>"'
+    + '+"<p style=\\"margin:0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:15px;color:rgba(255,255,255,0.9)\\">with love for <strong style=\\"color:#ee70bc;font-weight:600\\">' + honoree + '<\\/strong> 🌸<\\/p>";'
+    + 'b.appendChild(s);'
+    + '})()';
+  var footer = '<scr'+'ipt>' + footerScript + '<\/scr'+'ipt>';
+  return html + '\n' + footer;
 }
 
 function showOutput(html) {
@@ -727,9 +756,51 @@ function showOutput(html) {
   frame.src = blobUrl;
   // Save to Supabase
   try {
-    saveBlueprint('ugc', { title: v('ugc-name') || 'UGC Creator Site', niche: v('ugc-niche') });
+    var ugcFields = {
+      name: v('ugc-name'), handle: v('ugc-handle'), niche: v('ugc-niche'), style: v('ugc-style'),
+      heroVideo: v('ugc-hero-video'), brands: v('ugc-brands'),
+      vid1Brand: v('ugc-vid1-brand'), vid1Url: v('ugc-vid1-url'),
+      vid2Brand: v('ugc-vid2-brand'), vid2Url: v('ugc-vid2-url'),
+      vid3Brand: v('ugc-vid3-brand'), vid3Url: v('ugc-vid3-url'),
+      vid4Brand: v('ugc-vid4-brand'), vid4Url: v('ugc-vid4-url')
+    };
+    saveBlueprint('ugc', { title: v('ugc-name') || 'UGC Creator Site', fields: ugcFields });
   } catch(e) {}
 }
+
+async function ugcRestoreSave() {
+  try {
+    var save = await loadSave('ugc');
+    if (!save || !save.fields) return;
+    var f = save.fields;
+    var ids = ['ugc-name','ugc-handle','ugc-niche','ugc-style','ugc-hero-video','ugc-brands',
+               'ugc-vid1-brand','ugc-vid1-url','ugc-vid2-brand','ugc-vid2-url',
+               'ugc-vid3-brand','ugc-vid3-url','ugc-vid4-brand','ugc-vid4-url'];
+    var keys = ['name','handle','niche','style','heroVideo','brands',
+                'vid1Brand','vid1Url','vid2Brand','vid2Url',
+                'vid3Brand','vid3Url','vid4Brand','vid4Url'];
+    ids.forEach(function(id, i) {
+      if (f[keys[i]] == null) return;
+      var el = document.getElementById(id);
+      if (el) el.value = f[keys[i]];
+    });
+    var toast = document.createElement('div');
+    toast.textContent = 'Your blueprint has been restored ✓';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c8e000;color:#0d1829;border-radius:100px;padding:8px 20px;font-weight:700;font-size:0.8rem;z-index:9999;pointer-events:none;';
+    document.body.appendChild(toast);
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+  } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  var u = await getUser();
+  if (!u) {
+    sessionStorage.setItem('builtsy-redirect', 'blueprint-ugc.html');
+    window.location.href = 'login.html';
+    return;
+  }
+  ugcRestoreSave();
+});
 
 function doRebuild() {
   document.getElementById('output-panel').classList.remove('active');
