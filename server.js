@@ -198,74 +198,33 @@ function wrapTitle(text, max) {
 
 app.get('/og-image', async function(req, res) {
   try {
-    // Always use Builtsy brand colors — clean, always readable
-    var BG     = '#0d0d1a';
-    var PINK   = '#ee70bc';
-    var WHITE  = '#ffffff';
-    var MUTED  = 'rgba(255,255,255,0.5)';
+    var honoree  = xmlEnc(String(req.query.honoree || 'You').slice(0, 36));
+    var event    = xmlEnc(String(req.query.title   || '').slice(0, 50));
+    var date     = xmlEnc(String(req.query.date    || '').slice(0, 50));
 
-    var rawTitle   = String(req.query.title    || "You're Invited").slice(0, 80);
-    var rawHonoree = String(req.query.honoree  || '').slice(0, 40);
-    var rawDate    = String(req.query.date     || '').slice(0, 60);
-
-    var titleLines = wrapTitle(rawTitle, 28);
-    var titleFS = titleLines.length > 1 ? 54 : (rawTitle.length <= 16 ? 72 : rawTitle.length <= 24 ? 62 : 52);
-    var lineH = titleFS + 12;
-
-    // Layout — center everything vertically
-    var totalH = titleLines.length * lineH
-      + (rawHonoree ? 52 : 0)
-      + (rawDate    ? 44 : 0)
-      + 80; // pill
-    var startY = Math.round((630 - totalH) / 2) + titleFS;
-    var y = startY;
-
-    var titleSvg = titleLines.map(function(line) {
-      var row = '<text x="600" y="' + y + '" text-anchor="middle"'
-        + ' font-family="sans-serif" font-size="' + titleFS + '" font-weight="bold"'
-        + ' fill="' + WHITE + '">' + xmlEnc(line) + '</text>';
-      y += lineH;
-      return row;
-    }).join('\n');
-
-    var honoreeRow = '';
-    if (rawHonoree) {
-      y += 8;
-      honoreeRow = '<text x="600" y="' + y + '" text-anchor="middle"'
-        + ' font-family="sans-serif" font-size="28" fill="' + PINK + '">'
-        + 'for ' + xmlEnc(rawHonoree) + '</text>';
-      y += 52;
-    }
-
-    var dateRow = '';
-    if (rawDate) {
-      dateRow = '<text x="600" y="' + y + '" text-anchor="middle"'
-        + ' font-family="sans-serif" font-size="22" fill="' + MUTED + '">'
-        + xmlEnc(rawDate) + '</text>';
-      y += 44;
-    }
-
-    y += 24;
-    var pillRow = '<rect x="410" y="' + y + '" width="380" height="58" rx="29" fill="' + PINK + '"/>'
-      + '<text x="600" y="' + (y + 37) + '" text-anchor="middle"'
-      + ' font-family="sans-serif" font-size="19" font-weight="bold" fill="' + WHITE + '">'
-      + 'Tap to RSVP</text>';
-
+    // Footer-style: dark, "with love for [Honoree]" big and pink
     var svg = '<?xml version="1.0" encoding="UTF-8"?>'
       + '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">'
-      + '<rect width="1200" height="630" fill="' + BG + '"/>'
-      + '<rect x="0" y="0" width="8" height="630" fill="' + PINK + '"/>'
-      + '<rect x="1192" y="0" width="8" height="630" fill="' + PINK + '" opacity="0.3"/>'
-      + '<text x="600" y="' + (startY - titleFS - 28) + '" text-anchor="middle"'
-        + ' font-family="sans-serif" font-size="13" letter-spacing="6" fill="' + MUTED + '">'
-        + 'YOU ARE INVITED</text>'
-      + '<rect x="500" y="' + (startY - titleFS - 10) + '" width="200" height="1" fill="' + PINK + '" opacity="0.5"/>'
-      + titleSvg
-      + honoreeRow
-      + dateRow
-      + pillRow
-      + '<text x="1160" y="614" text-anchor="end" font-family="sans-serif"'
-        + ' font-size="14" fill="' + WHITE + '" opacity="0.2">builtsy.ai</text>'
+      // Background
+      + '<rect width="1200" height="630" fill="#0a0a0a"/>'
+      // Subtle pink glow top-center
+      + '<ellipse cx="600" cy="0" rx="500" ry="220" fill="#ee70bc" opacity="0.07"/>'
+      // Pink accent bars
+      + '<rect x="0" y="0" width="8" height="630" fill="#ee70bc"/>'
+      // "MADE WITH" eyebrow
+      + '<text x="600" y="170" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#ffffff" opacity="0.35" letter-spacing="10">MADE WITH</text>'
+      // "builtsy." brand name — big, split color
+      + '<text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="96" font-weight="bold" fill="#ffffff">builtsy</text>'
+      + '<text x="726" y="280" text-anchor="start" font-family="sans-serif" font-size="96" font-weight="bold" fill="#ee70bc">.</text>'
+      // Divider
+      + '<rect x="460" y="310" width="280" height="2" fill="#ee70bc" opacity="0.4"/>'
+      // "with love for"
+      + '<text x="600" y="390" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#ffffff" opacity="0.6">with love for</text>'
+      // Honoree name — large, pink
+      + '<text x="600" y="480" text-anchor="middle" font-family="sans-serif" font-size="80" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
+      // Event + date small at bottom
+      + (event || date ? '<text x="600" y="565" text-anchor="middle" font-family="sans-serif" font-size="26" fill="#ffffff" opacity="0.4">'
+          + (event && date ? event + '  ·  ' + date : event || date) + '</text>' : '')
       + '</svg>';
 
     var png = await sharp(Buffer.from(svg)).png().toBuffer();
