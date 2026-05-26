@@ -188,6 +188,12 @@ function safeHex(c) {
   var m = String(c||'').match(/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);
   return m ? '#' + m[1] : null;
 }
+function luminance(hex) {
+  var h = String(hex||'').replace('#','');
+  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if (h.length !== 6) return 0;
+  return (0.299*parseInt(h.substr(0,2),16) + 0.587*parseInt(h.substr(2,2),16) + 0.114*parseInt(h.substr(4,2),16)) / 255;
+}
 function wrapTitle(text, max) {
   if (text.length <= max) return [text];
   var words = text.split(' '), line = '', lines = [];
@@ -204,7 +210,10 @@ app.get('/og-image', async function(req, res) {
   try {
     var bg     = safeHex(req.query.bg)     || '#0a0a0a';
     var accent = safeHex(req.query.accent) || '#ee70bc';
-    var textC  = safeHex(req.query.text)   || '#ffffff';
+    // Auto-detect readable text color based on bg luminance — ignores client hint
+    var textC  = luminance(bg) > 0.45 ? '#1a1a1a' : '#ffffff';
+    // If bg is light, also soften the accent gradient overlays
+    var isLight = luminance(bg) > 0.45;
     var rawTitle   = String(req.query.title    || "You're Invited").slice(0, 80);
     var rawHonoree = String(req.query.honoree  || '').slice(0, 40);
     var rawDate    = String(req.query.date     || '').slice(0, 60);
@@ -229,10 +238,12 @@ app.get('/og-image', async function(req, res) {
         + ' fill="' + textC + '" font-weight="bold">' + xmlEnc(line) + '</text>';
     }).join('\n  ');
 
+    var glowA = isLight ? '0.08' : '0.18';
+    var glowB = isLight ? '0.06' : '0.13';
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">\n'
       + '<defs>\n'
-      + '<radialGradient id="ga" cx="10%" cy="10%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="0.18"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
-      + '<radialGradient id="gb" cx="90%" cy="90%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="0.13"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
+      + '<radialGradient id="ga" cx="10%" cy="10%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="' + glowA + '"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
+      + '<radialGradient id="gb" cx="90%" cy="90%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="' + glowB + '"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
       + '</defs>\n'
       + '<rect width="1200" height="630" fill="' + bg + '"/>\n'
       + '<rect width="1200" height="630" fill="url(#ga)"/>\n'
