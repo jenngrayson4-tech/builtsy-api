@@ -184,16 +184,6 @@ app.post('/generate', requireAuth, rateLimit, async function(req, res) {
 function xmlEnc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function safeHex(c) {
-  var m = String(c||'').match(/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);
-  return m ? '#' + m[1] : null;
-}
-function luminance(hex) {
-  var h = String(hex||'').replace('#','');
-  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  if (h.length !== 6) return 0;
-  return (0.299*parseInt(h.substr(0,2),16) + 0.587*parseInt(h.substr(2,2),16) + 0.114*parseInt(h.substr(4,2),16)) / 255;
-}
 function wrapTitle(text, max) {
   if (text.length <= max) return [text];
   var words = text.split(' '), line = '', lines = [];
@@ -208,64 +198,74 @@ function wrapTitle(text, max) {
 
 app.get('/og-image', async function(req, res) {
   try {
-    var bg     = safeHex(req.query.bg)     || '#0a0a0a';
-    var accent = safeHex(req.query.accent) || '#ee70bc';
-    // Auto-detect readable text color based on bg luminance — ignores client hint
-    var textC  = luminance(bg) > 0.45 ? '#1a1a1a' : '#ffffff';
-    // If bg is light, also soften the accent gradient overlays
-    var isLight = luminance(bg) > 0.45;
+    // Always use Builtsy brand colors — clean, always readable
+    var BG     = '#0d0d1a';
+    var PINK   = '#ee70bc';
+    var WHITE  = '#ffffff';
+    var MUTED  = 'rgba(255,255,255,0.5)';
+
     var rawTitle   = String(req.query.title    || "You're Invited").slice(0, 80);
     var rawHonoree = String(req.query.honoree  || '').slice(0, 40);
     var rawDate    = String(req.query.date     || '').slice(0, 60);
 
-    var titleLines = wrapTitle(rawTitle, 30);
-    var fs2 = titleLines.length > 1 ? 52 : (rawTitle.length <= 18 ? 68 : rawTitle.length <= 26 ? 58 : 48);
-    var lineH = fs2 + 10;
+    var titleLines = wrapTitle(rawTitle, 28);
+    var titleFS = titleLines.length > 1 ? 54 : (rawTitle.length <= 16 ? 72 : rawTitle.length <= 24 ? 62 : 52);
+    var lineH = titleFS + 12;
 
-    // Build SVG layout top-down
-    var eyeY   = 155;
-    var lineY  = eyeY + 22;
-    var titleStartY = lineY + 52;
-    var titleEndY   = titleStartY + (titleLines.length - 1) * lineH;
-    var honoreeY = titleEndY + fs2 + 42;
-    var dateY    = honoreeY + (rawHonoree ? 48 : 0);
-    var pillTopY = (rawDate ? dateY : honoreeY) + 52;
-    var pillTextY = pillTopY + 36;
+    // Layout — center everything vertically
+    var totalH = titleLines.length * lineH
+      + (rawHonoree ? 52 : 0)
+      + (rawDate    ? 44 : 0)
+      + 80; // pill
+    var startY = Math.round((630 - totalH) / 2) + titleFS;
+    var y = startY;
 
-    var titleSvg = titleLines.map(function(line, i) {
-      return '<text x="600" y="' + (titleStartY + i * lineH) + '" text-anchor="middle"'
-        + ' font-family="\'DejaVu Serif\',Georgia,serif" font-size="' + fs2 + '"'
-        + ' fill="' + textC + '" font-weight="bold">' + xmlEnc(line) + '</text>';
-    }).join('\n  ');
+    var titleSvg = titleLines.map(function(line) {
+      var row = '<text x="600" y="' + y + '" text-anchor="middle"'
+        + ' font-family="sans-serif" font-size="' + titleFS + '" font-weight="bold"'
+        + ' fill="' + WHITE + '">' + xmlEnc(line) + '</text>';
+      y += lineH;
+      return row;
+    }).join('\n');
 
-    var glowA = isLight ? '0.08' : '0.18';
-    var glowB = isLight ? '0.06' : '0.13';
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">\n'
-      + '<defs>\n'
-      + '<radialGradient id="ga" cx="10%" cy="10%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="' + glowA + '"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
-      + '<radialGradient id="gb" cx="90%" cy="90%" r="55%"><stop offset="0%" stop-color="' + accent + '" stop-opacity="' + glowB + '"/><stop offset="100%" stop-color="' + accent + '" stop-opacity="0"/></radialGradient>\n'
-      + '</defs>\n'
-      + '<rect width="1200" height="630" fill="' + bg + '"/>\n'
-      + '<rect width="1200" height="630" fill="url(#ga)"/>\n'
-      + '<rect width="1200" height="630" fill="url(#gb)"/>\n'
-      + '<rect x="0" y="0" width="7" height="630" fill="' + accent + '" opacity="0.8"/>\n'
-      + '<text x="600" y="' + eyeY + '" text-anchor="middle" font-family="\'DejaVu Sans\',Arial,sans-serif"'
-        + ' font-size="13" letter-spacing="7" fill="' + textC + '" opacity="0.45">YOU\'RE INVITED</text>\n'
-      + '<rect x="530" y="' + lineY + '" width="140" height="1" fill="' + accent + '" opacity="0.55"/>\n'
-      + titleSvg + '\n'
-      + (rawHonoree
-          ? '<text x="600" y="' + honoreeY + '" text-anchor="middle" font-family="\'DejaVu Serif\',Georgia,serif"'
-            + ' font-size="27" fill="' + accent + '" font-style="italic">for ' + xmlEnc(rawHonoree) + '</text>\n'
-          : '')
-      + (rawDate
-          ? '<text x="600" y="' + dateY + '" text-anchor="middle" font-family="\'DejaVu Sans\',Arial,sans-serif"'
-            + ' font-size="20" fill="' + textC + '" opacity="0.6">' + xmlEnc(rawDate) + '</text>\n'
-          : '')
-      + '<rect x="430" y="' + pillTopY + '" width="340" height="54" rx="27" fill="' + accent + '"/>\n'
-      + '<text x="600" y="' + pillTextY + '" text-anchor="middle" font-family="\'DejaVu Sans\',Arial,sans-serif"'
-        + ' font-size="17" fill="white" font-weight="bold" letter-spacing="1">Tap to RSVP →</text>\n'
-      + '<text x="1170" y="616" text-anchor="end" font-family="\'DejaVu Sans\',Arial,sans-serif"'
-        + ' font-size="13" fill="' + textC + '" opacity="0.25">builtsy.ai</text>\n'
+    var honoreeRow = '';
+    if (rawHonoree) {
+      y += 8;
+      honoreeRow = '<text x="600" y="' + y + '" text-anchor="middle"'
+        + ' font-family="sans-serif" font-size="28" fill="' + PINK + '">'
+        + 'for ' + xmlEnc(rawHonoree) + '</text>';
+      y += 52;
+    }
+
+    var dateRow = '';
+    if (rawDate) {
+      dateRow = '<text x="600" y="' + y + '" text-anchor="middle"'
+        + ' font-family="sans-serif" font-size="22" fill="' + MUTED + '">'
+        + xmlEnc(rawDate) + '</text>';
+      y += 44;
+    }
+
+    y += 24;
+    var pillRow = '<rect x="410" y="' + y + '" width="380" height="58" rx="29" fill="' + PINK + '"/>'
+      + '<text x="600" y="' + (y + 37) + '" text-anchor="middle"'
+      + ' font-family="sans-serif" font-size="19" font-weight="bold" fill="' + WHITE + '">'
+      + 'Tap to RSVP</text>';
+
+    var svg = '<?xml version="1.0" encoding="UTF-8"?>'
+      + '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">'
+      + '<rect width="1200" height="630" fill="' + BG + '"/>'
+      + '<rect x="0" y="0" width="8" height="630" fill="' + PINK + '"/>'
+      + '<rect x="1192" y="0" width="8" height="630" fill="' + PINK + '" opacity="0.3"/>'
+      + '<text x="600" y="' + (startY - titleFS - 28) + '" text-anchor="middle"'
+        + ' font-family="sans-serif" font-size="13" letter-spacing="6" fill="' + MUTED + '">'
+        + 'YOU ARE INVITED</text>'
+      + '<rect x="500" y="' + (startY - titleFS - 10) + '" width="200" height="1" fill="' + PINK + '" opacity="0.5"/>'
+      + titleSvg
+      + honoreeRow
+      + dateRow
+      + pillRow
+      + '<text x="1160" y="614" text-anchor="end" font-family="sans-serif"'
+        + ' font-size="14" fill="' + WHITE + '" opacity="0.2">builtsy.ai</text>'
       + '</svg>';
 
     var png = await sharp(Buffer.from(svg)).png().toBuffer();

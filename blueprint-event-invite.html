@@ -1738,7 +1738,7 @@ function buildPrompt(data) {
 
     '== OUTPUT ==\n' +
     'Start IMMEDIATELY with <!DOCTYPE html> — nothing before it. Single self-contained HTML. All CSS/JS inline. Google Fonts via <link>. Mobile-first 390px max-width 480px centered. var/function(){}/onclick= only, no const/let/arrow. Do NOT generate any footer — one will be added automatically.\n' +
-    'COLORS: Inside the <head>, include this exact HTML comment with your actual chosen hex values: <!-- builtsy-og:{"bg":"#YOURBG","accent":"#YOURACCENT","text":"#YOURTEXT"} --> where bg = page background color, accent = primary accent/brand color, text = primary body text color. Use real hex codes from your design.\n';
+    '';
 
   var prompt = newPrompt;
   var prompt = newPrompt;
@@ -1839,24 +1839,13 @@ function processGeneratedHTML(html, data, built) {
     html = html.replace(/CLAIMS_SCRIPT_URL/g, SUPA_URL);
     html = html.replace(/https:\/\/script\.google\.com[^"\s]*/g, SUPA_URL);
 
-    // Extract AI color palette from embedded comment
-    var ogColors = { bg: '#0a0a0a', accent: '#ee70bc', text: '#ffffff' };
-    var ogColorMatch = html.match(/<!--\s*builtsy-og:([\s\S]*?)\s*-->/);
-    if (ogColorMatch) {
-      try { ogColors = JSON.parse(ogColorMatch[1]); } catch(e) {}
-      html = html.replace(ogColorMatch[0], '');
-    }
-
-    // Build OG share card URL — always use production Railway URL (not localhost)
+    // Build OG share card URL — Builtsy brand colors, event-specific text
     var OG_BASE = 'https://builtsy-api-production.up.railway.app';
     var ogCardTitle = (data.eventType || "You're Invited");
     var ogHonoree   = data.honoreeNames || '';
     var ogDate      = built.cleanDate || data.eventDate || '';
     var ogImgUrl = OG_BASE + '/og-image'
-      + '?bg='      + encodeURIComponent(ogColors.bg     || '#0a0a0a')
-      + '&accent='  + encodeURIComponent(ogColors.accent || '#ee70bc')
-      + '&text='    + encodeURIComponent(ogColors.text   || '#ffffff')
-      + '&title='   + encodeURIComponent(ogCardTitle)
+      + '?title='   + encodeURIComponent(ogCardTitle)
       + '&honoree=' + encodeURIComponent(ogHonoree)
       + '&date='    + encodeURIComponent(ogDate);
 
