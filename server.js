@@ -5,6 +5,12 @@ const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
 const sharp = require('sharp');
 
+// Preload Builtsy logo as base64 for OG card
+var BUILTSY_LOGO_B64 = '';
+try {
+  BUILTSY_LOGO_B64 = fs.readFileSync(path.join(__dirname, 'builtsy-footer-logo.png')).toString('base64');
+} catch(e) { console.warn('builtsy-footer-logo.png not found'); }
+
 // Load template HTML once at startup
 var SOCIAL_TEMPLATE = '';
 try {
@@ -198,33 +204,39 @@ function wrapTitle(text, max) {
 
 app.get('/og-image', async function(req, res) {
   try {
-    var honoree  = xmlEnc(String(req.query.honoree || 'You').slice(0, 36));
-    var event    = xmlEnc(String(req.query.title   || '').slice(0, 50));
-    var date     = xmlEnc(String(req.query.date    || '').slice(0, 50));
+    var honoree = xmlEnc(String(req.query.honoree || 'You').slice(0, 32));
+    var event   = xmlEnc(String(req.query.title   || '').slice(0, 50));
+    var date    = xmlEnc(String(req.query.date    || '').slice(0, 50));
+    var logoImg = BUILTSY_LOGO_B64
+      ? '<image href="data:image/png;base64,' + BUILTSY_LOGO_B64 + '" x="250" y="95" width="700" height="233" preserveAspectRatio="xMidYMid meet"/>'
+      : '<text x="600" y="240" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="90" font-weight="bold" fill="#ffffff">builtsy<tspan fill="#ee70bc">.</tspan></text>';
 
-    // Footer-style: dark, "with love for [Honoree]" big and pink
+    // Heart path centered at 600,340
+    var heart = '<path d="M600,355 C600,355 562,322 544,304 C526,286 526,260 548,253 C566,248 582,264 600,280 C618,264 634,248 652,253 C674,260 674,286 656,304 C638,322 600,355 600,355 Z" fill="none" stroke="#ee70bc" stroke-width="4"/>';
+
+    var subline = (event && date) ? event + '  ·  ' + date : (event || date);
+
     var svg = '<?xml version="1.0" encoding="UTF-8"?>'
-      + '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">'
-      // Background
-      + '<rect width="1200" height="630" fill="#0a0a0a"/>'
-      // Subtle pink glow top-center
-      + '<ellipse cx="600" cy="0" rx="500" ry="220" fill="#ee70bc" opacity="0.07"/>'
-      // Pink accent bars
-      + '<rect x="0" y="0" width="8" height="630" fill="#ee70bc"/>'
-      // "MADE WITH" eyebrow
-      + '<text x="600" y="170" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="18" fill="#ffffff" opacity="0.35" letter-spacing="10">MADE WITH</text>'
-      // "builtsy." brand name — big, split color
-      + '<text x="600" y="280" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="96" font-weight="bold" fill="#ffffff">builtsy</text>'
-      + '<text x="726" y="280" text-anchor="start" font-family="Liberation Sans, Arial, sans-serif" font-size="96" font-weight="bold" fill="#ee70bc">.</text>'
-      // Divider
-      + '<rect x="460" y="310" width="280" height="2" fill="#ee70bc" opacity="0.4"/>'
+      + '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630">'
+      + '<rect width="1200" height="630" fill="#000000"/>'
+      // Subtle top glow
+      + '<ellipse cx="600" cy="-30" rx="480" ry="160" fill="#ee70bc" opacity="0.06"/>'
+      // MADE WITH
+      + '<text x="600" y="78" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="19" font-weight="bold" letter-spacing="9" fill="#ffffff" opacity="0.55">MADE WITH</text>'
+      // Logo
+      + logoImg
+      // Heart
+      + heart
       // "with love for"
-      + '<text x="600" y="390" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="32" fill="#ffffff" opacity="0.6">with love for</text>'
-      // Honoree name — large, pink
-      + '<text x="600" y="480" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="80" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
-      // Event + date small at bottom
-      + (event || date ? '<text x="600" y="565" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="26" fill="#ffffff" opacity="0.4">'
-          + (event && date ? event + '  ·  ' + date : event || date) + '</text>' : '')
+      + '<text x="600" y="420" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="36" fill="#ffffff">with love for</text>'
+      // Honoree — pink, bold, large
+      + '<text x="600" y="515" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="76" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
+      // Pink bullet dots + tagline
+      + '<circle cx="310" cy="590" r="5" fill="#ee70bc"/>'
+      + '<circle cx="890" cy="590" r="5" fill="#ee70bc"/>'
+      + '<text x="600" y="595" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="16" letter-spacing="4" fill="#ffffff" opacity="0.45">BUILT BY CREATORS, FOR CREATORS</text>'
+      // Event/date if provided
+      + (subline ? '<text x="600" y="570" text-anchor="middle" font-family="Liberation Sans,sans-serif" font-size="22" fill="#ffffff" opacity="0.3">' + subline + '</text>' : '')
       + '</svg>';
 
     var png = await sharp(Buffer.from(svg)).png().toBuffer();
