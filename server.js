@@ -212,18 +212,18 @@ app.get('/og-image', async function(req, res) {
       // Pink accent bars
       + '<rect x="0" y="0" width="8" height="630" fill="#ee70bc"/>'
       // "MADE WITH" eyebrow
-      + '<text x="600" y="170" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#ffffff" opacity="0.35" letter-spacing="10">MADE WITH</text>'
+      + '<text x="600" y="170" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="18" fill="#ffffff" opacity="0.35" letter-spacing="10">MADE WITH</text>'
       // "builtsy." brand name — big, split color
-      + '<text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="96" font-weight="bold" fill="#ffffff">builtsy</text>'
-      + '<text x="726" y="280" text-anchor="start" font-family="sans-serif" font-size="96" font-weight="bold" fill="#ee70bc">.</text>'
+      + '<text x="600" y="280" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="96" font-weight="bold" fill="#ffffff">builtsy</text>'
+      + '<text x="726" y="280" text-anchor="start" font-family="Liberation Sans, Arial, sans-serif" font-size="96" font-weight="bold" fill="#ee70bc">.</text>'
       // Divider
       + '<rect x="460" y="310" width="280" height="2" fill="#ee70bc" opacity="0.4"/>'
       // "with love for"
-      + '<text x="600" y="390" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#ffffff" opacity="0.6">with love for</text>'
+      + '<text x="600" y="390" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="32" fill="#ffffff" opacity="0.6">with love for</text>'
       // Honoree name — large, pink
-      + '<text x="600" y="480" text-anchor="middle" font-family="sans-serif" font-size="80" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
+      + '<text x="600" y="480" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="80" font-weight="bold" fill="#ee70bc">' + honoree + '</text>'
       // Event + date small at bottom
-      + (event || date ? '<text x="600" y="565" text-anchor="middle" font-family="sans-serif" font-size="26" fill="#ffffff" opacity="0.4">'
+      + (event || date ? '<text x="600" y="565" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="26" fill="#ffffff" opacity="0.4">'
           + (event && date ? event + '  ·  ' + date : event || date) + '</text>' : '')
       + '</svg>';
 
