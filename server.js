@@ -428,10 +428,49 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
 
     // ── AI CUSTOM: fully from-scratch generation, no template ─────────────────
     if (templateType === 'custom') {
-      var prompt = 'You are a senior $50k UX/UI brand designer and front-end developer building a premium small-business website. Every decision — layout, type, spacing, motion, color — should feel custom-crafted and intentional.\n\n'
+      var prompt = 'You are a senior $50k UX/UI brand designer and front-end developer. You are designing branded experiences — not assembling components. Every decision — layout, type, spacing, motion, color — must feel custom-crafted, intentional, and premium.\n\n'
         + 'BUSINESS INFORMATION:\n' + fieldText + '\n'
         + 'NICHE: ' + niche + '\n'
         + revisionLine + '\n\n'
+
+        + '════════════════════════════════════\n'
+        + ' GLOBAL RULES — APPLY TO EVERY BUILD\n'
+        + '════════════════════════════════════\n'
+        + 'These rules are non-negotiable. A site that breaks any of them has FAILED.\n\n'
+        + 'RULE 1 — MOBILE NAVIGATION:\n'
+        + 'The mobile header contains EXACTLY TWO elements: brand name/logo on the left, hamburger icon on the right.\n'
+        + 'NO CTA buttons in the mobile header. No "Order Now". No "Build Your Package". No pills. No secondary nav items.\n'
+        + 'CTAs belong in the hero content body — not the nav, not above the fold beside the logo.\n\n'
+        + 'RULE 2 — ZERO EMOJI:\n'
+        + 'No emoji anywhere in the entire site. Not in headings, body, buttons, trust strips, footer, contact info — nowhere.\n'
+        + 'Replace what emoji would do with: premium SVG icons (inline), pill badges, typographic emphasis, or decorative dividers.\n\n'
+        + 'RULE 3 — EVERY SECTION NEEDS VISUAL STRUCTURE:\n'
+        + 'Plain text floating on a flat background is not allowed. Every section must contain at least one of:\n'
+        + 'bordered card · layered panel · soft background block · quote card · trust pill · shadow container · editorial split layout · divider line · subtle outline\n'
+        + 'If text is sitting directly on a plain background with no visual framing — redesign it.\n\n'
+        + 'RULE 4 — NO GIANT UNSTRUCTURED PARAGRAPHS:\n'
+        + 'Body copy must be broken into visual chunks: cards, grouped info rows, trust modules, bordered sections, staggered layouts, split columns, checklist groups. Never a wall of identical text.\n\n'
+        + 'RULE 5 — CTA PLACEMENT:\n'
+        + 'Primary CTA = hero section. Secondary CTA = after trust/content sections. Optional sticky mobile CTA bar at bottom.\n'
+        + 'Never random CTA placement. Never a CTA crammed into the nav header.\n\n'
+        + 'RULE 6 — TYPOGRAPHY VARIATION IS REQUIRED:\n'
+        + 'No large blocks of identical font styling. Required: serif + sans pairing, italic emphasis, accent-colored words, bold moments, spacing hierarchy, eyebrow labels on every section.\n\n'
+        + 'RULE 7 — SECTION ANATOMY (every section must have all of these):\n'
+        + 'eyebrow label · art-directed headline · supporting text · divider or border treatment · spacing separation · at least one visual anchor element\n\n'
+        + 'RULE 8 — CONTACT SECTION DESIGN:\n'
+        + 'Contact info is NEVER a plain text list. Use: cards, grouped contact modules, soft bordered info blocks, stacked service area cards, subtle separators, or mini trust rows.\n\n'
+        + 'RULE 9 — ANIMATION (required on every build):\n'
+        + 'Include subtle, premium, theme-specific motion. Choose appropriate effects for the niche:\n'
+        + '- Animated trust strip (CSS marquee, see Trust Strip section)\n'
+        + '- Drifting SVG particles or soft floating dots in the hero background (CSS keyframes, very subtle opacity)\n'
+        + '- Floating gradient blobs in section backgrounds (CSS radial-gradient + keyframe drift, opacity 0.08–0.15)\n'
+        + '- Parallax-style image depth on scroll (CSS transform translateY tied to a mild scroll listener or CSS perspective)\n'
+        + '- Smooth reveal on scroll (IntersectionObserver fade-up for section content)\n'
+        + '- Hover lift on cards (translateY(-4px) + shadow increase)\n'
+        + 'Motion must feel calm, premium, and branded. NOT flashy, NOT distracting.\n\n'
+        + 'RULE 10 — THE FAILURE TEST:\n'
+        + 'Before finishing, check: Does the page look like stacked rectangles of plain centered text with generic buttons on empty backgrounds?\n'
+        + 'If yes — that design has FAILED. Add visual structure, motion, typographic contrast, and layered content until it does not.\n\n'
 
         + '════════════════════════════════════\n'
         + ' FOUNDATION\n'
@@ -581,7 +620,9 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
         + '- Twitter card: twitter:card, twitter:title, twitter:description\n'
         + '- <link rel="canonical" href="#">\n\n'
         + 'JSON-LD (before </body>): LocalBusiness or ProfessionalService schema — name, description, url, telephone, email, address, priceRange.\n\n'
-        + 'Build this site as if a $50k designer handed it to the client. Make every pixel count.';
+        + 'You are designing a branded experience — not assembling components.\n'
+        + 'Build this site as if a $50k designer is handing it directly to the client. Make every pixel count.\n'
+        + 'Apply all 10 Global Rules. Run the Failure Test before outputting.';
 
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
