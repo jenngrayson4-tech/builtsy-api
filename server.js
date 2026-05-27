@@ -1131,6 +1131,110 @@ app.post('/contact-notify', cors(), rateLimit, async function(req, res) {
 // ── Builtsy Brain AI chat ────────────────────────────────────────────────────
 var CHAT_SYSTEM = 'You are Builtsy Brain AI — the creative and business brain built into Builtsy, a platform that helps small business owners, creators, and entrepreneurs build their brand and grow online.\n\nAlways refer to yourself as "Builtsy" or "Builtsy Brain AI" — never "I\'m an AI" or "as an AI assistant." You are Builtsy. You are part of their team.\n\nTone: warm, sharp, real, and encouraging. Talk like a brilliant friend who happens to know everything about marketing, branding, and business — not like a corporate chatbot. Use their name when you know it. Be direct. Skip the fluff. Give real answers they can actually use today.\n\nAlways reference Builtsy naturally: "Builtsy can help you with that", "that\'s what Builtsy is built for", "let\'s build that together." Make them feel like they\'re working with Builtsy, not just querying an AI.\n\nFormat responses cleanly: **bold** for key points, bullets for lists, ### headings for longer responses. Keep it conversational but genuinely useful. No filler phrases like "Certainly!" or "Great question!" — just get into it.';
 
+// ── BRAIN BUILD ──────────────────────────────────────────────────────────────
+const BRAIN_BUILD_SYSTEM = `You are Builtsy Brain Builder — an expert web designer who creates beautiful, complete, branded HTML pages for service-based businesses, coaches, and wellness professionals.
+
+Your output is ALWAYS a single complete HTML file: <!DOCTYPE html> through </html>. No markdown. No code fences. No explanations. Just the HTML.
+
+DESIGN PRINCIPLES:
+- Professional, warm, conversion-focused design
+- Mobile-responsive with viewport meta tag
+- All CSS embedded in <style> in <head>
+- Google Fonts loaded via link tag: Playfair Display (headings, 700/900) + DM Sans (body, 400/600)
+- Use the brand palette CSS variables exactly as provided — they are the user's real brand colors
+- Apply graceful white space, clear visual hierarchy, smooth hover states
+- Working interactive elements (JS inline in <script> at bottom of body)
+- Write REAL copy using the business name, owner name, niche, credentials — never [placeholder] text
+- If palette background (--bg) starts with #0 or #1, design for dark mode aesthetics
+
+PAGE STRUCTURE RULES:
+- Always include a clean nav/header with business name
+- Every page ends with a footer: business name + © {year} · All rights reserved
+- CTAs link to "#contact" or "#get-started" as placeholder hrefs
+- Sections use id attributes: #hero, #about, #how-it-works, #cta, etc.
+- Buttons have clear hover states
+
+BUILD TYPES — structure each accordingly:
+
+PROTOCOL/PROGRAM PAGE: Hero with transformation promise → What's included (icon grid) → How it works (numbered steps) → Who it's for (bullet list) → Testimonial placeholder → CTA section
+
+QUIZ PAGE: Intro/lead-in section → Quiz container with 6-8 questions (radio buttons, one at a time via JS) → Score calculation → 3-4 result types shown conditionally based on score range → Each result has a heading, description, and CTA
+
+EDUCATION HUB: Hero → "What you need to know" key concepts (card grid) → Common myths debunked (accordion or toggle list in JS) → Deep-dive content section → Resources/next steps → CTA to work with owner
+
+CHALLENGE PAGE: Hero with challenge name + duration → The promise/transformation → Day-by-day breakdown (collapsible or tabbed) → Who it's for → Social proof placeholder → Sign-up CTA
+
+DISCLAIMER/LEGAL: Clean professional layout, NOT scary. Business name header → Educational purpose statement → Not medical/legal advice section → Results disclaimer → Affiliate/partner disclosure if relevant → Contact info
+
+CONTENT TRANSFORM: Take the pasted content, intelligently restructure into 4-6 sections with appropriate types (hero, features/benefits, process, testimonials, FAQ, CTA). Write proper headlines and clean copy from the raw content.`;
+
+app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
+  try {
+    const { prompt, bizCtx, paletteCss, buildType } = req.body;
+    if (!prompt) return res.status(400).json({ error: 'prompt required' });
+
+    // Build business context block
+    let ctxBlock = '';
+    if (bizCtx && (bizCtx.name || bizCtx.ownerName)) {
+      ctxBlock = '\n\n---\nBUSINESS CONTEXT — use every field below to write real, personalized copy:\n';
+      if (bizCtx.ownerName)     ctxBlock += `Owner name: ${bizCtx.ownerName}\n`;
+      if (bizCtx.name)          ctxBlock += `Business name: ${bizCtx.name}\n`;
+      if (bizCtx.niche || bizCtx.industry) ctxBlock += `Niche/industry: ${bizCtx.niche || bizCtx.industry}\n`;
+      if (bizCtx.tagline)       ctxBlock += `Tagline: "${bizCtx.tagline}"\n`;
+      if (bizCtx.heroHeadline)  ctxBlock += `Hero headline: "${bizCtx.heroHeadline}"\n`;
+      if (bizCtx.heroSub)       ctxBlock += `Hero subheading: "${bizCtx.heroSub}"\n`;
+      if (bizCtx.bio)           ctxBlock += `Bio/About: ${bizCtx.bio}\n`;
+      if (bizCtx.credentials)   ctxBlock += `Credentials: ${bizCtx.credentials}\n`;
+      if (bizCtx.funFacts)      ctxBlock += `Fun facts/pills: ${bizCtx.funFacts}\n`;
+      if (bizCtx.location)      ctxBlock += `Location: ${bizCtx.location}\n`;
+      if (bizCtx.serviceArea)   ctxBlock += `Service area: ${bizCtx.serviceArea}\n`;
+      if (bizCtx.yearsExp)      ctxBlock += `Years of experience: ${bizCtx.yearsExp}\n`;
+      if (bizCtx.clientsServed) ctxBlock += `Clients served: ${bizCtx.clientsServed}\n`;
+      if (bizCtx.availability)  ctxBlock += `Availability: ${bizCtx.availability}\n`;
+      if (bizCtx.services && bizCtx.services.length) {
+        ctxBlock += `Services offered:\n`;
+        bizCtx.services.forEach((s, i) => {
+          ctxBlock += `  ${i + 1}. ${s.name}${s.desc ? ' — ' + s.desc : ''}${s.tags ? ' [' + s.tags + ']' : ''}\n`;
+        });
+      }
+      if (bizCtx.rates && bizCtx.rates.length) {
+        ctxBlock += `Pricing:\n`;
+        bizCtx.rates.forEach(r => {
+          if (r.name || r.price) ctxBlock += `  ${r.name || 'Tier'}: ${r.price || ''}${r.desc ? ' — ' + r.desc : ''}\n`;
+        });
+      }
+      if (bizCtx.voice) ctxBlock += `\nWRITING VOICE — match this tone exactly:\n"""\n${bizCtx.voice}\n"""\n`;
+    }
+
+    // Brand palette block
+    let paletteBlock = '';
+    if (paletteCss && paletteCss.trim()) {
+      paletteBlock = `\n\n---\nBRAND PALETTE — inject these exact CSS variables into :root {} and use them throughout:\n${paletteCss}\n\nVariable guide: --bg = page background, --light = card/section background, --orange = primary accent/CTA color, --orange2 = darker accent, --text = body text, --text2 = secondary text, --dark = heading text or dark surfaces. Use var(--orange) for all primary buttons and key accent elements.`;
+    } else {
+      paletteBlock = `\n\n---\nUSE THIS CLEAN DEFAULT PALETTE:\n--bg:#FAF8F5; --light:#F5EDE6; --orange:#D4745A; --orange2:#B85A40; --text:#2D2A26; --text2:#7A6E65; --dark:#0E0E0E;`;
+    }
+
+    const userPrompt = `BUILD TYPE: ${buildType || 'page'}\n\nREQUEST: ${prompt}${ctxBlock}${paletteBlock}`;
+
+    const msg = await client.messages.create({
+      model: MODEL,
+      max_tokens: 8000,
+      system: BRAIN_BUILD_SYSTEM,
+      messages: [{ role: 'user', content: userPrompt }]
+    });
+
+    let html = msg.content[0].text
+      .replace(/^```html?\s*/i, '')
+      .replace(/\s*```$/, '')
+      .trim();
+
+    res.json({ html, buildType });
+  } catch(err) {
+    console.error('Brain build error:', err.message);
+    res.status(500).json({ error: err.message || 'Build failed' });
+  }
+});
+
 app.post('/chat', requireAuth, rateLimit, async function(req, res) {
   try {
     var messages = req.body.messages;
