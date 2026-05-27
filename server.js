@@ -789,7 +789,10 @@ app.post('/revise-section', requireAuth, rateLimit, async function(req, res) {
 
     var keepalive = setInterval(function() { res.write(': keep-alive\n\n'); }, 5000);
 
-    // Step 1: classify (~1-2s, cheap call)
+    // ── Helper: send a typed SSE event ──────────────────────────────────────
+    function send(obj) { res.write('data: ' + JSON.stringify(obj) + '\n\n'); }
+
+    // ── STEP 1: Classify — which section? global style? ─────────────────────
     var classifyMsg = await client.messages.create({
       model: MODEL,
       max_tokens: 120,
@@ -809,52 +812,102 @@ app.post('/revise-section', requireAuth, rateLimit, async function(req, res) {
 
     var sectionId = (classify.sectionId && classify.sectionId !== 'null') ? classify.sectionId : null;
 
-    // Step 2a: targeted section patch
+    // ── STEP 2: Plan — describe intent + spot duplicate risks ───────────────
+    // Runs in parallel regardless of patch mode so user sees intent immediately
+    var sectionSnippet = '';
+    var section = null;
+    var cssCtx = '';
     if (!classify.isGlobalStyle && sectionId) {
-      var section = extractSectionById(html, sectionId);
+      section = extractSectionById(html, sectionId);
       if (section) {
+        sectionSnippet = section.content.substring(0, 1000);
         var cssMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-        var cssCtx = cssMatch ? cssMatch[1].substring(0, 2500) : '';
-        var patchPrompt = 'Apply ONLY this change to the HTML section below: "' + message + '"\n\n'
-          + 'CSS context (reference only — do NOT output it):\n' + cssCtx + '\n\n'
-          + 'SECTION TO MODIFY:\n' + section.content + '\n\n'
-          + 'Rules:\n'
-          + '- Return ONLY the modified <section>...</section> HTML\n'
-          + '- Preserve ALL id and class attributes exactly\n'
-          + '- Preserve ALL <img> tags and their id attributes exactly\n'
-          + '- No <html>, <head>, <body>, <style> tags — section only\n'
-          + '- No markdown, no explanation';
-
-        var stream = await client.messages.stream({
-          model: MODEL, max_tokens: 8000,
-          messages: [{ role: 'user', content: patchPrompt }]
-        });
-        var patched = '';
-        stream.on('text', function(c) { patched += c; res.write(': keep-alive\n\n'); });
-        stream.on('finalMessage', function() {
-          clearInterval(keepalive);
-          patched = patched.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-          var newHtml = html.substring(0, section.start) + patched + html.substring(section.end);
-          res.write('data: ' + JSON.stringify({ html: newHtml, mode: 'patch', section: sectionId }) + '\n\n');
-          res.write('data: [DONE]\n\n');
-          res.end();
-        });
-        stream.on('error', function(err) {
-          clearInterval(keepalive);
-          res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
-          res.end();
-        });
-        return;
+        cssCtx = cssMatch ? cssMatch[1].substring(0, 2500) : '';
       }
     }
 
-    // Step 2b: full-HTML revision fallback (global style change or section not found)
-    var fullPrompt = 'Apply this change to the website: "' + message + '"\n\n'
-      + 'Rules:\n'
-      + '- Return the COMPLETE modified HTML\n'
+    var planMsg = await client.messages.create({
+      model: MODEL,
+      max_tokens: 280,
+      messages: [{ role: 'user', content:
+        'You are about to apply a website edit. Analyse the request and the relevant HTML, then respond with JSON only — no prose.\n\n'
+        + 'Request: "' + message + '"\n'
+        + (sectionSnippet ? 'Section HTML (excerpt): ' + sectionSnippet + '\n' : '')
+        + '\nReturn this exact shape:\n'
+        + '{\n'
+        + '  "intent": "One sentence — what you will change and how (e.g. \'I\'ll move the Book Now button from below the subtitle to directly after the headline, removing it from its original position\').",\n'
+        + '  "duplicateRisk": "If moving/copying an element risks leaving a duplicate, name it — else null.",\n'
+        + '  "followUp": "One short, specific question to ask after the change (tied to what changed — e.g. \'Does the button placement feel right? Click it to confirm it still links correctly.\')"\n'
+        + '}'
+      }]
+    });
+
+    var plan = { intent: null, duplicateRisk: null, followUp: 'How does that look? Anything else to tweak before we call it done?' };
+    try {
+      var pm = planMsg.content[0].text.match(/\{[\s\S]*\}/);
+      if (pm) plan = Object.assign(plan, JSON.parse(pm[0]));
+    } catch(e) {}
+
+    // Send intent to client immediately so they see what's happening
+    if (plan.intent) send({ type: 'intent', text: plan.intent });
+
+    // ── STEP 3a: Targeted section patch ─────────────────────────────────────
+    if (!classify.isGlobalStyle && section) {
+      var patchPrompt =
+        'Apply ONLY this change to the HTML section: "' + message + '"\n\n'
+        + 'Your plan: ' + (plan.intent || message) + '\n\n'
+        + 'CSS context (reference only — do NOT output it):\n' + cssCtx + '\n\n'
+        + 'SECTION TO MODIFY:\n' + section.content + '\n\n'
+        + 'OUTPUT RULES:\n'
+        + '- Return ONLY the modified <section>...</section> HTML\n'
+        + '- Preserve ALL existing id and class attributes exactly\n'
+        + '- Preserve ALL <img> tags and their id attributes exactly\n'
+        + '- No <html>, <head>, <body>, <style> tags\n'
+        + '- No markdown fences, no explanation text\n\n'
+        + 'SELF-VERIFICATION (perform before returning):\n'
+        + '- If you MOVED an element: verify it no longer exists in its original location — delete the original copy\n'
+        + '- Scan for buttons or CTAs with identical text appearing more than once — keep only the intended one\n'
+        + '- Scan for any element duplicated with identical content or id — remove the extra\n'
+        + '- Confirm the change you planned is actually reflected in the output\n'
+        + (plan.duplicateRisk ? '- Extra care: ' + plan.duplicateRisk + '\n' : '');
+
+      var stream = await client.messages.stream({
+        model: MODEL, max_tokens: 8000,
+        messages: [{ role: 'user', content: patchPrompt }]
+      });
+      var patched = '';
+      stream.on('text', function(c) { patched += c; res.write(': keep-alive\n\n'); });
+      stream.on('finalMessage', function() {
+        clearInterval(keepalive);
+        patched = patched.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+        var newHtml = html.substring(0, section.start) + patched + html.substring(section.end);
+        send({ type: 'patch', html: newHtml, mode: 'patch', section: sectionId });
+        if (plan.followUp) send({ type: 'followup', text: plan.followUp });
+        res.write('data: [DONE]\n\n');
+        res.end();
+      });
+      stream.on('error', function(err) {
+        clearInterval(keepalive);
+        send({ error: err.message });
+        res.end();
+      });
+      return;
+    }
+
+    // ── STEP 3b: Full-HTML revision (global style or section not found) ──────
+    var fullPrompt =
+      'Apply this change to the website: "' + message + '"\n\n'
+      + 'Your plan: ' + (plan.intent || message) + '\n\n'
+      + 'OUTPUT RULES:\n'
+      + '- Return the COMPLETE modified HTML document\n'
       + '- Preserve all <img> tags and their id attributes exactly\n'
-      + '- Preserve all structure, JS, and img IDs\n'
-      + '- No markdown, no explanation\n\n'
+      + '- Preserve all inline <script> blocks, JS, and CSS unchanged unless they are the target of the edit\n'
+      + '- No markdown fences, no explanation text\n\n'
+      + 'SELF-VERIFICATION (perform before returning):\n'
+      + '- If you MOVED any element: confirm it does not still exist in its original location\n'
+      + '- Scan for buttons or CTAs with identical text appearing more than once — remove duplicates\n'
+      + '- Scan for any element with the same id appearing more than once — fix it\n'
+      + '- Confirm the requested change is visible in the output\n\n'
       + 'HTML:\n' + html;
 
     var stream2 = await client.messages.stream({
@@ -866,13 +919,14 @@ app.post('/revise-section', requireAuth, rateLimit, async function(req, res) {
     stream2.on('finalMessage', function() {
       clearInterval(keepalive);
       var newHtml = fullText.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
-      res.write('data: ' + JSON.stringify({ html: newHtml, mode: 'full' }) + '\n\n');
+      send({ type: 'patch', html: newHtml, mode: 'full' });
+      if (plan.followUp) send({ type: 'followup', text: plan.followUp });
       res.write('data: [DONE]\n\n');
       res.end();
     });
     stream2.on('error', function(err) {
       clearInterval(keepalive);
-      res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+      send({ error: err.message });
       res.end();
     });
 
