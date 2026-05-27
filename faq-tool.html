@@ -310,6 +310,9 @@ function generateFaqs() {
 
   showStep('loading');
 
+  // Guard: catch any synchronous errors (e.g. missing function) so spinner doesn't freeze
+  try {
+
   var payload = {
     businessName: name,
     niche: niche,
@@ -318,14 +321,21 @@ function generateFaqs() {
     tone: _tone
   };
 
-  fetch(RAILWAY_URL + '/generate-faq', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(payload)
+  // Get auth token from existing Supabase client, then POST with Bearer header
+  _sb.auth.getSession()
+  .then(function(sessionRes) {
+    var token = sessionRes.data && sessionRes.data.session ? sessionRes.data.session.access_token : null;
+    var headers = {'Content-Type': 'application/json'};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return fetch(RAILWAY_URL + '/generate-faq', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(payload)
+    });
   })
   .then(function(res) {
     if (!res.ok) {
-      return res.json().then(function(d) { throw new Error(d.error || 'Request failed'); });
+      return res.json().then(function(d) { throw new Error(d.error || 'Request failed ('+res.status+')'); });
     }
     return res.json();
   })
@@ -341,6 +351,12 @@ function generateFaqs() {
     errEl2.textContent = e.message || 'Something went wrong. Please try again.';
     errEl2.style.display = 'block';
   });
+  } catch(syncErr) {
+    showStep('form');
+    var errEl3 = document.getElementById('gen-error');
+    errEl3.textContent = syncErr.message || 'Something went wrong. Please try again.';
+    errEl3.style.display = 'block';
+  }
 }
 
 // RENDER FAQ CARDS

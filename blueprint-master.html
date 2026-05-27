@@ -192,7 +192,9 @@ textarea.fi{resize:vertical;min-height:80px;}
 .deploy-bar{background:rgba(200,224,0,.08);border-bottom:1px solid rgba(200,224,0,.15);padding:8px 16px;font-size:.74rem;color:rgba(255,255,255,.65);flex-shrink:0;}
 .deploy-bar a{color:var(--lime);font-weight:600;}
 .output-preview-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;min-height:0;}
-.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;}
+.output-preview-card{background:white;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;width:390px;flex-shrink:0;transition:box-shadow .15s;}
+@keyframes previewFlash{0%{box-shadow:0 8px 40px rgba(0,0,0,.25);}20%{box-shadow:0 0 0 4px var(--lime),0 8px 40px rgba(0,0,0,.3);}100%{box-shadow:0 8px 40px rgba(0,0,0,.25);}}
+.output-preview-card.preview-flash{animation:previewFlash .8s ease forwards;}
 #ms-output-preview-frame{width:390px;height:calc(100vh - 120px);min-height:600px;border:none;display:block;}
 .output-error{background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:13px;color:#fca5a5;font-size:.85rem;margin:14px;display:none;}
 .output-error.active{display:block;}
@@ -760,6 +762,88 @@ body.ms-s9 .topnav{display:none;}
         <p class="step-label-top">Step 7 of 8</p>
         <h2 class="step-title-main">Show your <em>best work.</em></h2>
         <p class="step-sub-main">Upload images for your template. All optional &mdash; styled placeholders used if skipped.</p>
+        <!-- AI Design photo zones — always rendered, shown/hidden via JS -->
+        <div id="ms-ai-photo-zones" style="display:none;">
+          <span style="display:block;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>
+          <div class="upload-zone-wrap">
+            <span class="upload-zone-label-top">Hero Photo</span>
+            <div class="upload-zone" id="ms-zone-ai-hero-photo" onclick="document.getElementById('ms-file-ai-hero-photo').click()">
+              <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span class="upload-zone-ph-label">Click to upload</span>
+              <button class="upload-zone-ph-btn" onclick="event.stopPropagation();document.getElementById('ms-file-ai-hero-photo').click()">Choose Photo</button>
+            </div>
+            <input type="file" id="ms-file-ai-hero-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-hero-photo',this)">
+            <p class="upload-optional">Optional &mdash; placeholder shown if skipped</p>
+          </div>
+
+          <span style="display:block;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">About Section</span>
+          <div class="upload-grid-2">
+            <div>
+              <div class="upload-zone-wrap">
+                <span class="upload-zone-label-top">About Photo (main)</span>
+                <div class="upload-zone" id="ms-zone-ai-about-a-photo" onclick="document.getElementById('ms-file-ai-about-a-photo').click()">
+                  <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="upload-zone-ph-label">Click to upload</span>
+                  <button class="upload-zone-ph-btn" onclick="event.stopPropagation();document.getElementById('ms-file-ai-about-a-photo').click()">Choose Photo</button>
+                </div>
+                <input type="file" id="ms-file-ai-about-a-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-about-a-photo',this)">
+                <p class="upload-optional">Optional</p>
+              </div>
+            </div>
+            <div>
+              <div class="upload-zone-wrap">
+                <span class="upload-zone-label-top">About Photo (second)</span>
+                <div class="upload-zone" id="ms-zone-ai-about-b-photo" onclick="document.getElementById('ms-file-ai-about-b-photo').click()">
+                  <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="upload-zone-ph-label">Click to upload</span>
+                  <button class="upload-zone-ph-btn" onclick="event.stopPropagation();document.getElementById('ms-file-ai-about-b-photo').click()">Choose Photo</button>
+                </div>
+                <input type="file" id="ms-file-ai-about-b-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-about-b-photo',this)">
+                <p class="upload-optional">Optional</p>
+              </div>
+            </div>
+          </div>
+
+          <span style="display:block;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 8px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Testimonial Avatars</span>
+          <p style="font-size:.76rem;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.5;">Small circular photos that appear next to each client testimonial.</p>
+          <div class="upload-grid-3">
+            <div>
+              <div class="upload-zone-wrap">
+                <span class="upload-zone-label-top">Client 1</span>
+                <div class="upload-zone" id="ms-zone-ai-port-1-photo" onclick="document.getElementById('ms-file-ai-port-1-photo').click()">
+                  <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="upload-zone-ph-label">Click to upload</span>
+                </div>
+                <input type="file" id="ms-file-ai-port-1-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-port-1-photo',this)">
+                <p class="upload-optional">Optional</p>
+              </div>
+            </div>
+            <div>
+              <div class="upload-zone-wrap">
+                <span class="upload-zone-label-top">Client 2</span>
+                <div class="upload-zone" id="ms-zone-ai-port-2-photo" onclick="document.getElementById('ms-file-ai-port-2-photo').click()">
+                  <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="upload-zone-ph-label">Click to upload</span>
+                </div>
+                <input type="file" id="ms-file-ai-port-2-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-port-2-photo',this)">
+                <p class="upload-optional">Optional</p>
+              </div>
+            </div>
+            <div>
+              <div class="upload-zone-wrap">
+                <span class="upload-zone-label-top">Client 3</span>
+                <div class="upload-zone" id="ms-zone-ai-port-3-photo" onclick="document.getElementById('ms-file-ai-port-3-photo').click()">
+                  <svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="upload-zone-ph-label">Click to upload</span>
+                </div>
+                <input type="file" id="ms-file-ai-port-3-photo" accept="image/*" style="display:none;" onchange="msHandlePhoto('ai-port-3-photo',this)">
+                <p class="upload-optional">Optional</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end AI Design photo zones -->
+
         <div id="ms-photo-zones-container"></div>
 
         <!-- CELEBRATION EFFECTS -->
@@ -2708,6 +2792,15 @@ var _ctPhotoZones = {
     { id: 'ps-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
     { id: 'ps-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
     { id: 'ps-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
+  ],
+  // ── AI decides ─────────────────────────────────────────────
+  ai_design: [
+    { id: 'ai-hero-photo',    label: 'Hero Photo',          desc: 'Your best professional or brand photo — goes in the hero section', isHero: true },
+    { id: 'ai-about-a-photo', label: 'About Photo (main)',  desc: 'Primary photo in your About section' },
+    { id: 'ai-about-b-photo', label: 'About Photo (second)',desc: 'Second photo in your About section (if space available)' },
+    { id: 'ai-port-1-photo',  label: 'Client 1 Avatar',     desc: 'Small circular photo for testimonial 1', isPort: true },
+    { id: 'ai-port-2-photo',  label: 'Client 2 Avatar',     desc: 'Small circular photo for testimonial 2', isPort: true },
+    { id: 'ai-port-3-photo',  label: 'Client 3 Avatar',     desc: 'Small circular photo for testimonial 3', isPort: true }
   ]
 };
 var _ctPhotos = {};
@@ -3502,6 +3595,8 @@ function msRenderTemplateCards() {
 
 function msSelectTemplate(key) {
   _ctSelectedTemplate = key;
+
+  // ── Deselect all regular template cards ──
   for (var i = 0; i < _ctTemplates.length; i++) {
     var card = document.getElementById('ms-tpl-' + _ctTemplates[i].key);
     if (!card) continue;
@@ -3514,6 +3609,48 @@ function msSelectTemplate(key) {
       if (chkEl) chkEl.textContent = '';
     }
   }
+
+  // ── Handle the special "Let AI Decide" card ──
+  var aiCard = document.getElementById('ms-ai-tpl-card');
+  var aiChk  = document.getElementById('ms-tpl-check-ai');
+  if (key === 'ai_design') {
+    if (aiCard) {
+      aiCard.style.borderColor = 'var(--lime)';
+      aiCard.style.background  = 'rgba(200,224,0,0.1)';
+      aiCard.style.boxShadow   = '0 0 0 3px rgba(200,224,0,0.18)';
+    }
+    if (aiChk) {
+      aiChk.style.background   = 'var(--lime)';
+      aiChk.style.borderColor  = 'var(--lime)';
+      aiChk.style.color        = '#0D1246';
+      aiChk.textContent        = '✓';
+    }
+    // Reset palette (AI decides, no manual palette)
+    _ctSelectedPalette = '';
+    _ctSelectedPaletteName = 'Original';
+    msRenderPaletteGrid(_ctActivePaletteTab);
+    // Show AI photo zones, hide template-specific zones
+    var aiZones = document.getElementById('ms-ai-photo-zones');
+    var tplZones = document.getElementById('ms-photo-zones-container');
+    if (aiZones) aiZones.style.display = 'block';
+    if (tplZones) tplZones.innerHTML = '';
+    return;
+  } else {
+    // Reset AI card to default dashed style
+    if (aiCard) {
+      aiCard.style.borderColor = 'rgba(200,224,0,0.3)';
+      aiCard.style.background  = 'rgba(200,224,0,0.04)';
+      aiCard.style.boxShadow   = '';
+    }
+    if (aiChk) {
+      aiChk.style.background  = '';
+      aiChk.style.borderColor = '';
+      aiChk.style.color       = '';
+      aiChk.textContent       = '';
+    }
+  }
+
+  // ── Load selected template in the preview iframe ──
   for (var j = 0; j < _ctTemplates.length; j++) {
     if (_ctTemplates[j].key === key) {
       var iframe = document.getElementById('preview-iframe');
@@ -3530,6 +3667,10 @@ function msSelectTemplate(key) {
   _ctSelectedPalette = '';
   _ctSelectedPaletteName = 'Original';
   msRenderPaletteGrid(_ctActivePaletteTab);
+  // Hide AI photo zones, rebuild template-specific zones
+  var aiZonesEl = document.getElementById('ms-ai-photo-zones');
+  if (aiZonesEl) aiZonesEl.style.display = 'none';
+  if (_msCurrentStep === 7) msBuildPhotoZones();
 }
 
 // ══════════════════════════════════════════════
@@ -3734,6 +3875,14 @@ function msUpdatePopular() {
 function msBuildPhotoZones() {
   var container = document.getElementById('ms-photo-zones-container');
   if (!container) return;
+  // AI Design uses the static hardcoded upload zones
+  var aiZonesEl2 = document.getElementById('ms-ai-photo-zones');
+  if (_ctSelectedTemplate === 'ai_design') {
+    if (aiZonesEl2) aiZonesEl2.style.display = 'block';
+    container.innerHTML = '';
+    return;
+  }
+  if (aiZonesEl2) aiZonesEl2.style.display = 'none';
   var zones = _ctPhotoZones[_ctSelectedTemplate] || [];
   var heroZones = [];
   var aboutZones = [];
@@ -3815,14 +3964,43 @@ function msHandlePhoto(zoneId, input) {
   var reader = new FileReader();
   reader.onload = function(e) {
     _ctPhotos[zoneId] = e.target.result;
-    msBuildPhotoZones();
+    // For static AI Design zones, update the zone div directly (no full rebuild)
+    if (zoneId.indexOf('ai-') === 0) {
+      msRefreshAiZone(zoneId);
+    } else {
+      msBuildPhotoZones();
+    }
   };
   reader.readAsDataURL(input.files[0]);
 }
 
 function msClearPhoto(zoneId) {
   _ctPhotos[zoneId] = null;
-  msBuildPhotoZones();
+  if (zoneId.indexOf('ai-') === 0) {
+    msRefreshAiZone(zoneId);
+  } else {
+    msBuildPhotoZones();
+  }
+}
+
+// Update a single static AI Design zone to reflect current photo state
+function msRefreshAiZone(zoneId) {
+  var zoneDiv = document.getElementById('ms-zone-' + zoneId);
+  if (!zoneDiv) return;
+  var photoData = _ctPhotos[zoneId];
+  if (photoData) {
+    zoneDiv.className = 'upload-zone has-photo';
+    zoneDiv.innerHTML = '<img class="upload-thumb" src="' + photoData + '" alt="">'
+      + '<button class="upload-clear" onclick="event.stopPropagation();msClearPhoto(\'' + zoneId + '\')">×</button>';
+    zoneDiv.onclick = null;
+  } else {
+    zoneDiv.className = 'upload-zone';
+    var fileId = 'ms-file-' + zoneId;
+    zoneDiv.innerHTML = '<svg class="upload-zone-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
+      + '<span class="upload-zone-ph-label">Click to upload</span>'
+      + '<button class="upload-zone-ph-btn" onclick="event.stopPropagation();document.getElementById(\'' + fileId + '\').click()">Choose Photo</button>';
+    zoneDiv.onclick = function() { document.getElementById(fileId).click(); };
+  }
 }
 
 // ══════════════════════════════════════════════
@@ -3901,9 +4079,13 @@ function msInjectAssets(html) {
       for (var photoId in _ctPhotos) {
         if (!_ctPhotos[photoId]) continue;
         var img = doc.getElementById(photoId);
+        if (!img) img = doc.querySelector('[id="' + photoId + '"]');
         if (img) {
-          img.src = _ctPhotos[photoId];
-          img.style.display = 'block';
+          img.setAttribute('src', _ctPhotos[photoId]);
+          // Replace display:none in the style string directly (most reliable)
+          var st = img.getAttribute('style') || '';
+          st = st.replace(/display\s*:\s*none\s*;?/gi, '');
+          img.setAttribute('style', 'display:block;' + st);
           var zone = img.parentElement;
           if (zone) {
             var ph = zone.querySelector('.photo-placeholder');
@@ -3913,23 +4095,21 @@ function msInjectAssets(html) {
       }
       html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
     } catch(e) {}
-    // Secondary: regex pass — always runs to catch cases where DOMParser
-    // found no matching element (e.g. Claude altered the img id attribute)
+    // Secondary: regex pass — handles cases where DOMParser found no match
+    // (e.g. AI altered img id, or attribute order is different)
     for (var pId in _ctPhotos) {
       if (!_ctPhotos[pId]) continue;
-      // Inject src
+      var photoVal = _ctPhotos[pId];
+      // Use function replacement to avoid $ special chars in replacement string
+      // Works regardless of whether src comes before or after id in attributes
       html = html.replace(
-        new RegExp('(<img[^>]*id="' + pId + '"[^>]*src=")[^"]*(")', 'i'),
-        '$1' + _ctPhotos[pId] + '$2'
+        new RegExp('(<img(?=[^>]*\\bid="' + pId + '"\\b)[^>]*\\bsrc=")[^"]*(")', 'gi'),
+        function(m, p1, p2) { return p1 + photoVal + p2; }
       );
-      // Remove display:none (style attr before or after id)
+      // Remove display:none — handle both attr orders
       html = html.replace(
-        new RegExp('(<img[^>]*id="' + pId + '"[^>]*)display\\s*:\\s*none\\s*;?', 'i'),
-        '$1display:block;'
-      );
-      html = html.replace(
-        new RegExp('display\\s*:\\s*none\\s*;?([^>]*id="' + pId + '")', 'i'),
-        'display:block;$1'
+        new RegExp('(<img(?=[^>]*\\bid="' + pId + '"\\b)[^>]*)display\\s*:\\s*none\\s*;?', 'gi'),
+        function(m, p1) { return p1 + 'display:block;'; }
       );
     }
   }
@@ -4030,6 +4210,147 @@ function msInjectAssets(html) {
   html = html.replace('</body>', cookieBanner + '\n</body>');
 
   return html;
+}
+
+// ══════════════════════════════════════════════
+// SMART PHOTO INJECTION
+// ══════════════════════════════════════════════
+// Works even when Railway API doesn't preserve template img IDs.
+// Pass 1: exact ID match (fast — works if AI kept the IDs).
+// Pass 2: fetch original template HTML → find each zone's section + img index → apply same position in generated HTML.
+// Returns a Promise that resolves when injection is complete.
+function msSmartInjectPhotos(genDoc) {
+  var zones = _ctPhotoZones[_ctSelectedTemplate] || [];
+  var hasPhotos = false;
+  for (var _k in _ctPhotos) { if (_ctPhotos[_k]) { hasPhotos = true; break; } }
+  if (!hasPhotos || !zones.length) return Promise.resolve();
+
+  // Pass 1 — exact ID match
+  var injectedIds = {};
+  for (var photoId in _ctPhotos) {
+    if (!_ctPhotos[photoId]) continue;
+    var imgEl = genDoc.getElementById(photoId) || genDoc.querySelector('[id="' + photoId + '"]');
+    if (imgEl) {
+      imgEl.setAttribute('src', _ctPhotos[photoId]);
+      var _st1 = imgEl.getAttribute('style') || '';
+      imgEl.setAttribute('style', 'display:block;' + _st1.replace(/display\s*:\s*none\s*;?/gi, ''));
+      injectedIds[photoId] = true;
+    }
+  }
+
+  // Check if any zones still need injection
+  var needPass2 = false;
+  for (var _zi = 0; _zi < zones.length; _zi++) {
+    if (_ctPhotos[zones[_zi].id] && !injectedIds[zones[_zi].id]) { needPass2 = true; break; }
+  }
+  if (!needPass2) return Promise.resolve();
+
+  // Pass 2 — fetch template HTML, map photo → section + img index, inject
+  var tplObj = null;
+  for (var _ti = 0; _ti < _ctTemplates.length; _ti++) {
+    if (_ctTemplates[_ti].key === _ctSelectedTemplate) { tplObj = _ctTemplates[_ti]; break; }
+  }
+  // No template file (e.g. ai_design) — use keyword + position-order injection
+  if (!tplObj || !tplObj.file) {
+    var _portIdx = 0, _aboutIdx = 0;
+    for (var _zk = 0; _zk < zones.length; _zk++) {
+      var _zone = zones[_zk];
+      if (!_ctPhotos[_zone.id] || injectedIds[_zone.id]) continue;
+      var _kwsF = _zone.isHero ? ['hero', 'header', 'home', 'banner', 'intro'] :
+                  _zone.isPort ? ['reviews', 'testimonials', 'testimonial', 'trust', 'clients'] :
+                                 ['about', 'story', 'bio', 'me'];
+      var _secF = null;
+      for (var _kiF = 0; _kiF < _kwsF.length; _kiF++) {
+        _secF = genDoc.querySelector('#' + _kwsF[_kiF]) ||
+                genDoc.querySelector('section.' + _kwsF[_kiF]) ||
+                genDoc.querySelector('[id*="' + _kwsF[_kiF] + '"]');
+        if (_secF) break;
+      }
+      if (!_secF) continue;
+      var _idxF = _zone.isHero ? 0 : (_zone.isPort ? _portIdx++ : _aboutIdx++);
+      var _secImgsF = _secF.querySelectorAll('img');
+      var _giF = _secImgsF[_idxF] || (_idxF === 0 && _secImgsF.length ? _secImgsF[0] : null);
+      if (!_giF) continue;
+      _giF.setAttribute('src', _ctPhotos[_zone.id]);
+      var _gstF = _giF.getAttribute('style') || '';
+      _giF.setAttribute('style', 'display:block;' + _gstF.replace(/display\s*:\s*none\s*;?/gi, ''));
+    }
+    return Promise.resolve();
+  }
+
+  return fetch(tplObj.file).then(function(r) { return r.text(); }).then(function(tplHtml) {
+    var parser = new DOMParser();
+    var tplDoc = parser.parseFromString(tplHtml, 'text/html');
+
+    for (var _zi2 = 0; _zi2 < zones.length; _zi2++) {
+      var zone = zones[_zi2];
+      if (!_ctPhotos[zone.id] || injectedIds[zone.id]) continue;
+
+      // Find img in template
+      var tplImg = tplDoc.getElementById(zone.id);
+      if (!tplImg) continue;
+
+      // Walk up to nearest <section>
+      var tplSection = null;
+      var _el = tplImg.parentElement;
+      while (_el && _el !== tplDoc.body && _el !== tplDoc.documentElement) {
+        if (_el.tagName === 'SECTION') { tplSection = _el; break; }
+        _el = _el.parentElement;
+      }
+      // Fallback: walk up to any ancestor with an id
+      if (!tplSection) {
+        _el = tplImg.parentElement;
+        while (_el && _el !== tplDoc.body && _el !== tplDoc.documentElement) {
+          if (_el.id) { tplSection = _el; break; }
+          _el = _el.parentElement;
+        }
+      }
+      if (!tplSection) continue;
+
+      // Build selector (prefer id, then tag.firstClass)
+      var sectionSel = tplSection.id ? '#' + tplSection.id : null;
+      if (!sectionSel && tplSection.className) {
+        var _firstCls = tplSection.className.trim().split(/\s+/)[0];
+        if (_firstCls) sectionSel = tplSection.tagName.toLowerCase() + '.' + _firstCls;
+      }
+
+      // Find img index within the template section
+      var tplSectionImgs = tplSection.querySelectorAll('img');
+      var imgIdx = -1;
+      for (var _j = 0; _j < tplSectionImgs.length; _j++) {
+        if (tplSectionImgs[_j] === tplImg) { imgIdx = _j; break; }
+      }
+      if (imgIdx < 0) continue;
+
+      // Find matching section in generated doc
+      var genSection = null;
+      if (sectionSel) {
+        try { genSection = genDoc.querySelector(sectionSel); } catch(_e) {}
+      }
+      // Keyword fallback (if section selector didn't match)
+      if (!genSection) {
+        var _kws = zone.isHero ? ['hero', 'header', 'home', 'banner', 'intro'] :
+                   zone.isPort ? ['reviews', 'testimonials', 'testimonial', 'trust', 'clients'] :
+                                 ['about', 'story', 'bio', 'me'];
+        for (var _ki = 0; _ki < _kws.length; _ki++) {
+          genSection = genDoc.querySelector('#' + _kws[_ki]) ||
+                       genDoc.querySelector('section.' + _kws[_ki]) ||
+                       genDoc.querySelector('[id*="' + _kws[_ki] + '"]');
+          if (genSection) break;
+        }
+      }
+      if (!genSection) continue;
+
+      // Inject at same img index (fallback to index 0 if out of range but index was 0)
+      var genSectionImgs = genSection.querySelectorAll('img');
+      var genImg = genSectionImgs[imgIdx] || (imgIdx === 0 && genSectionImgs.length ? genSectionImgs[0] : null);
+      if (!genImg) continue;
+
+      genImg.setAttribute('src', _ctPhotos[zone.id]);
+      var _gst = genImg.getAttribute('style') || '';
+      genImg.setAttribute('style', 'display:block;' + _gst.replace(/display\s*:\s*none\s*;?/gi, ''));
+    }
+  }).catch(function() {});
 }
 
 // ══════════════════════════════════════════════
@@ -4166,6 +4487,12 @@ function msShowOutput(html) {
     try {
       var win = frame.contentWindow;
       var doc = win.document;
+
+      // ── Smart photo injection (section + position aware) ───────
+      msSmartInjectPhotos(doc).then(function() {
+        try { _ctHTML = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML; } catch(e2) {}
+      });
+      // ── End photo injection ────────────────────────────────────
       var _rbSession = 0, _rbAddons = {};
       win._rbCalc = function() {
         var total = _rbSession;
@@ -4326,13 +4653,38 @@ function msChatSend() {
                 html = builtsyInjectFooter(html, (function(){ var m=html.match(/<title[^>]*>([^<]{2,80})<\/title>/i); var t=m?m[1].replace(/\s*[\|\-–—]\s*.+$/,'').trim():''; return t||((document.getElementById('ms-biz-name')||{}).value||(document.getElementById('ms-owner-name')||{}).value||'Your Business'); })());
                 _ctHTML = html;
                 var frame = document.getElementById('ms-output-preview-frame');
-                if (frame) frame.srcdoc = html;
+                if (frame) {
+                  frame.srcdoc = html;
+                  // Scroll the preview wrap to top
+                  var wrap = document.querySelector('.output-preview-wrap');
+                  if (wrap) wrap.scrollTop = 0;
+                  // Inject photos into live DOM after iframe loads
+                  frame.onload = function() {
+                    try {
+                      var rdoc = frame.contentDocument || frame.contentWindow.document;
+                      msSmartInjectPhotos(rdoc).then(function() {
+                        try { _ctHTML = '<!DOCTYPE html>\n' + rdoc.documentElement.outerHTML; } catch(e3) {}
+                      });
+                    } catch(e2) {}
+                  };
+                }
                 if (thinking) thinking.remove();
                 var label = data.mode === 'patch'
-                  ? '✓ Patched the ' + data.section + ' section'
-                  : '↺ Full rebuild applied';
+                  ? '✓ Patched'
+                  : '↺ Rebuilt';
                 msChatAppend('system', label, 'patch');
                 if (btn) btn.disabled = false;
+                // Collapse the drawer so the full preview is visible, then flash the card
+                setTimeout(function() {
+                  var drawer = document.getElementById('ms-revise-drawer');
+                  if (drawer) drawer.className = '';
+                  var card = document.querySelector('.output-preview-card');
+                  if (card) {
+                    card.classList.remove('preview-flash');
+                    void card.offsetWidth;
+                    card.classList.add('preview-flash');
+                  }
+                }, 600);
                 return;
               }
             } catch(e) {}
