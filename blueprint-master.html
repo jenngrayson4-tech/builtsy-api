@@ -32,13 +32,14 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);bac
 .left-panel{width:440px;flex-shrink:0;background:var(--navy);color:white;overflow-y:auto;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.08);}
 .left-inner{padding:0 24px 100px;flex:1;}
 
-/* ── RIGHT PANEL ── */
-.right-panel{flex:1;background:#1A2135;display:flex;flex-direction:column;min-width:0;}
-.preview-toolbar{height:40px;background:rgba(0,0,0,0.3);display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
-.preview-url{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);flex:1;background:rgba(255,255,255,0.06);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.preview-dot{width:10px;height:10px;border-radius:50%;}
-.preview-frame-wrap{flex:1;overflow:hidden;position:relative;}
-#preview-iframe{width:100%;height:100%;border:none;background:#fff;}
+/* ── RIGHT PANEL / BLUEPRINT ── */
+.right-panel{flex:1;background:#EEF0FA;display:flex;flex-direction:column;min-width:0;}
+.bp-toolbar{height:48px;background:#0E1525;display:flex;align-items:center;padding:0 20px;gap:12px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;}
+.bp-toolbar-icon{color:#4361EE;font-size:1.05rem;flex-shrink:0;}
+.bp-toolbar-title{font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:700;color:white;letter-spacing:.08em;flex-shrink:0;}
+.bp-toolbar-sep{color:rgba(255,255,255,0.15);font-size:0.8rem;flex-shrink:0;}
+.bp-toolbar-sub{font-size:0.68rem;color:rgba(255,255,255,0.32);font-family:'DM Sans',sans-serif;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bp-toolbar-badge{background:rgba(67,97,238,0.18);border:1px solid rgba(67,97,238,0.3);border-radius:100px;padding:3px 11px;font-size:0.6rem;font-weight:700;color:#7b9cff;font-family:'DM Mono',monospace;letter-spacing:.06em;flex-shrink:0;}
 
 /* ── STEP PROGRESS ── */
 .step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;}
@@ -334,6 +335,100 @@ body.ms-s9 .topnav{display:none;}
 .ms-welcome-cta:active{transform:translateY(0);}
 .ms-welcome-footnote{text-align:center;font-size:.63rem;color:rgba(255,255,255,0.15);margin-top:16px;font-family:'DM Mono',monospace;letter-spacing:.06em;}
 @media(max-width:600px){.ms-welcome-h1{font-size:2.8rem;}.ms-welcome-body{padding:32px 20px 48px;}}
+
+/* ══════════════════════════════════════════════
+   BLUEPRINT CANVAS — right panel
+   ══════════════════════════════════════════════ */
+.bp-canvas{flex:1;overflow-y:auto;padding:20px 20px 48px;}
+.bp-canvas::-webkit-scrollbar{width:5px;}
+.bp-canvas::-webkit-scrollbar-track{background:transparent;}
+.bp-canvas::-webkit-scrollbar-thumb{background:rgba(67,97,238,0.22);border-radius:10px;}
+
+/* Welcome state (step 1) */
+.bp-welcome-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;padding:40px 28px;gap:14px;}
+.bp-welcome-icon{font-size:2.2rem;color:#4361EE;opacity:0.35;line-height:1;}
+.bp-welcome-h{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;color:#0E1525;line-height:1.25;}
+.bp-welcome-p{font-size:0.8rem;color:#8994AE;line-height:1.7;max-width:260px;font-family:'DM Sans',sans-serif;}
+
+/* Blueprint sections */
+.bp-section{background:white;border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 3px rgba(14,21,37,0.07),0 4px 16px rgba(14,21,37,0.04);transition:opacity 0.45s ease, transform 0.45s ease;}
+.bp-section.bp-hidden{opacity:0;transform:translateY(14px);pointer-events:none;}
+.bp-section.bp-visible{opacity:1;transform:translateY(0);pointer-events:auto;}
+
+.bp-sec-head{display:flex;align-items:center;gap:13px;padding:14px 18px;border-bottom:1px solid #F0F2F8;}
+.bp-num{width:34px;height:34px;border-radius:50%;background:#0E1525;color:white;font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.02em;}
+.bp-sec-label{font-size:0.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#4361EE;font-family:'DM Mono',monospace;margin-bottom:1px;}
+.bp-sec-title{font-size:0.85rem;font-weight:800;color:#0E1525;font-family:'DM Sans',sans-serif;line-height:1.2;}
+.bp-sec-body{padding:15px 18px;}
+
+/* Field rows */
+.bp-field-row{display:flex;gap:10px;flex-wrap:wrap;}
+.bp-field{flex:1;min-width:110px;}
+.bp-fl{font-size:0.55rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#9BA5BC;margin-bottom:3px;font-family:'DM Mono',monospace;}
+.bp-fv{font-size:0.84rem;font-weight:600;color:#0E1525;font-family:'DM Sans',sans-serif;min-height:18px;word-break:break-word;}
+.bp-fv:empty::before,.bp-fv[data-empty]::before{content:'—';color:#CBD1E1;font-weight:400;}
+
+/* Brand voice */
+.bp-headline{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:#0E1525;line-height:1.25;margin-bottom:7px;min-height:24px;word-break:break-word;}
+.bp-headline:empty::before{content:'Your headline will appear here as you type...';color:#CBD1E1;font-weight:400;font-size:0.88rem;font-style:italic;}
+.bp-tagline{font-size:0.8rem;color:#5A6478;line-height:1.65;font-family:'DM Sans',sans-serif;min-height:16px;word-break:break-word;}
+.bp-tagline:empty::before{content:'Your tagline will show here.';color:#CBD1E1;font-style:italic;}
+
+/* Palette swatches */
+.bp-pal-label{font-size:0.55rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#9BA5BC;margin-bottom:8px;font-family:'DM Mono',monospace;}
+.bp-swatches{display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap;}
+.bp-swatch{width:30px;height:30px;border-radius:7px;flex-shrink:0;border:1px solid rgba(0,0,0,0.06);}
+.bp-swatch-ph{width:30px;height:30px;border-radius:7px;background:#EEF0FA;flex-shrink:0;}
+.bp-pal-name{font-size:0.72rem;font-weight:600;color:#4361EE;font-family:'DM Sans',sans-serif;margin-bottom:10px;}
+.bp-anim-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#F5F7FF;border-radius:7px;margin-top:2px;}
+.bp-anim-lbl{font-size:0.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9BA5BC;font-family:'DM Mono',monospace;flex:1;}
+.bp-anim-val{font-size:0.72rem;font-weight:600;color:#4361EE;font-family:'DM Sans',sans-serif;}
+
+/* Services chips */
+.bp-svcs{display:flex;flex-wrap:wrap;gap:7px;}
+.bp-svc-chip{background:#F0F3FF;border:1px solid #D8DFF8;border-radius:7px;padding:6px 11px;font-size:0.78rem;font-weight:600;color:#0E1525;font-family:'DM Sans',sans-serif;transition:opacity .2s;}
+.bp-svc-chip.bp-empty{opacity:0.35;}
+
+/* Pricing */
+.bp-pricing-row{display:flex;gap:8px;}
+.bp-price-block{flex:1;background:#F5F7FF;border-radius:9px;padding:11px;text-align:center;}
+.bp-price-block.bp-featured{background:#0E1525;}
+.bp-price-tier{font-size:0.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9BA5BC;margin-bottom:3px;font-family:'DM Mono',monospace;}
+.bp-featured .bp-price-tier{color:rgba(255,255,255,0.38);}
+.bp-price-amt{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:#0E1525;min-height:20px;word-break:break-all;}
+.bp-price-amt:empty::before{content:'$—';color:#CBD1E1;}
+.bp-featured .bp-price-amt{color:white;}
+
+/* Testimonials */
+.bp-testi-list{display:flex;flex-direction:column;gap:8px;}
+.bp-testi-item{background:#F5F7FF;border-radius:9px;padding:11px 13px;}
+.bp-tq{font-size:0.78rem;color:#0E1525;font-style:italic;line-height:1.65;margin-bottom:4px;font-family:'DM Sans',sans-serif;min-height:14px;word-break:break-word;}
+.bp-tq:empty::before{content:'"Your testimonial will appear here."';color:#CBD1E1;}
+.bp-tm{font-size:0.62rem;font-weight:700;color:#4361EE;font-family:'DM Mono',monospace;}
+
+/* Photos grid */
+.bp-photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.bp-photo-slot{position:relative;border-radius:9px;overflow:hidden;aspect-ratio:1;background:#EEF0FA;}
+.bp-photo-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B0B8D0;font-family:'DM Mono',monospace;}
+.bp-photo-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.bp-photo-slot.has-photo img{display:block;}
+.bp-photo-slot.has-photo .bp-photo-ph{display:none;}
+
+/* Contact */
+.bp-contact-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.bp-contact-item{flex:1;min-width:90px;}
+
+/* Launch ready */
+.bp-launch-ready{background:linear-gradient(135deg,#4361EE 0%,#6a48d7 100%);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.bp-launch-icon{color:rgba(255,255,255,0.7);font-size:1.1rem;flex-shrink:0;}
+.bp-launch-text{color:white;font-weight:700;font-size:0.85rem;font-family:'DM Sans',sans-serif;line-height:1.4;}
+.bp-launch-sub{color:rgba(255,255,255,0.6);font-size:0.7rem;font-family:'DM Sans',sans-serif;margin-top:2px;}
+
+/* bio */
+.bp-bio{font-size:0.78rem;color:#5A6478;line-height:1.75;font-family:'DM Sans',sans-serif;margin-top:10px;padding-top:10px;border-top:1px solid #F0F2F8;word-break:break-word;}
+.bp-bio:empty{display:none;}
+/* tag pills in blueprint */
+.bp-tag-pill{display:inline-block;background:rgba(67,97,238,0.1);color:#4361EE;border-radius:100px;font-size:0.62rem;font-weight:700;padding:2px 7px;margin:2px 3px 2px 0;}
 </style>
 </head>
 <body class="ms-s1">
@@ -425,38 +520,21 @@ body.ms-s9 .topnav{display:none;}
       <!-- ══ STEP 2 ══ -->
       <div class="step-panel" id="ms-step-2">
         <p class="step-label-top">Step 2 of 8</p>
-        <h2 class="step-title-main">Pick your <em>look.</em></h2>
-        <p class="step-sub-main" id="ms-tpl-sub">Browse all designs &mdash; your best matches are highlighted.</p>
+        <h2 class="step-title-main">Builtsy AI designs <em>your site.</em></h2>
+        <p class="step-sub-main">Based on what you tell us, Builtsy builds a completely custom site from scratch &mdash; no templates, no compromises.</p>
 
-        <!-- AI Design option -->
-        <div id="ms-ai-tpl-card" onclick="msSelectTemplate('ai_design')" style="border:2px dashed rgba(200,224,0,0.3);border-radius:14px;margin-bottom:12px;cursor:pointer;padding:16px 14px;background:rgba(200,224,0,0.04);display:flex;align-items:center;gap:14px;transition:all .2s;">
-          <div style="font-size:1.5rem;flex-shrink:0;">✦</div>
-          <div>
-            <div style="font-weight:700;font-size:.9rem;color:var(--lime);margin-bottom:3px;">Let Builtsy AI Design It</div>
-            <div style="font-size:.75rem;color:rgba(255,255,255,0.4);line-height:1.5;">Based on what you told us, Builtsy picks and customizes the perfect template for you.</div>
+        <div style="border:1.5px solid rgba(200,224,0,0.2);border-radius:14px;padding:20px 18px;background:rgba(200,224,0,0.05);margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <span style="font-size:1.4rem;">✦</span>
+            <span style="font-weight:700;font-size:.95rem;color:var(--lime);">100% AI-Generated</span>
           </div>
-          <div class="tpl-card-check" id="ms-tpl-check-ai" style="margin-left:auto;flex-shrink:0;"></div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(255,255,255,0.65);line-height:1.5;"><span style="color:var(--lime);font-weight:700;flex-shrink:0;">✓</span>Designed specifically for your business &amp; niche</div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(255,255,255,0.65);line-height:1.5;"><span style="color:var(--lime);font-weight:700;flex-shrink:0;">✓</span>Unique layout, colors, and copy &mdash; every time</div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(255,255,255,0.65);line-height:1.5;"><span style="color:var(--lime);font-weight:700;flex-shrink:0;">✓</span>Your photos dropped in exactly where they belong</div>
+          </div>
         </div>
 
-        <!-- Category filter pills -->
-        <div class="tpl-filter-row" id="ms-tpl-filters">
-          <div class="tpl-filter-pill active" data-filter="all" onclick="msFilterTemplates('all')">All</div>
-          <div class="tpl-filter-pill" data-filter="business" onclick="msFilterTemplates('business')">💼 Business</div>
-          <div class="tpl-filter-pill" data-filter="coaching" onclick="msFilterTemplates('coaching')">🎯 Coaching</div>
-          <div class="tpl-filter-pill" data-filter="caretaking" onclick="msFilterTemplates('caretaking')">🧸 Caretaking</div>
-          <div class="tpl-filter-pill" data-filter="social" onclick="msFilterTemplates('social')">📱 Social Media</div>
-          <div class="tpl-filter-pill" data-filter="creative" onclick="msFilterTemplates('creative')">🎨 Creative</div>
-          <div class="tpl-filter-pill" data-filter="design" onclick="msFilterTemplates('design')">✏️ Design</div>
-          <div class="tpl-filter-pill" data-filter="beauty" onclick="msFilterTemplates('beauty')">✨ Beauty</div>
-          <div class="tpl-filter-pill" data-filter="fashion" onclick="msFilterTemplates('fashion')">👗 Fashion</div>
-          <div class="tpl-filter-pill" data-filter="wellness" onclick="msFilterTemplates('wellness')">🌿 Wellness</div>
-          <div class="tpl-filter-pill" data-filter="hospitality" onclick="msFilterTemplates('hospitality')">🏨 Hospitality</div>
-          <div class="tpl-filter-pill" data-filter="events" onclick="msFilterTemplates('events')">🎉 Events</div>
-          <div class="tpl-filter-pill" data-filter="ecommerce" onclick="msFilterTemplates('ecommerce')">🛍️ Ecommerce</div>
-          <div class="tpl-filter-pill" data-filter="technology" onclick="msFilterTemplates('technology')">💻 Technology</div>
-        </div>
-
-        <div id="ms-tpl-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
         <div class="step-nav">
           <button class="btn-back" onclick="msGoStep(1)">&#8592; Back</button>
           <button class="btn-next" onclick="msGoStep(3)">Continue &#8594;</button>
@@ -762,8 +840,8 @@ body.ms-s9 .topnav{display:none;}
         <p class="step-label-top">Step 7 of 8</p>
         <h2 class="step-title-main">Show your <em>best work.</em></h2>
         <p class="step-sub-main">Upload images for your template. All optional &mdash; styled placeholders used if skipped.</p>
-        <!-- AI Design photo zones — always rendered, shown/hidden via JS -->
-        <div id="ms-ai-photo-zones" style="display:none;">
+        <!-- Photo upload zones -->
+        <div id="ms-ai-photo-zones">
           <span style="display:block;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>
           <div class="upload-zone-wrap">
             <span class="upload-zone-label-top">Hero Photo</span>
@@ -842,10 +920,6 @@ body.ms-s9 .topnav{display:none;}
             </div>
           </div>
         </div>
-        <!-- end AI Design photo zones -->
-
-        <div id="ms-photo-zones-container"></div>
-
         <!-- CELEBRATION EFFECTS -->
         <div style="margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.07);">
           <p class="step-label-top" style="color:var(--lime);">✦ CELEBRATION EFFECTS</p>
@@ -1077,18 +1151,237 @@ body.ms-s9 .topnav{display:none;}
     </div><!-- /left-inner -->
   </div><!-- /left-panel -->
 
-  <!-- ══ RIGHT PANEL ══ -->
+  <!-- ══ RIGHT PANEL — AI BLUEPRINT ══ -->
   <div class="right-panel">
-    <div class="preview-toolbar">
-      <div class="preview-dot" style="background:#FF5F57;"></div>
-      <div class="preview-dot" style="background:#FEBC2E;margin-left:4px;"></div>
-      <div class="preview-dot" style="background:#28C840;margin-left:4px;"></div>
-      <div class="preview-url" id="ms-preview-url">caretaker-warm.html</div>
+    <div class="bp-toolbar">
+      <span class="bp-toolbar-icon">✦</span>
+      <span class="bp-toolbar-title">AI BLUEPRINT</span>
+      <span class="bp-toolbar-sep">/</span>
+      <span class="bp-toolbar-sub" id="bp-industry-label">Fill in Step 1 to begin your blueprint…</span>
+      <span class="bp-toolbar-badge" id="bp-step-badge">Step 1 of 8</span>
     </div>
-    <div class="preview-frame-wrap">
-      <iframe id="preview-iframe" src="caretaker-warm.html" scrolling="yes"></iframe>
-    </div>
-  </div>
+
+    <div class="bp-canvas" id="bp-canvas">
+
+      <!-- Welcome state: shown until step 2 -->
+      <div class="bp-welcome-state" id="bp-welcome-state">
+        <div class="bp-welcome-icon">✦</div>
+        <div class="bp-welcome-h">Your blueprint builds<br>as you go.</div>
+        <div class="bp-welcome-p">Each step you complete adds a new layer to your AI-powered site architecture. Start with Step 1 to begin.</div>
+      </div>
+
+      <!-- Section 01: Business Identity (reveals at step 2) -->
+      <div class="bp-section bp-hidden" id="bps-1">
+        <div class="bp-sec-head">
+          <div class="bp-num">01</div>
+          <div>
+            <div class="bp-sec-label">Foundation</div>
+            <div class="bp-sec-title">Business Identity</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-field-row">
+            <div class="bp-field">
+              <div class="bp-fl">Business</div>
+              <div class="bp-fv" data-live="biz-name"></div>
+            </div>
+            <div class="bp-field">
+              <div class="bp-fl">Owner</div>
+              <div class="bp-fv" data-live="owner-name"></div>
+            </div>
+            <div class="bp-field">
+              <div class="bp-fl">Industry</div>
+              <div class="bp-fv" id="bp-industry">Analyzing…</div>
+            </div>
+          </div>
+          <div class="bp-bio" data-live="bio"></div>
+        </div>
+      </div>
+
+      <!-- Section 02: Brand Voice (reveals at step 2) -->
+      <div class="bp-section bp-hidden" id="bps-2">
+        <div class="bp-sec-head">
+          <div class="bp-num">02</div>
+          <div>
+            <div class="bp-sec-label">Messaging</div>
+            <div class="bp-sec-title">Brand Voice</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-headline" data-live="headline"></div>
+          <div class="bp-tagline" data-live="tagline"></div>
+        </div>
+      </div>
+
+      <!-- Section 03: Visual Identity (reveals at step 3) -->
+      <div class="bp-section bp-hidden" id="bps-3">
+        <div class="bp-sec-head">
+          <div class="bp-num">03</div>
+          <div>
+            <div class="bp-sec-label">Design</div>
+            <div class="bp-sec-title">Visual Identity</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-pal-label">Color Palette</div>
+          <div class="bp-swatches" id="bp-swatches">
+            <div class="bp-swatch-ph"></div>
+            <div class="bp-swatch-ph"></div>
+            <div class="bp-swatch-ph"></div>
+            <div class="bp-swatch-ph"></div>
+          </div>
+          <div class="bp-pal-name" id="bp-pal-name">Select a palette in Step 3 →</div>
+          <div class="bp-anim-row">
+            <span class="bp-anim-lbl">Animation</span>
+            <span class="bp-anim-val" id="bp-anim-label">None</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 04: Services (reveals at step 4) -->
+      <div class="bp-section bp-hidden" id="bps-4">
+        <div class="bp-sec-head">
+          <div class="bp-num">04</div>
+          <div>
+            <div class="bp-sec-label">Offerings</div>
+            <div class="bp-sec-title">Services</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-svcs">
+            <div class="bp-svc-chip bp-empty" id="bp-sc1"><span data-live="svc1-name">Service 1</span></div>
+            <div class="bp-svc-chip bp-empty" id="bp-sc2"><span data-live="svc2-name">Service 2</span></div>
+            <div class="bp-svc-chip bp-empty" id="bp-sc3"><span data-live="svc3-name">Service 3</span></div>
+            <div class="bp-svc-chip bp-empty" id="bp-sc4"><span data-live="svc4-name">Service 4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 05: Pricing (reveals at step 5) -->
+      <div class="bp-section bp-hidden" id="bps-5">
+        <div class="bp-sec-head">
+          <div class="bp-num">05</div>
+          <div>
+            <div class="bp-sec-label">Revenue</div>
+            <div class="bp-sec-title">Pricing Architecture</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-pricing-row">
+            <div class="bp-price-block">
+              <div class="bp-price-tier" data-live="rate1-name">Starter</div>
+              <div class="bp-price-amt" data-live="rate1-price"></div>
+            </div>
+            <div class="bp-price-block bp-featured">
+              <div class="bp-price-tier" data-live="rate2-name">Standard</div>
+              <div class="bp-price-amt" data-live="rate2-price"></div>
+            </div>
+            <div class="bp-price-block">
+              <div class="bp-price-tier" data-live="rate3-name">Premium</div>
+              <div class="bp-price-amt" data-live="rate3-price"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 06: Social Proof (reveals at step 6) -->
+      <div class="bp-section bp-hidden" id="bps-6">
+        <div class="bp-sec-head">
+          <div class="bp-num">06</div>
+          <div>
+            <div class="bp-sec-label">Trust</div>
+            <div class="bp-sec-title">Social Proof</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-testi-list">
+            <div class="bp-testi-item">
+              <div class="bp-tq" data-live="testi1-quote"></div>
+              <div class="bp-tm"><span data-live="testi1-name">Client</span> · <span data-live="testi1-ctx">Context</span></div>
+            </div>
+            <div class="bp-testi-item">
+              <div class="bp-tq" data-live="testi2-quote"></div>
+              <div class="bp-tm"><span data-live="testi2-name">Client</span> · <span data-live="testi2-ctx">Context</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 07: Visual Assets (reveals at step 7) -->
+      <div class="bp-section bp-hidden" id="bps-7">
+        <div class="bp-sec-head">
+          <div class="bp-num">07</div>
+          <div>
+            <div class="bp-sec-label">Assets</div>
+            <div class="bp-sec-title">Visual Library</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-photos-grid">
+            <div class="bp-photo-slot" id="bp-ps-ai-hero-photo">
+              <div class="bp-photo-ph">Hero</div>
+              <img id="bp-img-ai-hero-photo" alt="">
+            </div>
+            <div class="bp-photo-slot" id="bp-ps-ai-about-a-photo">
+              <div class="bp-photo-ph">About A</div>
+              <img id="bp-img-ai-about-a-photo" alt="">
+            </div>
+            <div class="bp-photo-slot" id="bp-ps-ai-about-b-photo">
+              <div class="bp-photo-ph">About B</div>
+              <img id="bp-img-ai-about-b-photo" alt="">
+            </div>
+            <div class="bp-photo-slot" id="bp-ps-ai-port-1-photo">
+              <div class="bp-photo-ph">Work 1</div>
+              <img id="bp-img-ai-port-1-photo" alt="">
+            </div>
+            <div class="bp-photo-slot" id="bp-ps-ai-port-2-photo">
+              <div class="bp-photo-ph">Work 2</div>
+              <img id="bp-img-ai-port-2-photo" alt="">
+            </div>
+            <div class="bp-photo-slot" id="bp-ps-ai-port-3-photo">
+              <div class="bp-photo-ph">Work 3</div>
+              <img id="bp-img-ai-port-3-photo" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 08: Launch (reveals at step 8) -->
+      <div class="bp-section bp-hidden" id="bps-8">
+        <div class="bp-sec-head">
+          <div class="bp-num">08</div>
+          <div>
+            <div class="bp-sec-label">Launch</div>
+            <div class="bp-sec-title">Contact &amp; Go Live</div>
+          </div>
+        </div>
+        <div class="bp-sec-body">
+          <div class="bp-contact-row">
+            <div class="bp-contact-item">
+              <div class="bp-fl">Location</div>
+              <div class="bp-fv" data-live="location"></div>
+            </div>
+            <div class="bp-contact-item">
+              <div class="bp-fl">Email</div>
+              <div class="bp-fv" data-live="email"></div>
+            </div>
+            <div class="bp-contact-item">
+              <div class="bp-fl">Phone</div>
+              <div class="bp-fv" data-live="phone"></div>
+            </div>
+          </div>
+          <div class="bp-launch-ready">
+            <div class="bp-launch-icon">✦</div>
+            <div>
+              <div class="bp-launch-text">Blueprint Complete.</div>
+              <div class="bp-launch-sub">Ready to build your site.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bp-canvas -->
+  </div><!-- /right-panel -->
 
 </div><!-- /app-shell -->
 
@@ -1155,55 +1448,10 @@ function msAutoSave() {
 }
 
 // ══════════════════════════════════════════════
-// TEMPLATES
+// TEMPLATES — removed; all sites generated from scratch by AI
 // ══════════════════════════════════════════════
-var _ctTemplates = [
-  // ── BUSINESS ──────────────────────────────────────
-  { key: 'professional_slate', name: 'Slate',       vibe: 'Clean & professional — trustworthy, modern, sharp.',   file: 'professional-slate.html',         category: 'business' },
-
-  // ── COACHING ──────────────────────────────────────
-  { key: 'brand_peach',        name: 'Peach',       vibe: 'Bold & bright — personal brand energy that pops.',     file: 'brand-peach.html',                category: 'coaching' },
-  { key: 'sierra_coach',       name: 'Sierra',      vibe: 'Warm cream & taupe — elegant, aspirational coaching.', file: 'sierra-coach.html',               category: 'coaching' },
-  { key: 'coral_coach',        name: 'Coral',       vibe: 'Coral & cream — energetic, bold, women-led brand.',    file: 'coral-coach.html',                category: 'coaching' },
-  { key: 'mila_radiant',       name: 'Radiant',     vibe: 'Pink & lime — fearless, unapologetic, high-energy.',   file: 'mila-radiant.html',               category: 'coaching' },
-
-  // ── CARETAKING ────────────────────────────────────
-  { key: 'caretaker_warm',     name: 'Warm',        vibe: 'Terracotta + cream — soft, inviting, trustworthy.',    file: 'caretaker-warm.html',             category: 'caretaking' },
-  { key: 'caretaker_bright',   name: 'Bright',      vibe: 'Orange + pink — vibrant, energetic, full of life.',    file: 'caretaker-bright.html',           category: 'caretaking' },
-  { key: 'caretaker_clean',    name: 'Clean',       vibe: 'Navy + white — polished, professional, credible.',     file: 'caretaker-clean.html',            category: 'caretaking' },
-
-  // ── SOCIAL MEDIA ──────────────────────────────────
-  { key: 'sm_bubbly',          name: 'Bubbly',      vibe: 'Bold & playful — pops off the screen.',                file: 'social-media-bubbly.html',        category: 'social' },
-  { key: 'sm_cherry',          name: 'Cherry',      vibe: 'Sleek & dark — editorial and modern.',                 file: 'social-media-cherry.html',        category: 'social' },
-  { key: 'sm_studio',          name: 'Studio',      vibe: 'Clean & minimal — crisp and professional.',            file: 'social-media-manager-site.html',  category: 'social' },
-  { key: 'pink_pixel',         name: 'Pink Pixel',  vibe: 'Hot pink & cream — bold, fun, strategy-forward.',      file: 'pink-pixel.html',                 category: 'social' },
-  { key: 'flux_collective',    name: 'Flux',        vibe: 'Dark & lime — edgy, collective, anti-average.',        file: 'flux-collective.html',            category: 'social' },
-  { key: 'taylor_peach',       name: 'Taylor',      vibe: 'Peach & warm — creator energy, soft & strategic.',     file: 'taylor-peach.html',               category: 'social' },
-
-  // ── CREATIVE ──────────────────────────────────────
-  { key: 'creative_studio',    name: 'Studio',      vibe: 'Dark & editorial — luxury, bold, premium.',            file: 'creative-studio.html',            category: 'creative' },
-  { key: 'buzz_creative',      name: 'Buzz',        vibe: 'Black & lime — next-gen creative agency energy.',      file: 'buzz-creative.html',              category: 'creative' },
-  { key: 'tuesday_marketing',  name: 'Tuesday',     vibe: 'Lavender & coral — bold, playful, unforgettable.',     file: 'tuesday-marketing.html',          category: 'creative' },
-  { key: 'studio_georgia',     name: 'Georgia',     vibe: 'Warm cream — editorial, refined, result-focused.',     file: 'studio-georgia.html',             category: 'creative' },
-  { key: 'wylde_agency',       name: 'Wylde',       vibe: 'Black & lime — brands that burn, built different.',    file: 'wylde-agency.html',               category: 'creative' },
-  { key: 'gemma_rose',         name: 'Gemma',       vibe: 'Teal & mustard — layered, creative, warm-bold.',       file: 'gemma-rose.html',                 category: 'creative' },
-
-  // ── DESIGN ────────────────────────────────────────
-  { key: 'interior_linen',     name: 'Linen',       vibe: 'Warm & editorial — timeless, refined, airy.',          file: 'interior-linen.html',             category: 'design' },
-  { key: 'laguna_coastal',     name: 'Laguna',      vibe: 'White & seafoam — coastal luxury, light, elevated.',   file: 'laguna-coastal.html',             category: 'design' },
-
-  // ── BEAUTY ────────────────────────────────────────
-  { key: 'beauty_bloom',       name: 'Bloom',       vibe: 'Rose & blush — feminine, elegant, inviting.',          file: 'beauty-bloom.html',               category: 'beauty' },
-  { key: 'ofirelle',           name: 'Ofirelle',    vibe: 'Ivory & gold — ultra-luxury, minimal, high-end.',      file: 'ofirelle.html',                   category: 'beauty' },
-
-  // ── WELLNESS ──────────────────────────────────────
-  { key: 'wellness_ember',     name: 'Ember',       vibe: 'Earthy & sacred — warm, calm, intentional.',           file: 'wellness-ember.html',             category: 'wellness' },
-  { key: 'studio_saraho',      name: 'Saraho',      vibe: 'Dark & editorial — soul, mind, body wellness.',        file: 'studio-saraho.html',              category: 'wellness' },
-  { key: 'healing_horizons',   name: 'Horizons',    vibe: 'Soft sage green — gentle, grounded, therapeutic.',     file: 'healing-horizons.html',           category: 'wellness' },
-  { key: 'alchemist',          name: 'Alchemist',   vibe: 'Earthy ivory — slow living, sacred, intentional.',     file: 'alchemist.html',                  category: 'wellness' },
-  { key: 'kindred_wellness',   name: 'Kindred',     vibe: 'Warm caramel — grounded, cozy, therapist-ready.',      file: 'kindred-wellness.html',           category: 'wellness' },
-];
-var _ctSelectedTemplate = 'caretaker_warm';
+var _ctTemplates = [];
+var _ctSelectedTemplate = 'ai_design';
 var MS_INDUSTRY = null;
 var MS_RECOMMENDED = [];
 
@@ -2604,196 +2852,6 @@ var _ctPalettes = {
 // PHOTO ZONES
 // ══════════════════════════════════════════════
 var _ctPhotoZones = {
-  // ── Caretaker ──────────────────────────────────────────────
-  caretaker_warm: [
-    { id: 'cw-hero-photo',    label: 'Hero Photo',          desc: 'Right side of hero — your best professional photo', isHero: true },
-    { id: 'cw-about-a-photo', label: 'About Photo (top)',   desc: 'Upper photo in the About section' },
-    { id: 'cw-about-b-photo', label: 'About Photo (lower)', desc: 'Lower offset photo in the About section' },
-    { id: 'cw-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'cw-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'cw-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  caretaker_bright: [
-    { id: 'cb-hero-photo',    label: 'Hero Photo',          desc: 'Organic-shaped photo in hero section', isHero: true },
-    { id: 'cb-about-photo',   label: 'About Photo',         desc: 'Photo in the About Me section' },
-    { id: 'cb-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Small circular photo for review 1', isPort: true },
-    { id: 'cb-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Small circular photo for review 2', isPort: true },
-    { id: 'cb-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Small circular photo for review 3', isPort: true }
-  ],
-  caretaker_clean: [
-    { id: 'cc-hero-photo',    label: 'Hero Photo',          desc: 'Right side of hero — professional headshot or candid', isHero: true },
-    { id: 'cc-about-a-photo', label: 'About Photo (top)',   desc: 'Larger photo in the About section' },
-    { id: 'cc-about-b-photo', label: 'About Photo (lower)', desc: 'Smaller offset photo in the About section' },
-    { id: 'cc-port-1-photo',  label: 'Family 1 Avatar',     desc: 'Circular photo for testimonial 1', isPort: true },
-    { id: 'cc-port-2-photo',  label: 'Family 2 Avatar',     desc: 'Circular photo for testimonial 2', isPort: true },
-    { id: 'cc-port-3-photo',  label: 'Family 3 Avatar',     desc: 'Circular photo for testimonial 3', isPort: true }
-  ],
-  // ── Social Media ───────────────────────────────────────────
-  sm_bubbly: [
-    { id: 'bp-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'bp-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'bp-port-1-photo', label: 'Portfolio Photo 1', desc: 'First portfolio image', isPort: true },
-    { id: 'bp-port-2-photo', label: 'Portfolio Photo 2', desc: 'Second portfolio image', isPort: true },
-    { id: 'bp-port-3-photo', label: 'Portfolio Photo 3', desc: 'Third portfolio image', isPort: true }
-  ],
-  sm_cherry: [
-    { id: 'cb-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'cb-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'cb-port-1-photo', label: 'Portfolio Photo 1', desc: 'First portfolio image', isPort: true },
-    { id: 'cb-port-2-photo', label: 'Portfolio Photo 2', desc: 'Second portfolio image', isPort: true },
-    { id: 'cb-port-3-photo', label: 'Portfolio Photo 3', desc: 'Third portfolio image', isPort: true }
-  ],
-  sm_studio: [
-    { id: 'sm-hero-photo',    label: 'Hero Photo',         desc: 'Main photo in the hero section', isHero: true },
-    { id: 'sm-about-a-photo', label: 'About Photo (top)',  desc: 'Upper photo in the about section' },
-    { id: 'sm-about-b-photo', label: 'About Photo (lower)', desc: 'Lower photo in the about section' },
-    { id: 'sm-port-1-photo',  label: 'Portfolio Photo 1',  desc: 'First portfolio image', isPort: true },
-    { id: 'sm-port-2-photo',  label: 'Portfolio Photo 2',  desc: 'Second portfolio image', isPort: true },
-    { id: 'sm-port-3-photo',  label: 'Portfolio Photo 3',  desc: 'Third portfolio image', isPort: true }
-  ],
-  pink_pixel: [
-    { id: 'pp-hero-photo',   label: 'Hero Photo',            desc: 'Main photo in the hero section', isHero: true },
-    { id: 'pp-about-photo',  label: 'About Photo',           desc: 'Photo in the about section' },
-    { id: 'pp-port-1-photo', label: 'Client 1 Avatar',       desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'pp-port-2-photo', label: 'Client 2 Avatar',       desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'pp-port-3-photo', label: 'Client 3 Avatar',       desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  flux_collective: [
-    { id: 'fl-hero-photo', label: 'Hero Photo', desc: 'Main campaign photo in the hero section', isHero: true }
-  ],
-  taylor_peach: [
-    { id: 'tp-hero-photo',  label: 'Hero Photo',  desc: 'Main collage photo in the hero section', isHero: true },
-    { id: 'tp-about-photo', label: 'About Photo', desc: 'Photo in the about section' }
-  ],
-  // ── Coaching ───────────────────────────────────────────────
-  brand_peach: [
-    { id: 'bc-hero-photo',  label: 'Hero Photo',  desc: 'Blob-shaped photo in the hero section', isHero: true },
-    { id: 'bc-about-photo', label: 'About Photo', desc: 'Photo in the about section' }
-  ],
-  sierra_coach: [
-    { id: 'sc-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'sc-about-photo',  label: 'About Photo',     desc: 'Circular photo in the about section' },
-    { id: 'sc-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'sc-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'sc-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  coral_coach: [
-    { id: 'cor-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'cor-about-photo',  label: 'About Photo',     desc: 'Circular photo in the about section' },
-    { id: 'cor-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'cor-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'cor-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  mila_radiant: [
-    { id: 'mr-hero-photo',  label: 'Hero Photo',       desc: 'Main photo in the hero section', isHero: true },
-    { id: 'mr-about-photo', label: 'About Photo',      desc: 'Photo in the about section' },
-    { id: 'mr-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1 (Kira)', isPort: true },
-    { id: 'mr-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2 (Tanya)', isPort: true },
-    { id: 'mr-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3 (Rafael)', isPort: true }
-  ],
-  // ── Creative ───────────────────────────────────────────────
-  creative_studio: [
-    { id: 'cs-hero-photo', label: 'Hero Photo', desc: 'Framed photo in the hero section', isHero: true }
-  ],
-  buzz_creative: [
-    { id: 'bz-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'bz-about-photo',  label: 'About Photo',     desc: 'Studio photo in the about section' },
-    { id: 'bz-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'bz-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'bz-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  tuesday_marketing: [
-    { id: 'tm-hero-photo',   label: 'Hero Photo',      desc: 'Polaroid photo in the hero section', isHero: true },
-    { id: 'tm-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'tm-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'tm-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'tm-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  studio_georgia: [
-    { id: 'sg-hero-photo',   label: 'Hero Photo',       desc: 'Tall photo in the hero grid', isHero: true },
-    { id: 'sg-about-photo',  label: 'About Photo',      desc: 'Photo in the about section' },
-    { id: 'sg-port-1-photo', label: 'Client 1 Avatar',  desc: 'Small circular photo for testimonial 1 (Margaux)', isPort: true },
-    { id: 'sg-port-2-photo', label: 'Client 2 Avatar',  desc: 'Small circular photo for testimonial 2 (Claire)', isPort: true },
-    { id: 'sg-port-3-photo', label: 'Client 3 Avatar',  desc: 'Small circular photo for testimonial 3 (Thomas)', isPort: true }
-  ],
-  wylde_agency: [
-    { id: 'wa-hero-photo',   label: 'Hero Photo',       desc: 'Campaign photo in the hero section', isHero: true },
-    { id: 'wa-about-photo',  label: 'About Photo',      desc: 'Team or studio photo in the about section' },
-    { id: 'wa-port-1-photo', label: 'Client 1 Avatar',  desc: 'Small circular photo for testimonial 1 (Jordan)', isPort: true },
-    { id: 'wa-port-2-photo', label: 'Client 2 Avatar',  desc: 'Small circular photo for testimonial 2 (Anya)', isPort: true },
-    { id: 'wa-port-3-photo', label: 'Client 3 Avatar',  desc: 'Small circular photo for testimonial 3 (Marcus)', isPort: true }
-  ],
-  gemma_rose: [
-    { id: 'gr-hero-photo',  label: 'Hero Photo',  desc: 'Polaroid photo in the hero section', isHero: true },
-    { id: 'gr-about-photo', label: 'About Photo', desc: 'Photo in the about section' }
-  ],
-  // ── Design ─────────────────────────────────────────────────
-  interior_linen: [
-    { id: 'il-hero-photo', label: 'Hero Photo', desc: 'Full-width hero image — an interior photo', isHero: true }
-  ],
-  laguna_coastal: [
-    { id: 'lc-hero-photo',   label: 'Hero Photo (main)',    desc: 'Large tall photo in the hero grid', isHero: true },
-    { id: 'lc-hero-b-photo', label: 'Hero Photo (bedroom)', desc: 'Second hero grid photo' },
-    { id: 'lc-hero-c-photo', label: 'Hero Photo (bath)',    desc: 'Third hero grid photo' },
-    { id: 'lc-about-photo',  label: 'About Photo',          desc: 'Tall photo in the about section' },
-    { id: 'lc-port-1-photo', label: 'Client 1 Avatar',      desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'lc-port-2-photo', label: 'Client 2 Avatar',      desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'lc-port-3-photo', label: 'Client 3 Avatar',      desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  // ── Beauty ─────────────────────────────────────────────────
-  beauty_bloom: [
-    { id: 'bb-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'bb-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'bb-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for review 1', isPort: true },
-    { id: 'bb-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for review 2', isPort: true },
-    { id: 'bb-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for review 3', isPort: true }
-  ],
-  ofirelle: [
-    { id: 'of-hero-photo',   label: 'Hero Photo',      desc: 'Full-height photo in the hero section', isHero: true },
-    { id: 'of-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'of-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'of-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'of-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  // ── Wellness ───────────────────────────────────────────────
-  wellness_ember: [
-    { id: 'we-hero-photo',   label: 'Hero Photo',      desc: 'Main photo in the hero section', isHero: true },
-    { id: 'we-about-photo',  label: 'About Photo',     desc: 'Circular practitioner photo in the about section' },
-    { id: 'we-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'we-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'we-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  studio_saraho: [
-    { id: 'sar-hero-photo',   label: 'Hero Photo',      desc: 'Circular photo in the hero section', isHero: true },
-    { id: 'sar-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'sar-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'sar-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'sar-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  healing_horizons: [
-    { id: 'hh-hero-photo',   label: 'Hero Photo',       desc: 'Blob-shaped photo in the hero section', isHero: true },
-    { id: 'hh-about-photo',  label: 'About Photo',      desc: 'Practitioner photo in the about section' },
-    { id: 'hh-port-1-photo', label: 'Client 1 Avatar',  desc: 'Small circular photo for testimonial 1 (Sarah)', isPort: true },
-    { id: 'hh-port-2-photo', label: 'Client 2 Avatar',  desc: 'Small circular photo for testimonial 2 (David & Priya)', isPort: true },
-    { id: 'hh-port-3-photo', label: 'Client 3 Avatar',  desc: 'Small circular photo for testimonial 3 (Layla)', isPort: true }
-  ],
-  alchemist: [
-    { id: 'alc-hero-photo',  label: 'Hero Photo',  desc: 'Organic-shaped photo in the hero section', isHero: true },
-    { id: 'alc-about-photo', label: 'About Photo', desc: 'Photo in the about section' }
-  ],
-  kindred_wellness: [
-    { id: 'kw-hero-photo',  label: 'Hero Photo',  desc: 'Full-width photo at the top of the page', isHero: true },
-    { id: 'kw-about-photo', label: 'About Photo', desc: 'Therapist photo in the about section' }
-  ],
-  // ── Business ───────────────────────────────────────────────
-  professional_slate: [
-    { id: 'ps-hero-photo',   label: 'Hero Photo',      desc: 'Professional headshot in the hero section', isHero: true },
-    { id: 'ps-about-photo',  label: 'About Photo',     desc: 'Photo in the about section' },
-    { id: 'ps-port-1-photo', label: 'Client 1 Avatar', desc: 'Small circular photo for testimonial 1', isPort: true },
-    { id: 'ps-port-2-photo', label: 'Client 2 Avatar', desc: 'Small circular photo for testimonial 2', isPort: true },
-    { id: 'ps-port-3-photo', label: 'Client 3 Avatar', desc: 'Small circular photo for testimonial 3', isPort: true }
-  ],
-  // ── AI decides ─────────────────────────────────────────────
   ai_design: [
     { id: 'ai-hero-photo',    label: 'Hero Photo',          desc: 'Your best professional or brand photo — goes in the hero section', isHero: true },
     { id: 'ai-about-a-photo', label: 'About Photo (main)',  desc: 'Primary photo in your About section' },
@@ -2805,36 +2863,8 @@ var _ctPhotoZones = {
 };
 var _ctPhotos = {};
 
-// Global template key map — shared by msGenerate AND msRevise
-var _ctTplKeyMap = {
-  sm_cherry:          'cherry_sm',
-  sm_bubbly:          'bubbly_sm',
-  sm_studio:          'social',
-  ai_design:          'custom',
-  wellness_ember:     'caretaker_warm',
-  beauty_bloom:       'caretaker_warm',
-  creative_studio:    'social',
-  professional_slate: 'caretaker_clean',
-  brand_peach:        'social',
-  interior_linen:     'social',
-  pink_pixel:         'social',
-  flux_collective:    'social',
-  taylor_peach:       'social',
-  buzz_creative:      'social',
-  tuesday_marketing:  'social',
-  studio_georgia:     'social',
-  wylde_agency:       'social',
-  gemma_rose:         'social',
-  laguna_coastal:     'social',
-  ofirelle:           'caretaker_warm',
-  sierra_coach:       'caretaker_warm',
-  coral_coach:        'caretaker_warm',
-  mila_radiant:       'caretaker_warm',
-  studio_saraho:      'caretaker_warm',
-  healing_horizons:   'caretaker_warm',
-  alchemist:          'caretaker_warm',
-  kindred_wellness:   'caretaker_warm'
-};
+// Always generate from scratch
+var _ctTplKeyMap = { ai_design: 'custom' };
 
 // ══════════════════════════════════════════════
 // STATE
@@ -2842,6 +2872,7 @@ var _ctTplKeyMap = {
 var _ctHTML = '';
 var _ctLastFields = {};
 var _ctPopularRate = 2;
+var _ghostRendered = false;
 
 // ── Supabase + Revenue Booster ──
 var _sbClientCT = null;
@@ -3007,37 +3038,55 @@ function msBuildRBSection(config) {
   var sessions = config.sessions;
   var addons = config.addons || [];
   var btnLabel = config.bookingLabel || 'Book Now';
-  var html = '<section id="builtsy-rb" style="background:#2C1810;padding:80px 40px;"><div style="max-width:700px;margin:0 auto;">'
-    + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#D4745A;margin-bottom:16px;">Interactive Pricing</div>'
-    + '<h2 style="font-family:\'Playfair Display\',serif;font-size:42px;font-style:italic;color:white;margin-bottom:8px;">Build Your Package.</h2>'
-    + '<p style="color:#A89070;margin-bottom:40px;font-size:15px;">Select a care type and add any extras you need.</p>';
+
+  // Palette-aware CSS vars — section uses the site's primary dark color, not hardcoded brown
+  var html = '<section id="builtsy-rb" style="background:var(--terra2,#1a0f08);padding:80px 40px;">'
+    + '<div style="max-width:700px;margin:0 auto;">'
+    + '<div style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--terra,#D4745A);margin-bottom:16px;">Interactive Pricing</div>'
+    + '<h2 style="font-family:\'Playfair Display\',serif;font-size:clamp(2rem,6vw,2.75rem);font-style:italic;color:#fff;line-height:1.1;margin-bottom:10px;">Build Your Package.</h2>'
+    + '<p style="color:rgba(255,255,255,0.5);margin-bottom:40px;font-size:0.95rem;line-height:1.6;">Select a package and add any extras you need.</p>';
+
   sessions.forEach(function(s) {
-    html += '<div class="rb-session-card" data-rb-price="' + (s.price||0) + '" onclick="_rbPick(this,' + (s.price||0) + ')" style="cursor:pointer;padding:1.25rem 1.5rem;border:2px solid rgba(212,116,90,0.2);border-radius:12px;margin-bottom:0.75rem;transition:all .2s;background:rgba(255,255,255,0.03);">'
-      + '<div style="font-weight:700;color:white;margin-bottom:4px;">' + (s.name||'Package') + '</div>'
-      + (s.description ? '<div style="font-size:13px;color:#A89070;margin-bottom:8px;">' + s.description + '</div>' : '')
-      + '<div style="font-size:1.75rem;font-weight:900;color:#D4745A;">$' + (s.price||0) + '</div>'
+    html += '<div class="rb-session-card" data-rb-price="' + (s.price||0) + '" onclick="_rbPick(this,' + (s.price||0) + ')" '
+      + 'style="cursor:pointer;padding:1.25rem 1.5rem;border:2px solid rgba(var(--terra-rgb,212,116,90),0.18);border-radius:12px;margin-bottom:0.75rem;transition:all .2s;background:rgba(255,255,255,0.04);">'
+      + '<div style="font-weight:700;color:#fff;margin-bottom:4px;font-size:0.97rem;">' + (s.name||'Package') + '</div>'
+      + (s.description ? '<div style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin-bottom:8px;">' + s.description + '</div>' : '')
+      + '<div style="font-size:1.75rem;font-weight:900;color:var(--terra,#D4745A);">$' + (s.price||0) + '</div>'
       + '</div>';
   });
+
   if (addons.length) {
-    html += '<div style="margin-top:24px;margin-bottom:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#A89070;">Add-Ons</div>';
+    html += '<div style="margin-top:24px;margin-bottom:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Add-Ons</div>';
     addons.forEach(function(a, i) {
-      html += '<div onclick="_rbToggle(\'' + i + '\',' + (a.price||0) + ')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border:1.5px solid rgba(212,116,90,0.15);border-radius:8px;margin-bottom:0.5rem;background:rgba(255,255,255,0.02);">'
+      html += '<div onclick="_rbToggle(\'' + i + '\',' + (a.price||0) + ')" '
+        + 'style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border:1.5px solid rgba(var(--terra-rgb,212,116,90),0.12);border-radius:8px;margin-bottom:0.5rem;background:rgba(255,255,255,0.02);transition:background .15s;">'
         + '<div style="display:flex;align-items:center;gap:0.75rem;">'
-        + '<div id="rb-check-' + i + '" style="width:18px;height:18px;border-radius:4px;border:2px solid #D4745A;background:transparent;flex-shrink:0;"></div>'
-        + '<span style="color:white;">' + (a.name||'Add-on') + '</span></div>'
-        + '<span style="font-weight:700;color:#D4745A;">+$' + (a.price||0) + '</span></div>';
+        + '<div id="rb-check-' + i + '" style="width:18px;height:18px;border-radius:4px;border:2px solid var(--terra,#D4745A);background:transparent;flex-shrink:0;transition:all .15s;"></div>'
+        + '<span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">' + (a.name||'Add-on') + '</span></div>'
+        + '<span style="font-weight:700;color:var(--terra,#D4745A);font-size:0.9rem;">+$' + (a.price||0) + '</span></div>';
     });
   }
-  html += '<div style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid rgba(212,116,90,0.2);">'
-    + '<div><div style="font-size:12px;color:#A89070;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Total</div>'
-    + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:white;">$0</div></div>'
-    + '<a href="#contact" style="background:#D4745A;color:white;border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;">' + btnLabel + '</a></div>'
+
+  html += '<div style="margin-top:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:20px 0;border-top:1px solid rgba(var(--terra-rgb,212,116,90),0.18);">'
+    + '<div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;">Your Total</div>'
+    + '<div id="rb-total" style="font-size:2.5rem;font-weight:900;color:#fff;line-height:1;">$0</div></div>'
+    + '<a href="#contact" style="background:var(--terra,#D4745A);color:#fff;border:none;border-radius:10px;padding:14px 28px;font-weight:700;font-size:0.95rem;cursor:pointer;text-decoration:none;white-space:nowrap;">' + btnLabel + '</a></div>'
     + '</div></section>'
     + '<script>'
     + 'var _rbSession=0,_rbAddons={};'
     + 'function _rbCalc(){var t=_rbSession;for(var k in _rbAddons)t+=_rbAddons[k];var el=document.getElementById("rb-total");if(el)el.textContent="$"+t;}'
-    + 'function _rbPick(el,price){var cards=document.querySelectorAll(".rb-session-card");for(var i=0;i<cards.length;i++){cards[i].style.borderColor="rgba(212,116,90,0.2)";cards[i].style.background="rgba(255,255,255,0.03)";}el.style.borderColor="#D4745A";el.style.background="rgba(212,116,90,0.08)";_rbSession=price;_rbCalc();}'
-    + 'function _rbToggle(idx,price){var check=document.getElementById("rb-check-"+idx);if(_rbAddons[idx]){delete _rbAddons[idx];if(check){check.style.background="transparent";check.style.borderColor="#D4745A";}}else{_rbAddons[idx]=price;if(check){check.style.background="#D4745A";check.style.borderColor="#D4745A";}}  _rbCalc();}'
+    + 'function _rbPick(el,price){'
+    +   'var cards=document.querySelectorAll(".rb-session-card");'
+    +   'var style=getComputedStyle(document.documentElement);'
+    +   'var rgb=style.getPropertyValue("--terra-rgb").trim()||"212,116,90";'
+    +   'for(var i=0;i<cards.length;i++){cards[i].style.borderColor="rgba("+rgb+",0.18)";cards[i].style.background="rgba(255,255,255,0.04)";}'
+    +   'el.style.borderColor="var(--terra,#D4745A)";el.style.background="rgba("+rgb+",0.1)";'
+    +   '_rbSession=price;_rbCalc();}'
+    + 'function _rbToggle(idx,price){'
+    +   'var check=document.getElementById("rb-check-"+idx);'
+    +   'if(_rbAddons[idx]){delete _rbAddons[idx];if(check){check.style.background="transparent";check.style.borderColor="var(--terra,#D4745A)";check.style.boxShadow="none";}}'
+    +   'else{_rbAddons[idx]=price;if(check){check.style.background="var(--terra,#D4745A)";check.style.borderColor="var(--terra,#D4745A)";check.style.boxShadow="0 0 0 3px rgba(var(--terra-rgb,212,116,90),0.2)";}}'
+    +   '_rbCalc();}'
     + '<\/script>';
   return html;
 }
@@ -3070,7 +3119,7 @@ var MS_SECTION_MAP = {
   4: '#hero',
   5: '#hero',
   6: '#services',
-  7: null,
+  7: '#about',
   8: '#contact'
 };
 
@@ -3083,12 +3132,7 @@ function msBuildLaunchPage() {
   var owner  = (document.getElementById('ms-owner-name') || {}).value || '';
   var tagline= (document.getElementById('ms-tagline') || {}).value || '';
   var city   = (document.getElementById('ms-city') || {}).value || '';
-  var tpl    = _ctSelectedTemplate || '';
-  var tplLabel = '';
-  // Try to get human-readable template name from the picker
-  var tplEl = document.querySelector('[data-tpl="' + tpl + '"] .tpl-name');
-  if (tplEl) tplLabel = tplEl.textContent;
-  if (!tplLabel && tpl) tplLabel = tpl.replace(/_/g,' ').replace(/-/g,' ');
+  var tplLabel = 'AI-Generated';
 
   // Palette name
   var palName = '';
@@ -3248,7 +3292,13 @@ function msGoStep(n) {
     document.body.classList.remove('ms-s1');
   }
 
-  // Push user's info into the preview whenever we're past Step 1
+  // Initialise blueprint on first step past welcome screen
+  if (n >= 2 && !_ghostRendered) msRenderBlueprintPanel();
+
+  // Reveal new blueprint sections for the current step
+  if (n >= 2) msBlueprintRevealStep(n);
+
+  // Push user's info into the blueprint panel
   if (n >= 2) setTimeout(msApplyAllLive, 300);
 
   // Re-render palette grid every time Step 3 is entered
@@ -3267,23 +3317,27 @@ function msGoStep(n) {
 }
 
 function msScrollPreviewTo(selector) {
-  var iframe = document.getElementById('preview-iframe');
-  if (!iframe) return;
-  try {
-    var doc = iframe.contentDocument || iframe.contentWindow.document;
-    var el = doc.querySelector(selector);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Map site section IDs to blueprint section IDs
+  var bpMap = {
+    '#services': 'bps-4', '#packages': 'bps-4',
+    '#pricing': 'bps-5', '#rates': 'bps-5',
+    '#testimonials': 'bps-6', '#reviews': 'bps-6',
+    '#about': 'bps-7', '#photos': 'bps-7',
+    '#contact': 'bps-8'
+  };
+  var bpId = bpMap[selector];
+  if (bpId) {
+    var el = document.getElementById(bpId);
+    if (el && el.classList.contains('bp-visible')) {
+      var canvas = document.getElementById('bp-canvas');
+      if (canvas) canvas.scrollTo({ top: el.offsetTop - canvas.offsetTop - 20, behavior: 'smooth' });
     }
-  } catch(e) {}
+  }
 }
 
 function msScrollPreviewToTop() {
-  var iframe = document.getElementById('preview-iframe');
-  if (!iframe) return;
-  try {
-    iframe.contentWindow.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch(e) {}
+  var canvas = document.getElementById('bp-canvas');
+  if (canvas) canvas.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ══════════════════════════════════════════════
@@ -3332,9 +3386,13 @@ function msStep1Next() {
 
 function msOnIndustryDetected(cfg) {
   if (!cfg) return;
-  // Recommended templates
-  MS_RECOMMENDED = cfg.recommendedTemplates || [];
-  msHighlightAIFilter(); // adds "✦ For You" pill and re-renders filtered to matches
+
+  // Update blueprint toolbar + industry field
+  var industryText = cfg.toolType || cfg.industry || cfg.businessType || 'Service Business';
+  var bpIndustry = document.getElementById('bp-industry');
+  if (bpIndustry) bpIndustry.textContent = industryText;
+  var bpSub = document.getElementById('bp-industry-label');
+  if (bpSub) bpSub.textContent = industryText + ' · AI Blueprint Active';
 
   // Specialty pills (Step 3) — only show if AI returned them
   var pillsWrap = document.getElementById('ms-specialty-wrap');
@@ -3353,11 +3411,6 @@ function msOnIndustryDetected(cfg) {
     if (pillsWrap) pillsWrap.style.display = 'none';
   }
 
-  // Template subtitle
-  if (cfg.industryLabel) {
-    var sub = document.getElementById('ms-tpl-sub');
-    if (sub) sub.textContent = "Great picks for a " + cfg.industryLabel + " are highlighted. Browse all — yours to pick.";
-  }
 
   // Chips — tagline, headline, creds
   if (cfg.taglineChips)    msPopulateAIChips('ms-chips-tagline',  cfg.taglineChips,    'ms-tagline',       'replace');
@@ -3513,165 +3566,8 @@ function msPopulateAIChips(containerId, chips, fieldId, mode) {
 }
 
 // ══════════════════════════════════════════════
-// TEMPLATE SELECTION
+// TEMPLATE SELECTION — removed; all sites AI-generated from scratch
 // ══════════════════════════════════════════════
-var _ctActiveFilter = 'all';
-
-function msFilterTemplates(filter) {
-  _ctActiveFilter = filter;
-  // Update pill active states
-  var pills = document.querySelectorAll('#ms-tpl-filters .tpl-filter-pill');
-  for (var i = 0; i < pills.length; i++) {
-    pills[i].classList.toggle('active', pills[i].getAttribute('data-filter') === filter);
-  }
-  msRenderTemplateCards();
-}
-
-function msHighlightAIFilter() {
-  // After AI returns recommended templates, highlight the matching filter pill
-  // and auto-select 'for-you' if there are recommendations
-  if (!MS_RECOMMENDED || !MS_RECOMMENDED.length) return;
-  var filterRow = document.getElementById('ms-tpl-filters');
-  if (!filterRow) return;
-  // Check if a "For You" pill exists, add it if not
-  if (!document.querySelector('[data-filter="foryou"]')) {
-    var pill = document.createElement('div');
-    pill.className = 'tpl-filter-pill ai-pick active';
-    pill.setAttribute('data-filter', 'foryou');
-    pill.textContent = '✦ For You';
-    pill.onclick = function() { msFilterTemplates('foryou'); };
-    filterRow.insertBefore(pill, filterRow.firstChild);
-    // Deactivate 'all' pill
-    var allPill = document.querySelector('[data-filter="all"]');
-    if (allPill) allPill.classList.remove('active');
-    _ctActiveFilter = 'foryou';
-  }
-  msRenderTemplateCards();
-}
-
-function msRenderTemplateCards() {
-  var wrap = document.getElementById('ms-tpl-cards');
-  if (!wrap) return;
-  var html = '';
-  var visibleCount = 0;
-
-  // Sort: recommended first, then rest
-  var sorted = _ctTemplates.slice().sort(function(a, b) {
-    var aRec = MS_RECOMMENDED.indexOf(a.file ? a.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(a.key) > -1;
-    var bRec = MS_RECOMMENDED.indexOf(b.file ? b.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(b.key) > -1;
-    return (bRec ? 1 : 0) - (aRec ? 1 : 0);
-  });
-
-  for (var i = 0; i < sorted.length; i++) {
-    var t = sorted[i];
-    // Filter logic
-    if (_ctActiveFilter === 'foryou') {
-      var isRecCheck = MS_RECOMMENDED.indexOf(t.file ? t.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(t.key) > -1;
-      if (!isRecCheck) continue;
-    } else if (_ctActiveFilter !== 'all') {
-      if (t.category !== _ctActiveFilter) continue;
-    }
-    visibleCount++;
-    var isSel = t.key === _ctSelectedTemplate;
-    var isRec = MS_RECOMMENDED.indexOf(t.file ? t.file.replace('.html','') : '') > -1 || MS_RECOMMENDED.indexOf(t.key) > -1;
-    var selClass = isSel ? ' selected' : '';
-    var chk = isSel ? '✓' : '';
-    var badge = isRec ? '<div style="padding:5px 10px 0;"><span style="font-family:\'DM Mono\',monospace;font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:rgba(200,224,0,0.1);color:var(--lime);border:1px solid rgba(200,224,0,0.2);padding:3px 8px;border-radius:50px;">✦ For You</span></div>' : '';
-    html += '<div class="tpl-card' + selClass + '" id="ms-tpl-' + t.key + '" onclick="msSelectTemplate(\'' + t.key + '\')">'
-      + badge
-      + '<div class="tpl-card-preview"><iframe src="' + t.file + '" scrolling="no" tabindex="-1"></iframe></div>'
-      + '<div class="tpl-card-info">'
-      + '<div class="tpl-card-check">' + chk + '</div>'
-      + '<div class="tpl-card-meta"><div class="tpl-card-name">' + t.name + '</div><div class="tpl-card-vibe">' + t.vibe + '</div></div>'
-      + '</div></div>';
-  }
-
-  if (visibleCount === 0) {
-    html = '<div style="grid-column:1/-1;text-align:center;padding:32px 0;color:rgba(255,255,255,0.3);font-size:.82rem;">No templates in this category yet — more coming soon!</div>';
-  }
-
-  wrap.innerHTML = html;
-}
-
-function msSelectTemplate(key) {
-  _ctSelectedTemplate = key;
-
-  // ── Deselect all regular template cards ──
-  for (var i = 0; i < _ctTemplates.length; i++) {
-    var card = document.getElementById('ms-tpl-' + _ctTemplates[i].key);
-    if (!card) continue;
-    var chkEl = card.querySelector('.tpl-card-check');
-    if (_ctTemplates[i].key === key) {
-      card.className = 'tpl-card selected';
-      if (chkEl) chkEl.textContent = '✓';
-    } else {
-      card.className = 'tpl-card';
-      if (chkEl) chkEl.textContent = '';
-    }
-  }
-
-  // ── Handle the special "Let AI Decide" card ──
-  var aiCard = document.getElementById('ms-ai-tpl-card');
-  var aiChk  = document.getElementById('ms-tpl-check-ai');
-  if (key === 'ai_design') {
-    if (aiCard) {
-      aiCard.style.borderColor = 'var(--lime)';
-      aiCard.style.background  = 'rgba(200,224,0,0.1)';
-      aiCard.style.boxShadow   = '0 0 0 3px rgba(200,224,0,0.18)';
-    }
-    if (aiChk) {
-      aiChk.style.background   = 'var(--lime)';
-      aiChk.style.borderColor  = 'var(--lime)';
-      aiChk.style.color        = '#0D1246';
-      aiChk.textContent        = '✓';
-    }
-    // Reset palette (AI decides, no manual palette)
-    _ctSelectedPalette = '';
-    _ctSelectedPaletteName = 'Original';
-    msRenderPaletteGrid(_ctActivePaletteTab);
-    // Show AI photo zones, hide template-specific zones
-    var aiZones = document.getElementById('ms-ai-photo-zones');
-    var tplZones = document.getElementById('ms-photo-zones-container');
-    if (aiZones) aiZones.style.display = 'block';
-    if (tplZones) tplZones.innerHTML = '';
-    return;
-  } else {
-    // Reset AI card to default dashed style
-    if (aiCard) {
-      aiCard.style.borderColor = 'rgba(200,224,0,0.3)';
-      aiCard.style.background  = 'rgba(200,224,0,0.04)';
-      aiCard.style.boxShadow   = '';
-    }
-    if (aiChk) {
-      aiChk.style.background  = '';
-      aiChk.style.borderColor = '';
-      aiChk.style.color       = '';
-      aiChk.textContent       = '';
-    }
-  }
-
-  // ── Load selected template in the preview iframe ──
-  for (var j = 0; j < _ctTemplates.length; j++) {
-    if (_ctTemplates[j].key === key) {
-      var iframe = document.getElementById('preview-iframe');
-      var urlEl = document.getElementById('ms-preview-url');
-      if (iframe) {
-        iframe.src = _ctTemplates[j].file;
-        iframe.onload = function() { setTimeout(msApplyAllLive, 150); };
-      }
-      if (urlEl) urlEl.textContent = _ctTemplates[j].file;
-      break;
-    }
-  }
-  // Reset palette when template changes
-  _ctSelectedPalette = '';
-  _ctSelectedPaletteName = 'Original';
-  msRenderPaletteGrid(_ctActivePaletteTab);
-  // Hide AI photo zones, rebuild template-specific zones
-  var aiZonesEl = document.getElementById('ms-ai-photo-zones');
-  if (aiZonesEl) aiZonesEl.style.display = 'none';
-  if (_msCurrentStep === 7) msBuildPhotoZones();
-}
 
 // ══════════════════════════════════════════════
 // PALETTE
@@ -3776,7 +3672,7 @@ function msSelectPalette(cssStr, paletteName) {
   _ctSelectedPalette = cssStr;
   _ctSelectedPaletteName = paletteName;
   msRenderPaletteGrid(_ctActivePaletteTab);
-  msInjectPaletteIntoIframe(cssStr);
+  msBlueprintUpdatePalette(cssStr, paletteName);
 }
 
 function msHexToRgb(hex) {
@@ -3814,23 +3710,12 @@ function msApplyCustom() {
   }
   _ctSelectedPalette = css;
   _ctSelectedPaletteName = 'Custom';
-  msInjectPaletteIntoIframe(css);
+  msBlueprintUpdatePalette(css, 'Custom');
 }
 
+// Stub — blueprint uses msBlueprintUpdatePalette instead (no iframe)
 function msInjectPaletteIntoIframe(cssOverride) {
-  var iframe = document.getElementById('preview-iframe');
-  if (!iframe) return;
-  try {
-    var doc = iframe.contentDocument || iframe.contentWindow.document;
-    var existing = doc.getElementById('builtsy-palette-override');
-    if (existing) existing.parentNode.removeChild(existing);
-    if (cssOverride) {
-      var style = doc.createElement('style');
-      style.id = 'builtsy-palette-override';
-      style.textContent = ':root{' + cssOverride + '}';
-      doc.head.appendChild(style);
-    }
-  } catch(e) {}
+  msBlueprintUpdatePalette(cssOverride, _ctSelectedPaletteName);
 }
 
 // ══════════════════════════════════════════════
@@ -3873,64 +3758,7 @@ function msUpdatePopular() {
 // PHOTO ZONES
 // ══════════════════════════════════════════════
 function msBuildPhotoZones() {
-  var container = document.getElementById('ms-photo-zones-container');
-  if (!container) return;
-  // AI Design uses the static hardcoded upload zones
-  var aiZonesEl2 = document.getElementById('ms-ai-photo-zones');
-  if (_ctSelectedTemplate === 'ai_design') {
-    if (aiZonesEl2) aiZonesEl2.style.display = 'block';
-    container.innerHTML = '';
-    return;
-  }
-  if (aiZonesEl2) aiZonesEl2.style.display = 'none';
-  var zones = _ctPhotoZones[_ctSelectedTemplate] || [];
-  var heroZones = [];
-  var aboutZones = [];
-  var portZones = [];
-
-  for (var i = 0; i < zones.length; i++) {
-    if (zones[i].isPort) {
-      portZones.push(zones[i]);
-    } else if (zones[i].isHero) {
-      heroZones.push(zones[i]);
-    } else {
-      aboutZones.push(zones[i]);
-    }
-  }
-
-  var html = '';
-
-  if (heroZones.length > 0) {
-    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Hero Section</span>';
-    for (var hi = 0; hi < heroZones.length; hi++) {
-      html += msZoneHTML(heroZones[hi]);
-    }
-  }
-
-  if (aboutZones.length > 0) {
-    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 11px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">About Section</span>';
-    if (aboutZones.length === 1) {
-      html += msZoneHTML(aboutZones[0]);
-    } else {
-      html += '<div class="upload-grid-2">';
-      for (var ai = 0; ai < aboutZones.length; ai++) {
-        html += '<div>' + msZoneHTML(aboutZones[ai]) + '</div>';
-      }
-      html += '</div>';
-    }
-  }
-
-  if (portZones.length > 0) {
-    html += '<span style="display:block;font-family:\'DM Mono\',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700;margin:20px 0 8px;padding:3px 0 3px 10px;border-left:2.5px solid var(--lime);">Testimonial Avatars</span>';
-    html += '<p style="font-size:.76rem;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.5;">Small circular photos that appear next to each client testimonial.</p>';
-    html += '<div class="upload-grid-3">';
-    for (var pi = 0; pi < portZones.length; pi++) {
-      html += '<div>' + msZoneHTML(portZones[pi]) + '</div>';
-    }
-    html += '</div>';
-  }
-
-  container.innerHTML = html;
+  // All sites are AI-generated — ai-photo-zones are always visible (shown by default in HTML)
 }
 
 function msZoneHTML(zone) {
@@ -3970,6 +3798,8 @@ function msHandlePhoto(zoneId, input) {
     } else {
       msBuildPhotoZones();
     }
+    // Push photo to blueprint panel
+    if (_ghostRendered) msUpdateBlueprintPhoto(zoneId);
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -3981,6 +3811,8 @@ function msClearPhoto(zoneId) {
   } else {
     msBuildPhotoZones();
   }
+  // Remove photo from blueprint panel
+  if (_ghostRendered) msUpdateBlueprintPhoto(zoneId);
 }
 
 // Update a single static AI Design zone to reflect current photo state
@@ -4142,15 +3974,58 @@ function msInjectAssets(html) {
         }
       }
 
-      // Inject nav CTA link pointing to #builtsy-rb
+      // ── RB BUTTON PLACEMENT ──────────────────────────────────────────────────
+      // Mobile: button lives INSIDE the hero section as a secondary CTA
+      // Desktop: button lives in the nav bar, highlighted
+      // IDs (not classes) used for specificity — CSS injected before </body> always works
       var rbNavLabel = _ctRBNavLabel(window._ctRevBoosterConfig);
-      var rbNavLink = '<a href="#builtsy-rb" style="background:var(--accent,#D4745A);color:#fff;padding:7px 16px;border-radius:20px;font-weight:700;font-size:.82rem;text-decoration:none;white-space:nowrap;margin-left:8px;">' + rbNavLabel + '</a>';
-      // Try common nav patterns: last </a> before </nav>, or inside .nav-cta, or before </nav>
-      if (html.indexOf('</nav>') !== -1) {
-        html = html.replace('</nav>', rbNavLink + '\n</nav>');
-      } else if (html.indexOf('</header>') !== -1) {
-        html = html.replace('</header>', rbNavLink + '\n</header>');
+
+      // 1. MOBILE HERO BUTTON — injected into the hero section before </section>
+      var rbHeroBtn = '<div id="builtsy-rb-hero-cta" style="margin-top:1.25rem;text-align:left;">'
+        + '<a href="#builtsy-rb" style="display:inline-block;background:var(--terra,#D4745A);color:#fff;'
+        + 'padding:0.75rem 1.875rem;border-radius:24px;font-weight:700;font-size:0.9rem;'
+        + 'text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.18);letter-spacing:0.01em;">'
+        + rbNavLabel + '</a></div>';
+
+      // Try to inject into the hero section specifically, then fall back to first section
+      var heroSecIdx = html.indexOf('id="hero"');
+      if (heroSecIdx === -1) heroSecIdx = html.indexOf("id='hero'");
+      if (heroSecIdx !== -1) {
+        var heroCloseIdx = html.indexOf('</section>', heroSecIdx);
+        if (heroCloseIdx !== -1) {
+          html = html.slice(0, heroCloseIdx) + '\n' + rbHeroBtn + '\n' + html.slice(heroCloseIdx);
+        }
+      } else {
+        // Fallback: inject after first CTA button area (before first </section>)
+        var firstSecClose = html.indexOf('</section>');
+        if (firstSecClose !== -1) {
+          html = html.slice(0, firstSecClose) + '\n' + rbHeroBtn + '\n' + html.slice(firstSecClose);
+        }
       }
+
+      // 2. DESKTOP NAV BUTTON — injected before </nav>, shown only on desktop
+      var rbNavBtn = '<a id="builtsy-rb-nav-btn" href="#builtsy-rb" '
+        + 'style="background:var(--terra,#D4745A);color:#fff;padding:7px 18px;border-radius:20px;'
+        + 'font-weight:700;font-size:0.82rem;text-decoration:none;white-space:nowrap;margin-left:12px;">'
+        + rbNavLabel + '</a>';
+      if (html.indexOf('</nav>') !== -1) {
+        html = html.replace('</nav>', rbNavBtn + '\n</nav>');
+      } else if (html.indexOf('</header>') !== -1) {
+        html = html.replace('</header>', rbNavBtn + '\n</header>');
+      }
+
+      // 3. RESPONSIVE CSS — injected just before </body> (always found, never fails)
+      // Mobile (default): show hero button, hide nav button
+      // Desktop (≥768px): hide hero button, show nav button
+      var rbCSS = '<style id="builtsy-rb-responsive">'
+        + '#builtsy-rb-hero-cta{display:block!important;}'
+        + '#builtsy-rb-nav-btn{display:none!important;}'
+        + '@media(min-width:768px){'
+        +   '#builtsy-rb-hero-cta{display:none!important;}'
+        +   '#builtsy-rb-nav-btn{display:inline-block!important;}'
+        + '}'
+        + '</style>';
+      html = html.replace('</body>', rbCSS + '\n</body>');
     }
   }
 
@@ -4215,12 +4090,11 @@ function msInjectAssets(html) {
 // ══════════════════════════════════════════════
 // SMART PHOTO INJECTION
 // ══════════════════════════════════════════════
-// Works even when Railway API doesn't preserve template img IDs.
-// Pass 1: exact ID match (fast — works if AI kept the IDs).
-// Pass 2: fetch original template HTML → find each zone's section + img index → apply same position in generated HTML.
-// Returns a Promise that resolves when injection is complete.
+// Photo injection: Pass 1 = exact ID match (AI includes required IDs in its HTML).
+// Pass 2 = keyword + position fallback for any IDs AI didn't preserve.
+// Returns a Promise.
 function msSmartInjectPhotos(genDoc) {
-  var zones = _ctPhotoZones[_ctSelectedTemplate] || [];
+  var zones = _ctPhotoZones['ai_design'] || [];
   var hasPhotos = false;
   for (var _k in _ctPhotos) { if (_ctPhotos[_k]) { hasPhotos = true; break; } }
   if (!hasPhotos || !zones.length) return Promise.resolve();
@@ -4238,119 +4112,32 @@ function msSmartInjectPhotos(genDoc) {
     }
   }
 
-  // Check if any zones still need injection
-  var needPass2 = false;
-  for (var _zi = 0; _zi < zones.length; _zi++) {
-    if (_ctPhotos[zones[_zi].id] && !injectedIds[zones[_zi].id]) { needPass2 = true; break; }
-  }
-  if (!needPass2) return Promise.resolve();
-
-  // Pass 2 — fetch template HTML, map photo → section + img index, inject
-  var tplObj = null;
-  for (var _ti = 0; _ti < _ctTemplates.length; _ti++) {
-    if (_ctTemplates[_ti].key === _ctSelectedTemplate) { tplObj = _ctTemplates[_ti]; break; }
-  }
-  // No template file (e.g. ai_design) — use keyword + position-order injection
-  if (!tplObj || !tplObj.file) {
-    var _portIdx = 0, _aboutIdx = 0;
-    for (var _zk = 0; _zk < zones.length; _zk++) {
-      var _zone = zones[_zk];
-      if (!_ctPhotos[_zone.id] || injectedIds[_zone.id]) continue;
-      var _kwsF = _zone.isHero ? ['hero', 'header', 'home', 'banner', 'intro'] :
-                  _zone.isPort ? ['reviews', 'testimonials', 'testimonial', 'trust', 'clients'] :
-                                 ['about', 'story', 'bio', 'me'];
-      var _secF = null;
-      for (var _kiF = 0; _kiF < _kwsF.length; _kiF++) {
-        _secF = genDoc.querySelector('#' + _kwsF[_kiF]) ||
-                genDoc.querySelector('section.' + _kwsF[_kiF]) ||
-                genDoc.querySelector('[id*="' + _kwsF[_kiF] + '"]');
-        if (_secF) break;
-      }
-      if (!_secF) continue;
-      var _idxF = _zone.isHero ? 0 : (_zone.isPort ? _portIdx++ : _aboutIdx++);
-      var _secImgsF = _secF.querySelectorAll('img');
-      var _giF = _secImgsF[_idxF] || (_idxF === 0 && _secImgsF.length ? _secImgsF[0] : null);
-      if (!_giF) continue;
-      _giF.setAttribute('src', _ctPhotos[_zone.id]);
-      var _gstF = _giF.getAttribute('style') || '';
-      _giF.setAttribute('style', 'display:block;' + _gstF.replace(/display\s*:\s*none\s*;?/gi, ''));
+  // Pass 2 — keyword + position-order fallback for any uninjected zones
+  var _portIdx = 0, _aboutIdx = 0;
+  for (var _zk = 0; _zk < zones.length; _zk++) {
+    var _zone = zones[_zk];
+    if (!_ctPhotos[_zone.id] || injectedIds[_zone.id]) continue;
+    var _kws = _zone.isHero ? ['hero', 'header', 'home', 'banner', 'intro'] :
+               _zone.isPort ? ['reviews', 'testimonials', 'testimonial', 'trust', 'clients'] :
+                              ['about', 'story', 'bio', 'me'];
+    var _sec = null;
+    for (var _ki = 0; _ki < _kws.length; _ki++) {
+      _sec = genDoc.querySelector('#' + _kws[_ki]) ||
+             genDoc.querySelector('section.' + _kws[_ki]) ||
+             genDoc.querySelector('[id*="' + _kws[_ki] + '"]');
+      if (_sec) break;
     }
-    return Promise.resolve();
+    if (!_sec) continue;
+    var _idx = _zone.isHero ? 0 : (_zone.isPort ? _portIdx++ : _aboutIdx++);
+    var _imgs = _sec.querySelectorAll('img');
+    var _gi = _imgs[_idx] || (_idx === 0 && _imgs.length ? _imgs[0] : null);
+    if (!_gi) continue;
+    _gi.setAttribute('src', _ctPhotos[_zone.id]);
+    var _gst = _gi.getAttribute('style') || '';
+    _gi.setAttribute('style', 'display:block;' + _gst.replace(/display\s*:\s*none\s*;?/gi, ''));
   }
 
-  return fetch(tplObj.file).then(function(r) { return r.text(); }).then(function(tplHtml) {
-    var parser = new DOMParser();
-    var tplDoc = parser.parseFromString(tplHtml, 'text/html');
-
-    for (var _zi2 = 0; _zi2 < zones.length; _zi2++) {
-      var zone = zones[_zi2];
-      if (!_ctPhotos[zone.id] || injectedIds[zone.id]) continue;
-
-      // Find img in template
-      var tplImg = tplDoc.getElementById(zone.id);
-      if (!tplImg) continue;
-
-      // Walk up to nearest <section>
-      var tplSection = null;
-      var _el = tplImg.parentElement;
-      while (_el && _el !== tplDoc.body && _el !== tplDoc.documentElement) {
-        if (_el.tagName === 'SECTION') { tplSection = _el; break; }
-        _el = _el.parentElement;
-      }
-      // Fallback: walk up to any ancestor with an id
-      if (!tplSection) {
-        _el = tplImg.parentElement;
-        while (_el && _el !== tplDoc.body && _el !== tplDoc.documentElement) {
-          if (_el.id) { tplSection = _el; break; }
-          _el = _el.parentElement;
-        }
-      }
-      if (!tplSection) continue;
-
-      // Build selector (prefer id, then tag.firstClass)
-      var sectionSel = tplSection.id ? '#' + tplSection.id : null;
-      if (!sectionSel && tplSection.className) {
-        var _firstCls = tplSection.className.trim().split(/\s+/)[0];
-        if (_firstCls) sectionSel = tplSection.tagName.toLowerCase() + '.' + _firstCls;
-      }
-
-      // Find img index within the template section
-      var tplSectionImgs = tplSection.querySelectorAll('img');
-      var imgIdx = -1;
-      for (var _j = 0; _j < tplSectionImgs.length; _j++) {
-        if (tplSectionImgs[_j] === tplImg) { imgIdx = _j; break; }
-      }
-      if (imgIdx < 0) continue;
-
-      // Find matching section in generated doc
-      var genSection = null;
-      if (sectionSel) {
-        try { genSection = genDoc.querySelector(sectionSel); } catch(_e) {}
-      }
-      // Keyword fallback (if section selector didn't match)
-      if (!genSection) {
-        var _kws = zone.isHero ? ['hero', 'header', 'home', 'banner', 'intro'] :
-                   zone.isPort ? ['reviews', 'testimonials', 'testimonial', 'trust', 'clients'] :
-                                 ['about', 'story', 'bio', 'me'];
-        for (var _ki = 0; _ki < _kws.length; _ki++) {
-          genSection = genDoc.querySelector('#' + _kws[_ki]) ||
-                       genDoc.querySelector('section.' + _kws[_ki]) ||
-                       genDoc.querySelector('[id*="' + _kws[_ki] + '"]');
-          if (genSection) break;
-        }
-      }
-      if (!genSection) continue;
-
-      // Inject at same img index (fallback to index 0 if out of range but index was 0)
-      var genSectionImgs = genSection.querySelectorAll('img');
-      var genImg = genSectionImgs[imgIdx] || (imgIdx === 0 && genSectionImgs.length ? genSectionImgs[0] : null);
-      if (!genImg) continue;
-
-      genImg.setAttribute('src', _ctPhotos[zone.id]);
-      var _gst = genImg.getAttribute('style') || '';
-      genImg.setAttribute('style', 'display:block;' + _gst.replace(/display\s*:\s*none\s*;?/gi, ''));
-    }
-  }).catch(function() {});
+  return Promise.resolve();
 }
 
 // ══════════════════════════════════════════════
@@ -4905,44 +4692,368 @@ function msApplyRates() {
 
 // ── LIVE PREVIEW ─────────────────────────────────────────
 var MS_LIVE_MAP = [
-  { id: 'ms-biz-name',      key: 'biz-name' },
-  { id: 'ms-owner-name',    key: 'biz-name' },
-  { id: 'ms-hero-headline', key: 'headline' },
-  { id: 'ms-tagline',       key: 'tagline' },
-  { id: 'ms-svc1-name',     key: 'svc1-name' },
-  { id: 'ms-svc1-desc',     key: 'svc1-desc' },
-  { id: 'ms-svc1-tags',     key: 'svc1-tags' },
-  { id: 'ms-svc2-name',     key: 'svc2-name' },
-  { id: 'ms-svc2-desc',     key: 'svc2-desc' },
-  { id: 'ms-svc2-tags',     key: 'svc2-tags' },
-  { id: 'ms-svc3-name',     key: 'svc3-name' },
-  { id: 'ms-svc3-desc',     key: 'svc3-desc' },
-  { id: 'ms-svc3-tags',     key: 'svc3-tags' },
-  { id: 'ms-svc4-name',     key: 'svc4-name' },
-  { id: 'ms-svc4-desc',     key: 'svc4-desc' },
-  { id: 'ms-svc4-tags',     key: 'svc4-tags' },
+  { id: 'ms-biz-name',        key: 'biz-name' },
+  { id: 'ms-owner-name',      key: 'owner-name' },
+  { id: 'ms-hero-headline',   key: 'headline' },
+  { id: 'ms-tagline',         key: 'tagline' },
+  { id: 'ms-bio',             key: 'bio' },
+  { id: 'ms-location',        key: 'location' },
+  { id: 'ms-email',           key: 'email' },
+  { id: 'ms-phone',           key: 'phone' },
+  { id: 'ms-svc1-name',       key: 'svc1-name' },
+  { id: 'ms-svc1-desc',       key: 'svc1-desc' },
+  { id: 'ms-svc1-tags',       key: 'svc1-tags' },
+  { id: 'ms-svc2-name',       key: 'svc2-name' },
+  { id: 'ms-svc2-desc',       key: 'svc2-desc' },
+  { id: 'ms-svc2-tags',       key: 'svc2-tags' },
+  { id: 'ms-svc3-name',       key: 'svc3-name' },
+  { id: 'ms-svc3-desc',       key: 'svc3-desc' },
+  { id: 'ms-svc3-tags',       key: 'svc3-tags' },
+  { id: 'ms-svc4-name',       key: 'svc4-name' },
+  { id: 'ms-svc4-desc',       key: 'svc4-desc' },
+  { id: 'ms-svc4-tags',       key: 'svc4-tags' },
+  { id: 'ms-rate1-name',      key: 'rate1-name' },
+  { id: 'ms-rate1-price',     key: 'rate1-price' },
+  { id: 'ms-rate1-desc',      key: 'rate1-desc' },
+  { id: 'ms-rate2-name',      key: 'rate2-name' },
+  { id: 'ms-rate2-price',     key: 'rate2-price' },
+  { id: 'ms-rate2-desc',      key: 'rate2-desc' },
+  { id: 'ms-rate3-name',      key: 'rate3-name' },
+  { id: 'ms-rate3-price',     key: 'rate3-price' },
+  { id: 'ms-rate3-desc',      key: 'rate3-desc' },
+  { id: 'ms-ftesti1-quote',   key: 'testi1-quote' },
+  { id: 'ms-ftesti1-name',    key: 'testi1-name' },
+  { id: 'ms-ftesti1-ctx',     key: 'testi1-ctx' },
+  { id: 'ms-ftesti2-quote',   key: 'testi2-quote' },
+  { id: 'ms-ftesti2-name',    key: 'testi2-name' },
+  { id: 'ms-ftesti2-ctx',     key: 'testi2-ctx' },
+  { id: 'ms-ftesti3-quote',   key: 'testi3-quote' },
+  { id: 'ms-ftesti3-name',    key: 'testi3-name' },
+  { id: 'ms-ftesti3-ctx',     key: 'testi3-ctx' },
 ];
 
+// ── AI BLUEPRINT PANEL ───────────────────────────────────
+function msRenderBlueprintPanel() {
+  _ghostRendered = true;
+  // Hide welcome state, mark sections already passed as visible
+  var ws = document.getElementById('bp-welcome-state');
+  if (ws) ws.style.display = 'none';
+  // Populate any data already entered
+  msApplyAllLive();
+  if (_ctSelectedPalette) msBlueprintUpdatePalette(_ctSelectedPalette, _ctSelectedPaletteName);
+  // Show photos already uploaded
+  var pz = ['ai-hero-photo','ai-about-a-photo','ai-about-b-photo','ai-port-1-photo','ai-port-2-photo','ai-port-3-photo'];
+  for (var i = 0; i < pz.length; i++) { if (_ctPhotos[pz[i]]) msUpdateBlueprintPhoto(pz[i]); }
+}
+
+function msBlueprintRevealStep(n) {
+  // Map of step → which section IDs to reveal at that step
+  var revealAt = {
+    2: ['bps-1','bps-2'],
+    3: ['bps-3'],
+    4: ['bps-4'],
+    5: ['bps-5'],
+    6: ['bps-6'],
+    7: ['bps-7'],
+    8: ['bps-8']
+  };
+  // Reveal all sections up to and including current step
+  var firstNewId = null;
+  for (var step = 2; step <= n; step++) {
+    var ids = revealAt[step] || [];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && el.classList.contains('bp-hidden')) {
+        // Only track first newly-revealed section for scroll
+        if (step === n && !firstNewId) firstNewId = ids[i];
+        el.classList.remove('bp-hidden');
+        el.classList.add('bp-visible');
+      } else if (el) {
+        el.classList.remove('bp-hidden');
+        el.classList.add('bp-visible');
+      }
+    }
+  }
+  // Update service chip styling — remove empty class when value is present
+  ['bp-sc1','bp-sc2','bp-sc3','bp-sc4'].forEach(function(id) {
+    var chip = document.getElementById(id);
+    if (!chip) return;
+    var span = chip.querySelector('span[data-live]');
+    if (span && span.textContent && span.textContent.trim() && span.textContent !== 'Service 1' && span.textContent !== 'Service 2' && span.textContent !== 'Service 3' && span.textContent !== 'Service 4') {
+      chip.classList.remove('bp-empty');
+    }
+  });
+  // Update toolbar badge
+  var badge = document.getElementById('bp-step-badge');
+  if (badge) badge.textContent = 'Step ' + n + ' of 8';
+  // Scroll canvas to newly revealed section
+  if (firstNewId) {
+    var newEl = document.getElementById(firstNewId);
+    if (newEl) {
+      setTimeout(function() {
+        var canvas = document.getElementById('bp-canvas');
+        if (canvas) {
+          var elTop = newEl.offsetTop - canvas.offsetTop;
+          canvas.scrollTo({ top: elTop - 20, behavior: 'smooth' });
+        }
+      }, 200);
+    }
+  }
+}
+
+function msUpdateBlueprintPhoto(zoneId) {
+  var slot = document.getElementById('bp-ps-' + zoneId);
+  var img = document.getElementById('bp-img-' + zoneId);
+  if (!img) return;
+  var photoData = _ctPhotos[zoneId];
+  if (photoData) {
+    img.src = photoData;
+    img.style.display = 'block';
+    if (slot) slot.classList.add('has-photo');
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    if (slot) slot.classList.remove('has-photo');
+  }
+}
+
+function msBlueprintUpdatePalette(cssOverride, paletteName) {
+  var swatchDiv = document.getElementById('bp-swatches');
+  var nameDiv = document.getElementById('bp-pal-name');
+  if (nameDiv && paletteName) nameDiv.textContent = paletteName;
+  if (!swatchDiv || !cssOverride) return;
+  // Extract hex colors from the CSS variable string
+  var colors = [];
+  var re = /:\s*(#[0-9a-fA-F]{3,8})/g;
+  var m;
+  while ((m = re.exec(cssOverride)) !== null && colors.length < 5) {
+    var col = m[1];
+    // Skip near-white and near-black and duplicates
+    var r = parseInt(col.slice(1,3)||'0',16), g = parseInt(col.slice(3,5)||'0',16), b = parseInt(col.slice(5,7)||'0',16);
+    var brightness = (r*299 + g*587 + b*114) / 1000;
+    if (brightness > 240 || brightness < 10) continue;
+    if (colors.indexOf(col) === -1) colors.push(col);
+  }
+  if (colors.length) {
+    swatchDiv.innerHTML = '';
+    for (var j = 0; j < colors.length; j++) {
+      var div = document.createElement('div');
+      div.className = 'bp-swatch';
+      div.style.background = colors[j];
+      swatchDiv.appendChild(div);
+    }
+  }
+}
+
+// DEPRECATED ghost site functions — kept as stubs to avoid reference errors
+function msGenerateGhostHTML() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--terra:#C47B00;--terra2:#A06000;--terra-rgb:196,123,0;--mint:#E8C870;--mint-rgb:232,200,112;--bg:#FFFBF0;--cream:#FFF5D8;--text:#1A1208;--text2:#5A4820;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
+nav{background:var(--bg);border-bottom:1px solid rgba(0,0,0,0.08);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--terra);}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-links a{font-size:0.8rem;font-weight:500;color:var(--text2);text-decoration:none;}
+#hero{padding:4rem 2rem 3.5rem;text-align:center;background:var(--bg);}
+.hero-photo-wrap{position:relative;border-radius:1rem;overflow:hidden;margin-bottom:2rem;height:240px;}
+.hero-photo-ph{width:100%;height:100%;background:linear-gradient(135deg,var(--cream) 0%,var(--mint) 100%);opacity:0.55;}
+.hero-photo-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:none;}
+#hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.15;color:var(--text);margin-bottom:0.875rem;}
+#hero .tagline{font-size:0.97rem;color:var(--text2);line-height:1.7;max-width:500px;margin:0 auto 1.75rem;}
+.btn-primary{display:inline-block;background:var(--terra);color:#fff;padding:0.8rem 1.875rem;border-radius:0.625rem;font-weight:600;font-size:0.9rem;text-decoration:none;}
+section{padding:3.5rem 2rem;}
+.sec-label{font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--terra);margin-bottom:0.6rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--text);margin-bottom:2rem;}
+#services{background:var(--cream);}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+.svc-card{background:var(--bg);border-radius:0.875rem;padding:1.375rem 1.25rem;border:1px solid rgba(0,0,0,0.06);}
+.svc-card h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;}
+.svc-card p{font-size:0.8rem;color:var(--text2);line-height:1.6;margin-bottom:0.75rem;}
+.tag-row{display:flex;flex-wrap:wrap;gap:0.3rem;}
+.tag-pill{font-size:0.66rem;font-weight:600;padding:0.175rem 0.5rem;border-radius:100px;background:rgba(0,0,0,0.05);color:var(--terra);}
+#about{background:var(--bg);}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;max-width:800px;margin:0 auto;}
+.about-photos{display:flex;flex-direction:column;gap:0.625rem;}
+.about-photo-slot{position:relative;border-radius:0.875rem;overflow:hidden;}
+.about-photo-ph{height:140px;background:linear-gradient(135deg,var(--cream) 0%,var(--mint) 100%);opacity:0.5;}
+.about-photo-slot img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:none;}
+#about h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--text);margin-bottom:0.75rem;}
+.about-bio{font-size:0.85rem;color:var(--text2);line-height:1.8;}
+#pricing{background:var(--cream);}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;}
+.price-card{background:var(--bg);border-radius:0.875rem;padding:1.5rem 1.25rem;border:1px solid rgba(0,0,0,0.06);position:relative;}
+.price-card.popular{border:2px solid var(--terra);}
+.popular-badge{position:absolute;top:-0.7rem;left:50%;transform:translateX(-50%);background:var(--terra);color:#fff;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.175rem 0.625rem;border-radius:100px;white-space:nowrap;}
+.price-card h3{font-size:0.88rem;font-weight:600;color:var(--text2);margin-bottom:0.4rem;}
+.price-amount{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;color:var(--terra);margin-bottom:0.4rem;}
+.price-desc{font-size:0.75rem;color:var(--text2);line-height:1.6;}
+#testimonials{background:var(--bg);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1rem;}
+.testi-card{background:var(--cream);border-radius:0.875rem;padding:1.375rem;border:1px solid rgba(0,0,0,0.05);}
+.testi-quote{font-size:0.83rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:0.75rem;}
+.testi-name{font-size:0.75rem;font-weight:700;color:var(--terra);}
+.testi-ctx{font-size:0.7rem;color:var(--text2);margin-top:0.125rem;}
+.work-strip{background:var(--cream);padding:2.5rem 2rem;}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;}
+.work-slot{position:relative;border-radius:0.75rem;overflow:hidden;}
+.work-ph{height:110px;background:linear-gradient(135deg,var(--bg) 0%,var(--mint) 100%);opacity:0.45;}
+.work-slot img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:none;}
+#contact{padding:3.5rem 2rem;background:var(--terra);color:#fff;text-align:center;}
+#contact h2{font-family:'Playfair Display',serif;font-size:1.875rem;font-weight:900;margin-bottom:0.625rem;}
+.contact-sub{font-size:0.87rem;opacity:0.8;margin-bottom:1.75rem;}
+.contact-details{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;font-size:0.87rem;}
+.contact-details span{color:rgba(255,255,255,0.9);}
+footer{background:var(--bg);padding:1.25rem 2rem;text-align:center;font-size:0.72rem;color:var(--text2);border-top:1px solid rgba(0,0,0,0.07);}
+@media(max-width:520px){.about-inner{grid-template-columns:1fr;}.work-grid{grid-template-columns:repeat(2,1fr);}}</style>
+</head>
+<body>
+<nav>
+  <span class="nav-logo" data-live="biz-name">Your Business</span>
+  <div class="nav-links"><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+</nav>
+<section id="hero">
+  <div class="hero-photo-wrap">
+    <div class="hero-photo-ph"></div>
+    <img id="ghost-photo-ai-hero-photo" alt="">
+  </div>
+  <h1 data-live="headline">Building Something Worth Sharing</h1>
+  <p class="tagline" data-live="tagline">Professional services tailored to your needs.</p>
+  <a href="#contact" class="btn-primary">Let's Work Together →</a>
+</section>
+<section id="services">
+  <div class="sec-label">What I Offer</div>
+  <div class="sec-title">Services</div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <h3 data-live="svc1-name">Service One</h3>
+      <p data-live="svc1-desc">Description of this service and what it includes.</p>
+      <div class="tag-row" data-live="svc1-tags"></div>
+    </div>
+    <div class="svc-card">
+      <h3 data-live="svc2-name">Service Two</h3>
+      <p data-live="svc2-desc">Description of this service and what it includes.</p>
+      <div class="tag-row" data-live="svc2-tags"></div>
+    </div>
+    <div class="svc-card">
+      <h3 data-live="svc3-name">Service Three</h3>
+      <p data-live="svc3-desc">Description of this service and what it includes.</p>
+      <div class="tag-row" data-live="svc3-tags"></div>
+    </div>
+    <div class="svc-card">
+      <h3 data-live="svc4-name">Service Four</h3>
+      <p data-live="svc4-desc">Description of this service and what it includes.</p>
+      <div class="tag-row" data-live="svc4-tags"></div>
+    </div>
+  </div>
+</section>
+<section id="about">
+  <div class="about-inner">
+    <div class="about-photos">
+      <div class="about-photo-slot"><div class="about-photo-ph"></div><img id="ghost-photo-ai-about-a-photo" alt=""></div>
+      <div class="about-photo-slot"><div class="about-photo-ph"></div><img id="ghost-photo-ai-about-b-photo" alt=""></div>
+    </div>
+    <div>
+      <div class="sec-label">About</div>
+      <h2 data-live="biz-name">Your Business</h2>
+      <p class="about-bio" data-live="bio">Tell your story here — your experience, your passion, and what makes you different from anyone else.</p>
+    </div>
+  </div>
+</section>
+<section id="pricing">
+  <div class="sec-label">Investment</div>
+  <div class="sec-title">Pricing</div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3 data-live="rate1-name">Starter</h3>
+      <div class="price-amount" data-live="rate1-price">$—</div>
+      <p class="price-desc" data-live="rate1-desc">Great for getting started.</p>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <h3 data-live="rate2-name">Standard</h3>
+      <div class="price-amount" data-live="rate2-price">$—</div>
+      <p class="price-desc" data-live="rate2-desc">The most popular choice.</p>
+    </div>
+    <div class="price-card">
+      <h3 data-live="rate3-name">Premium</h3>
+      <div class="price-amount" data-live="rate3-price">$—</div>
+      <p class="price-desc" data-live="rate3-desc">Full-service experience.</p>
+    </div>
+  </div>
+</section>
+<div class="work-strip">
+  <div class="work-grid">
+    <div class="work-slot"><div class="work-ph"></div><img id="ghost-photo-ai-port-1-photo" alt=""></div>
+    <div class="work-slot"><div class="work-ph"></div><img id="ghost-photo-ai-port-2-photo" alt=""></div>
+    <div class="work-slot"><div class="work-ph"></div><img id="ghost-photo-ai-port-3-photo" alt=""></div>
+  </div>
+</div>
+<section id="testimonials">
+  <div class="sec-label">Happy Clients</div>
+  <div class="sec-title">What People Say</div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <p class="testi-quote" data-live="testi1-quote">"Working with this team was a wonderful experience from start to finish."</p>
+      <div class="testi-name" data-live="testi1-name">Client Name</div>
+      <div class="testi-ctx" data-live="testi1-ctx">Happy Customer</div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote" data-live="testi2-quote">"Exceeded all my expectations — I would highly recommend!"</p>
+      <div class="testi-name" data-live="testi2-name">Client Name</div>
+      <div class="testi-ctx" data-live="testi2-ctx">Happy Customer</div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote" data-live="testi3-quote">"Professional, prompt, and the results were absolutely perfect."</p>
+      <div class="testi-name" data-live="testi3-name">Client Name</div>
+      <div class="testi-ctx" data-live="testi3-ctx">Happy Customer</div>
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <h2>Let's Work Together</h2>
+  <p class="contact-sub" data-live="location">📍 Serving your area</p>
+  <div class="contact-details">
+    <span data-live="email">hello@yourbusiness.com</span>
+    <span data-live="phone">(555) 000-0000</span>
+  </div>
+</section>
+<footer><span data-live="biz-name">Your Business</span> · Built with Builtsy</footer>
+</body>
+</html>`;
+}
+
+// Stub — blueprint uses msRenderBlueprintPanel instead
+function msRenderGhostSite() { msRenderBlueprintPanel(); }
+// Stub — blueprint uses msUpdateBlueprintPhoto instead
+function msUpdateGhostPhoto(zoneId) { msUpdateBlueprintPhoto(zoneId); }
+
 function msPushToPreview(key, value) {
-  var iframe = document.getElementById('preview-iframe');
-  if (!iframe) return;
-  var doc;
-  try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
-  if (!doc || !doc.body) return;
-  var els = doc.querySelectorAll('[data-live="' + key + '"]');
+  // Target [data-live] elements in the Blueprint canvas (main document)
+  var canvas = document.getElementById('bp-canvas');
+  if (!canvas) return;
+  var els = canvas.querySelectorAll('[data-live="' + key + '"]');
   for (var i = 0; i < els.length; i++) {
     if (!value) continue;
     if (key.indexOf('-tags') !== -1) {
-      // Rebuild tag pills from comma-separated string
+      // Render tag pills
       var tags = value.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
-      var firstSpan = els[i].querySelector('span');
-      var cls = firstSpan ? firstSpan.className : 'tag-pill';
-      var sty = firstSpan ? (firstSpan.getAttribute('style') || '') : '';
       els[i].innerHTML = tags.map(function(t){
-        return '<span class="' + cls + '"' + (sty ? ' style="' + sty + '"' : '') + '>' + t + '</span>';
+        return '<span class="bp-tag-pill">' + t + '</span>';
       }).join('');
     } else {
       els[i].textContent = value;
+    }
+    // Remove empty styling from service chips when value is set
+    if (key.indexOf('svc') === 0 && key.indexOf('-name') !== -1) {
+      var chip = els[i].closest('.bp-svc-chip');
+      if (chip && value.trim()) chip.classList.remove('bp-empty');
     }
   }
 }
@@ -4981,37 +5092,14 @@ function msApplyAllLive() {
     var tw = document.getElementById('ms-burst-trigger-wrap');
     if (tw) tw.style.display = val === 'none' ? 'none' : 'block';
     msPushAnimToPreview();
-    // Fire a live demo burst in the preview immediately
-    if (val !== 'none') {
-      setTimeout(function() {
-        try {
-          var iframe = document.getElementById('preview-iframe');
-          if (iframe && iframe.contentWindow && iframe.contentWindow.builtsy_demoBurst) {
-            iframe.contentWindow.builtsy_demoBurst(val);
-          }
-        } catch(e) {}
-      }, 100);
-    }
+    // Blueprint panel: update the animation label
+    msPushAnimToPreview();
   }
   function msPushAnimToPreview() {
-    var iframe = document.getElementById('preview-iframe');
-    if (!iframe) return;
-    var doc;
-    try { doc = iframe.contentDocument || iframe.contentWindow.document; } catch(e) { return; }
-    if (!doc || !doc.body) return;
-    doc.body.setAttribute('data-anim', _ctAnim);
-    doc.body.setAttribute('data-anim-mode', _ctAnimMode);
-    doc.body.setAttribute('data-burst', _ctBurst);
-    var burstOn = [];
-    if (document.getElementById('ms-burst-on-form') && document.getElementById('ms-burst-on-form').checked) burstOn.push('form');
-    if (document.getElementById('ms-burst-on-cta') && document.getElementById('ms-burst-on-cta').checked) burstOn.push('cta');
-    doc.body.setAttribute('data-burst-on', burstOn.join(','));
-    // Trigger re-init of animation engine in iframe if it exists
-    try {
-      if (iframe.contentWindow && iframe.contentWindow.builtsy_initAnim) {
-        iframe.contentWindow.builtsy_initAnim();
-      }
-    } catch(e) {}
+    // Update the blueprint animation label
+    var animLabels = { none:'None', sparkle:'Sparkle ✦', confetti:'Confetti', snow:'Snow', petals:'Petals', fireflies:'Fireflies', leaves:'Leaves' };
+    var el = document.getElementById('bp-anim-label');
+    if (el) el.textContent = animLabels[_ctAnim] || _ctAnim || 'None';
   }
 
 function msSetupLivePreview() {
@@ -5024,13 +5112,7 @@ function msSetupLivePreview() {
       });
     })(MS_LIVE_MAP[i]);
   }
-  var iframe = document.getElementById('preview-iframe');
-  if (iframe) {
-    iframe.addEventListener('load', function() {
-      setTimeout(msApplyAllLive, 80);
-      setTimeout(msPushAnimToPreview, 120);
-    });
-  }
+  // No iframe — blueprint panel is in the main document, no load listener needed
 }
 
 async function msRestoreSave() {
@@ -5077,13 +5159,12 @@ async function msRestoreSave() {
 
 document.addEventListener('DOMContentLoaded', async function() {
   var u = await getUser();
-  if (!u) {
+  // DEV BYPASS: allow ?preview=1 to skip auth redirect
+  if (!u && window.location.search.indexOf('preview=1') === -1) {
     sessionStorage.setItem('builtsy-redirect', 'blueprint-master.html');
     window.location.href = 'login.html';
     return;
   }
-  msRenderTemplateCards();
-  msHideEmptyFilterPills();
   msSelectPaletteTab('light');
   msGoStep(1);
   msSetupLivePreview();
@@ -5091,16 +5172,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   msRestoreSave();
 });
 
-function msHideEmptyFilterPills() {
-  // Hide category pills that have no templates yet
-  var pills = document.querySelectorAll('#ms-tpl-filters .tpl-filter-pill[data-filter]');
-  for (var i = 0; i < pills.length; i++) {
-    var cat = pills[i].getAttribute('data-filter');
-    if (cat === 'all' || cat === 'foryou') continue;
-    var hasTemplates = _ctTemplates.some(function(t) { return t.category === cat; });
-    pills[i].style.display = hasTemplates ? '' : 'none';
-  }
-}
 </script>
 
 <!-- ══ STEP 9 LAUNCH FULLSCREEN ══ -->
