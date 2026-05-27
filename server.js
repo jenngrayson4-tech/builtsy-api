@@ -417,6 +417,86 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
     var fields       = req.body.fields || {};
     var niche        = req.body.niche || 'social media manager';
 
+    var fieldText = Object.keys(fields).map(function(k) {
+      return k + ': ' + fields[k];
+    }).join('\n');
+
+    var revisionNote = fields['_revisionNote'] || '';
+    var revisionLine = revisionNote
+      ? '\nREVISION INSTRUCTION: ' + revisionNote + '\n'
+      : '';
+
+    // ── AI CUSTOM: fully from-scratch generation, no template ─────────────────
+    if (templateType === 'custom') {
+      var prompt = 'You are Builtsy AI — an expert web designer who builds stunning, conversion-focused single-page websites for small business owners and solopreneurs.\n\n'
+        + 'Build a complete, beautiful, professional single-page website from scratch for the following business. Use your full creative judgment — design, colors, layout, typography, everything.\n\n'
+        + 'BUSINESS INFORMATION:\n' + fieldText + '\n'
+        + 'NICHE: ' + niche + '\n'
+        + revisionLine + '\n'
+        + 'DESIGN REQUIREMENTS:\n'
+        + '- Create a fully self-contained HTML file with all CSS embedded in <style> tags — no external CSS frameworks\n'
+        + '- Design must be mobile-first and fully responsive\n'
+        + '- Choose a color palette that fits the brand personality and niche — be bold and intentional, not generic\n'
+        + '- Use Google Fonts — pick 1-2 fonts that match the brand (include the @import in <style>)\n'
+        + '- Smooth scroll behavior, subtle hover states, professional transitions\n'
+        + '- Fixed or sticky navigation with smooth anchor links\n\n'
+        + 'REQUIRED SECTIONS (design each creatively for this specific niche):\n'
+        + '1. Hero — bold headline, subheadline, 1-2 CTAs. Include an <img> placeholder: <img id="ai-hero-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="hero">\n'
+        + '2. About — personal story, credentials, what makes them different. Include: <img id="ai-about-a-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" alt="about">\n'
+        + '3. Services / Offerings — 3-4 services with descriptions and pricing if provided\n'
+        + '4. Social proof / Testimonials — 3 testimonials with names. Include these avatar imgs:\n'
+        + '   <img id="ai-port-1-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="client">\n'
+        + '   <img id="ai-port-2-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="client">\n'
+        + '   <img id="ai-port-3-photo" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;" alt="client">\n'
+        + '5. Contact / Booking — contact form or booking CTA with email/phone if provided\n\n'
+        + 'CRITICAL RULES:\n'
+        + '- The img tags above with id attributes MUST appear exactly as written — they are photo injection hooks\n'
+        + '- Each img should be inside a div with position:relative and a defined height, so the photo fills it\n'
+        + '- Use styled placeholder backgrounds (gradient or solid color) behind each img so the section looks great even without a photo\n'
+        + '- NEVER use emoji in headings, buttons, or body text\n'
+        + '- If any field is blank, invent a sensible professional default for the niche\n'
+        + '- Return ONLY the complete valid HTML. No explanation, no markdown, no code fences.\n\n'
+        + 'SEO — include in <head>:\n'
+        + '- Keyword-rich <title> (business name + service + city, under 60 chars)\n'
+        + '- <meta name="description"> 150-160 chars\n'
+        + '- Open Graph: og:title, og:description, og:type, og:locale\n'
+        + '- Twitter: twitter:card, twitter:title, twitter:description\n'
+        + '- <link rel="canonical" href="#">\n\n'
+        + 'JSON-LD — before </body>:\n'
+        + '- LocalBusiness or ProfessionalService schema with name, description, url, telephone, email, address, priceRange\n\n'
+        + 'Now build the best possible website for this business. Make it something they would be proud to share.';
+
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.flushHeaders();
+
+      var customStream = await client.messages.stream({
+        model: MODEL,
+        max_tokens: MAX_TOKENS_STREAM,
+        messages: [{ role: 'user', content: prompt }]
+      });
+
+      var customFull = '';
+      customStream.on('text', function(chunk) {
+        customFull += chunk;
+        res.write(': keep-alive\n\n');
+      });
+      customStream.on('finalMessage', function() {
+        var html = customFull.replace(/^```html?\s*/i, '').replace(/\s*```$/, '').trim();
+        res.write('data: ' + JSON.stringify({ html: html }) + '\n\n');
+        res.write('data: [DONE]\n\n');
+        res.end();
+      });
+      customStream.on('error', function(err) {
+        res.write('data: ' + JSON.stringify({ error: err.message }) + '\n\n');
+        res.end();
+      });
+      return;
+    }
+    // ── END AI CUSTOM ──────────────────────────────────────────────────────────
+
     var templateMap = {
       social:            SOCIAL_TEMPLATE,
       agency:            AGENCY_TEMPLATE,
@@ -431,15 +511,6 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
     if (!template) {
       return res.status(500).json({ error: 'Template "' + templateType + '" not loaded on server' });
     }
-
-    var fieldText = Object.keys(fields).map(function(k) {
-      return k + ': ' + fields[k];
-    }).join('\n');
-
-    var revisionNote = fields['_revisionNote'] || '';
-    var revisionLine = revisionNote
-      ? '\nREVISION INSTRUCTION — apply this specific change on top of the content replacements:\n' + revisionNote + '\n'
-      : '';
 
     var prompt = 'You are filling in a pre-designed HTML template for a ' + niche + ' with their real business content.\n\n'
       + 'CRITICAL RULES — read carefully:\n'
