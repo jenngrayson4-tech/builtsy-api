@@ -1236,6 +1236,42 @@ app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
   }
 });
 
+// ── REBUILTSY — patch an existing built page ──────────────────────────────────
+app.post('/revise-build', requireAuth, rateLimit, async function(req, res) {
+  try {
+    const { html, request } = req.body;
+    if (!html || !request) return res.status(400).json({ error: 'html and request required' });
+
+    const systemPrompt = `You are an expert web developer making precise edits to an existing HTML page.
+
+RULES:
+- Apply ONLY the specific change requested — do not rewrite, restructure, or "improve" anything else
+- Preserve all existing content, copy, sections, styles, and JavaScript exactly as-is unless the request specifically targets them
+- Keep all existing CSS variables, Google Font imports, and class names
+- Return the COMPLETE updated HTML file from <!DOCTYPE html> to </html>
+- No markdown, no code fences, no explanations — just the raw HTML
+
+If the request is ambiguous, make the most reasonable interpretation and apply it cleanly.`;
+
+    const msg = await client.messages.create({
+      model: MODEL,
+      max_tokens: 8000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: `CHANGE REQUEST: ${request}\n\nCURRENT HTML:\n${html}` }]
+    });
+
+    let updatedHtml = msg.content[0].text
+      .replace(/^```html?\s*/i, '')
+      .replace(/\s*```$/, '')
+      .trim();
+
+    res.json({ html: updatedHtml });
+  } catch(err) {
+    console.error('Revise-build error:', err.message);
+    res.status(500).json({ error: err.message || 'Revise failed' });
+  }
+});
+
 app.post('/chat', requireAuth, rateLimit, async function(req, res) {
   try {
     var messages = req.body.messages;
