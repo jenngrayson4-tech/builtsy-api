@@ -1176,10 +1176,11 @@ app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
     // Build business context block
     let ctxBlock = '';
     if (bizCtx && (bizCtx.name || bizCtx.ownerName)) {
-      ctxBlock = '\n\n---\nBUSINESS CONTEXT — use every field below to write real, personalized copy:\n';
+      ctxBlock = '\n\n---\nBUSINESS CONTEXT — personalization instructions:\n';
+      ctxBlock += `IMPORTANT: Apply this context INTELLIGENTLY. If the build topic matches the business niche (e.g. a wellness coach building a wellness page), use the full business name and branding. If the build topic is DIFFERENT from the niche (e.g. a bakery owner building a peptide hub), use the owner's name only — do NOT use the unrelated business name or niche as the brand for this page. The page topic takes priority over the saved business name when they conflict.\n\n`;
       if (bizCtx.ownerName)     ctxBlock += `Owner name: ${bizCtx.ownerName}\n`;
       if (bizCtx.name)          ctxBlock += `Business name: ${bizCtx.name}\n`;
-      if (bizCtx.niche || bizCtx.industry) ctxBlock += `Niche/industry: ${bizCtx.niche || bizCtx.industry}\n`;
+      if (bizCtx.niche || bizCtx.industry) ctxBlock += `Business niche: ${bizCtx.niche || bizCtx.industry}\n`;
       if (bizCtx.tagline)       ctxBlock += `Tagline: "${bizCtx.tagline}"\n`;
       if (bizCtx.heroHeadline)  ctxBlock += `Hero headline: "${bizCtx.heroHeadline}"\n`;
       if (bizCtx.heroSub)       ctxBlock += `Hero subheading: "${bizCtx.heroSub}"\n`;
