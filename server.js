@@ -104,11 +104,50 @@ function requireAuth(req, res, next) {
   };
   var supaReq = https.request(options, function(supaRes) {
     if (supaRes.statusCode !== 200) return res.status(401).json({ error: 'Not authenticated' });
-    req._authed = true;
-    next();
+    var body = '';
+    supaRes.on('data', function(chunk) { body += chunk; });
+    supaRes.on('end', function() {
+      try {
+        var user = JSON.parse(body);
+        req._userId    = user.id;
+        req._userToken = token;
+      } catch(e) {}
+      req._authed = true;
+      next();
+    });
   });
   supaReq.on('error', function() { res.status(401).json({ error: 'Auth check failed' }); });
   supaReq.end();
+}
+
+// ── Supabase REST helper ───────────────────────────────────────────────────────
+function supabaseREST(method, table, opts) {
+  opts = opts || {};
+  var token = opts.token || SUPABASE_ANON;
+  var path  = '/rest/v1/' + table + (opts.query ? '?' + opts.query : '');
+  var bodyStr = (opts.body && method !== 'GET') ? JSON.stringify(opts.body) : '';
+  return new Promise(function(resolve, reject) {
+    var headers = {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    if (opts.upsert) headers['Prefer'] = 'resolution=merge-duplicates,return=representation';
+    else if (method === 'POST') headers['Prefer'] = 'return=representation';
+    var reqOpts = { hostname: SUPABASE_URL, path: path, method: method, headers: headers };
+    var r = https.request(reqOpts, function(sRes) {
+      var buf = '';
+      sRes.on('data', function(c) { buf += c; });
+      sRes.on('end', function() {
+        try { resolve({ status: sRes.statusCode, data: JSON.parse(buf) }); }
+        catch(e) { resolve({ status: sRes.statusCode, data: buf }); }
+      });
+    });
+    r.on('error', reject);
+    if (bodyStr) r.write(bodyStr);
+    r.end();
+  });
 }
 
 // Health check
@@ -1416,6 +1455,190 @@ app.post('/chat', requireAuth, rateLimit, async function(req, res) {
   } catch(err) {
     console.error('Chat error:', err.message);
     res.status(500).json({ error: err.message || 'Chat failed' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── CREATOR BOT ENDPOINTS ────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Build system prompt from bot config object
+function buildBotSystemPrompt(bot) {
+  var parts = ['You are ' + bot.bot_name + ', an AI assistant for a creator/influencer.'];
+  if (bot.about) parts.push('\nABOUT:\n' + bot.about);
+  if (bot.faqs && bot.faqs.length) {
+    parts.push('\nFREQUENTLY ASKED QUESTIONS:');
+    bot.faqs.forEach(function(faq) {
+      if (faq.q && faq.a) parts.push('Q: ' + faq.q + '\nA: ' + faq.a);
+    });
+  }
+  if (bot.links && bot.links.length) {
+    parts.push('\nLINKS TO SHARE WHEN RELEVANT:');
+    bot.links.forEach(function(l) {
+      if (l.label && l.url) parts.push('- ' + l.label + ': ' + l.url);
+    });
+  }
+  var toneMap = {
+    friendly:     'Be warm, conversational, and genuinely helpful.',
+    hype:         'Be energetic, enthusiastic, and hype them up — bring the energy!',
+    professional: 'Be polished, concise, and professional.',
+    calm:         'Be calm, supportive, and reassuring.',
+    sassy:        'Be witty, fun, and a little playful — but always helpful.'
+  };
+  parts.push('\nTONE: ' + (toneMap[bot.tone] || toneMap.friendly));
+  if (bot.avoid_topics) parts.push('\nDO NOT discuss or mention: ' + bot.avoid_topics);
+  parts.push('\nRULES: Keep replies concise (2-4 sentences). Share relevant links when helpful. If you genuinely don\'t know something, say so honestly and suggest they DM the creator directly. Never make up facts about the creator.');
+  return parts.join('\n');
+}
+
+// Per-slug visitor rate limit (20 msgs/min per IP per bot)
+var _botChatCounts = {};
+setInterval(function() { _botChatCounts = {}; }, 60 * 1000);
+
+// GET /creator-bot-mine — load current user's bot for editing (auth required)
+app.get('/creator-bot-mine', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var result = await supabaseREST('GET', 'creator_bots', {
+      query: 'user_id=eq.' + req._userId + '&select=*',
+      token: req._userToken
+    });
+    if (!result.data || !Array.isArray(result.data) || !result.data.length) return res.json(null);
+    res.json(result.data[0]);
+  } catch(err) {
+    console.error('creator-bot-mine error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /creator-bot/save — save/update bot profile (auth required)
+app.post('/creator-bot/save', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var slug = (req.body.slug || '').toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 30);
+    var botName = String(req.body.botName || '').trim();
+    if (!slug || !botName) return res.status(400).json({ error: 'slug and botName are required' });
+
+    // Check if slug is taken by a different user
+    var check = await supabaseREST('GET', 'creator_bots', { query: 'slug=eq.' + slug + '&select=user_id' });
+    if (check.data && Array.isArray(check.data) && check.data.length && check.data[0].user_id !== req._userId) {
+      return res.status(409).json({ error: 'That handle is already taken. Try another.' });
+    }
+
+    var record = {
+      user_id:      req._userId,
+      slug:         slug,
+      bot_name:     botName,
+      greeting:     String(req.body.greeting || 'Hey! Ask me anything 👋').trim(),
+      about:        String(req.body.about || '').trim(),
+      faqs:         Array.isArray(req.body.faqs)  ? req.body.faqs  : [],
+      links:        Array.isArray(req.body.links) ? req.body.links : [],
+      avoid_topics: String(req.body.avoidTopics || '').trim(),
+      tone:         String(req.body.tone || 'friendly'),
+      avatar_emoji: String(req.body.avatarEmoji || '✨'),
+      accent_color: String(req.body.accentColor || '#4361EE'),
+      updated_at:   new Date().toISOString()
+    };
+
+    var result = await supabaseREST('POST', 'creator_bots', {
+      query:  'on_conflict=user_id',
+      body:   record,
+      token:  req._userToken,
+      upsert: true
+    });
+
+    if (result.status >= 400) {
+      console.error('Supabase save error:', JSON.stringify(result.data));
+      return res.status(500).json({ error: 'Failed to save — ' + JSON.stringify(result.data) });
+    }
+
+    res.json({ ok: true, slug: slug });
+  } catch(err) {
+    console.error('creator-bot-save error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /creator-bot/preview — test bot without saving (auth required, uses request body as config)
+app.post('/creator-bot/preview', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var bot = {
+      bot_name:     String(req.body.botName || 'AI Assistant'),
+      about:        String(req.body.about || ''),
+      faqs:         Array.isArray(req.body.faqs)  ? req.body.faqs  : [],
+      links:        Array.isArray(req.body.links) ? req.body.links : [],
+      avoid_topics: String(req.body.avoidTopics || ''),
+      tone:         String(req.body.tone || 'friendly')
+    };
+    var messages = req.body.messages || [];
+    var clean = messages.map(function(m) {
+      return { role: m.role, content: String(m.content || '') };
+    }).filter(function(m) { return m.role && m.content; });
+    if (!clean.length) return res.status(400).json({ error: 'No messages' });
+
+    var msg = await client.messages.create({
+      model: 'claude-haiku-4-20250514',
+      max_tokens: 400,
+      system: buildBotSystemPrompt(bot),
+      messages: clean
+    });
+    res.json({ text: msg.content[0].text });
+  } catch(err) {
+    console.error('creator-bot-preview error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /creator-bot/:slug — public profile (no auth, for public chat pages)
+app.get('/creator-bot/:slug', rateLimit, async function(req, res) {
+  try {
+    var slug = req.params.slug.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    var result = await supabaseREST('GET', 'creator_bots', {
+      query: 'slug=eq.' + slug + '&select=bot_name,greeting,about,faqs,links,tone,avatar_emoji,accent_color,slug'
+    });
+    if (!result.data || !Array.isArray(result.data) || !result.data.length) {
+      return res.status(404).json({ error: 'Bot not found' });
+    }
+    res.json(result.data[0]);
+  } catch(err) {
+    console.error('creator-bot-get error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /creator-bot/:slug/chat — public visitor chat (no auth, rate limited)
+app.post('/creator-bot/:slug/chat', async function(req, res) {
+  try {
+    var slug = req.params.slug.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    var ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+    var rKey = ip + ':' + slug;
+    _botChatCounts[rKey] = (_botChatCounts[rKey] || 0) + 1;
+    if (_botChatCounts[rKey] > 20) return res.status(429).json({ error: 'Too many messages — slow down a sec 🙏' });
+
+    var messages = req.body.messages;
+    if (!messages || !messages.length) return res.status(400).json({ error: 'No messages' });
+
+    // Fetch bot config
+    var result = await supabaseREST('GET', 'creator_bots', {
+      query: 'slug=eq.' + slug + '&select=bot_name,about,faqs,links,avoid_topics,tone'
+    });
+    if (!result.data || !Array.isArray(result.data) || !result.data.length) {
+      return res.status(404).json({ error: 'Bot not found' });
+    }
+
+    var clean = messages.map(function(m) {
+      return { role: m.role, content: String(m.content || '') };
+    }).filter(function(m) { return m.role && m.content; });
+    if (!clean.length) return res.status(400).json({ error: 'No valid messages' });
+
+    var msg = await client.messages.create({
+      model:      'claude-haiku-4-20250514',
+      max_tokens: 512,
+      system:     buildBotSystemPrompt(result.data[0]),
+      messages:   clean
+    });
+    res.json({ text: msg.content[0].text });
+  } catch(err) {
+    console.error('creator-bot-chat error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
