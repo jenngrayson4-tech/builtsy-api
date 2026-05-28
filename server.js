@@ -1363,8 +1363,8 @@ RULES:
 If the request is ambiguous, make the most reasonable interpretation and apply it cleanly.`;
 
     const msg = await client.messages.create({
-      model: MODEL,
-      max_tokens: 5000,
+      model: 'claude-haiku-4-20250514',  // faster than Sonnet for revisions
+      max_tokens: 8192,
       system: systemPrompt,
       messages: [{ role: 'user', content: `CHANGE REQUEST: ${request}\n\nCURRENT HTML:\n${html}` }]
     });
@@ -1373,6 +1373,11 @@ If the request is ambiguous, make the most reasonable interpretation and apply i
       .replace(/^```html?\s*/i, '')
       .replace(/\s*```$/, '')
       .trim();
+
+    // Detect truncation — if the HTML didn't close properly, it was cut off
+    if (!updatedHtml.match(/<\/html>\s*$/i)) {
+      return res.status(500).json({ error: 'Revision was truncated — the page is large. Try a more targeted change (e.g. "change button color to orange" vs "redesign the layout").' });
+    }
 
     res.json({ html: updatedHtml });
   } catch(err) {
