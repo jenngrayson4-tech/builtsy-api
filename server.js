@@ -1364,7 +1364,7 @@ If the request is ambiguous, make the most reasonable interpretation and apply i
 
     const msg = await client.messages.create({
       model: MODEL,
-      max_tokens: 8000,
+      max_tokens: 5000,
       system: systemPrompt,
       messages: [{ role: 'user', content: `CHANGE REQUEST: ${request}\n\nCURRENT HTML:\n${html}` }]
     });
