@@ -1300,6 +1300,52 @@ app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
 });
 
 // ── REBUILTSY — patch an existing built page ──────────────────────────────────
+// ── CLARIFY REVISION — quick pre-revision questions if request is vague ───────
+app.post('/clarify-revision', requireAuth, rateLimit, async function(req, res) {
+  try {
+    const { request, pageTitle } = req.body;
+    if (!request) return res.status(400).json({ proceed: true });
+
+    const systemPrompt = `You decide whether a webpage revision request needs 1-2 quick clarifying questions before executing.
+
+PROCEED immediately (return {"proceed":true}) if the request is specific enough:
+- Colors with names/hex (e.g. "make button orange", "dark navy header")
+- Clear structural changes (e.g. "add a contact form", "remove the testimonial section")
+- Specific copy changes (e.g. "change headline to X")
+- Any request with enough detail to act on confidently
+
+ASK questions (return questions array) ONLY if the request is genuinely vague and the answer would meaningfully change the outcome:
+- "make it look better" — need to know what area/what kind of change
+- "update the colors" — need to know which colors and what direction
+- "improve the layout" — need to know which section
+
+Return ONLY valid JSON, one of these two shapes:
+{"proceed":true}
+
+OR:
+
+{"proceed":false,"questions":[{"q":"What should the new color be?","options":["Warm coral","Deep navy","Forest green","Custom — I'll describe"]},{"q":"Just the hero banner, or the whole page?","options":["Just the hero","Full page"]}]}
+
+Max 2 questions. Max 4 options each. Keep options short (1-5 words). Be helpful, not bureaucratic. If in doubt, proceed.`;
+
+    const msg = await client.messages.create({
+      model: 'claude-haiku-4-20250514',
+      max_tokens: 350,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: `Page: "${pageTitle || 'webpage'}"\nRevision request: "${request}"` }]
+    });
+
+    let text = msg.content[0].text.trim()
+      .replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim();
+    const result = JSON.parse(text);
+    res.json(result);
+  } catch(err) {
+    // On any error, just proceed with the revision
+    console.error('Clarify-revision error:', err.message);
+    res.json({ proceed: true });
+  }
+});
+
 app.post('/revise-build', requireAuth, rateLimit, async function(req, res) {
   try {
     const { html, request } = req.body;
