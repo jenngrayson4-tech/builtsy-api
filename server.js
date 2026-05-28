@@ -1387,13 +1387,21 @@ app.post('/chat', requireAuth, rateLimit, async function(req, res) {
     var context  = req.body.context || ''; // user business context only, not system override
     if (!messages || !messages.length) return res.status(400).json({ error: 'No messages' });
 
+    // Strip non-standard fields — Anthropic only accepts {role, content}
+    var cleanMessages = messages.map(function(m) {
+      return { role: m.role, content: String(m.content || '') };
+    }).filter(function(m) {
+      return m.role && m.content;
+    });
+    if (!cleanMessages.length) return res.status(400).json({ error: 'No valid messages' });
+
     var system = CHAT_SYSTEM;
     if (context) system += '\n\n' + context;
 
     var params = {
       model: MODEL,
       max_tokens: 2048,
-      messages: messages,
+      messages: cleanMessages,
       system: system
     };
 
