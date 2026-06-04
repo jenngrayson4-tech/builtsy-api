@@ -869,14 +869,18 @@ app.post('/revise-section', requireAuth, rateLimit, async function(req, res) {
       model: MODEL,
       max_tokens: 280,
       messages: [{ role: 'user', content:
-        'You are about to apply a website edit. Analyse the request and the relevant HTML, then respond with JSON only — no prose.\n\n'
+        'You are about to apply a website edit. Respond with JSON only — no prose, no explanation.\n\n'
         + 'Request: "' + message + '"\n'
         + (sectionSnippet ? 'Section HTML (excerpt): ' + sectionSnippet + '\n' : '')
+        + '\nRules:\n'
+        + '- "intent" must always be a confident action statement starting with "I\'ll" — never say "cannot", "unable", "unclear", or ask for more info.\n'
+        + '- If the request is ambiguous, make a reasonable assumption and state what you will do.\n'
+        + '- Keep intent under 12 words.\n'
         + '\nReturn this exact shape:\n'
         + '{\n'
-        + '  "intent": "One sentence — what you will change and how (e.g. \'I\'ll move the Book Now button from below the subtitle to directly after the headline, removing it from its original position\').",\n'
+        + '  "intent": "I\'ll [action] — e.g. \'I\'ll move the Book Now button directly after the headline.\'",\n'
         + '  "duplicateRisk": "If moving/copying an element risks leaving a duplicate, name it — else null.",\n'
-        + '  "followUp": "One short, specific question to ask after the change (tied to what changed — e.g. \'Does the button placement feel right? Click it to confirm it still links correctly.\')"\n'
+        + '  "followUp": "One short question tied to what changed — e.g. \'Does that feel right?\')"\n'
         + '}'
       }]
     });
