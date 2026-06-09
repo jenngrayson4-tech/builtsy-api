@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Chatbot Setup | Builtsy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-client.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#12192B;--navy-deep:#0D1220;--navy-mid:#161E30;
+  --lime:#C8E000;--pink:#ee70bc;--blue:#4361EE;--cream:#fafaf7;
+  --border:rgba(255,255,255,0.08);--surface:rgba(255,255,255,0.04);
+  --muted:rgba(255,255,255,0.38);--dim:rgba(255,255,255,0.5);
+}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--navy);}
+
+/* ── TOPNAV ── */
+.topnav{height:52px;background:var(--navy);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:200;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;text-decoration:none;color:white;display:inline-flex;align-items:baseline;gap:0;}
+.logo-sy{color:var(--pink);font-style:italic;}
+.logo-dot{color:var(--blue);font-size:1.7rem;font-weight:900;margin-left:2px;line-height:1;}
+.tn-center{display:flex;align-items:center;gap:8px;}
+.tn-tag{background:rgba(67,97,238,0.15);color:var(--blue);border:1px solid rgba(67,97,238,0.35);font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;}
+.tn-title{font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.7);}
+.tn-right{display:flex;align-items:center;gap:0.75rem;}
+.btn-top{background:var(--lime);color:var(--navy);border:none;border-radius:100px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:filter .15s;}
+.btn-top:hover{filter:brightness(1.08);}
+.btn-top-ghost{background:none;border:1.5px solid var(--border);color:rgba(255,255,255,0.6);border-radius:100px;padding:0.4rem 1rem;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;}
+.btn-top-ghost:hover{border-color:rgba(255,255,255,0.3);color:white;}
+
+/* ── TWO-COLUMN SHELL ── */
+.app-shell{display:flex;height:calc(100vh - 52px);overflow:hidden;}
+
+/* ── LEFT PANEL ── */
+.left-panel{width:440px;flex-shrink:0;background:var(--navy);overflow-y:auto;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.left-panel::-webkit-scrollbar{width:4px;}
+.left-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
+.left-inner{padding:0 24px 120px;flex:1;}
+
+/* ── RIGHT PANEL ── */
+.right-panel{flex:1;background:#EEF0FA;display:flex;flex-direction:column;min-width:0;position:relative;}
+.rp-toolbar{height:48px;background:#0E1525;display:flex;align-items:center;padding:0 20px;gap:12px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;}
+.rp-icon{color:var(--blue);font-size:1.05rem;}
+.rp-title{font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:700;color:white;letter-spacing:.08em;}
+.rp-sep{color:rgba(255,255,255,0.15);font-size:0.8rem;}
+.rp-sub{font-size:0.68rem;color:rgba(255,255,255,0.32);font-family:'DM Sans',sans-serif;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rp-badge{background:rgba(67,97,238,0.18);border:1px solid rgba(67,97,238,0.3);border-radius:100px;padding:3px 11px;font-size:0.6rem;font-weight:700;color:#7b9cff;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.rp-body{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:28px 20px;}
+
+/* ── PHONE PREVIEW ── */
+.phone-wrap{width:340px;flex-shrink:0;}
+.phone-shell{background:white;border-radius:32px;box-shadow:0 16px 60px rgba(0,0,0,0.2),0 0 0 8px rgba(0,0,0,0.07);overflow:hidden;display:flex;flex-direction:column;height:640px;}
+/* profile block — centered vertical, matches c.html */
+.phone-profile{padding:24px 20px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
+.ph-avatar-wrap{position:relative;width:60px;height:60px;margin-bottom:2px;}
+.ph-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;background:rgba(67,97,238,0.12);overflow:hidden;}
+.ph-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.ph-online-dot{position:absolute;bottom:2px;right:2px;width:11px;height:11px;background:#22c55e;border-radius:50%;border:2px solid white;}
+.ph-name{font-weight:700;font-size:0.95rem;color:#111;letter-spacing:-.01em;}
+.ph-status{font-size:0.6rem;font-weight:700;color:#22c55e;letter-spacing:.06em;text-transform:uppercase;}
+.ph-tagline{font-size:0.72rem;color:#555;line-height:1.5;max-width:240px;margin:0 auto;}
+/* links — below chat, with section label */
+.phone-links{padding:8px 14px 12px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.phone-links-label{font-size:0.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;font-family:'DM Mono',monospace;text-align:center;padding:6px 0 2px;}
+.ph-link-pill{display:block;width:100%;border-radius:100px;padding:8px 14px;font-size:0.75rem;font-weight:600;border:1.5px solid #e8e8ec;background:white;cursor:pointer;text-decoration:none;text-align:center;transition:all .15s;}
+.phone-msgs{flex:1;overflow-y:auto;padding:14px 14px 4px;display:flex;flex-direction:column;gap:10px;background:#fafafa;}
+.phone-msgs::-webkit-scrollbar{width:0;}
+.pm-row{display:flex;gap:8px;align-items:flex-end;}
+.pm-row.user{justify-content:flex-end;}
+.pm-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;background:rgba(67,97,238,0.1);overflow:hidden;}
+.pm-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.pm-bubble{max-width:220px;padding:9px 13px;border-radius:16px;font-size:0.82rem;line-height:1.5;}
+.pm-row.bot .pm-bubble{background:white;color:#111;border-radius:4px 16px 16px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.pm-row.user .pm-bubble{color:white;border-radius:16px 16px 4px 16px;}
+.pm-typing{display:flex;gap:4px;align-items:center;padding:10px 13px;}
+.pm-typing span{width:6px;height:6px;border-radius:50%;background:#ccc;animation:typingDot 1.2s infinite;}
+.pm-typing span:nth-child(2){animation-delay:.2s;}
+.pm-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-4px);opacity:1;}}
+.phone-input-area{padding:10px 14px 14px;border-top:1px solid #f0f0f0;display:flex;gap:8px;align-items:center;flex-shrink:0;background:white;}
+.ph-input{flex:1;border:1.5px solid #e8e8e8;border-radius:100px;padding:9px 14px;font-size:0.82rem;font-family:'DM Sans',sans-serif;outline:none;background:#fafafa;}
+.ph-input:focus{border-color:var(--accent-color,#4361EE);}
+.ph-send{width:34px;height:34px;border-radius:50%;border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:filter .15s;flex-shrink:0;}
+.ph-send:hover{filter:brightness(1.1);}
+
+/* ── SUCCESS STATE ── */
+.success-panel{display:none;flex-direction:column;align-items:center;text-align:center;padding:40px 32px;gap:24px;}
+.success-panel.active{display:flex;}
+.success-icon{width:72px;height:72px;border-radius:50%;background:rgba(200,224,0,0.12);border:2px solid rgba(200,224,0,0.4);display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.success-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;line-height:1.15;}
+.success-title em{color:var(--lime);font-style:italic;}
+.success-sub{font-size:0.88rem;color:rgba(255,255,255,0.72);line-height:1.65;max-width:380px;}
+.success-url-box{background:rgba(200,224,0,0.07);border:1.5px solid rgba(200,224,0,0.3);border-radius:12px;padding:14px 18px;width:100%;max-width:400px;display:flex;align-items:center;gap:10px;}
+.success-url{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--lime);flex:1;word-break:break-all;text-align:left;}
+.btn-copy{background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:8px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:filter .15s;}
+.btn-copy:hover{filter:brightness(1.08);}
+.success-links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn-success-link{border-radius:100px;padding:10px 22px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+
+/* ── STEP PROGRESS ── */
+.step-progress{display:flex;align-items:center;justify-content:center;padding:20px 16px 0;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace;cursor:pointer;}
+.step-dot.active{background:var(--blue);border-color:var(--blue);color:white;}
+.step-dot.done{background:var(--lime);border-color:var(--lime);color:var(--navy);}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,0.1);min-width:8px;}
+.step-line.done{background:var(--lime);}
+.step-label-row{display:flex;justify-content:space-between;padding:8px 20px 0;font-family:'DM Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.25);letter-spacing:.08em;text-transform:uppercase;}
+
+/* ── STEP PANELS ── */
+.step-panel{display:none;padding-top:24px;}
+.step-panel.active{display:block;}
+.step-lbl{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;font-family:'DM Mono',monospace;}
+.step-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:white;margin-bottom:6px;line-height:1.1;}
+.step-title em{color:var(--lime);font-style:italic;}
+.step-sub{color:var(--muted);font-size:.83rem;margin-bottom:28px;line-height:1.65;}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:700;font-size:.64rem;margin-bottom:7px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.field label .opt{font-weight:400;color:rgba(255,255,255,0.3);font-size:.62rem;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;margin-left:6px;}
+.fi{width:100%;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:white;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.fi::placeholder{color:rgba(255,255,255,0.2);}
+textarea.fi{resize:vertical;min-height:80px;line-height:1.6;}
+.fi-prefix-wrap{display:flex;align-items:center;border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.fi-prefix-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.fi-prefix{padding:11px 0 11px 14px;font-family:'DM Mono',monospace;font-size:0.82rem;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);white-space:nowrap;}
+.fi-prefix-wrap .fi{border:none;border-radius:0;box-shadow:none;padding-left:4px;}
+.fi-prefix-wrap .fi:focus{box-shadow:none;}
+.field-hint{font-size:.68rem;color:rgba(255,255,255,0.28);margin-top:5px;line-height:1.55;}
+.sl{font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin:28px 0 12px;display:block;}
+
+/* ── EMOJI PICKER ── */
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:4px;}
+.emoji-opt{width:100%;aspect-ratio:1;border-radius:8px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.emoji-opt:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);}
+.emoji-opt.selected{border-color:var(--blue);background:rgba(67,97,238,0.15);box-shadow:0 0 0 2px rgba(67,97,238,0.2);}
+
+/* ── COLOR SWATCH PICKER ── */
+.color-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.color-swatch{width:32px;height:32px;border-radius:8px;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex-shrink:0;}
+.color-swatch.selected{border-color:white;box-shadow:0 0 0 2px var(--blue);}
+.color-swatch-custom{position:relative;overflow:hidden;}
+.color-swatch-custom input[type=color]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100% + 8px);height:calc(100% + 8px);}
+
+/* ── TONE PILLS ── */
+.tone-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.tone-pill{border:1.5px solid rgba(255,255,255,0.15);border-radius:100px;padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.04);}
+.tone-pill:hover{border-color:rgba(255,255,255,0.35);color:rgba(255,255,255,0.8);}
+.tone-pill.active{border-color:var(--blue);background:rgba(67,97,238,0.15);color:white;}
+
+/* ── DYNAMIC LIST (FAQs / Links) ── */
+.dyn-list{display:flex;flex-direction:column;gap:8px;}
+.dyn-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+.dyn-item-fields{flex:1;display:flex;flex-direction:column;gap:8px;}
+.dyn-item-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.btn-remove{background:none;border:none;color:rgba(255,255,255,0.25);font-size:1rem;cursor:pointer;padding:2px 4px;transition:color .15s;flex-shrink:0;margin-top:2px;}
+.btn-remove:hover{color:rgba(239,68,68,0.7);}
+.btn-add{background:rgba(255,255,255,0.04);border:1.5px dashed rgba(255,255,255,0.15);border-radius:10px;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:rgba(255,255,255,0.4);cursor:pointer;width:100%;transition:all .15s;text-align:center;}
+.btn-add:hover{border-color:var(--blue);color:var(--blue);background:rgba(67,97,238,0.04);}
+
+/* ── NAV BUTTONS ── */
+.step-nav{display:flex;gap:10px;margin-top:28px;}
+.btn-back{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .15s;}
+.btn-back:hover{border-color:rgba(255,255,255,0.4);color:white;}
+.btn-next{flex:1;background:var(--blue);color:white;border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:filter .15s;}
+.btn-next:hover{filter:brightness(1.1);}
+.btn-publish{flex:1;background:linear-gradient(135deg,var(--lime),#a8c000);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:filter .15s;}
+.btn-publish:hover{filter:brightness(1.07);}
+.btn-publish:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ── SLUG AVAILABILITY ── */
+.slug-status{font-size:.7rem;margin-top:5px;min-height:16px;font-family:'DM Mono',monospace;}
+.slug-status.ok{color:#4ade80;}
+.slug-status.taken{color:#f87171;}
+.slug-status.checking{color:rgba(255,255,255,0.4);}
+
+/* ── SAVE STATUS ── */
+.save-status{font-size:0.8rem;color:var(--muted);text-align:center;margin-top:10px;min-height:20px;font-family:'DM Mono',monospace;}
+.save-status.error{color:#f87171;}
+
+/* ── AVOID TOPIC CHIPS ── */
+.avoid-chip{background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.2);border-radius:100px;padding:5px 12px;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.avoid-chip:hover{border-color:var(--blue);color:var(--blue);background:rgba(67,97,238,0.08);}
+
+/* ── FALLBACK OPTIONS ── */
+.fallback-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s;font-size:0.85rem;color:rgba(255,255,255,0.55);}
+.fallback-opt:hover{border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);}
+.fallback-opt.active{border-color:var(--blue);background:rgba(67,97,238,0.1);color:white;}
+.fallback-dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;transition:all .2s;}
+.fallback-opt.active .fallback-dot{background:var(--blue);border-color:var(--blue);}
+
+/* ── EDGE CASE ROWS ── */
+.edge-case-row{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;}
+.edge-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.edge-q{font-size:0.83rem;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:3px;}
+.edge-a{font-size:0.75rem;color:rgba(255,255,255,0.35);line-height:1.5;}
+.edge-a.covered{color:#4ade80;}
+
+/* ── MODALS ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(13,18,32,0.92);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.hidden{display:none;}
+.modal-card{background:#161E30;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:36px 32px;max-width:480px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.5);max-height:90vh;overflow-y:auto;}
+.modal-card::-webkit-scrollbar{width:3px;}
+.modal-card::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
+.modal-tag{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;display:block;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:white;line-height:1.15;margin-bottom:8px;}
+.modal-title em{color:var(--lime);font-style:italic;}
+.modal-sub{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:24px;}
+.who-cards{display:flex;flex-direction:column;gap:10px;}
+.who-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;}
+.who-card:hover{border-color:var(--blue);background:rgba(67,97,238,0.08);}
+.who-card-icon{font-size:1.6rem;flex-shrink:0;}
+.who-card-label{font-weight:700;font-size:0.95rem;color:white;margin-bottom:2px;}
+.who-card-desc{font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.5;}
+.train-step{display:none;}
+.train-step.active{display:block;}
+.ai-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+.ai-choice-btn{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;text-align:center;font-family:'DM Sans',sans-serif;}
+.ai-choice-btn:hover{border-color:var(--blue);background:rgba(67,97,238,0.08);}
+.ai-icon{font-size:1.5rem;display:block;margin-bottom:6px;}
+.ai-name{font-size:0.85rem;font-weight:700;color:white;}
+.ai-desc{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:2px;}
+.prompt-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:1.7;max-height:200px;overflow-y:auto;margin-bottom:12px;white-space:pre-wrap;word-break:break-word;}
+.prompt-box::-webkit-scrollbar{width:3px;}
+.prompt-box::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
+.paste-area{width:100%;min-height:150px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:white;resize:vertical;outline:none;transition:border-color .2s;}
+.paste-area:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(67,97,238,.12);}
+.paste-area::placeholder{color:rgba(255,255,255,0.2);}
+.modal-btn-row{display:flex;gap:10px;margin-top:16px;}
+.modal-btn-primary{flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:filter .15s;}
+.modal-btn-primary:hover{filter:brightness(1.08);}
+.modal-btn-primary:disabled{opacity:0.5;cursor:not-allowed;}
+.modal-btn-ghost{background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .15s;}
+.modal-btn-ghost:hover{border-color:rgba(255,255,255,0.4);color:white;}
+.parse-result-list{display:flex;flex-direction:column;gap:6px;margin:12px 0;max-height:200px;overflow-y:auto;}
+.parse-result-item{background:rgba(200,224,0,0.06);border:1px solid rgba(200,224,0,0.2);border-radius:8px;padding:8px 12px;font-size:0.78rem;color:rgba(255,255,255,0.7);display:flex;gap:8px;align-items:flex-start;}
+.pri-label{color:var(--lime);font-weight:700;font-family:'DM Mono',monospace;font-size:0.62rem;text-transform:uppercase;flex-shrink:0;margin-top:1px;letter-spacing:.06em;}
+</style>
+</head>
+<body>
+
+<!-- TOPNAV -->
+<nav class="topnav">
+  <a href="/" class="logo-text">Built<span class="logo-sy">sy</span><span class="logo-dot">.</span></a>
+  <div class="tn-center">
+    <span class="tn-tag">BETA</span>
+    <span class="tn-title">AI Chatbot Builder</span>
+  </div>
+  <div class="tn-right">
+    <a href="dashboard.html" class="btn-top-ghost">Dashboard</a>
+    <a href="blueprint-master.html" class="btn-top-ghost">Blueprint</a>
+    <a href="builtsy-brain.html" onclick="saveDraft()" class="btn-top-ghost">Brain ✦</a>
+    <button class="btn-top" id="btn-preview-open" onclick="openPreviewPage()" style="display:none;">View Live Page ↗</button>
+  </div>
+</nav>
+
+<!-- ── WHO IS THIS FOR MODAL ── -->
+<div class="modal-backdrop hidden" id="modal-who">
+  <div class="modal-card">
+    <span class="modal-tag">Let's get started</span>
+    <div class="modal-title">Who is this bot <em>for?</em></div>
+    <div class="modal-sub">This helps us personalize your setup — you can always change it later.</div>
+    <div class="who-cards">
+      <div class="who-card" onclick="selectWhoFor('me')">
+        <div class="who-card-icon">✨</div>
+        <div>
+          <div class="who-card-label">Me — it's my bot</div>
+          <div class="who-card-desc">Build a bot that represents you. We'll help pre-load your story so you don't start from scratch.</div>
+        </div>
+      </div>
+      <div class="who-card" onclick="selectWhoFor('client')">
+        <div class="who-card-icon">💼</div>
+        <div>
+          <div class="who-card-label">A client or business</div>
+          <div class="who-card-desc">Building for someone else — you'll fill in their info manually.</div>
+        </div>
+      </div>
+      <div class="who-card" onclick="selectWhoFor('other')">
+        <div class="who-card-icon">🎯</div>
+        <div>
+          <div class="who-card-label">Something else</div>
+          <div class="who-card-desc">A project, event, family member, or anything else. Start fresh.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TRAINING MODAL ── -->
+<div class="modal-backdrop hidden" id="modal-training">
+  <div class="modal-card">
+
+    <!-- Step A: Do you use AI? -->
+    <div class="train-step active" id="train-a">
+      <span class="modal-tag">Build a smarter bot</span>
+      <div class="modal-title">Do you use <em>AI tools?</em></div>
+      <div class="modal-sub">Tools like ChatGPT, Claude, or Gemini already know your story. We can use that to pre-build your bot in seconds — and save it so you never have to do this again.</div>
+      <div class="modal-btn-row" style="flex-direction:column;">
+        <button class="modal-btn-primary" onclick="showTrainStep('b')">Yes, I use AI tools →</button>
+        <button class="modal-btn-ghost" style="text-align:center;" onclick="closeTrainingModal()">No thanks, I'll fill it in myself</button>
+      </div>
+    </div>
+
+    <!-- Step B: Which AI? -->
+    <div class="train-step" id="train-b">
+      <span class="modal-tag">Step 1 of 3</span>
+      <div class="modal-title">Which AI knows you <em>best?</em></div>
+      <div class="modal-sub">We'll generate a custom prompt for that tool. Paste it in, bring the response back here.</div>
+      <div class="ai-choice-grid">
+        <div class="ai-choice-btn" onclick="selectAI('chatgpt')">
+          <span class="ai-icon">💬</span>
+          <div class="ai-name">ChatGPT</div>
+          <div class="ai-desc">OpenAI</div>
+        </div>
+        <div class="ai-choice-btn" onclick="selectAI('claude')">
+          <span class="ai-icon">🔮</span>
+          <div class="ai-name">Claude</div>
+          <div class="ai-desc">Anthropic</div>
+        </div>
+        <div class="ai-choice-btn" onclick="selectAI('gemini')">
+          <span class="ai-icon">⭐</span>
+          <div class="ai-name">Gemini</div>
+          <div class="ai-desc">Google</div>
+        </div>
+        <div class="ai-choice-btn" onclick="selectAI('other')">
+          <span class="ai-icon">🤖</span>
+          <div class="ai-name">Other AI</div>
+          <div class="ai-desc">Any tool</div>
+        </div>
+      </div>
+      <button class="modal-btn-ghost" style="width:100%;margin-top:4px;" onclick="showTrainStep('a')">← Back</button>
+    </div>
+
+    <!-- Step C: Copy the prompt -->
+    <div class="train-step" id="train-c">
+      <span class="modal-tag">Step 2 of 3</span>
+      <div class="modal-title">Copy this into <em id="train-ai-name">ChatGPT</em></div>
+      <div class="modal-sub">Paste this prompt into your AI, let it answer as you, then bring the response back here.</div>
+      <div class="prompt-box" id="train-prompt-text"></div>
+      <div class="modal-btn-row">
+        <button class="modal-btn-ghost" onclick="showTrainStep('b')">← Back</button>
+        <button class="modal-btn-primary" id="btn-copy-prompt" onclick="copyTrainingPrompt()">Copy Prompt →</button>
+      </div>
+      <button class="modal-btn-ghost" style="width:100%;margin-top:8px;text-align:center;" onclick="showTrainStep('d')">Already have my results →</button>
+    </div>
+
+    <!-- Step D: Paste the response -->
+    <div class="train-step" id="train-d">
+      <span class="modal-tag">Step 3 of 3</span>
+      <div class="modal-title">Paste your AI's <em>response</em></div>
+      <div class="modal-sub">Paste everything your AI wrote back. Builtsy will extract the key info and pre-fill your bot.</div>
+      <textarea class="paste-area" id="train-paste" placeholder="Paste your AI's response here…"></textarea>
+      <div class="modal-btn-row" style="margin-top:10px;">
+        <button class="modal-btn-ghost" onclick="showTrainStep('c')">← Back</button>
+        <button class="modal-btn-primary" id="btn-parse" onclick="parseAIResponse()">Build My Bot from This →</button>
+      </div>
+      <div id="train-parse-status" style="font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:8px;text-align:center;min-height:18px;font-family:'DM Mono',monospace;"></div>
+    </div>
+
+    <!-- Step E: Done -->
+    <div class="train-step" id="train-e">
+      <span class="modal-tag">Done ✦</span>
+      <div class="modal-title">Your bot is <em>pre-loaded!</em></div>
+      <div class="modal-sub">We extracted the following from your AI's response. Review and edit anything in the builder.</div>
+      <div class="parse-result-list" id="train-result-list"></div>
+      <div class="modal-btn-row">
+        <button class="modal-btn-primary" onclick="applyParsedProfile()">Let's review it →</button>
+      </div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);text-align:center;margin-top:10px;">Your Intelligence Profile has been saved — future bots start pre-loaded.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="left-panel">
+
+    <!-- ── Persistent Retrain CTA ── -->
+    <div style="padding:10px 16px 0;flex-shrink:0;">
+      <button onclick="showTrainingModal()" style="width:100%;display:flex;align-items:center;gap:12px;background:var(--lime);border:none;border-radius:12px;padding:12px 16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:filter .15s;" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter='brightness(1)'">
+        <span style="font-size:1.25rem;flex-shrink:0;">🤖</span>
+        <div style="text-align:left;flex:1;">
+          <div style="font-size:.82rem;font-weight:700;color:#0d1220;line-height:1.2;">Train your bot with AI</div>
+          <div style="font-size:.68rem;color:rgba(13,18,32,0.6);margin-top:1px;">Paste your ChatGPT answers → fills your bot instantly</div>
+        </div>
+        <span style="font-size:.8rem;font-weight:800;color:#0d1220;flex-shrink:0;">↺ Start →</span>
+      </button>
+    </div>
+
+    <div class="left-inner">
+
+      <!-- Step Progress -->
+      <div class="step-progress">
+        <div class="step-dot active" id="sd-1" onclick="goStep(1)">1</div>
+        <div class="step-line" id="sl-1"></div>
+        <div class="step-dot" id="sd-2" onclick="goStep(2)">2</div>
+        <div class="step-line" id="sl-2"></div>
+        <div class="step-dot" id="sd-3" onclick="goStep(3)">3</div>
+        <div class="step-line" id="sl-3"></div>
+        <div class="step-dot" id="sd-4" onclick="goStep(4)">4</div>
+      </div>
+      <div class="step-label-row">
+        <span>Identity</span><span>Knowledge</span><span>Limits</span><span>Launch</span>
+      </div>
+
+      <!-- ── STEP 1: Identity ── -->
+      <div class="step-panel active" id="step-1">
+        <div class="step-lbl">Step 1 of 4</div>
+        <div class="step-title">Your <em>AI twin</em></div>
+        <div class="step-sub">Name your bot and give it a face. Visitors will see this on your chat page.</div>
+
+        <div class="field">
+          <label>Bot Name</label>
+          <input class="fi" id="f-botname" type="text" placeholder="e.g. Chat with Sophia" oninput="onBotNameInput()">
+        </div>
+
+        <div class="field">
+          <label>Your Handle <span class="opt">— your shareable URL</span></label>
+          <div class="fi-prefix-wrap">
+            <span class="fi-prefix">builtsy.ai/c?u=</span>
+            <input class="fi" id="f-slug" type="text" placeholder="yourname" oninput="onSlugInput()">
+          </div>
+          <div class="slug-status" id="slug-status"></div>
+        </div>
+
+        <div class="field">
+          <label>Avatar Emoji</label>
+          <div class="emoji-grid" id="emoji-grid"></div>
+        </div>
+
+        <div class="field">
+          <label>Accent Color</label>
+          <div class="color-row" id="color-row"></div>
+        </div>
+
+        <div class="field">
+          <label>Profile Photo <span class="opt">optional</span></label>
+          <div id="photo-upload-area" onclick="document.getElementById('f-photo-file').click()" style="border:1.5px dashed rgba(255,255,255,0.15);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);" onmouseover="this.style.borderColor='rgba(255,255,255,0.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'">
+            <div id="photo-preview-wrap" style="display:none;margin-bottom:10px;">
+              <img id="photo-preview" src="" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);">
+            </div>
+            <div id="photo-upload-label" style="font-size:.82rem;color:rgba(255,255,255,0.4);">📸 Click to upload a photo</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,0.2);margin-top:4px;">JPG or PNG · Shows as your circular profile photo</div>
+          </div>
+          <input type="file" id="f-photo-file" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this)">
+          <input type="hidden" id="f-photo-url">
+          <button id="photo-remove-btn" onclick="removePhoto()" style="display:none;background:none;border:none;color:rgba(255,255,255,0.3);font-size:.75rem;cursor:pointer;margin-top:6px;font-family:'DM Sans',sans-serif;">✕ Remove photo</button>
+        </div>
+
+        <div class="field">
+          <label>Tagline <span class="opt">optional</span></label>
+          <input class="fi" id="f-tagline" type="text" placeholder="e.g. Building smarter businesses with AI ✦" oninput="syncPreview()" maxlength="120">
+          <div class="field-hint">One line shown under your name on the chat page.</div>
+        </div>
+
+        <div class="field">
+          <label>Color Palette</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="palette-grid"></div>
+          <div class="field-hint">Sets your background and accent color together.</div>
+        </div>
+
+        <div class="field">
+          <label>Background Image <span class="opt">optional</span></label>
+          <div id="bg-upload-zone" onclick="document.getElementById('f-bg-file').click()" style="border:2px dashed rgba(255,255,255,0.12);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.03);position:relative;" onmouseover="this.style.borderColor='rgba(67,97,238,0.5)';this.style.background='rgba(67,97,238,0.06)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.background='rgba(255,255,255,0.03)'">
+            <div id="bg-upload-placeholder">
+              <div style="font-size:1.5rem;margin-bottom:6px;">🖼️</div>
+              <div style="font-size:.82rem;font-weight:600;color:rgba(255,255,255,0.6);"><strong style="color:white;">Click to upload</strong> — full page background</div>
+              <div style="font-size:.68rem;color:rgba(255,255,255,0.25);margin-top:4px;">JPG or PNG · Displays behind your chat page</div>
+            </div>
+            <div id="bg-upload-preview" style="display:none;">
+              <img id="bg-preview-img" src="" alt="" style="max-height:80px;max-width:100%;border-radius:8px;display:block;margin:0 auto;">
+              <div style="font-size:.75rem;color:rgba(255,255,255,0.6);font-weight:600;margin-top:8px;" id="bg-preview-name">✓ Image uploaded</div>
+              <button onclick="removeBgImage(event)" style="margin-top:6px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;">✕ Remove</button>
+            </div>
+          </div>
+          <input type="file" id="f-bg-file" accept="image/*" style="display:none;" onchange="handleBgImageUpload(this)">
+          <input type="hidden" id="f-bg-image">
+          <div class="field-hint">Tip: Use a blurred or soft photo for best results.</div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-next" onclick="goStep(2)">Next — What your bot knows →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: Knowledge ── -->
+      <div class="step-panel" id="step-2">
+        <div class="step-lbl">Step 2 of 4</div>
+        <div class="step-title">What does your <em>bot know?</em></div>
+        <div class="step-sub">This is your bot's brain. The more you give it, the better it'll answer.</div>
+
+        <div class="field">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+            <label style="margin-bottom:0;">About You</label>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <button onclick="showTrainingModal()" style="background:rgba(67,97,238,0.15);border:1.5px solid rgba(67,97,238,0.4);border-radius:100px;font-size:.72rem;font-weight:700;color:#7b9cff;cursor:pointer;font-family:'DM Sans',sans-serif;padding:5px 12px;display:inline-flex;align-items:center;gap:5px;transition:all .15s;" onmouseover="this.style.background='rgba(67,97,238,0.28)';this.style.color='white'" onmouseout="this.style.background='rgba(67,97,238,0.15)';this.style.color='#7b9cff'">↺ Retrain from AI</button>
+              <a href="builtsy-brain.html" onclick="saveDraft();saveBrainBioRequest(event)" style="font-size:.7rem;font-weight:700;color:var(--lime);text-decoration:none;display:inline-flex;align-items:center;gap:4px;opacity:.85;transition:opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.85'">✦ Draft with Brain AI</a>
+            </div>
+          </div>
+          <textarea class="fi" id="f-about" rows="4" placeholder="Tell your bot who you are, what you do, who you help, and what you offer. Write like you're briefing a new assistant." oninput="syncPreview()" style="min-height:100px;"></textarea>
+          <div class="field-hint">Click "Draft with Brain AI" → Brain writes this for you → one click applies it here.</div>
+        </div>
+
+        <!-- ── Business Details ── -->
+        <span class="sl" style="margin-top:28px;">Business Details</span>
+        <div class="field-hint" style="margin-top:-8px;margin-bottom:16px;">The more you fill in, the smarter your bot gets. These replace generic "I don't know" answers with real info.</div>
+
+        <div class="field">
+          <label>Services / Products <span class="opt">optional</span></label>
+          <textarea class="fi" id="f-services" rows="2" placeholder="e.g. Custom cakes, birthday cakes, cookie boxes, dessert tables for events" oninput="syncPreview()" style="min-height:60px;"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;">
+          <div class="field" style="flex:1;">
+            <label>Hours / Availability <span class="opt">optional</span></label>
+            <textarea class="fi" id="f-hours" rows="2" placeholder="e.g. Mon–Fri 9am–5pm · Saturdays at farmers market 10am–2pm" oninput="syncPreview()" style="min-height:60px;"></textarea>
+          </div>
+          <div class="field" style="flex:1;">
+            <label>Location / Area <span class="opt">optional</span></label>
+            <textarea class="fi" id="f-location" rows="2" placeholder="e.g. Los Angeles, CA · Ships US-wide" oninput="syncPreview()" style="min-height:60px;"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Pricing / Rates <span class="opt">optional</span></label>
+          <textarea class="fi" id="f-pricing" rows="2" placeholder="e.g. Custom cakes from $85 · Cookie boxes from $35 · Free local delivery over $50" oninput="syncPreview()" style="min-height:60px;"></textarea>
+        </div>
+
+        <div class="field">
+          <label>How to Order / Book <span class="opt">optional</span></label>
+          <input class="fi" id="f-howtoorder" type="text" placeholder="e.g. DM on Instagram @handle or email hello@yourbiz.com" oninput="syncPreview()">
+        </div>
+
+        <div class="field">
+          <label>Policies <span class="opt">optional</span></label>
+          <textarea class="fi" id="f-policies" rows="2" placeholder="e.g. 48hr cancellation notice required. No refunds on custom orders. Ships in 3–5 business days." oninput="syncPreview()" style="min-height:60px;"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Anything else your bot should know <span class="opt">optional</span></label>
+          <textarea class="fi" id="f-extra" rows="3" placeholder="Brain dump anything — your story, process, upcoming events, special offerings, brand values, fun facts. More = smarter bot." oninput="syncPreview()" style="min-height:80px;"></textarea>
+          <div class="field-hint">Think of this as your bot's extended memory.</div>
+        </div>
+
+        <!-- ── CONTACT & REACH ── -->
+        <span class="sl" style="margin-top:28px;">📲 Contact &amp; Reach</span>
+        <div class="field-hint" style="margin-top:-8px;margin-bottom:16px;">Visitors can text, email, or book directly from the chat — no more "visit my website." The bot shows these buttons automatically when someone wants to connect.</div>
+
+        <div style="display:flex;gap:12px;">
+          <div class="field" style="flex:1;">
+            <label>Phone / SMS <span class="opt">optional</span></label>
+            <input class="fi" id="f-phone" type="tel" placeholder="+13035551234" oninput="syncPreview()">
+          </div>
+          <div class="field" style="flex:1;">
+            <label>Email <span class="opt">optional</span></label>
+            <input class="fi" id="f-email" type="email" placeholder="hello@yourbiz.com" oninput="syncPreview()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Booking / Calendar Link <span class="opt">optional</span></label>
+          <input class="fi" id="f-booking" type="url" placeholder="https://calendly.com/yourname" oninput="syncPreview()">
+        </div>
+
+        <div class="field">
+          <label>Pre-filled SMS Message <span class="opt">auto-generated if blank</span></label>
+          <textarea class="fi" id="f-smsmsg" rows="2" placeholder="e.g. Hi! I just chatted with your AI and I'm interested. Can we connect?" oninput="syncPreview()" style="min-height:60px;"></textarea>
+          <div class="field-hint">This message gets pre-typed in the visitor's SMS app when they tap "Text me."</div>
+        </div>
+
+        <span class="sl" style="margin-top:28px;">Your Links</span>
+        <div class="dyn-list" id="links-list"></div>
+        <button class="btn-add" onclick="addLink()" style="margin-top:8px;">+ Add a link</button>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:28px;margin-bottom:12px;">
+          <span class="sl" style="margin:0;">FAQ — Common Questions</span>
+          <a href="faq-tool.html" onclick="saveDraft()" style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.75)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Open FAQ Builder ↗</a>
+        </div>
+        <div class="dyn-list" id="faqs-list"></div>
+        <button class="btn-add" onclick="addFaq()" style="margin-top:8px;">+ Add a question &amp; answer</button>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="goStep(1)">← Back</button>
+          <button class="btn-next" onclick="goStep(3)">Next — Limits &amp; Guardrails →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: Limits & Guardrails ── -->
+      <div class="step-panel" id="step-3">
+        <div class="step-lbl">Step 3 of 4</div>
+        <div class="step-title">What your bot <em>doesn't know.</em></div>
+        <div class="step-sub">This step is just as important as the last one. A bot that knows its limits is a bot your visitors will trust.</div>
+
+        <div class="field">
+          <label>Topics to Never Discuss</label>
+          <textarea class="fi" id="f-avoid" rows="3" placeholder="e.g. competitor comparisons, pricing negotiations, personal relationships, legal advice, medical advice" oninput="syncPreview()" style="min-height:80px;"></textarea>
+          <div class="field-hint">The bot will redirect warmly but firmly if anyone brings these up. Separate with commas.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;" id="avoid-defaults">
+            <button class="avoid-chip" onclick="addAvoidTopic('competitor comparisons')">+ competitor comparisons</button>
+            <button class="avoid-chip" onclick="addAvoidTopic('pricing negotiations')">+ pricing negotiations</button>
+            <button class="avoid-chip" onclick="addAvoidTopic('legal advice')">+ legal advice</button>
+            <button class="avoid-chip" onclick="addAvoidTopic('medical advice')">+ medical advice</button>
+            <button class="avoid-chip" onclick="addAvoidTopic('personal relationships')">+ personal relationships</button>
+            <button class="avoid-chip" onclick="addAvoidTopic('political topics')">+ political topics</button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:24px;">
+          <label>When the bot doesn't know something, it should say… <span class="opt">optional</span></label>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;" id="fallback-options">
+            <div class="fallback-opt active" data-val="I don't have that information — your best bet is to reach out directly." onclick="selectFallback(this)">
+              <span class="fallback-dot"></span>
+              <span>"I don't have that information — reach out directly."</span>
+            </div>
+            <div class="fallback-opt" data-val="That's outside what I'm set up to help with here. Is there something else I can answer?" onclick="selectFallback(this)">
+              <span class="fallback-dot"></span>
+              <span>"That's outside what I'm set up to help with here."</span>
+            </div>
+            <div class="fallback-opt" data-val="custom" onclick="selectFallback(this)">
+              <span class="fallback-dot"></span>
+              <span>Write my own response</span>
+            </div>
+          </div>
+          <textarea class="fi" id="f-fallback" rows="2" placeholder="Write what your bot should say when it doesn't know something…" style="min-height:60px;display:none;"></textarea>
+          <div class="field-hint">This message appears any time someone asks something outside your bot's knowledge.</div>
+        </div>
+
+        <div class="field" style="margin-top:24px;">
+          <label style="margin-bottom:12px;display:block;">Edge case check <span class="opt">— things visitors might ask</span></label>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="edge-cases">
+            <div class="edge-case-row">
+              <span class="edge-icon">⚠️</span>
+              <div class="edge-text">
+                <div class="edge-q">"What's your refund policy?"</div>
+                <div class="edge-a" id="ec-refund">Not covered yet — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add it in Knowledge →</a></div>
+              </div>
+            </div>
+            <div class="edge-case-row">
+              <span class="edge-icon">⚠️</span>
+              <div class="edge-text">
+                <div class="edge-q">"How much does it cost?"</div>
+                <div class="edge-a" id="ec-pricing">Not covered yet — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add pricing in Knowledge →</a></div>
+              </div>
+            </div>
+            <div class="edge-case-row">
+              <span class="edge-icon">⚠️</span>
+              <div class="edge-text">
+                <div class="edge-q">"How do I get started?"</div>
+                <div class="edge-a" id="ec-howto">Not covered yet — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add it in Knowledge →</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="goStep(2)">← Back</button>
+          <button class="btn-next" onclick="goStep(4)">Next — Personality →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: Personality + Launch ── -->
+      <div class="step-panel" id="step-4">
+        <div class="step-lbl">Step 4 of 4</div>
+        <div class="step-title">Personality &amp; <em>launch</em></div>
+        <div class="step-sub">Set the vibe and publish. Test your bot live in the preview →</div>
+
+        <div class="field">
+          <label>Opening Greeting</label>
+          <textarea class="fi" id="f-greeting" rows="2" placeholder="e.g. Hey! I'm here to answer all your questions 👋 What can I help you with?" oninput="syncPreview()" style="min-height:64px;"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Tone / Vibe</label>
+          <div class="tone-pills" id="tone-pills">
+            <div class="tone-pill active" data-tone="friendly" onclick="selectTone('friendly')">😊 Friendly</div>
+            <div class="tone-pill" data-tone="hype" onclick="selectTone('hype')">🔥 Hype</div>
+            <div class="tone-pill" data-tone="professional" onclick="selectTone('professional')">💼 Professional</div>
+            <div class="tone-pill" data-tone="calm" onclick="selectTone('calm')">🧘 Calm</div>
+            <div class="tone-pill" data-tone="sassy" onclick="selectTone('sassy')">💅 Sassy</div>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="goStep(3)">← Back</button>
+          <button class="btn-publish" id="btn-publish" onclick="publishBot()">
+            <span>✦</span> Publish My Bot
+          </button>
+        </div>
+        <div class="save-status" id="save-status"></div>
+      </div>
+
+    </div><!-- /left-inner -->
+  </div><!-- /left-panel -->
+
+  <!-- ── RIGHT PANEL — LIVE PREVIEW ── -->
+  <div class="right-panel">
+    <div class="rp-toolbar">
+      <span class="rp-icon">🤖</span>
+      <span class="rp-title">LIVE PREVIEW</span>
+      <span class="rp-sep">·</span>
+      <span class="rp-sub" id="rp-sub-text">test your bot as you build it</span>
+      <span class="rp-badge">INTERACTIVE</span>
+    </div>
+
+    <div class="rp-body">
+
+      <!-- Phone mockup -->
+      <div class="phone-wrap" id="phone-wrap">
+        <div class="phone-shell">
+          <div class="phone-profile">
+            <div class="ph-avatar-wrap">
+              <div class="ph-avatar" id="pv-avatar">✨</div>
+              <div class="ph-online-dot"></div>
+            </div>
+            <div class="ph-name" id="pv-name">Your Bot</div>
+            <div class="ph-status">Online now</div>
+            <div class="ph-tagline" id="pv-tagline" style="display:none;"></div>
+          </div>
+          <div class="phone-msgs" id="pv-msgs">
+            <!-- greeting + messages appended here -->
+          </div>
+          <div class="phone-links" id="pv-links" style="display:none;"></div>
+          <div class="phone-input-area">
+            <input class="ph-input" id="pv-input" type="text" placeholder="Ask anything…" onkeydown="if(event.key==='Enter') sendPreviewMsg()">
+            <button class="ph-send" id="pv-send" onclick="sendPreviewMsg()" style="background:#4361EE;">→</button>
+          </div>
+        </div>
+
+        <!-- Success state (shown after publish) -->
+        <div class="success-panel" id="success-panel">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">Your bot is <em>live!</em></div>
+          <div class="success-sub">Share your link — anyone can chat with your AI. Update anytime and republish.</div>
+
+          <!-- Shareable URL -->
+          <div class="success-url-box">
+            <div class="success-url" id="success-url-text">—</div>
+            <button class="btn-copy" id="btn-copy-url" onclick="copyBotUrl()">Copy</button>
+          </div>
+
+          <!-- CTA buttons -->
+          <div class="success-links">
+            <a id="btn-open-live" href="#" target="_blank" class="btn-success-link" style="background:var(--lime);color:var(--navy);">↗ Open Live Page</a>
+            <button onclick="showEmbedCode()" class="btn-success-link" style="background:rgba(67,97,238,0.15);border:1.5px solid rgba(67,97,238,0.35);color:#7b9cff;">‹/› Embed Code</button>
+            <button onclick="buildLandingPage()" class="btn-success-link" style="background:rgba(200,224,0,0.1);border:1.5px solid rgba(200,224,0,0.3);color:var(--lime);">✦ Build a Landing Page</button>
+            <button onclick="editBot()" class="btn-success-link" style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);">Edit Bot</button>
+          </div>
+
+          <!-- Embed code (hidden until clicked) -->
+          <div id="embed-panel" style="display:none;width:100%;max-width:420px;text-align:left;">
+
+            <!-- Tab toggle -->
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <button id="embed-tab-widget" onclick="setEmbedTab('widget')" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid rgba(67,97,238,0.5);background:rgba(67,97,238,0.18);color:#7b9cff;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🫧 Floating Widget</button>
+              <button id="embed-tab-iframe" onclick="setEmbedTab('iframe')" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,.4);font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🖼 Inline iFrame</button>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;">
+              <code id="embed-code-text" style="font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.75);flex:1;line-height:1.65;word-break:break-all;white-space:pre-wrap;"></code>
+              <button class="btn-copy" id="btn-copy-embed" onclick="copyEmbed()" style="flex-shrink:0;margin-top:2px;">Copy</button>
+            </div>
+            <div id="embed-hint" style="font-size:0.68rem;color:rgba(255,255,255,0.25);margin-top:7px;line-height:1.55;">Paste before &lt;/body&gt; — adds a floating chat bubble to any site.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /right-panel -->
+
+</div><!-- /app-shell -->
+
+<script>
+var RAILWAY = 'https://builtsy-api-production.up.railway.app';
+
+// ── State ─────────────────────────────────────────────────────────────────────
+var _step     = 1;
+var _emoji    = '✨';
+var _color    = '#4361EE';
+var _bgColor  = '';
+var _tone     = 'friendly';
+var _slug     = '';
+var _slugTimer = null;
+var _previewMsgs = [];
+var _previewBusy = false;
+var _published  = false;
+
+var EMOJIS = ['✨','🌟','💫','🔥','💎','🦋','🌺','🎯','🚀','💡','🎨','🌈','👑','🦁','🌸','⚡','🦄','🍀','🎵','🏆','🌙','☀️','🐝','🎀'];
+var COLORS = ['#4361EE','#ee70bc','#C8E000','#D4745A','#8B5CF6','#22c55e','#f59e0b','#06b6d4'];
+
+// ── Draft auto-save (survives navigation to FAQ Builder / Brain AI) ────────────
+var _DRAFT_KEY  = 'builtsy_chatbot_draft';
+var _draftTimer = null;
+
+function saveDraft() {
+  try {
+    var d = collectData();
+    d._emoji = _emoji;
+    d._color = _color;
+    d._tone  = _tone;
+    localStorage.setItem(_DRAFT_KEY, JSON.stringify(d));
+  } catch(e) {}
+}
+
+function loadDraft() {
+  try {
+    var raw = localStorage.getItem(_DRAFT_KEY);
+    if (!raw) return false;
+    var d = JSON.parse(raw);
+    if (!d) return false;
+    if (d.botName)    document.getElementById('f-botname').value    = d.botName;
+    if (d.slug)       { document.getElementById('f-slug').value    = d.slug; _slug = d.slug; _slugManuallySet = true; }
+    if (d.greeting)   document.getElementById('f-greeting').value  = d.greeting;
+    if (d.about)      document.getElementById('f-about').value     = d.about;
+    if (d.services)   document.getElementById('f-services').value  = d.services;
+    if (d.hours)      document.getElementById('f-hours').value     = d.hours;
+    if (d.location)   document.getElementById('f-location').value  = d.location;
+    if (d.pricing)    document.getElementById('f-pricing').value   = d.pricing;
+    if (d.howToOrder) document.getElementById('f-howtoorder').value= d.howToOrder;
+    if (d.policies)   document.getElementById('f-policies').value  = d.policies;
+    if (d.extraInfo)  document.getElementById('f-extra').value     = d.extraInfo;
+    if (d.avoidTopics) document.getElementById('f-avoid').value    = d.avoidTopics;
+    if (d.phone)       document.getElementById('f-phone').value    = d.phone;
+    if (d.email)       document.getElementById('f-email').value    = d.email;
+    if (d.bookingUrl)  document.getElementById('f-booking').value  = d.bookingUrl;
+    if (d.smsMessage)  document.getElementById('f-smsmsg').value   = d.smsMessage;
+    if (d._emoji)      selectEmoji(d._emoji);
+    if (d._color)      selectColor(d._color, null);
+    if (d._tone)       selectTone(d._tone);
+    if (d.links && d.links.length) {
+      document.getElementById('links-list').innerHTML = '';
+      d.links.forEach(function(l) { addLink(l.label, l.url); });
+    }
+    if (d.faqs && d.faqs.length) {
+      document.getElementById('faqs-list').innerHTML = '';
+      d.faqs.forEach(function(f) { addFaq(f.q, f.a); });
+    }
+    return true;
+  } catch(e) { return false; }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(_DRAFT_KEY); } catch(e) {}
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async function init() {
+  await requireAuth('builtsy-chatbot.html');
+
+  // Build emoji grid
+  var eg = document.getElementById('emoji-grid');
+  EMOJIS.forEach(function(em) {
+    var d = document.createElement('div');
+    d.className = 'emoji-opt' + (em === _emoji ? ' selected' : '');
+    d.textContent = em;
+    d.onclick = function() { selectEmoji(em); };
+    eg.appendChild(d);
+  });
+
+  // Build color row
+  var cr = document.getElementById('color-row');
+  COLORS.forEach(function(c) {
+    var d = document.createElement('div');
+    d.className = 'color-swatch' + (c === _color ? ' selected' : '');
+    d.style.background = c;
+    d.title = c;
+    d.onclick = function() { selectColor(c, d); };
+    cr.appendChild(d);
+  });
+  // Custom color picker
+  var custom = document.createElement('div');
+  custom.className = 'color-swatch color-swatch-custom';
+  custom.style.background = 'conic-gradient(red,yellow,lime,cyan,blue,magenta,red)';
+  custom.title = 'Pick custom color';
+  var ci = document.createElement('input');
+  ci.type = 'color';
+  ci.value = _color;
+  ci.addEventListener('change', function() { selectColor(ci.value, custom); });
+  custom.appendChild(ci);
+  cr.appendChild(custom);
+
+  // Build palette grid
+  renderPaletteGrid();
+
+  // Don't pre-fill rows — let user add them
+
+  // Load existing bot from Supabase saves table
+  try {
+    var user = await getUser();
+    if (user && _supabase) {
+      var { data: saveRow } = await _supabase
+        .from('saves')
+        .select('data')
+        .eq('user_id', user.id)
+        .eq('blueprint_type', 'chatbot')
+        .maybeSingle();
+      if (saveRow && saveRow.data) {
+        populateFormCamel(saveRow.data);
+        _hasExistingBot = true;
+      }
+    }
+  } catch(e) {}
+
+  // Restore any in-progress draft on top (survives navigation to Brain/FAQ Builder)
+  loadDraft();
+
+  // ── Check for imports from Brain AI or FAQ Builder ──────────────────────────
+  // These always win — applied last so they override both Railway data and draft
+  var bioImport = localStorage.getItem('builtsy_chatbot_bio');
+  if (bioImport) {
+    localStorage.removeItem('builtsy_chatbot_bio');
+    document.getElementById('f-about').value = bioImport;
+    saveDraft(); // persist immediately so it survives the next navigation too
+    showImportBanner('bio', '✦ Bio from Brain AI applied to your About section!');
+    goStep(2);
+  }
+
+  var faqImport = localStorage.getItem('builtsy_chatbot_faqs');
+  if (faqImport) {
+    try {
+      var imported = JSON.parse(faqImport);
+      if (imported && imported.length) {
+        _pendingFaqImport = imported;
+        showImportBanner('faqs', imported.length + ' FAQ' + (imported.length > 1 ? 's' : '') + ' ready to import from FAQ Builder');
+      }
+    } catch(e) {}
+  }
+
+  syncPreview();
+  showGreeting();
+
+  // Show "who is this for?" modal only for new users (no existing bot)
+  if (!_hasExistingBot) {
+    setTimeout(showWhoModal, 400);
+  }
+})();
+
+var _pendingFaqImport = null;
+
+function showImportBanner(type, msg) {
+  // Remove existing banner if any
+  var old = document.getElementById('import-banner');
+  if (old) old.remove();
+
+  var banner = document.createElement('div');
+  banner.id = 'import-banner';
+  banner.style.cssText = 'background:rgba(200,224,0,0.08);border:1px solid rgba(200,224,0,0.3);border-radius:10px;padding:11px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:.8rem;';
+
+  var icon = type === 'bio' ? '✦' : '📋';
+  var actionHtml = type === 'faqs'
+    ? '<button onclick="importFaqs()" style="background:var(--lime);color:var(--navy);border:none;border-radius:6px;padding:5px 12px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:\'DM Sans\',sans-serif;">Import →</button>'
+    : '<button onclick="document.getElementById(\'import-banner\').remove()" style="background:none;border:none;color:rgba(255,255,255,.35);font-size:1rem;cursor:pointer;padding:0 4px;">✕</button>';
+
+  banner.innerHTML = '<span style="color:var(--lime);font-size:1rem;flex-shrink:0;">' + icon + '</span>'
+    + '<span style="color:rgba(255,255,255,.75);flex:1;">' + msg + '</span>'
+    + actionHtml;
+
+  // Inject before the first step panel
+  var firstStep = document.getElementById('step-1');
+  firstStep.insertBefore(banner, firstStep.firstChild);
+}
+
+function importFaqs() {
+  if (!_pendingFaqImport) return;
+  document.getElementById('faqs-list').innerHTML = '';
+  _pendingFaqImport.forEach(function(f) { addFaq(f.q, f.a); });
+  localStorage.removeItem('builtsy_chatbot_faqs');
+  _pendingFaqImport = null;
+  document.getElementById('import-banner').remove();
+  saveDraft(); // persist FAQs immediately so they survive the next navigation
+  goStep(2);
+}
+
+// Populate from Railway/snake_case response (kept for compatibility)
+function populateForm(data) {
+  if (data.bot_name)     document.getElementById('f-botname').value  = data.bot_name;
+  if (data.slug)         { document.getElementById('f-slug').value   = data.slug; _slug = data.slug; _slugManuallySet = true; }
+  if (data.greeting)     document.getElementById('f-greeting').value = data.greeting;
+  if (data.about)        document.getElementById('f-about').value    = data.about;
+  if (data.avoid_topics) document.getElementById('f-avoid').value    = data.avoid_topics;
+  if (data.avatar_emoji) selectEmoji(data.avatar_emoji);
+  if (data.accent_color) selectColor(data.accent_color, null);
+  if (data.tone)         selectTone(data.tone);
+  if (data.links && data.links.length) {
+    document.getElementById('links-list').innerHTML = '';
+    data.links.forEach(function(l) { addLink(l.label, l.url); });
+  }
+  if (data.faqs && data.faqs.length) {
+    document.getElementById('faqs-list').innerHTML = '';
+    data.faqs.forEach(function(f) { addFaq(f.q, f.a); });
+  }
+  syncPreview();
+}
+
+// Populate from Supabase saves table (camelCase keys from collectData())
+function populateFormCamel(data) {
+  if (data.botName)    document.getElementById('f-botname').value   = data.botName;
+  if (data.slug)       { document.getElementById('f-slug').value    = data.slug; _slug = data.slug; _slugManuallySet = true; }
+  if (data.greeting)   document.getElementById('f-greeting').value  = data.greeting;
+  if (data.about)      document.getElementById('f-about').value     = data.about;
+  if (data.services)   document.getElementById('f-services').value  = data.services;
+  if (data.hours)      document.getElementById('f-hours').value     = data.hours;
+  if (data.location)   document.getElementById('f-location').value  = data.location;
+  if (data.pricing)    document.getElementById('f-pricing').value   = data.pricing;
+  if (data.howToOrder) document.getElementById('f-howtoorder').value= data.howToOrder;
+  if (data.policies)   document.getElementById('f-policies').value  = data.policies;
+  if (data.extraInfo)  document.getElementById('f-extra').value     = data.extraInfo;
+  if (data.avoidTopics)     document.getElementById('f-avoid').value    = data.avoidTopics;
+  if (data.fallbackMessage) restoreFallback(data.fallbackMessage);
+  if (data.phone)       document.getElementById('f-phone').value    = data.phone;
+  if (data.email)       document.getElementById('f-email').value    = data.email;
+  if (data.bookingUrl)  document.getElementById('f-booking').value  = data.bookingUrl;
+  if (data.smsMessage)  document.getElementById('f-smsmsg').value   = data.smsMessage;
+  if (data.avatarEmoji)  selectEmoji(data.avatarEmoji);
+  if (data.accentColor)  selectColor(data.accentColor, null);
+  if (data.tone)         selectTone(data.tone);
+  if (data.profilePhoto) { document.getElementById('f-photo-url').value = data.profilePhoto; showPhotoPreview(data.profilePhoto); }
+  if (data.bgImage) { document.getElementById('f-bg-image').value = data.bgImage; document.getElementById('bg-upload-placeholder').style.display='none'; document.getElementById('bg-preview-img').src=data.bgImage; document.getElementById('bg-upload-preview').style.display=''; }
+  if (data.tagline)      document.getElementById('f-tagline').value = data.tagline;
+  if (data.bgColor) {
+    var pi = PALETTES.findIndex(function(p){ return p.bg === data.bgColor; });
+    if (pi >= 0) { _paletteIdx = pi; renderPaletteGrid(); }
+    _bgColor = data.bgColor;
+  }
+  if (data.links && data.links.length) {
+    document.getElementById('links-list').innerHTML = '';
+    data.links.forEach(function(l) { addLink(l.label, l.url); });
+  }
+  if (data.faqs && data.faqs.length) {
+    document.getElementById('faqs-list').innerHTML = '';
+    data.faqs.forEach(function(f) { addFaq(f.q, f.a); });
+  }
+  syncPreview();
+}
+
+// Build AI system prompt from current bot config (used for preview chat)
+function buildBotSystemPrompt(data) {
+  var name = data.botName || 'Assistant';
+  var lines = [
+    'You are ' + name + ', an AI assistant for a creator/business. Answer questions directly and helpfully using the information below.',
+    data.about      ? '## About\n' + data.about : '',
+    data.services   ? '## Services / Products\n' + data.services : '',
+    data.hours      ? '## Hours / Availability\n' + data.hours : '',
+    data.location   ? '## Location / Service Area\n' + data.location : '',
+    data.pricing    ? '## Pricing\n' + data.pricing : '',
+    data.howToOrder ? '## How to Order / Book\n' + data.howToOrder : '',
+    data.policies   ? '## Policies\n' + data.policies : '',
+    data.extraInfo  ? '## Additional Info\n' + data.extraInfo : '',
+    data.tone       ? '## Tone\nBe ' + data.tone + ' in all responses.' : '',
+    (data.faqs && data.faqs.length)
+      ? '## FAQs\n' + data.faqs.map(function(f) { return 'Q: ' + f.q + '\nA: ' + f.a; }).join('\n')
+      : '',
+    (data.links && data.links.length)
+      ? '## Links\n' + data.links.map(function(l) { return l.label + ': ' + l.url; }).join('\n')
+      : '',
+    data.avoidTopics ? '## Never discuss\n' + data.avoidTopics : '',
+    data.fallbackMessage ? '## When you don\'t know something\nIf asked something outside your knowledge, respond with: "' + data.fallbackMessage + '"' : '',
+    (function() {
+      var c = [];
+      if (data.phone)      c.push('Phone/SMS: ' + data.phone);
+      if (data.email)      c.push('Email: ' + data.email);
+      if (data.bookingUrl) c.push('Booking link: ' + data.bookingUrl);
+      return c.length
+        ? '## Contact Methods\n' + c.join('\n') + '\n\nWhen a visitor wants to book, hire, contact, or connect — answer their question then append [CONTACT_CARD] on a new line at the end. Do not explain what the card is.'
+        : 'If someone wants to contact or book, let them know the best way based on the info above.';
+    })(),
+    'Never make up prices, dates, or details. If you don\'t know something, say so honestly.'
+  ].filter(Boolean);
+  return lines.join('\n\n');
+}
+
+// ── Steps ─────────────────────────────────────────────────────────────────────
+function goStep(n) {
+  _step = n;
+  [1,2,3,4].forEach(function(i) {
+    var panel = document.getElementById('step-' + i);
+    if (panel) panel.classList.toggle('active', i === n);
+    var dot = document.getElementById('sd-' + i);
+    if (dot) { dot.classList.toggle('active', i === n); dot.classList.toggle('done', i < n); }
+    if (i < 4) { var line = document.getElementById('sl-' + i); if (line) line.classList.toggle('done', i < n); }
+  });
+  if (n === 3) updateEdgeCases();
+}
+
+// ── Emoji / Color / Tone ──────────────────────────────────────────────────────
+function selectEmoji(em) {
+  _emoji = em;
+  document.querySelectorAll('.emoji-opt').forEach(function(d) {
+    d.classList.toggle('selected', d.textContent === em);
+  });
+  syncPreview();
+}
+
+function selectColor(c, el) {
+  _color = c;
+  document.querySelectorAll('.color-swatch').forEach(function(d) { d.classList.remove('selected'); });
+  if (el) el.classList.add('selected');
+  syncPreview();
+}
+
+function selectTone(t) {
+  _tone = t;
+  document.querySelectorAll('.tone-pill').forEach(function(p) {
+    p.classList.toggle('active', p.getAttribute('data-tone') === t);
+  });
+  syncPreview();
+}
+
+// ── Image resize helper ───────────────────────────────────────────────────────
+function resizeImage(dataUrl, maxW, cb) {
+  var img = new Image();
+  img.onload = function() {
+    var w = img.width, h = img.height;
+    if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+    var canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(canvas.toDataURL('image/jpeg', 0.82));
+  };
+  img.src = dataUrl;
+}
+
+// ── Background image upload ───────────────────────────────────────────────────
+function handleBgImageUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    resizeImage(e.target.result, 1200, function(resized) {
+      document.getElementById('f-bg-image').value = resized;
+      var zone = document.getElementById('bg-upload-zone');
+      zone.style.borderColor = 'rgba(200,224,0,0.5)';
+      zone.style.background = 'rgba(200,224,0,0.04)';
+      document.getElementById('bg-upload-placeholder').style.display = 'none';
+      var prev = document.getElementById('bg-upload-preview');
+      prev.style.display = '';
+      document.getElementById('bg-preview-img').src = resized;
+      document.getElementById('bg-preview-name').textContent = '✓ ' + file.name;
+      syncPreview();
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeBgImage(e) {
+  e.stopPropagation();
+  document.getElementById('f-bg-image').value = '';
+  document.getElementById('f-bg-file').value = '';
+  var zone = document.getElementById('bg-upload-zone');
+  zone.style.borderColor = 'rgba(255,255,255,0.12)';
+  zone.style.background = 'rgba(255,255,255,0.03)';
+  document.getElementById('bg-upload-placeholder').style.display = '';
+  document.getElementById('bg-upload-preview').style.display = 'none';
+  syncPreview();
+}
+
+// ── Photo upload ──────────────────────────────────────────────────────────────
+function handlePhotoUpload(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    document.getElementById('f-photo-url').value = dataUrl;
+    showPhotoPreview(dataUrl);
+    syncPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function showPhotoPreview(url) {
+  document.getElementById('photo-preview').src = url;
+  document.getElementById('photo-preview-wrap').style.display = '';
+  document.getElementById('photo-upload-label').textContent = '✓ Photo uploaded — click to change';
+  document.getElementById('photo-remove-btn').style.display = '';
+}
+
+function removePhoto() {
+  document.getElementById('f-photo-url').value = '';
+  document.getElementById('f-photo-file').value = '';
+  document.getElementById('photo-preview-wrap').style.display = 'none';
+  document.getElementById('photo-upload-label').textContent = '📸 Click to upload a photo';
+  document.getElementById('photo-remove-btn').style.display = 'none';
+  syncPreview();
+}
+
+// ── Background color ──────────────────────────────────────────────────────────
+// ── Palettes ──────────────────────────────────────────────────────────────────
+var PALETTES = [
+  { name:'Clean',       bg:'#f5f5f7', accent:'#4361EE', text:'#111111' },
+  { name:'Blush',       bg:'#fff0f5', accent:'#d4688a', text:'#2a1a1f' },
+  { name:'Lavender',    bg:'#f0f0ff', accent:'#7c6fe0', text:'#1e1a3a' },
+  { name:'Sage',        bg:'#f0f7f2', accent:'#3a7d55', text:'#1a2e22' },
+  { name:'Peach',       bg:'#fff7f0', accent:'#e07040', text:'#2e1a0e' },
+  { name:'Midnight',    bg:'#0d1220', accent:'#4361EE', text:'#ffffff' },
+];
+
+var _paletteIdx = 0;
+
+function renderPaletteGrid() {
+  var grid = document.getElementById('palette-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  PALETTES.forEach(function(p, i) {
+    var card = document.createElement('div');
+    card.setAttribute('data-palette', i);
+    card.style.cssText = 'border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid '+(i===_paletteIdx?'var(--lime)':'rgba(255,255,255,0.1)')+';transition:all .18s;';
+    card.innerHTML = '<div style="background:'+p.bg+';padding:10px 12px;display:flex;flex-direction:column;gap:5px;">'
+      + '<div style="display:flex;gap:5px;">'
+      + '<div style="width:18px;height:18px;border-radius:50%;background:'+p.accent+';"></div>'
+      + '<div style="flex:1;height:18px;border-radius:4px;background:'+p.accent+';opacity:.15;"></div>'
+      + '</div>'
+      + '<div style="height:6px;border-radius:3px;background:'+p.text+';opacity:.12;width:70%;"></div>'
+      + '<div style="height:6px;border-radius:3px;background:'+p.text+';opacity:.08;width:50%;"></div>'
+      + '</div>'
+      + '<div style="background:rgba(0,0,0,0.45);padding:5px 10px;display:flex;align-items:center;justify-content:space-between;">'
+      + '<span style="font-size:.7rem;font-weight:700;color:white;font-family:\'DM Sans\',sans-serif;">'+p.name+'</span>'
+      + (i===_paletteIdx?'<span style="font-size:.65rem;color:var(--lime);">✓</span>':'')
+      + '</div>';
+    card.onclick = function() { selectPalette(i); };
+    grid.appendChild(card);
+  });
+}
+
+function selectPalette(i) {
+  _paletteIdx = i;
+  var p = PALETTES[i];
+  _bgColor  = p.bg;
+  selectColor(p.accent, null);
+  renderPaletteGrid();
+  syncPreview();
+}
+
+function selectBgColor(color, el) {
+  _bgColor = color;
+  syncPreview();
+}
+
+// ── Bot name → auto-slug ──────────────────────────────────────────────────────
+var _slugManuallySet = false;
+
+function onBotNameInput() {
+  syncPreview();
+  if (_slugManuallySet) return;
+  var name = document.getElementById('f-botname').value.trim();
+  // strip common prefixes like "Chat with", "Ask", "Talk to"
+  var autoSlug = name.toLowerCase()
+    .replace(/^(chat with |ask |talk to |meet )/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 30);
+  if (autoSlug) {
+    document.getElementById('f-slug').value = autoSlug;
+    _updateSlug();  // check availability without marking as manually set
+  }
+}
+
+// ── Slug ──────────────────────────────────────────────────────────────────────
+function onSlugInput() {
+  _slugManuallySet = true;   // user typed in slug field directly
+  _updateSlug();
+}
+
+function _updateSlug() {
+  var raw = document.getElementById('f-slug').value;
+  var clean = raw.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  if (clean !== raw) document.getElementById('f-slug').value = clean;
+  _slug = clean;
+  clearTimeout(_slugTimer);
+  var status = document.getElementById('slug-status');
+  if (!clean) { status.textContent = ''; return; }
+  status.className = 'slug-status checking';
+  status.textContent = 'checking…';
+  _slugTimer = setTimeout(async function() {
+    try {
+      // Check slug against Supabase saves table
+      if (_supabase) {
+        var user = await getUser();
+        var { data: existing } = await _supabase
+          .from('saves')
+          .select('user_id')
+          .eq('blueprint_type', 'chatbot')
+          .eq('data->>slug', clean)
+          .maybeSingle();
+        if (existing && existing.user_id !== (user && user.id)) {
+          status.className = 'slug-status error';
+          status.textContent = '✗ Handle taken — try another';
+          return;
+        }
+      }
+      status.className = 'slug-status ok';
+      status.textContent = '✓ builtsy.ai/c?u=' + clean + ' looks good';
+    } catch(e) {
+      status.className = 'slug-status ok';
+      status.textContent = '✓ looks good';
+    }
+  }, 600);
+}
+
+// ── Dynamic lists ─────────────────────────────────────────────────────────────
+function addLink(label, url) {
+  label = label || '';
+  url   = url   || '';
+  var list = document.getElementById('links-list');
+  var item = document.createElement('div');
+  item.className = 'dyn-item';
+  item.innerHTML = '<div class="dyn-item-fields"><div class="dyn-item-row">'
+    + '<input class="fi link-label" type="text" placeholder="Label, e.g. My Course" value="' + escVal(label) + '" oninput="syncPreview()">'
+    + '<input class="fi link-url" type="url" placeholder="https://…" value="' + escVal(url) + '" oninput="syncPreview()">'
+    + '</div></div>'
+    + '<button class="btn-remove" onclick="this.parentElement.remove();syncPreview();" title="Remove">✕</button>';
+  list.appendChild(item);
+  syncPreview();
+}
+
+function addFaq(q, a) {
+  q = q || ''; a = a || '';
+  var list = document.getElementById('faqs-list');
+  var item = document.createElement('div');
+  item.className = 'dyn-item';
+  item.innerHTML = '<div class="dyn-item-fields">'
+    + '<input class="fi faq-q" type="text" placeholder="Question visitors ask…" value="' + escVal(q) + '">'
+    + '<textarea class="fi faq-a" rows="2" placeholder="Your answer…" style="min-height:56px;">' + escVal(a) + '</textarea>'
+    + '</div>'
+    + '<button class="btn-remove" onclick="this.parentElement.remove();" title="Remove">✕</button>';
+  list.appendChild(item);
+}
+
+function escVal(s) { return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── Collect form data ─────────────────────────────────────────────────────────
+function collectData() {
+  var links = [], faqs = [];
+  document.querySelectorAll('#links-list .dyn-item').forEach(function(item) {
+    var lbl = item.querySelector('.link-label').value.trim();
+    var url = item.querySelector('.link-url').value.trim();
+    if (lbl || url) links.push({ label: lbl, url: url });
+  });
+  document.querySelectorAll('#faqs-list .dyn-item').forEach(function(item) {
+    var q = item.querySelector('.faq-q').value.trim();
+    var a = item.querySelector('.faq-a').value.trim();
+    if (q || a) faqs.push({ q: q, a: a });
+  });
+  return {
+    slug:        document.getElementById('f-slug').value.trim(),
+    botName:     document.getElementById('f-botname').value.trim(),
+    greeting:    document.getElementById('f-greeting').value.trim(),
+    about:       document.getElementById('f-about').value.trim(),
+    services:    document.getElementById('f-services').value.trim(),
+    hours:       document.getElementById('f-hours').value.trim(),
+    location:    document.getElementById('f-location').value.trim(),
+    pricing:     document.getElementById('f-pricing').value.trim(),
+    howToOrder:  document.getElementById('f-howtoorder').value.trim(),
+    policies:    document.getElementById('f-policies').value.trim(),
+    extraInfo:   document.getElementById('f-extra').value.trim(),
+    avoidTopics:     document.getElementById('f-avoid').value.trim(),
+    fallbackMessage: _fallbackVal,
+    tone:            _tone,
+    avatarEmoji:  _emoji,
+    accentColor:  _color,
+    profilePhoto: document.getElementById('f-photo-url').value.trim(),
+    tagline:      document.getElementById('f-tagline').value.trim(),
+    bgColor:      _bgColor,
+    bgImage:      document.getElementById('f-bg-image').value.trim(),
+    links:        links,
+    faqs:        faqs,
+    phone:       document.getElementById('f-phone').value.trim(),
+    email:       document.getElementById('f-email').value.trim(),
+    bookingUrl:  document.getElementById('f-booking').value.trim(),
+    smsMessage:  document.getElementById('f-smsmsg').value.trim()
+  };
+}
+
+// ── Preview sync ──────────────────────────────────────────────────────────────
+function syncPreview() {
+  // Debounced draft save — preserves all form state across page navigations
+  clearTimeout(_draftTimer);
+  _draftTimer = setTimeout(saveDraft, 600);
+  var botName = document.getElementById('f-botname').value.trim() || 'Your Bot';
+  var slug    = document.getElementById('f-slug').value.trim();
+
+  // Avatar — show photo if uploaded, otherwise emoji
+  var photoUrl = (document.getElementById('f-photo-url') || {}).value || '';
+  var avEl = document.getElementById('pv-avatar');
+  if (photoUrl) {
+    avEl.innerHTML = '<img src="' + photoUrl + '">';
+    avEl.style.background = 'transparent';
+  } else {
+    avEl.innerHTML = _emoji;
+    avEl.style.background = _color + '22';
+  }
+
+  // Name + tagline
+  document.getElementById('pv-name').textContent = botName;
+  var taglineEl = document.getElementById('pv-tagline');
+  var tagline = (document.getElementById('f-tagline') || {}).value || '';
+  if (tagline) { taglineEl.textContent = tagline; taglineEl.style.display = ''; }
+  else { taglineEl.textContent = ''; taglineEl.style.display = 'none'; }
+
+  // Send button color
+  document.getElementById('pv-send').style.background = _color;
+
+  // Shell background
+  var shell = document.querySelector('.phone-shell');
+  shell.style.setProperty('--accent-color', _color);
+  var bgImg = (document.getElementById('f-bg-image') || {}).value || '';
+  if (bgImg) {
+    shell.style.background = 'url(' + bgImg + ') center/cover no-repeat';
+  } else {
+    shell.style.background = _bgColor || 'white';
+  }
+
+  // Links below chat — column of full-width pills + "quick links" label
+  var linksEl = document.getElementById('pv-links');
+  var links = [];
+  document.querySelectorAll('#links-list .dyn-item').forEach(function(item) {
+    var lbl = item.querySelector('.link-label').value.trim();
+    var url = item.querySelector('.link-url').value.trim();
+    if (lbl) links.push({ label: lbl, url: url });
+  });
+  if (links.length) {
+    var html = '<div class="phone-links-label">quick links</div>';
+    html += links.map(function(l) {
+      return '<a class="ph-link-pill" href="' + (l.url || '#') + '" target="_blank" style="color:' + _color + ';">' + escHtml(l.label) + ' ↗</a>';
+    }).join('');
+    linksEl.innerHTML = html;
+    linksEl.style.display = '';
+  } else {
+    linksEl.innerHTML = '';
+    linksEl.style.display = 'none';
+  }
+
+  // Toolbar subtitle
+  document.getElementById('rp-sub-text').textContent = slug
+    ? 'builtsy.ai/c?u=' + slug
+    : 'test your bot as you build it';
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Preview chat ──────────────────────────────────────────────────────────────
+function showGreeting() {
+  var greet = document.getElementById('f-greeting').value.trim()
+    || 'Hey! Ask me anything 👋';
+  var msgs = document.getElementById('pv-msgs');
+  msgs.innerHTML = '';
+  _previewMsgs = [];
+  appendBotMsg(greet);
+}
+
+function appendBotMsg(text) {
+  var msgs = document.getElementById('pv-msgs');
+  var row = document.createElement('div');
+  row.className = 'pm-row bot';
+  var photoUrl = (document.getElementById('f-photo-url') || {}).value || '';
+  var av = photoUrl
+    ? '<div class="pm-av"><img src="' + photoUrl + '"></div>'
+    : '<div class="pm-av" style="background:' + _color + '22;">' + _emoji + '</div>';
+  row.innerHTML = av + '<div class="pm-bubble">' + escHtml(text) + '</div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendUserMsg(text) {
+  var msgs = document.getElementById('pv-msgs');
+  var row = document.createElement('div');
+  row.className = 'pm-row user';
+  row.innerHTML = '<div class="pm-bubble" style="background:' + _color + ';">' + escHtml(text) + '</div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  var msgs = document.getElementById('pv-msgs');
+  var row = document.createElement('div');
+  row.className = 'pm-row bot typing-row';
+  row.innerHTML = '<div class="pm-av" style="background:' + _color + '22;">' + _emoji + '</div>'
+    + '<div class="pm-bubble pm-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+  return row;
+}
+
+var _PREVIEW_BLOCKED = [
+  /\bsex\b/i,/\bsexual\b/i,/\bporn/i,/\bnude\b/i,/\bnaked\b/i,
+  /\bexplicit\b/i,/\berotic/i,/\bnsfw/i,/\bjailbreak\b/i,/\bdan mode\b/i,
+  /\bignore (your|all|previous) instructions?\b/i
+];
+function previewIsInappropriate(text) {
+  for (var i = 0; i < _PREVIEW_BLOCKED.length; i++) {
+    if (_PREVIEW_BLOCKED[i].test(text)) return true;
+  }
+  var avoidRaw = (document.getElementById('f-avoid')||{}).value || '';
+  if (avoidRaw) {
+    var topics = avoidRaw.split(/[,\n]+/).map(function(t){ return t.trim().toLowerCase(); }).filter(function(t){ return t.length > 2; });
+    var lower = text.toLowerCase();
+    for (var j = 0; j < topics.length; j++) {
+      if (lower.indexOf(topics[j]) !== -1) return true;
+    }
+  }
+  return false;
+}
+
+async function sendPreviewMsg() {
+  if (_previewBusy) return;
+  var input = document.getElementById('pv-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  if (previewIsInappropriate(text)) {
+    appendUserMsg(text);
+    setTimeout(function(){ appendBotMsg('That\'s not appropriate and not something I can help with here. Is there something else I can help you with? 😊'); }, 400);
+    return;
+  }
+
+  appendUserMsg(text);
+  _previewMsgs.push({ role: 'user', content: text });
+  _previewBusy = true;
+
+  var typingRow = showTyping();
+  document.getElementById('pv-send').disabled = true;
+
+  try {
+    var data = collectData();
+    var systemPrompt = buildBotSystemPrompt(data);
+    var r = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: _previewMsgs, system: systemPrompt })
+    });
+    var json = await r.json();
+    typingRow.remove();
+    var reply = json.text || json.error || 'Sorry, something went wrong.';
+    appendBotMsg(reply);
+    _previewMsgs.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    typingRow.remove();
+    appendBotMsg('Preview unavailable — try again.');
+  }
+
+  _previewBusy = false;
+  document.getElementById('pv-send').disabled = false;
+  document.getElementById('pv-input').focus();
+}
+
+// ── Publish ───────────────────────────────────────────────────────────────────
+async function publishBot() {
+  var data = collectData();
+  if (!data.botName) { alert('Give your bot a name first!'); goStep(1); return; }
+  // Auto-generate slug from bot name if user hasn't set one
+  if (!data.slug) {
+    data.slug = data.botName.toLowerCase()
+      .replace(/^(chat with |ask |talk to |meet )/i, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 30) || 'mybot';
+    document.getElementById('f-slug').value = data.slug;
+    _slug = data.slug;
+  }
+
+  var btn = document.getElementById('btn-publish');
+  var status = document.getElementById('save-status');
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳</span> Publishing…';
+  status.textContent = '';
+
+  try {
+    var user = await getUser();
+    if (!user) throw new Error('Not signed in');
+    var { error: saveErr } = await _supabase
+      .from('saves')
+      .upsert({
+        user_id:        user.id,
+        blueprint_type: 'chatbot',
+        data:           data,
+        updated_at:     new Date().toISOString()
+      }, { onConflict: 'user_id,blueprint_type' });
+    if (saveErr) throw new Error(saveErr.message || 'Save failed');
+
+    _published = true;
+    clearDraft(); // published — draft no longer needed
+    var url = 'https://builtsy.ai/c.html?u=' + data.slug;
+
+    // Show success
+    document.getElementById('success-url-text').textContent = url;
+    document.getElementById('btn-open-live').href = url;
+    document.getElementById('phone-wrap').querySelector('.phone-shell').style.display = 'none';
+    document.getElementById('success-panel').classList.add('active');
+    document.getElementById('phone-wrap').style.width = '420px';
+
+    // Now show the topnav "View Live Page" button
+    document.getElementById('btn-preview-open').style.display = '';
+
+    status.textContent = '✓ Published!';
+    btn.innerHTML = '<span>✓</span> Published!';
+    btn.style.background = 'var(--lime)';
+
+  } catch(err) {
+    status.className = 'save-status error';
+    status.textContent = '✗ ' + (err.message || 'Save failed');
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> Retry';
+  }
+}
+
+function editBot() {
+  document.getElementById('phone-wrap').querySelector('.phone-shell').style.display = 'flex';
+  document.getElementById('success-panel').classList.remove('active');
+  document.getElementById('phone-wrap').style.width = '340px';
+  var btn = document.getElementById('btn-publish');
+  btn.disabled = false;
+  btn.innerHTML = '<span>✦</span> Republish';
+  btn.style.background = '';
+}
+
+function copyBotUrl() {
+  var url = document.getElementById('success-url-text').textContent;
+  navigator.clipboard.writeText(url).then(function() {
+    var btn = document.getElementById('btn-copy-url');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+var _embedTab = 'widget';
+function showEmbedCode() {
+  var panel = document.getElementById('embed-panel');
+  var isHidden = panel.style.display === 'none';
+  panel.style.display = isHidden ? '' : 'none';
+  if (isHidden) { setEmbedTab('widget'); }
+}
+function setEmbedTab(tab) {
+  _embedTab = tab;
+  var slug = document.getElementById('f-slug').value.trim();
+  var code, hint;
+  if (tab === 'widget') {
+    code = '<script src="https://builtsy.ai/chat-widget.js" data-slug="' + slug + '"><\/script>';
+    hint = 'Paste before &lt;/body&gt; — adds a floating chat bubble to any site.';
+    document.getElementById('embed-tab-widget').style.cssText += ';border-color:rgba(67,97,238,0.5);background:rgba(67,97,238,0.18);color:#7b9cff;';
+    document.getElementById('embed-tab-iframe').style.cssText += ';border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,.4);';
+  } else {
+    code = '<iframe\n  src="https://builtsy.ai/c.html?u=' + slug + '"\n  width="100%"\n  height="620"\n  frameborder="0"\n  style="border-radius:16px;border:none;"\n></iframe>';
+    hint = 'Embeds the full chat page inline — good for website sections or landing pages.';
+    document.getElementById('embed-tab-iframe').style.cssText += ';border-color:rgba(67,97,238,0.5);background:rgba(67,97,238,0.18);color:#7b9cff;';
+    document.getElementById('embed-tab-widget').style.cssText += ';border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,.4);';
+  }
+  document.getElementById('embed-code-text').textContent = code;
+  document.getElementById('embed-hint').innerHTML = hint;
+}
+
+function copyEmbed() {
+  var code = document.getElementById('embed-code-text').textContent;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.getElementById('btn-copy-embed');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+function openPreviewPage() {
+  var slug = document.getElementById('f-slug').value.trim();
+  if (!slug) { alert('Set your handle first, then publish to preview the live page.'); return; }
+  if (!_published) { alert('Publish your bot first, then you can open the live page!'); return; }
+  window.open('c.html?u=' + slug, '_blank');
+}
+
+// "Draft with Brain AI" — tell Brain to write my chatbot bio, then come back
+function saveBrainBioRequest(e) {
+  e.preventDefault();
+  saveDraft(); // save immediately before leaving
+  var hint = document.getElementById('f-botname').value.trim();
+  var about = document.getElementById('f-about').value.trim();
+  sessionStorage.setItem('builtsy_brain_bio_request', JSON.stringify({
+    task: 'chatbot-bio',
+    botName: hint,
+    currentAbout: about
+  }));
+  window.location.href = 'builtsy-brain.html';
+}
+
+// After publishing — take context to Brain to build a landing page
+function buildLandingPage() {
+  saveDraft(); // save immediately before leaving
+  var data = collectData();
+  sessionStorage.setItem('builtsy_brain_chatbot_prompt',
+    'Build a landing page for my AI chatbot'
+    + (data.botName ? ' called "' + data.botName + '"' : '')
+    + '. It should promote my chatbot link-in-bio page. '
+    + (data.about ? 'About me: ' + data.about.slice(0, 200) : '')
+    + '. The chatbot URL is: https://builtsy.ai/c.html?u=' + (data.slug || '') + '.'
+  );
+  window.location.href = 'builtsy-brain.html';
+}
+
+// Safety net — save draft on any page exit (tab close, back button, etc.)
+window.addEventListener('beforeunload', saveDraft);
+
+// ── Limits & Guardrails helpers ───────────────────────────────────────────────
+var _fallbackVal = "I don't have that information — your best bet is to reach out directly.";
+
+function addAvoidTopic(topic) {
+  var el = document.getElementById('f-avoid');
+  var current = el.value.trim();
+  if (current && !current.endsWith(',')) current += ', ';
+  el.value = current + topic;
+  syncPreview();
+}
+
+function selectFallback(el) {
+  document.querySelectorAll('.fallback-opt').forEach(function(o) { o.classList.remove('active'); });
+  el.classList.add('active');
+  var val = el.getAttribute('data-val');
+  var customArea = document.getElementById('f-fallback');
+  if (val === 'custom') {
+    customArea.style.display = '';
+    _fallbackVal = customArea.value.trim() || '';
+    customArea.oninput = function() { _fallbackVal = customArea.value.trim(); };
+  } else {
+    customArea.style.display = 'none';
+    _fallbackVal = val;
+  }
+}
+
+function updateEdgeCases() {
+  var data = collectData();
+  setEdgeCase('ec-refund',  data.policies,   'Policies covers this ✓', 'Not covered — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add policies in Knowledge →</a>');
+  setEdgeCase('ec-pricing', data.pricing,    'Pricing covers this ✓',  'Not covered — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add pricing in Knowledge →</a>');
+  setEdgeCase('ec-howto',   data.howToOrder, 'How to book covers this ✓','Not covered — <a href="#" onclick="goStep(2);return false;" style="color:var(--lime);text-decoration:none;">add how-to-book in Knowledge →</a>');
+}
+
+function setEdgeCase(id, val, okMsg, missingMsg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (val) { el.innerHTML = okMsg; el.className = 'edge-a covered'; }
+  else     { el.innerHTML = missingMsg; el.className = 'edge-a'; }
+}
+
+function restoreFallback(msg) {
+  _fallbackVal = msg;
+  var defaults = [
+    "I don't have that information — your best bet is to reach out directly.",
+    "That's outside what I'm set up to help with here. Is there something else I can answer?"
+  ];
+  var idx = defaults.indexOf(msg);
+  document.querySelectorAll('.fallback-opt').forEach(function(o) { o.classList.remove('active'); });
+  if (idx !== -1) {
+    var match = document.querySelector('.fallback-opt[data-val="' + msg.replace(/"/g,'&quot;') + '"]');
+    if (match) match.classList.add('active');
+  } else {
+    var customOpt = document.querySelector('.fallback-opt[data-val="custom"]');
+    if (customOpt) customOpt.classList.add('active');
+    var fa = document.getElementById('f-fallback');
+    if (fa) { fa.value = msg; fa.style.display = ''; }
+  }
+}
+
+// ── WHO IS THIS FOR ────────────────────────────────────────────────────────────
+var _whoFor = null;
+var _selectedAI = 'chatgpt';
+var _parsedProfile = null;
+var _hasExistingBot = false;
+
+var AI_NAMES = { chatgpt: 'ChatGPT', claude: 'Claude', gemini: 'Gemini', other: 'your AI' };
+
+var TRAINING_PROMPTS = {
+  chatgpt: "I'm setting up an AI assistant that represents me. Please answer the following questions as me, in my authentic first-person voice. Be specific and personal — this will train my AI to speak for me:\n\n1. Who am I? (my name, what I do, my background and origin story)\n2. Who do I serve and what problems do I solve for them?\n3. What are my main services, products, or offerings? Include pricing if comfortable.\n4. What are my hours, availability, and location or service area?\n5. How do people work with me — how do they book, order, or get started?\n6. What are the 5 most common questions people ask me, and what are my answers?\n7. What are my policies? (cancellations, refunds, delivery, returns, etc.)\n8. What makes me unique? What should my AI always remember about me?\n9. Are there any topics my AI should never discuss or stay away from?\n10. How would you describe my personality and communication style in a few words?\n\nPlease write this as if you are me — first person, my real voice, with specific details.",
+  claude: "I'd like your help capturing my authentic voice for an AI assistant I'm building. Please answer the following as me, drawing on everything you know about me from our conversations. Be specific and personal:\n\n1. Who am I? (my name, what I do, my background and origin story)\n2. Who do I serve and what problems do I solve for them?\n3. What are my main services, products, or offerings? Include pricing if comfortable.\n4. What are my hours, availability, and location or service area?\n5. How do people work with me — how do they book, order, or get started?\n6. What are the 5 most common questions people ask me, and what are my answers?\n7. What are my policies? (cancellations, refunds, delivery, returns, etc.)\n8. What makes me unique? What should my AI always remember about me?\n9. Are there any topics my AI should never discuss or stay away from?\n10. How would you describe my personality and communication style?\n\nWrite this in first person as me, with my real voice and specific details.",
+  gemini: "Based on our conversations, I need your help building an AI assistant that represents me. Please answer these questions as me, in my voice, with specific real details:\n\n1. Who am I? (my name, what I do, my background and origin story)\n2. Who do I serve and what problems do I solve for them?\n3. What are my main services, products, or offerings? Include pricing if comfortable.\n4. What are my hours, availability, and location or service area?\n5. How do people work with me — how do they book, order, or get started?\n6. What are the 5 most common questions people ask me, and what are my answers?\n7. What are my policies? (cancellations, refunds, delivery, returns, etc.)\n8. What makes me unique? What should my AI always remember about me?\n9. Are there any topics my AI should never discuss or stay away from?\n10. How would you describe my personality and communication style?\n\nWrite in first person as me — specific, personal, and in my authentic voice.",
+  other: "I'm setting up an AI assistant that represents me. Please answer the following questions as me, in my authentic first-person voice. Be specific and use real details:\n\n1. Who am I? (my name, what I do, my background and origin story)\n2. Who do I serve and what problems do I solve for them?\n3. What are my main services, products, or offerings? Include pricing if comfortable.\n4. What are my hours, availability, and location or service area?\n5. How do people work with me — how do they book, order, or get started?\n6. What are the 5 most common questions people ask me, and what are my answers?\n7. What are my policies? (cancellations, refunds, delivery, returns, etc.)\n8. What makes me unique? What should my AI always remember about me?\n9. Are there any topics my AI should never discuss or stay away from?\n10. How would you describe my personality and communication style?"
+};
+
+function showWhoModal() {
+  document.getElementById('modal-who').classList.remove('hidden');
+}
+
+async function selectWhoFor(type) {
+  _whoFor = type;
+  document.getElementById('modal-who').classList.add('hidden');
+
+  if (type === 'me') {
+    // Check for existing Intelligence Profile
+    try {
+      var user = await getUser();
+      if (user && _supabase) {
+        var { data: profileRow } = await _supabase
+          .from('saves').select('data')
+          .eq('user_id', user.id)
+          .eq('blueprint_type', 'intelligence_profile')
+          .maybeSingle();
+        if (profileRow && profileRow.data) {
+          showProfileLoadBanner(profileRow.data);
+          return;
+        }
+      }
+    } catch(e) {}
+    showTrainingModal();
+  }
+  // client / other: fall through to builder normally
+}
+
+function showProfileLoadBanner(profileData) {
+  var old = document.getElementById('profile-banner');
+  if (old) old.remove();
+  var banner = document.createElement('div');
+  banner.id = 'profile-banner';
+  banner.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:500;background:#161E30;border:1.5px solid rgba(200,224,0,0.4);border-radius:14px;padding:16px 20px;max-width:420px;width:calc(100% - 40px);box-shadow:0 8px 40px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:10px;';
+  var safeData = JSON.stringify(profileData);
+  banner.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">'
+    + '<span style="font-size:1.3rem;flex-shrink:0;">✦</span>'
+    + '<div><div style="font-weight:700;color:white;font-size:0.9rem;">We found your Intelligence Profile</div>'
+    + '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:2px;">Pre-load your saved story so you don\'t start from scratch?</div></div></div>'
+    + '<div style="display:flex;gap:8px;">'
+    + '<button id="btn-load-profile" style="flex:1;background:var(--lime);color:var(--navy);border:none;border-radius:8px;padding:9px;font-weight:700;font-size:0.82rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Yes, load my profile →</button>'
+    + '<button onclick="document.getElementById(\'profile-banner\').remove();showTrainingModal();" style="background:none;border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 14px;color:rgba(255,255,255,0.5);font-size:0.82rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Start fresh</button>'
+    + '</div>';
+  document.body.appendChild(banner);
+  document.getElementById('btn-load-profile').onclick = function() {
+    loadIntelligenceProfile(profileData);
+    banner.remove();
+  };
+}
+
+function loadIntelligenceProfile(data) {
+  if (!data) return;
+  if (data.about)       document.getElementById('f-about').value      = data.about;
+  if (data.services)    document.getElementById('f-services').value   = data.services;
+  if (data.hours)       document.getElementById('f-hours').value      = data.hours;
+  if (data.location)    document.getElementById('f-location').value   = data.location;
+  if (data.pricing)     document.getElementById('f-pricing').value    = data.pricing;
+  if (data.howToOrder)  document.getElementById('f-howtoorder').value = data.howToOrder;
+  if (data.policies)    document.getElementById('f-policies').value   = data.policies;
+  if (data.extraInfo)   document.getElementById('f-extra').value      = data.extraInfo;
+  if (data.avoidTopics) document.getElementById('f-avoid').value      = data.avoidTopics;
+  if (data.faqs && data.faqs.length) {
+    document.getElementById('faqs-list').innerHTML = '';
+    data.faqs.forEach(function(f) { addFaq(f.q, f.a); });
+  }
+  syncPreview();
+  saveDraft();
+  goStep(2);
+  showImportBanner('bio', '✦ Your Intelligence Profile was pre-loaded — review and edit below.');
+}
+
+function showTrainingModal() {
+  document.getElementById('modal-training').classList.remove('hidden');
+  showTrainStep('a');
+}
+
+function closeTrainingModal() {
+  document.getElementById('modal-training').classList.add('hidden');
+}
+
+function showTrainStep(step) {
+  document.querySelectorAll('.train-step').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('train-' + step).classList.add('active');
+}
+
+function selectAI(ai) {
+  _selectedAI = ai;
+  document.getElementById('train-ai-name').textContent = AI_NAMES[ai] || 'your AI';
+  document.getElementById('train-prompt-text').textContent = TRAINING_PROMPTS[ai] || TRAINING_PROMPTS.other;
+  showTrainStep('c');
+}
+
+function copyTrainingPrompt() {
+  var text = document.getElementById('train-prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('btn-copy-prompt');
+    var orig = btn.textContent;
+    btn.textContent = 'Copied! ✓';
+    btn.style.background = '#4ade80';
+    setTimeout(function() {
+      btn.textContent = orig;
+      btn.style.background = '';
+      showTrainStep('d');
+    }, 1400);
+  });
+}
+
+async function parseAIResponse() {
+  var pasted = document.getElementById('train-paste').value.trim();
+  if (!pasted) {
+    document.getElementById('train-parse-status').textContent = 'Please paste your AI\'s response first.';
+    return;
+  }
+  var btn = document.getElementById('btn-parse');
+  var status = document.getElementById('train-parse-status');
+  btn.disabled = true;
+  btn.textContent = '✦ Reading your story…';
+  status.textContent = 'Extracting your info — just a moment…';
+
+  try {
+    var systemPrompt = 'You are a data extractor for a chatbot builder. Extract information from the user\'s text and return ONLY a valid JSON object with these exact keys: about (string), services (string), hours (string), location (string), pricing (string), howToOrder (string), policies (string), extraInfo (string), avoidTopics (string, comma-separated if multiple), faqs (array of up to 6 objects with keys q and a). If a field is not present use empty string. Return ONLY the raw JSON object — no markdown, no code blocks, no explanation.';
+    var r = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: pasted }], system: systemPrompt })
+    });
+    var json = await r.json();
+    var raw = (json.text || '').trim().replace(/^```json?\n?/i,'').replace(/\n?```$/,'').trim();
+    var parsed = JSON.parse(raw);
+    _parsedProfile = parsed;
+
+    // Build result summary
+    var resultList = document.getElementById('train-result-list');
+    resultList.innerHTML = '';
+    [
+      ['about','About'], ['services','Services'], ['pricing','Pricing'],
+      ['hours','Hours'], ['location','Location'], ['howToOrder','How to Book'],
+      ['policies','Policies'], ['extraInfo','Extra Info']
+    ].forEach(function(pair) {
+      if (parsed[pair[0]]) {
+        var item = document.createElement('div');
+        item.className = 'parse-result-item';
+        var preview = parsed[pair[0]].slice(0, 90) + (parsed[pair[0]].length > 90 ? '…' : '');
+        item.innerHTML = '<span class="pri-label">' + pair[1] + '</span><span>' + escHtml(preview) + '</span>';
+        resultList.appendChild(item);
+      }
+    });
+    if (parsed.faqs && parsed.faqs.length) {
+      var item = document.createElement('div');
+      item.className = 'parse-result-item';
+      item.innerHTML = '<span class="pri-label">FAQs</span><span>' + parsed.faqs.length + ' Q&amp;As extracted</span>';
+      resultList.appendChild(item);
+    }
+    showTrainStep('e');
+  } catch(err) {
+    status.textContent = '✗ Couldn\'t parse that — try pasting more of your AI\'s response.';
+    btn.disabled = false;
+    btn.textContent = 'Try Again →';
+  }
+}
+
+async function applyParsedProfile() {
+  if (!_parsedProfile) { closeTrainingModal(); return; }
+  var p = _parsedProfile;
+  if (p.about)       document.getElementById('f-about').value      = p.about;
+  if (p.services)    document.getElementById('f-services').value   = p.services;
+  if (p.hours)       document.getElementById('f-hours').value      = p.hours;
+  if (p.location)    document.getElementById('f-location').value   = p.location;
+  if (p.pricing)     document.getElementById('f-pricing').value    = p.pricing;
+  if (p.howToOrder)  document.getElementById('f-howtoorder').value = p.howToOrder;
+  if (p.policies)    document.getElementById('f-policies').value   = p.policies;
+  if (p.extraInfo)   document.getElementById('f-extra').value      = p.extraInfo;
+  if (p.avoidTopics) document.getElementById('f-avoid').value      = p.avoidTopics;
+  if (p.faqs && p.faqs.length) {
+    document.getElementById('faqs-list').innerHTML = '';
+    p.faqs.forEach(function(f) { addFaq(f.q, f.a); });
+  }
+  syncPreview();
+  saveDraft();
+
+  // Save as Intelligence Profile silently in background (only for "me" flow)
+  if (_whoFor === 'me') {
+    try {
+      var user = await getUser();
+      if (user && _supabase) {
+        await _supabase.from('saves').upsert({
+          user_id: user.id,
+          blueprint_type: 'intelligence_profile',
+          data: p,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id,blueprint_type' });
+      }
+    } catch(e) {}
+  }
+
+  closeTrainingModal();
+  goStep(2);
+  showImportBanner('bio', '✦ Your bot has been pre-loaded from your AI — review and edit below.');
+}
+</script>
+</body>
+</html>
