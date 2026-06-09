@@ -86,6 +86,19 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;color:var(--navy);bac
 .ph-input:focus{border-color:var(--accent-color,#4361EE);}
 .ph-send{width:34px;height:34px;border-radius:50%;border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:filter .15s;flex-shrink:0;}
 .ph-send:hover{filter:brightness(1.1);}
+/* social icons in preview */
+.pv-social-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;padding:2px 0 4px;}
+.pv-social-btn{width:26px;height:26px;border-radius:7px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;color:#666;flex-shrink:0;}
+.pv-social-btn svg{width:12px;height:12px;}
+/* feel classes on phone-shell */
+.phone-shell.pf-playful .pm-row.bot .pm-bubble{border-radius:4px 18px 18px 18px;}
+.phone-shell.pf-organic .phone-msgs{background:#faf6f1;}
+.phone-shell.pf-organic .pm-row.bot .pm-bubble{background:#fdf9f5;}
+.phone-shell.pf-bold .pm-row.bot .pm-bubble{font-weight:600;}
+.phone-shell.pf-dreamy .pm-row.bot .pm-bubble{box-shadow:0 4px 16px rgba(0,0,0,.07);}
+.phone-shell.pf-modern .pm-row.bot .pm-bubble{border-radius:4px 10px 10px 10px;}
+.phone-shell.pf-modern .ph-input{border-radius:8px;}
+.phone-shell.pf-modern .ph-send{border-radius:8px;}
 
 /* ── SUCCESS STATE ── */
 .success-panel{display:none;flex-direction:column;align-items:center;text-align:center;padding:40px 32px;gap:24px;}
@@ -146,6 +159,30 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6;}
 .color-swatch.selected{border-color:white;box-shadow:0 0 0 2px var(--blue);}
 .color-swatch-custom{position:relative;overflow:hidden;}
 .color-swatch-custom input[type=color]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100% + 8px);height:calc(100% + 8px);}
+
+/* ── SOCIAL PLATFORM PICKER ── */
+.social-platform-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.social-platform-btn{width:40px;height:40px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:rgba(255,255,255,0.4);}
+.social-platform-btn svg{width:17px;height:17px;}
+.social-platform-btn:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);}
+.social-platform-btn.active{border-color:var(--blue);background:rgba(67,97,238,0.18);color:white;}
+.social-active-list{display:flex;flex-direction:column;gap:7px;}
+.social-active-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:9px 12px;}
+.social-active-icon{width:30px;height:30px;border-radius:8px;background:rgba(67,97,238,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#7b9cff;}
+.social-active-icon svg{width:15px;height:15px;}
+.social-active-input{flex:1;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:.82rem;color:white;outline:none;}
+.social-active-input::placeholder{color:rgba(255,255,255,0.2);}
+.social-active-remove{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:1rem;padding:2px 4px;transition:color .15s;}
+.social-active-remove:hover{color:rgba(239,68,68,0.7);}
+
+/* ── FEEL PICKER ── */
+.feel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.feel-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;}
+.feel-card:hover{border-color:rgba(255,255,255,0.25);}
+.feel-card.active{border-color:var(--blue);background:rgba(67,97,238,0.12);}
+.feel-preview{width:100%;height:36px;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:5px;overflow:hidden;}
+.feel-name{font-size:.72rem;font-weight:700;color:white;margin-bottom:2px;}
+.feel-desc{font-size:.6rem;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;}
 
 /* ── TONE PILLS ── */
 .tone-pills{display:flex;flex-wrap:wrap;gap:8px;}
@@ -485,6 +522,22 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6;}
           <div class="field-hint">Tip: Use a blurred or soft photo for best results.</div>
         </div>
 
+        <!-- ── SOCIAL LINKS ── -->
+        <div class="field">
+          <label>SOCIAL LINKS <span class="opt">optional</span></label>
+          <div class="field-hint" style="margin-bottom:12px;">Add your social profiles — they'll appear as icon buttons under your name.</div>
+          <div class="social-platform-row" id="social-platform-row"></div>
+          <div class="social-active-list" id="social-active-list"></div>
+        </div>
+
+        <!-- ── FEEL ── -->
+        <div class="field">
+          <label>YOUR BOT'S FEEL</label>
+          <div class="field-hint" style="margin-bottom:12px;">Sets the overall vibe and aesthetic of your chat page.</div>
+          <div class="feel-grid" id="feel-grid"></div>
+          <input type="hidden" id="f-feel" value="clean">
+        </div>
+
         <div class="step-nav">
           <button class="btn-next" onclick="goStep(2)">Next — What your bot knows →</button>
         </div>
@@ -722,6 +775,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6;}
             <div class="ph-name" id="pv-name">Your Bot</div>
             <div class="ph-status">Online now</div>
             <div class="ph-tagline" id="pv-tagline" style="display:none;"></div>
+            <div class="pv-social-row" id="pv-social" style="display:none;"></div>
           </div>
           <div class="phone-msgs" id="pv-msgs">
             <!-- greeting + messages appended here -->
@@ -932,6 +986,8 @@ function clearDraft() {
     } catch(e) {}
   }
 
+  initSocialPicker();
+  initFeelPicker();
   syncPreview();
   showGreeting();
 
@@ -1036,6 +1092,13 @@ function populateFormCamel(data) {
     document.getElementById('faqs-list').innerHTML = '';
     data.faqs.forEach(function(f) { addFaq(f.q, f.a); });
   }
+  // Social links
+  if (data.socialLinks && data.socialLinks.length) {
+    _activeSocials = data.socialLinks.slice();
+    renderSocialActiveList();
+  }
+  // Feel
+  if (data.feel) { selectFeel(data.feel); }
   syncPreview();
 }
 
@@ -1187,6 +1250,145 @@ function removePhoto() {
   document.getElementById('photo-preview-wrap').style.display = 'none';
   document.getElementById('photo-upload-label').textContent = '📸 Click to upload a photo';
   document.getElementById('photo-remove-btn').style.display = 'none';
+  syncPreview();
+}
+
+// ── Social Links ──────────────────────────────────────────────────────────────
+var _SOCIAL_PLATFORMS = [
+  { id:'instagram', label:'Instagram', svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>', placeholder:'https://instagram.com/yourhandle' },
+  { id:'tiktok',    label:'TikTok',    svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.7a4.8 4.8 0 01-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 01-2.9 2.5 2.9 2.9 0 01-2.9-2.9 2.9 2.9 0 012.9-2.9l.8.1V9a6.3 6.3 0 00-.8-.1 6.3 6.3 0 00-6.3 6.3 6.3 6.3 0 006.3 6.3 6.3 6.3 0 006.3-6.3V8.7a8.2 8.2 0 004.8 1.5V6.8a4.8 4.8 0 01-1-.1z"/></svg>', placeholder:'https://tiktok.com/@yourhandle' },
+  { id:'twitter',   label:'X / Twitter', svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.2h-6.3l-4.7-6.2-5.4 6.2H2.8l7.7-8.8L1.3 2.3h6.8l4.3 5.6 5.8-5.6zM17 20.2h1.9L7.1 4H5.2L17 20.2z"/></svg>', placeholder:'https://x.com/yourhandle' },
+  { id:'youtube',   label:'YouTube',   svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5S4.5 3.5 2.6 4.1A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zm-13.9 9.3V8.5l6.3 3.5-6.3 3.5z"/></svg>', placeholder:'https://youtube.com/@yourchannel' },
+  { id:'linkedin',  label:'LinkedIn',  svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.6v-5.6c0-1.3 0-3-1.9-3-1.8 0-2.1 1.4-2.1 2.9v5.7H9.3V9h3.4v1.6c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 110-4.2 2.1 2.1 0 010 4.2zm1.8 13H3.6V9h3.5v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.5C0 23.2.8 24 1.8 24h20.4c1 0 1.8-.8 1.8-1.8V1.7C24 .8 23.2 0 22.2 0z"/></svg>', placeholder:'https://linkedin.com/in/yourprofile' },
+  { id:'facebook',  label:'Facebook',  svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12C24 5.4 18.6 0 12 0S0 5.4 0 12c0 6 4.4 11 10.1 11.9v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.7 4.5-4.7l2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.3h3.3l-.5 3.5h-2.8V24C19.6 23 24 18 24 12z"/></svg>', placeholder:'https://facebook.com/yourpage' },
+  { id:'spotify',   label:'Spotify',   svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.7 0 12 0zm5.5 17.3c-.2.4-.7.5-1 .2-2.8-1.7-6.4-2.1-10.6-1.1-.4.1-.8-.2-.9-.5-.1-.4.2-.8.5-.9 4.6-1 8.5-.6 11.7 1.3.4.2.5.7.3 1zm1.5-3.3c-.3.4-.8.6-1.3.3-3.2-2-8.2-2.6-12-1.4-.5.1-1-.1-1.1-.6-.1-.5.1-1 .6-1.1 4.4-1.3 9.8-.7 13.5 1.6.4.2.5.8.3 1.2zm.1-3.4C15.2 8.4 8.8 8.2 5.2 9.3c-.6.2-1.2-.2-1.4-.7-.2-.6.2-1.2.7-1.4 4.3-1.3 11.3-1 15.7 1.6.5.3.7 1 .4 1.6-.3.4-1 .6-1.6.2z"/></svg>', placeholder:'https://open.spotify.com/artist/...' },
+  { id:'pinterest', label:'Pinterest', svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4.2-.9 1.4-6 1.4-6s-.4-.7-.4-1.8c0-1.7 1-2.9 2.2-2.9 1 0 1.5.8 1.5 1.7 0 1-.7 2.6-1 4-.3 1.2.6 2.2 1.8 2.2 2.1 0 3.8-2.2 3.8-5.5 0-2.9-2.1-4.9-5-4.9-3.4 0-5.4 2.6-5.4 5.2 0 1 .4 2.1.9 2.7.1.1.1.3 0 .4l-.3 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.8-7.3 7.9-7.3 4.2 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4l-.7 2.9c-.3 1-1 2.4-1.5 3.1 1 .3 2 .4 3 .4C18.6 24 24 18.6 24 12S18.6 0 12 0z"/></svg>', placeholder:'https://pinterest.com/yourprofile' },
+];
+
+var _activeSocials = []; // [{platform:'instagram', url:'...'}]
+
+function initSocialPicker() {
+  var row = document.getElementById('social-platform-row');
+  if (!row) return;
+  _SOCIAL_PLATFORMS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'social-platform-btn';
+    btn.id = 'sp-btn-' + p.id;
+    btn.setAttribute('title', p.label);
+    btn.innerHTML = p.svg;
+    btn.onclick = function() { toggleSocialPlatform(p.id); };
+    row.appendChild(btn);
+  });
+}
+
+function toggleSocialPlatform(platformId) {
+  var existing = _activeSocials.findIndex(function(s){ return s.platform === platformId; });
+  if (existing !== -1) {
+    _activeSocials.splice(existing, 1);
+  } else {
+    _activeSocials.push({ platform: platformId, url: '' });
+  }
+  renderSocialActiveList();
+  syncPreview();
+}
+
+function renderSocialActiveList() {
+  var list = document.getElementById('social-active-list');
+  if (!list) return;
+  list.innerHTML = '';
+  _activeSocials.forEach(function(s, idx) {
+    var p = _SOCIAL_PLATFORMS.find(function(x){ return x.id === s.platform; });
+    if (!p) return;
+    var item = document.createElement('div');
+    item.className = 'social-active-item';
+    item.innerHTML = '<div class="social-active-icon">' + p.svg + '</div>'
+      + '<input class="social-active-input" type="url" placeholder="' + p.placeholder + '" value="' + escHtml(s.url || '') + '">'
+      + '<button type="button" class="social-active-remove" title="Remove">✕</button>';
+    item.querySelector('input').oninput = function(e) {
+      _activeSocials[idx].url = e.target.value.trim();
+      syncPreview();
+    };
+    item.querySelector('.social-active-remove').onclick = function() {
+      _activeSocials.splice(idx, 1);
+      renderSocialActiveList();
+      renderSocialBtnStates();
+      syncPreview();
+    };
+    list.appendChild(item);
+    // Mark button active
+    var btn = document.getElementById('sp-btn-' + s.platform);
+    if (btn) btn.classList.add('active');
+  });
+  renderSocialBtnStates();
+}
+
+function renderSocialBtnStates() {
+  _SOCIAL_PLATFORMS.forEach(function(p) {
+    var btn = document.getElementById('sp-btn-' + p.id);
+    if (!btn) return;
+    var isActive = _activeSocials.some(function(s){ return s.platform === p.id; });
+    btn.classList.toggle('active', isActive);
+  });
+}
+
+// ── Feel Picker ───────────────────────────────────────────────────────────────
+var _FEELS = [
+  { id:'clean',   name:'Clean',   desc:'Minimal & sharp',    preview:'clean' },
+  { id:'playful', name:'Playful', desc:'Bubbly & bright',    preview:'playful' },
+  { id:'organic', name:'Organic', desc:'Warm & natural',     preview:'organic' },
+  { id:'bold',    name:'Bold',    desc:'Strong & confident', preview:'bold' },
+  { id:'dreamy',  name:'Dreamy',  desc:'Soft & airy',        preview:'dreamy' },
+  { id:'modern',  name:'Modern',  desc:'Sleek & precise',    preview:'modern' },
+];
+
+var _FEEL_PREVIEW_STYLES = {
+  clean:   'background:#f5f5f7;',
+  playful: 'background:linear-gradient(135deg,#fff0f5,#f5f0ff);',
+  organic: 'background:linear-gradient(135deg,#faf6f1,#f5ece3);',
+  bold:    'background:#111;',
+  dreamy:  'background:linear-gradient(135deg,#f0f4ff,#fdf0ff);',
+  modern:  'background:#f5f5f7;',
+};
+var _FEEL_BUBBLE_STYLES = {
+  clean:   'background:white;border-radius:4px 14px 14px 14px;',
+  playful: 'background:white;border-radius:4px 18px 18px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);',
+  organic: 'background:#fdf9f5;border-radius:4px 14px 14px 14px;border:1px solid #e8ddd4;',
+  bold:    'background:white;border-radius:4px 10px 10px 10px;font-weight:600;',
+  dreamy:  'background:white;border-radius:4px 18px 18px 18px;box-shadow:0 4px 18px rgba(0,0,0,.06);',
+  modern:  'background:white;border-radius:4px 8px 8px 8px;',
+};
+
+var _currentFeel = 'clean';
+
+function initFeelPicker() {
+  var grid = document.getElementById('feel-grid');
+  if (!grid) return;
+  _FEELS.forEach(function(f) {
+    var card = document.createElement('div');
+    card.className = 'feel-card' + (f.id === 'clean' ? ' active' : '');
+    card.id = 'feel-card-' + f.id;
+    // Mini preview
+    var previewBg = _FEEL_PREVIEW_STYLES[f.id] || 'background:#f5f5f7;';
+    var bubble1Style = _FEEL_BUBBLE_STYLES[f.id] || '';
+    var textColor = f.id === 'bold' ? 'color:#fff;' : 'color:#333;';
+    card.innerHTML = '<div class="feel-preview" style="' + previewBg + '">'
+      + '<div style="' + bubble1Style + textColor + 'font-size:.52rem;padding:4px 8px;max-width:90%;">Hey! Ask me anything</div>'
+      + '</div>'
+      + '<div class="feel-name">' + f.name + '</div>'
+      + '<div class="feel-desc">' + f.desc + '</div>';
+    card.onclick = function() { selectFeel(f.id); };
+    grid.appendChild(card);
+  });
+}
+
+function selectFeel(feelId) {
+  _currentFeel = feelId;
+  document.getElementById('f-feel').value = feelId;
+  _FEELS.forEach(function(f) {
+    var card = document.getElementById('feel-card-' + f.id);
+    if (card) card.classList.toggle('active', f.id === feelId);
+  });
   syncPreview();
 }
 
@@ -1373,7 +1575,9 @@ function collectData() {
     phone:       document.getElementById('f-phone').value.trim(),
     email:       document.getElementById('f-email').value.trim(),
     bookingUrl:  document.getElementById('f-booking').value.trim(),
-    smsMessage:  document.getElementById('f-smsmsg').value.trim()
+    smsMessage:  document.getElementById('f-smsmsg').value.trim(),
+    socialLinks:  _activeSocials.filter(function(s){ return s.url; }),
+    feel:         document.getElementById('f-feel').value || 'clean'
   };
 }
 
@@ -1434,6 +1638,33 @@ function syncPreview() {
   } else {
     linksEl.innerHTML = '';
     linksEl.style.display = 'none';
+  }
+
+  // Social icons in preview profile
+  var pvSocial = document.getElementById('pv-social');
+  if (pvSocial) {
+    pvSocial.innerHTML = '';
+    var shown = _activeSocials.filter(function(s){ return s.url; });
+    if (shown.length) {
+      shown.forEach(function(s) {
+        var p = _SOCIAL_PLATFORMS.find(function(x){ return x.id === s.platform; });
+        if (!p) return;
+        var ic = document.createElement('div');
+        ic.className = 'pv-social-btn';
+        ic.innerHTML = p.svg;
+        pvSocial.appendChild(ic);
+      });
+      pvSocial.style.display = '';
+    } else {
+      pvSocial.style.display = 'none';
+    }
+  }
+
+  // Apply feel to phone shell
+  var shell = document.querySelector('.phone-shell');
+  if (shell) {
+    _FEELS.forEach(function(f){ shell.classList.remove('pf-' + f.id); });
+    shell.classList.add('pf-' + (_currentFeel || 'clean'));
   }
 
   // Toolbar subtitle
