@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
 <title>Chat</title>
+<meta name="description" content="Chat with my AI twin — ask me anything about my story, services, and expertise.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chat with my AI twin">
+<meta property="og:description" content="Ask me anything — I'm an AI trained on my story, expertise, and voice.">
+<meta property="og:image" content="https://builtsy.ai/og-chatbot.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://builtsy.ai/c.html">
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chat with my AI twin">
+<meta name="twitter:description" content="Ask me anything — I'm an AI trained on my story, expertise, and voice.">
+<meta name="twitter:image" content="https://builtsy.ai/og-chatbot.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--accent:#4361EE;--accent-soft:rgba(67,97,238,0.1);--border:#e8e8ec;--text:#111;--text2:#555;--bg:#f5f5f7;}
-html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);}
+html{height:100%;overscroll-behavior:none;}
+body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
 body.has-bg{background:transparent!important;}
-body.has-bg .input-bar{background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);}
+/* input-bar has-bg handled below with .made-with-bar */
 body.has-bg .msg-row.bot .msg-bubble{background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);}
 body.has-bg .link-pill{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);}
 body.has-bg .suggest-chip{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);}
 body.has-bg .profile{background:transparent;}
 
 
-.page{max-width:480px;margin:0 auto;padding-bottom:96px;display:flex;flex-direction:column;align-items:center;}
+.page{max-width:480px;margin:0 auto;padding-bottom:calc(116px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;}
 
 /* loading / error */
 .loader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;padding:24px;text-align:center;}
@@ -76,15 +91,20 @@ body.has-bg .profile{background:transparent;}
 
 /* footer */
 .ai-disclaimer{font-size:.65rem;color:#ccc;font-family:'DM Mono',monospace;padding:10px 0 2px;text-align:center;}
-.made-with{width:100%;text-align:center;padding:10px 20px 16px;}
-.made-with-love{font-family:'DM Mono',monospace;font-size:.65rem;color:#ccc;letter-spacing:.04em;}
-.made-with-love strong{color:#ee70bc;font-weight:600;}
-.made-with-love a{color:inherit;text-decoration:none;}
-.made-with-love a:hover{color:#aaa;}
+.made-with{display:none;}/* moved into fixed bar */
 
 /* input bar */
-.input-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(245,245,247,.96);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:10px 16px 18px;display:flex;gap:10px;align-items:center;z-index:100;}
-.chat-input{flex:1;border:1.5px solid var(--border);border-radius:24px;padding:12px 18px;font-size:.9rem;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s,box-shadow .2s;color:var(--text);}
+.input-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(245,245,247,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:10px 16px 6px;padding-bottom:calc(6px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:6px;z-index:100;transition:transform .05s linear;}
+.input-row{display:flex;gap:10px;align-items:center;width:100%;}
+.made-with-bar{width:100%;text-align:center;padding-bottom:6px;}
+.made-with-love{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(100,100,120,.6);letter-spacing:.04em;}
+.made-with-love strong{color:#ee70bc;font-weight:600;}
+.made-with-love a{color:inherit;text-decoration:none;}
+.made-with-love a:hover{opacity:.75;}
+body.has-bg .input-bar{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+body.has-bg .made-with-love{color:rgba(80,80,100,.55);}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:24px;padding:12px 18px;font-size:1rem;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s,box-shadow .2s;color:var(--text);-webkit-appearance:none;}
+/* chat-input defined above with font-size:1rem to prevent iOS zoom */
 .chat-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
 .chat-input::placeholder{color:#bbb;}
 .send-btn{width:44px;height:44px;border-radius:50%;border:none;color:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:filter .15s,transform .1s;box-shadow:0 4px 12px rgba(0,0,0,.18);}
@@ -174,18 +194,19 @@ body.feel-modern .profile-name{letter-spacing:-.03em;}
   <div class="suggest-wrap hidden" id="suggest-wrap"></div>
 
   <div class="ai-disclaimer">AI responses may not always be accurate.</div>
-
-  <div class="made-with">
-    <div class="made-with-love">made with <a href="https://builtsy.ai" target="_blank" rel="noopener">builtsy.ai</a> ✦ with love for <strong id="made-with-name">you</strong> 🌸</div>
-  </div>
 </div>
 
 <div class="input-bar" id="input-bar" style="display:none;">
-  <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything…"
-    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}">
-  <button class="send-btn" id="send-btn" onclick="sendMsg()">
-    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-  </button>
+  <div class="input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything…"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}">
+    <button class="send-btn" id="send-btn" onclick="sendMsg()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="made-with-bar">
+    <span class="made-with-love">made with <a href="https://builtsy.ai" target="_blank" rel="noopener">builtsy.ai</a> ✦ with love for <strong id="made-with-name">you</strong> 🌸</span>
+  </div>
 </div>
 
 <script>
@@ -220,7 +241,9 @@ async function loadBot(slug){
       phone:d.phone||'',email:d.email||'',booking_url:d.bookingUrl||'',
       sms_message:d.smsMessage||'',profile_photo:d.profilePhoto||'',
       bg_image:d.bgImage||'',bg_color:d.bgColor||'',tagline:d.tagline||'',
-      social_links:d.socialLinks||[],feel:d.feel||''
+      social_links:d.socialLinks||[],feel:d.feel||'',
+      voice_sample:d.voiceSample||'',
+      goals:d.goals||[]
     };
     renderPage();
   }catch(e){showError('Could not load bot — check your connection.');}
@@ -231,7 +254,19 @@ function renderPage(){
   document.documentElement.style.setProperty('--accent',accent);
   document.documentElement.style.setProperty('--accent-soft',ha(accent,.12));
   document.getElementById('send-btn').style.background=accent;
-  document.title=bot.bot_name||'Chat';
+  var _bname=bot.bot_name||'Chat';
+  document.title=_bname+"'s AI Twin | Builtsy";
+  // Update OG meta tags dynamically (helps for some crawlers/link previewers)
+  var _desc='Chat with '+_bname+"'s AI twin — ask anything about their story, services, and expertise.";
+  document.querySelector('meta[property="og:title"]').setAttribute('content',"Chat with "+_bname+"'s AI Twin");
+  document.querySelector('meta[name="twitter:title"]').setAttribute('content',"Chat with "+_bname+"'s AI Twin");
+  document.querySelector('meta[property="og:description"]').setAttribute('content',_desc);
+  document.querySelector('meta[name="twitter:description"]').setAttribute('content',_desc);
+  document.querySelector('meta[name="description"]').setAttribute('content',_desc);
+  var _slug=new URLSearchParams(location.search).get('u')||'';
+  if(_slug){
+    document.querySelector('meta[property="og:url"]').setAttribute('content','https://builtsy.ai/c.html?u='+_slug);
+  }
 
   if(bot.bg_image){
     document.body.classList.add('has-bg');
@@ -297,8 +332,25 @@ function renderPage(){
   var greeting=bot.greeting||'Hey! Ask me anything 👋';
   appendBotMsg(greeting);
   _msgs.push({role:'assistant',content:greeting});
-  setTimeout(function(){document.getElementById('chat-input').focus();},300);
+  // Don't auto-focus on mobile — it opens the keyboard immediately and jumps the view
+  if(window.innerWidth>600)setTimeout(function(){document.getElementById('chat-input').focus();},300);
   setTimeout(generateSuggestions,900);
+
+  // ── iOS keyboard fix ────────────────────────────────────────────────────────
+  // When the virtual keyboard opens, iOS shrinks the visualViewport.
+  // We move the input bar up by exactly that amount so it stays above the keyboard.
+  if(window.visualViewport){
+    function _fixInputBar(){
+      var bar=document.getElementById('input-bar');
+      if(!bar)return;
+      var vv=window.visualViewport;
+      // How far the bottom of the visual viewport is from the bottom of the layout viewport
+      var offset=window.innerHeight - vv.height - vv.offsetTop;
+      bar.style.transform='translateX(-50%) translateY(-'+Math.max(0,Math.round(offset))+'px)';
+    }
+    window.visualViewport.addEventListener('resize',_fixInputBar);
+    window.visualViewport.addEventListener('scroll',_fixInputBar);
+  }
 }
 
 function showError(msg){
@@ -320,9 +372,9 @@ async function sendMsg(){
   _userMsgCount++;
   hideChips();appendUserMsg(text);_msgs.push({role:'user',content:text});
   _busy=true;document.getElementById('send-btn').disabled=true;
-  var typing=showTyping();window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  var typing=showTyping();document.getElementById('chat-msgs').lastElementChild&&document.getElementById('chat-msgs').lastElementChild.scrollIntoView({behavior:'smooth',block:'end'});
   try{
-    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:_msgs,system:buildSystemPrompt(_bot)})});
+    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:_msgs,system:buildSystemPrompt(_bot),max_tokens:280})});
     var json=await r.json();typing.remove();
     var reply=json.text||json.error||'Sorry, something went wrong.';
     appendBotMsg(reply);_msgs.push({role:'assistant',content:reply});
@@ -332,7 +384,7 @@ async function sendMsg(){
   }catch(e){typing.remove();appendBotMsg('Sorry, something went wrong. Try again.');}
   _busy=false;document.getElementById('send-btn').disabled=false;
   document.getElementById('chat-input').focus();
-  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  document.getElementById('chat-msgs').lastElementChild&&document.getElementById('chat-msgs').lastElementChild.scrollIntoView({behavior:'smooth',block:'end'});
 }
 
 function getTime(){var d=new Date(),h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
@@ -383,7 +435,7 @@ function showSessionLimit(){
   // Show a bot message with contact options
   var msg="You've reached the limit for this chat session. Want to keep the conversation going?";
   appendBotMsg(msg+(bot.phone||bot.email||bot.booking_url?' [CONTACT_CARD]':''));
-  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  document.getElementById('chat-msgs').lastElementChild&&document.getElementById('chat-msgs').lastElementChild.scrollIntoView({behavior:'smooth',block:'end'});
 }
 
 var _BLOCKED=[/\bsex\b/i,/\bporn/i,/\bnude\b/i,/\bexplicit\b/i,/\berotic/i,/\bjailbreak\b/i,/\bignore (your|all|previous) instructions?\b/i];
@@ -393,10 +445,25 @@ function isBlocked(text){
   return false;
 }
 
+// Lean context for chip generation — factual info only, no style rules that confuse JSON output
+function buildBotContext(bot){
+  var parts=[
+    'Name: '+(bot.bot_name||''),
+    bot.about?'About: '+bot.about:'',
+    bot.services?'Services: '+bot.services:'',
+    bot.pricing?'Pricing: '+bot.pricing:'',
+    bot.how_to_order?'How to book: '+bot.how_to_order:'',
+    bot.location?'Location: '+bot.location:'',
+    (bot.faqs&&bot.faqs.length)?'FAQs: '+bot.faqs.map(function(f){return f.q;}).join(' | '):''
+  ];
+  return parts.filter(Boolean).join('\n');
+}
+
 function buildSystemPrompt(bot){
   var parts=[
     'You are '+(bot.bot_name||'an AI assistant')+', a Builtsy AI assistant. You are an AI — say so if sincerely asked.',
     'TRUTH FIRST: Only state what you know from the info below. Never invent facts, prices, or credentials.',
+    'REPLY STYLE: Write like a real person texting — warm, natural, and brief. 2-3 sentences max. No bullet points, no headers, no lists. Never say "great question!" or summarize. If there\'s more to say, answer the best part and ask one short follow-up question to keep the conversation going.',
     bot.about?'## About\n'+bot.about:'',
     bot.services?'## Services\n'+bot.services:'',
     bot.hours?'## Hours\n'+bot.hours:'',
@@ -407,7 +474,9 @@ function buildSystemPrompt(bot){
     bot.extra_info?'## More Info\n'+bot.extra_info:'',
     (bot.faqs&&bot.faqs.length)?'## FAQs\n'+bot.faqs.map(function(f){return 'Q: '+f.q+'\nA: '+f.a;}).join('\n'):'',
     (bot.links&&bot.links.length)?'## Links\n'+bot.links.map(function(l){return l.label+': '+l.url;}).join('\n'):'',
-    bot.tone?'## Tone\nBe '+bot.tone+'.':'',
+    (bot.goals&&bot.goals.length)?'## YOUR MISSION — this is why you exist\nYou MUST actively work toward Goal #1 in every conversation. Do not wait — find a natural way to bring it up within the first 2-3 exchanges. Weave it into your answer, do not tack it on at the end. Make it feel like a genuine recommendation, not a sales pitch. Goals in order of priority:\n'+bot.goals.map(function(g,i){return '#'+(i+1)+': '+g;}).join('\n')+'\n\nExample: if someone asks about your background, answer briefly then connect it to Goal #1. If someone asks a question you can answer, answer it AND find a way to bridge to Goal #1 in the same reply.':'',
+    bot.voice_sample?'## Voice — THIS IS CRITICAL\nYou must write exactly like this person. Study these real examples of how they actually write and mirror their style precisely — their sentence length, punctuation habits, vocabulary, energy level, and rhythm. Do NOT sound corporate, polished, or generic.\n\nReal examples of their writing:\n"'+bot.voice_sample+'"':'',
+    bot.tone?'## Tone\nBe '+bot.tone+'. This reinforces the voice above — do not override it.':'',
     bot.avoid_topics?'## Never discuss\n'+bot.avoid_topics:'',
     bot.fallback_message?'## When you don\'t know\nSay: "'+bot.fallback_message+'"':'',
     '## Safety\nNo legal, medical, financial, or mental health advice.'
@@ -435,8 +504,8 @@ var _SOCIAL_SVGS={
 // Initial 4 personality-driven starters shown on page load
 async function generateSuggestions(){
   try{
-    var sys='Generate exactly 4 curiosity-evoking, personality-driven conversation starters for this chatbot. Make each one specific and intriguing — the kind of question that makes a visitor think "I have to know that." Use the person\'s actual story, background, and expertise. Under 10 words each. Return ONLY a JSON array of 4 strings, no markdown.\n\n'+buildSystemPrompt(_bot);
-    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'Give me 4 starter chips.'}],system:sys})});
+    var sys='Generate exactly 4 curiosity-evoking conversation starters for this chatbot. Make each one specific and intriguing — the kind of question a visitor would actually want to ask. Use the person\'s real story, background, and expertise. Under 10 words each. Return ONLY a JSON array of 4 strings. No markdown, no explanation, just the array.\n\nBot context:\n'+buildBotContext(_bot);
+    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'Give me 4 starter chips.'}],system:sys,use_haiku:true})});
     var json=await r.json();
     var chips=parseChips(json.text);
     if(chips.length)renderChips(chips);
@@ -447,9 +516,11 @@ async function generateSuggestions(){
 async function generateContextChips(){
   if(_userMsgCount>=_SESSION_LIMIT)return;
   try{
-    var recent=_msgs.slice(-6); // last 3 exchanges
-    var sys='The conversation so far is shown in the messages. Generate exactly 2 short, natural follow-up questions the user might want to ask next — specific to what was just discussed. Under 9 words each. Feel curious and conversational, not generic. Return ONLY a JSON array of 2 strings, no markdown.\n\nBot context:\n'+buildSystemPrompt(_bot);
-    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:recent,system:sys})});
+    // Build a conversation summary as a single user message so we always end on role:user
+    var recent=_msgs.slice(-6);
+    var convoSummary=recent.map(function(m){return (m.role==='user'?'User: ':'Bot: ')+m.content;}).join('\n');
+    var prompt='Here is a recent chat:\n'+convoSummary+'\n\nBased on this, generate exactly 2 short follow-up questions the user might want to ask next. Make them specific to what was just discussed — curious and natural, not generic. Under 9 words each. Return ONLY a JSON array of 2 strings. No markdown, no explanation, just the array.';
+    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],system:buildBotContext(_bot),max_tokens:120,use_haiku:true})});
     var json=await r.json();
     var chips=parseChips(json.text);
     if(chips.length)renderChips(chips);
