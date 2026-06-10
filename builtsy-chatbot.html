@@ -634,7 +634,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6;}
 
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:28px;margin-bottom:12px;">
           <span class="sl" style="margin:0;">FAQ — Common Questions</span>
-          <a href="faq-tool.html" onclick="saveDraft()" style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.75)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Open FAQ Builder ↗</a>
+          <a href="faq-tool.html" onclick="saveDraft();saveFaqPrefill();" style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.75)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Open FAQ Builder ↗</a>
         </div>
         <div class="dyn-list" id="faqs-list"></div>
         <button class="btn-add" onclick="addFaq()" style="margin-top:8px;">+ Add a question &amp; answer</button>
@@ -1914,6 +1914,25 @@ function saveBrainBioRequest(e) {
     currentAbout: about
   }));
   window.location.href = 'builtsy-brain.html';
+}
+
+// Write current form data as FAQ prefill so faq-tool.html starts populated correctly
+function saveFaqPrefill() {
+  try {
+    var name     = document.getElementById('f-botname').value.trim();
+    var about    = document.getElementById('f-about').value.trim();
+    var services = document.getElementById('f-services').value.trim();
+    var hours    = (document.getElementById('f-hours') || {}).value || '';
+    var location = (document.getElementById('f-location') || {}).value || '';
+    // Build a niche string from the about field (first sentence, max 120 chars)
+    var niche = about ? about.split(/[.\n]/)[0].trim().slice(0, 120) : '';
+    localStorage.setItem('builtsy_faq_prefill', JSON.stringify({
+      name:     name,
+      niche:    niche,
+      audience: '', // chatbot builder doesn't have this field; leave blank
+      services: services
+    }));
+  } catch(e) {}
 }
 
 // After publishing — take context to Brain to build a landing page
