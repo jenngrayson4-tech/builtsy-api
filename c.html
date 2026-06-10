@@ -65,8 +65,8 @@ body.has-bg .links-section{background:rgba(255,255,255,0.45);backdrop-filter:blu
 @keyframes typeDot{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-5px);opacity:1;}}
 
 /* chips */
-.suggest-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 14px 4px;transition:opacity .2s;}
-.suggest-wrap.hidden{opacity:0;pointer-events:none;}
+.suggest-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 14px 4px;transition:opacity .3s;}
+.suggest-wrap.hidden{opacity:0;pointer-events:none;height:0;padding:0;overflow:hidden;}
 .suggest-chip{background:white;border:1.5px solid var(--border);border-radius:14px;padding:10px 14px;font-size:.8rem;font-weight:600;color:var(--text);cursor:pointer;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,.05);font-family:'DM Sans',sans-serif;text-align:left;line-height:1.4;}
 .suggest-chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.08);}
 
@@ -316,6 +316,8 @@ async function sendMsg(){
     var reply=json.text||json.error||'Sorry, something went wrong.';
     appendBotMsg(reply);_msgs.push({role:'assistant',content:reply});
     if(_msgs.length>20)_msgs=_msgs.slice(-20);
+    // Regenerate contextual follow-up chips after every reply
+    setTimeout(generateContextChips, 700);
   }catch(e){typing.remove();appendBotMsg('Sorry, something went wrong. Try again.');}
   _busy=false;document.getElementById('send-btn').disabled=false;
   document.getElementById('chat-input').focus();
@@ -418,32 +420,59 @@ var _SOCIAL_SVGS={
   pinterest:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4.2-.9 1.4-6 1.4-6s-.4-.7-.4-1.8c0-1.7 1-2.9 2.2-2.9 1 0 1.5.8 1.5 1.7 0 1-.7 2.6-1 4-.3 1.2.6 2.2 1.8 2.2 2.1 0 3.8-2.2 3.8-5.5 0-2.9-2.1-4.9-5-4.9-3.4 0-5.4 2.6-5.4 5.2 0 1 .4 2.1.9 2.7.1.1.1.3 0 .4l-.3 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.8-7.3 7.9-7.3 4.2 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4l-.7 2.9c-.3 1-1 2.4-1.5 3.1 1 .3 2 .4 3 .4C18.6 24 24 18.6 24 12S18.6 0 12 0z"/></svg>'
 };
 
-var _chipsShown=false;
+// ── Suggestion chips ─────────────────────────────────────────────────────────
+// Initial 4 personality-driven starters shown on page load
 async function generateSuggestions(){
   try{
-    var sys='Generate exactly 4 curiosity-evoking, personality-driven conversation starters for this chatbot. Make each one specific and intriguing — the kind of question that makes a visitor think "I have to know that." Use the person\'s actual story, background, and expertise. Under 10 words each. Examples of the right style: "How did you build a startup without funding?", "What\'s your biggest business lesson?", "How do you write a children\'s book?". Return ONLY a JSON array of 4 strings, no markdown.\n\n'+buildSystemPrompt(_bot);
+    var sys='Generate exactly 4 curiosity-evoking, personality-driven conversation starters for this chatbot. Make each one specific and intriguing — the kind of question that makes a visitor think "I have to know that." Use the person\'s actual story, background, and expertise. Under 10 words each. Return ONLY a JSON array of 4 strings, no markdown.\n\n'+buildSystemPrompt(_bot);
     var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'Give me 4 starter chips.'}],system:sys})});
     var json=await r.json();
-    var raw=(json.text||'').trim().replace(/^```json?\n?/i,'').replace(/\n?```$/,'').trim();
-    var chips=JSON.parse(raw);
-    if(Array.isArray(chips)&&chips.length)renderChips(chips);
+    var chips=parseChips(json.text);
+    if(chips.length)renderChips(chips);
   }catch(e){}
+}
+
+// Contextual follow-ups generated after each bot reply
+async function generateContextChips(){
+  if(_userMsgCount>=_SESSION_LIMIT)return;
+  try{
+    var recent=_msgs.slice(-6); // last 3 exchanges
+    var sys='The conversation so far is shown in the messages. Generate exactly 2 short, natural follow-up questions the user might want to ask next — specific to what was just discussed. Under 9 words each. Feel curious and conversational, not generic. Return ONLY a JSON array of 2 strings, no markdown.\n\nBot context:\n'+buildSystemPrompt(_bot);
+    var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:recent,system:sys})});
+    var json=await r.json();
+    var chips=parseChips(json.text);
+    if(chips.length)renderChips(chips);
+  }catch(e){}
+}
+
+function parseChips(text){
+  try{
+    var raw=(text||'').trim().replace(/^```json?\n?/i,'').replace(/\n?```$/,'').trim();
+    var chips=JSON.parse(raw);
+    return Array.isArray(chips)?chips.filter(function(c){return typeof c==='string'&&c.length>0;}).slice(0,4):[];
+  }catch(e){return[];}
 }
 
 function renderChips(chips){
   var wrap=document.getElementById('suggest-wrap');if(!wrap)return;
-  wrap.innerHTML='';
-  chips.forEach(function(text){
-    var btn=document.createElement('button');btn.className='suggest-chip';btn.textContent=text;
-    btn.onclick=function(){hideChips();document.getElementById('chat-input').value=text;sendMsg();};
-    wrap.appendChild(btn);
-  });
-  wrap.classList.remove('hidden');_chipsShown=true;
+  // Fade out, swap, fade in
+  wrap.style.opacity='0';
+  setTimeout(function(){
+    wrap.innerHTML='';
+    chips.forEach(function(text){
+      var btn=document.createElement('button');btn.className='suggest-chip';btn.textContent=text;
+      btn.onclick=function(){hideChips();document.getElementById('chat-input').value=text;sendMsg();};
+      wrap.appendChild(btn);
+    });
+    wrap.classList.remove('hidden');
+    wrap.style.transition='opacity .3s';
+    wrap.style.opacity='1';
+  },150);
 }
 
 function hideChips(){
-  if(!_chipsShown)return;
-  var w=document.getElementById('suggest-wrap');if(w)w.classList.add('hidden');_chipsShown=false;
+  var w=document.getElementById('suggest-wrap');
+  if(w){w.classList.add('hidden');w.style.opacity='0';}
 }
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
