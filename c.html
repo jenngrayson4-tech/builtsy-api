@@ -89,12 +89,13 @@ body.has-bg .links-section{background:rgba(255,255,255,0.45);backdrop-filter:blu
 .send-btn:disabled{opacity:.5;cursor:not-allowed;}
 .send-btn svg{width:18px;height:18px;fill:white;}
 
-/* ── social icons ── */
-.social-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;padding:2px 0 10px;}
-.social-btn{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;flex-shrink:0;color:var(--text2);}
-.social-btn:hover{background:var(--accent);color:white;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
-.social-btn svg{width:16px;height:16px;}
-body.has-bg .social-btn{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);}
+/* ── social icons — naked floating style ── */
+.social-row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;padding:4px 0 12px;}
+.social-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;flex-shrink:0;color:var(--text);opacity:.55;}
+.social-btn:hover{opacity:1;transform:translateY(-2px);}
+.social-btn svg{width:24px;height:24px;}
+body.has-bg .social-btn{color:white;opacity:.8;}
+body.has-bg .social-btn:hover{opacity:1;}
 
 /* ── feel: playful ── */
 body.feel-playful .msg-row.bot .msg-bubble{border-radius:4px 22px 22px 22px;}
