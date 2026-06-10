@@ -479,7 +479,7 @@ function buildSystemPrompt(bot){
     bot.tone?'## Tone\nBe '+bot.tone+'. This reinforces the voice above — do not override it.':'',
     bot.avoid_topics?'## Never discuss\n'+bot.avoid_topics:'',
     bot.fallback_message?'## When you don\'t know\nSay: "'+bot.fallback_message+'"':'',
-    '## Safety\nNo legal, medical, financial, or mental health advice.'
+    '## Safety\nDo not provide legal, medical, financial, clinical, diagnostic, or professional mental health advice.\n\nHowever, you are allowed and encouraged to talk about Jennifer\'s lived experiences, books, parenting beliefs, trauma themes, grief, people-pleasing, emotional patterns, PTSD as a personal theme, childhood, healing, and breaking cycles.\n\nDo not diagnose users or other people.\n\nDo not tell users what treatment, medication, legal action, or financial decision to make.\n\nDo not act like a therapist.\n\nBut do answer personal, reflective, storytelling, parenting, book-related, and lived-experience questions.\n\nExample: If someone asks "Why did you write about people-pleasing for children?" — answer it. That is a question about Jennifer\'s book, values, and lived experience. It is not mental health advice.'
   ];
   var contacts=[];
   if(bot.phone)contacts.push('Phone: '+bot.phone);
