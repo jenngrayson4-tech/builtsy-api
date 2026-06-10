@@ -39,11 +39,15 @@ body.has-bg .links-section{background:rgba(255,255,255,0.45);backdrop-filter:blu
 .profile-status{font-size:.72rem;font-weight:600;color:#22c55e;letter-spacing:.04em;text-transform:uppercase;}
 .profile-bio{font-size:.9rem;color:var(--text2);line-height:1.7;max-width:300px;font-weight:400;}
 
-/* links — lives below chat now */
-.links-section{width:100%;padding:8px 20px 16px;display:flex;flex-direction:column;gap:9px;}
-.links-heading{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;text-align:center;padding:12px 0 4px;opacity:.7;}
-.link-pill{display:block;width:100%;padding:12px 20px;border-radius:100px;text-align:center;text-decoration:none;font-size:.875rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:filter .15s,transform .1s;cursor:pointer;background:white;border:1.5px solid var(--border);}
-.link-pill:hover{filter:brightness(1.04);transform:translateY(-1px);border-color:var(--accent);}
+/* links */
+.links-section{width:100%;padding:4px 20px 12px;display:flex;flex-direction:column;gap:10px;}
+.link-pill{display:block;width:100%;padding:13px 20px;border-radius:100px;text-align:center;text-decoration:none;font-size:.875rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:filter .15s,transform .1s;cursor:pointer;background:white;border:1.5px solid var(--border);}
+.link-pill:hover{filter:brightness(1.06);transform:translateY(-1px);}
+
+/* divider */
+.divider{display:flex;align-items:center;gap:12px;width:100%;padding:16px 20px 12px;}
+.div-line{flex:1;height:1px;background:var(--border);}
+.div-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;white-space:nowrap;}
 
 /* chat */
 .chat-section{width:100%;padding:4px 14px 0;display:flex;flex-direction:column;gap:12px;}
@@ -89,13 +93,13 @@ body.has-bg .links-section{background:rgba(255,255,255,0.45);backdrop-filter:blu
 .send-btn:disabled{opacity:.5;cursor:not-allowed;}
 .send-btn svg{width:18px;height:18px;fill:white;}
 
-/* ── social icons — naked floating style ── */
-.social-row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;padding:4px 0 12px;}
-.social-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;flex-shrink:0;color:var(--text);opacity:.55;}
-.social-btn:hover{opacity:1;transform:translateY(-2px);}
-.social-btn svg{width:24px;height:24px;}
-body.has-bg .social-btn{color:white;opacity:.8;}
-body.has-bg .social-btn:hover{opacity:1;}
+/* ── social icons — rounded square style ── */
+.social-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:2px 0 10px;}
+.social-btn{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;flex-shrink:0;color:var(--text);}
+.social-btn:hover{background:var(--accent);color:white;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.social-btn svg{width:16px;height:16px;}
+body.has-bg .social-btn{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);color:var(--text);}
+body.has-bg .social-btn:hover{background:var(--accent);color:white;}
 
 /* ── feel: playful ── */
 body.feel-playful .msg-row.bot .msg-bubble{border-radius:4px 22px 22px 22px;}
@@ -158,14 +162,18 @@ body.feel-modern .profile-name{letter-spacing:-.03em;}
     <div class="social-row" id="social-row" style="display:none;"></div>
   </div>
 
+  <div class="links-section" id="links-section" style="display:none;"></div>
+
+  <div class="divider">
+    <div class="div-line"></div>
+    <div class="div-label" id="chat-label">Chat</div>
+    <div class="div-line"></div>
+  </div>
+
   <div class="chat-section" id="chat-msgs"></div>
   <div class="suggest-wrap hidden" id="suggest-wrap"></div>
 
   <div class="ai-disclaimer">AI responses may not always be accurate.</div>
-
-  <div class="links-section" id="links-section" style="display:none;">
-    <div class="links-heading" id="links-heading">quick links</div>
-  </div>
 
   <div class="made-with">
     <div class="made-with-love">made with <a href="https://builtsy.ai" target="_blank" rel="noopener">builtsy.ai</a> ✦ with love for <strong id="made-with-name">you</strong> 🌸</div>
@@ -251,17 +259,19 @@ function renderPage(){
 
   if(bot.links&&bot.links.length){
     var sec=document.getElementById('links-section');
-    bot.links.forEach(function(l){
+    bot.links.forEach(function(l,i){
       if(!l.label)return;
       var a=document.createElement('a');
       a.className='link-pill';
-      a.style.color=accent;
+      if(i===0){a.style.background=accent;a.style.color='white';a.style.border='none';}
+      else{a.style.color=accent;}
       a.href=l.url||'#';a.target='_blank';a.rel='noopener';
       a.textContent=l.label;sec.appendChild(a);
     });
     sec.style.display='';
   }
 
+  document.getElementById('chat-label').textContent='Chat with '+(bot.bot_name||'me');
   document.getElementById('made-with-name').textContent=bot.bot_name||'you';
 
   // Feel
