@@ -381,7 +381,7 @@ app.post('/claim-board-style', rateLimit, async function(req, res) {
         + '  "card_border": "rgba CSS color for item card borders — opacity 0.2-0.35",\n'
         + '  "card_shadow": "full CSS box-shadow for item cards — glowing, warm, use accent_color",\n'
         + '  "btn_shadow": "full CSS box-shadow for claim buttons — vibrant glow matching btn_color",\n'
-        + '  "title_shadow": "full CSS text-shadow for the main title — dramatic cinematic glow",\n'
+        + '  "title_color": "hex color for the main title — white or a soft bright tint of the accent, always readable",\n'
         + '  "progress_gradient": "full CSS linear-gradient(90deg,...) for the progress bar — use accent colors"\n'
         + '}\n\n'
         + 'CRITICAL design rules:\n'
