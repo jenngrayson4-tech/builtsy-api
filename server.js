@@ -342,6 +342,63 @@ app.post('/grow', requireAuth, rateLimit, async function(req, res) {
   }
 });
 
+// ── Claim Board Style — AI-powered design aesthetic for claim boards ─────────
+app.post('/claim-board-style', requireAuth, rateLimit, async function(req, res) {
+  try {
+    var { occasion, listType, theme, name, items, message, primaryColor, accentColor, accent2Color } = req.body;
+    if (!name) return res.status(400).json({ error: 'No board name provided' });
+
+    var itemList = (items || []).slice(0, 12).join(', ') || 'various items';
+
+    var prompt = 'You are a UI/UX designer creating a custom visual aesthetic for a shareable claim list page.\n\n'
+      + 'Board details:\n'
+      + '- Name: ' + name + '\n'
+      + '- Occasion: ' + (occasion || 'general') + '\n'
+      + '- List type: ' + (listType || 'general') + '\n'
+      + '- Theme: ' + (theme || 'general') + '\n'
+      + '- Primary button/accent color: ' + (primaryColor || '#C8E000') + '\n'
+      + '- Secondary accent color: ' + (accentColor || '#ee70bc') + '\n'
+      + '- Third accent color: ' + (accent2Color || '#C8E000') + '\n'
+      + (message ? '- Custom message: ' + message + '\n' : '')
+      + '- Items on the list: ' + itemList + '\n\n'
+      + 'Generate a JSON object that defines a beautiful, cohesive aesthetic for this page. '
+      + 'Return ONLY raw JSON — no markdown fences, no explanation, nothing else.\n\n'
+      + '{\n'
+      + '  "tagline": "A punchy, fun 1-line subtitle — contextual to the occasion and items, no emoji, max 65 chars",\n'
+      + '  "card_bg": "rgba CSS color for item card backgrounds — very subtle, opacity 0.06-0.13",\n'
+      + '  "card_border": "rgba CSS color for item card borders — medium opacity 0.15-0.28",\n'
+      + '  "card_shadow": "full CSS box-shadow value for item cards — soft glow using the primary color",\n'
+      + '  "btn_shadow": "full CSS box-shadow value for claim buttons — vibrant glow using primary color",\n'
+      + '  "title_shadow": "full CSS text-shadow for the main board title — dramatic, glowy, on-theme",\n'
+      + '  "header_line_color": "hex or rgba for the small decorative accent bar under the title",\n'
+      + '  "progress_gradient": "full CSS linear-gradient(90deg, ...) for the progress bar fill — use theme colors"\n'
+      + '}\n\n'
+      + 'Design rules:\n'
+      + '- All colors MUST harmonize with primary: ' + (primaryColor || '#C8E000') + ', accent: ' + (accentColor || '#ee70bc') + '\n'
+      + '- Card backgrounds must stay subtle — item text must remain readable\n'
+      + '- Shadows should be warm, glowy, and vibrant — not flat or grey\n'
+      + '- The tagline must feel human, specific, and fun — reference the actual items or occasion\n'
+      + '- Return ONLY valid JSON with exactly these 8 keys';
+
+    var resp = await client.messages.create({
+      model: MODEL,
+      max_tokens: 700,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    var raw = resp.content[0].text.trim();
+    // Strip markdown fences if model wrapped the JSON
+    raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+
+    var styles = JSON.parse(raw);
+    res.json({ styles: styles });
+
+  } catch (err) {
+    console.error('Claim board style error:', err.message);
+    res.status(500).json({ error: err.message || 'Style generation failed' });
+  }
+});
+
 // Template fill — takes social-media-manager-site.html and swaps content with user's real info
 app.post('/generate-template', requireAuth, rateLimit, async function(req, res) {
   try {
