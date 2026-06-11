@@ -343,7 +343,7 @@ app.post('/grow', requireAuth, rateLimit, async function(req, res) {
 });
 
 // ── Claim Board Style — AI-powered design aesthetic for claim boards ─────────
-app.post('/claim-board-style', requireAuth, rateLimit, async function(req, res) {
+app.post('/claim-board-style', rateLimit, async function(req, res) {
   try {
     var { occasion, listType, theme, name, items, message, primaryColor, accentColor, accent2Color } = req.body;
     if (!name) return res.status(400).json({ error: 'No board name provided' });
