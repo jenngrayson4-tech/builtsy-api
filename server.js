@@ -452,9 +452,10 @@ app.post('/generate-template-agency', requireAuth, rateLimit, async function(req
 // Universal Template Fill — supports social, cherry_sm, bubbly_sm, agency, etc.
 app.post('/generate-template-universal', requireAuth, rateLimit, async function(req, res) {
   try {
-    var templateType = req.body.templateType || 'social';
-    var fields       = req.body.fields || {};
-    var niche        = req.body.niche || 'social media manager';
+    var templateType       = req.body.templateType || 'social';
+    var fields             = req.body.fields || {};
+    var niche              = req.body.niche || 'social media manager';
+    var inspirationImages  = Array.isArray(req.body.inspirationImages) ? req.body.inspirationImages : [];
 
     var fieldText = Object.keys(fields).map(function(k) {
       return k + ': ' + fields[k];
@@ -464,6 +465,54 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
     var revisionLine = revisionNote
       ? '\nREVISION INSTRUCTION: ' + revisionNote + '\n'
       : '';
+
+    // ── Helper: build message content — text only, or text + vision images ────
+    function buildMessageContent(promptText) {
+      if (!inspirationImages.length) {
+        return promptText; // plain string — no vision needed
+      }
+      // Multi-part content array: images first, then the text prompt
+      var parts = [];
+      // Framing paragraph inserted before the prompt text
+      var inspoFrame = '\n\n════════════════════════════════════\n'
+        + ' DESIGN INSPIRATION — SPATIAL REFERENCE ONLY\n'
+        + '════════════════════════════════════\n'
+        + 'The attached screenshot(s) are provided as SPATIAL and STRUCTURAL inspiration.\n'
+        + 'DO NOT copy their colors, fonts, logos, brand identity, or specific imagery.\n'
+        + 'EXTRACT from them ONLY:\n'
+        + '- Layout architecture (hero treatment, section flow, column grids)\n'
+        + '- Whitespace philosophy (density, breathing room, padding rhythms)\n'
+        + '- Component aesthetic (card style, button shape, nav density, divider use)\n'
+        + '- Visual hierarchy approach (size relationships, contrast moments)\n'
+        + '- Overall design confidence (bold vs minimal, editorial vs warm)\n\n'
+        + 'Apply that spatial language to the brand identity defined in the business information — '
+        + 'keeping the specified colors, typography system, and content — but letting these images '
+        + 'directly influence: section layout, spacing density, component styling, hero treatment, '
+        + 'and overall visual sophistication.\n'
+        + '════════════════════════════════════\n\n';
+
+      // Images go first in the content array
+      inspirationImages.forEach(function(img) {
+        if (img.data && img.mediaType) {
+          parts.push({
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: img.mediaType,
+              data: img.data
+            }
+          });
+        }
+      });
+
+      // Then the text prompt with the framing injected near the top
+      parts.push({
+        type: 'text',
+        text: promptText + inspoFrame
+      });
+
+      return parts;
+    }
 
     // ── AI CUSTOM: fully from-scratch generation, no template ─────────────────
     if (templateType === 'custom') {
@@ -677,7 +726,7 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
       var customStream = await client.messages.stream({
         model: MODEL,
         max_tokens: MAX_TOKENS_STREAM,
-        messages: [{ role: 'user', content: prompt }]
+        messages: [{ role: 'user', content: buildMessageContent(prompt) }]
       });
 
       var customFull = '';
@@ -760,7 +809,7 @@ app.post('/generate-template-universal', requireAuth, rateLimit, async function(
     var stream = await client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS_STREAM,
-      messages: [{ role: 'user', content: prompt }]
+      messages: [{ role: 'user', content: buildMessageContent(prompt) }]
     });
 
     var fullText = '';
