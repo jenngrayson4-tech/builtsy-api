@@ -1408,7 +1408,7 @@ CONTENT TRANSFORM: Restructure pasted content into 5–7 polished sections using
 
 app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
   try {
-    const { prompt, bizCtx, paletteCss, buildType } = req.body;
+    const { prompt, bizCtx, paletteCss, buildType, designBrief } = req.body;
     if (!prompt) return res.status(400).json({ error: 'prompt required' });
 
     // Build business context block
@@ -1453,7 +1453,27 @@ app.post('/brain-build', requireAuth, rateLimit, async function(req, res) {
       paletteBlock = `\n\n---\nUSE THIS CLEAN DEFAULT PALETTE:\n--bg:#FAF8F5; --light:#F5EDE6; --orange:#D4745A; --orange2:#B85A40; --text:#2D2A26; --text2:#7A6E65; --dark:#0E0E0E;`;
     }
 
-    const userPrompt = `BUILD TYPE: ${buildType || 'page'}\n\nREQUEST: ${prompt}${ctxBlock}${paletteBlock}`;
+    // Design inspiration brief — extracted from user's screenshot references
+    let briefBlock = '';
+    if (designBrief) {
+      const p = designBrief.palette || {};
+      const t = designBrief.typography || {};
+      briefBlock = `\n\n---\nDESIGN INSPIRATION — the user uploaded reference screenshots. Build toward this aesthetic:\n`;
+      briefBlock += `Mood: ${designBrief.mood || ''}\n`;
+      briefBlock += `Vibe: ${(designBrief.vibeWords || []).join(', ')}\n`;
+      briefBlock += `Density: ${designBrief.density || 'balanced'}\n`;
+      if (p.bg)        briefBlock += `Background color: ${p.bg}\n`;
+      if (p.primary)   briefBlock += `Primary color: ${p.primary}\n`;
+      if (p.secondary) briefBlock += `Secondary color: ${p.secondary}\n`;
+      if (p.accent)    briefBlock += `Accent / CTA color: ${p.accent}\n`;
+      if (p.text)      briefBlock += `Body text color: ${p.text}\n`;
+      if (t.headlineStyle) briefBlock += `Headline typography: ${t.headlineStyle} — ${t.headlineDesc || ''}\n`;
+      if (t.bodyStyle)     briefBlock += `Body typography: ${t.bodyStyle}\n`;
+      if (designBrief.cssDirection) briefBlock += `\nDESIGN DIRECTION (apply precisely):\n${designBrief.cssDirection}\n`;
+      briefBlock += `\nIMPORTANT: This design direction takes priority over generic defaults. The page must feel like it belongs to this aesthetic — not like a generic AI template. Every design decision (colors, spacing, fonts, components) should reflect this brief.`;
+    }
+
+    const userPrompt = `BUILD TYPE: ${buildType || 'page'}\n\nREQUEST: ${prompt}${ctxBlock}${paletteBlock}${briefBlock}`;
 
     const msg = await client.messages.create({
       model: MODEL,
